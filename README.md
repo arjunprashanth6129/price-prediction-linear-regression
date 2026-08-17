@@ -110,10 +110,6 @@ it, a 5:1 split reads as an 80% overnight crash and every return computed
 afterwards is wrong. It does **not** correct demergers, and this window contains
 two, both inside the test period; see [limitations](#7-limitations).
 
-The whole universe was eyeballed before modelling, which is how the demergers
-were caught:
-
-![Daily closes for every ticker in the universe](docs/figures/universe-closes.png)
 
 ## 3. Method
 
