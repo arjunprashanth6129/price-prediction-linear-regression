@@ -7,7 +7,7 @@ export const PROJECT = {
     "A linear regression study across 98 NSE stocks testing whether moving averages, the golden cross and lagged returns carry any information about next-day returns.",
   github:
     "https://github.com/arjunprashanth6129/price-prediction-linear-regression",
-  live: "https://quant-projects.vercel.app",
+  live: "https://arjun-quant-projects.vercel.app",
   author: "Arjun",
 };
 

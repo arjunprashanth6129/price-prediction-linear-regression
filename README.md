@@ -4,12 +4,12 @@
 A linear regression study across 98 NSE stocks, and what the answer reveals
 about market efficiency.
 
-[![Live report](https://img.shields.io/badge/Live-report-000?logo=vercel)](https://quant-projects.vercel.app)
+[![Live report](https://img.shields.io/badge/Live-report-000?logo=vercel)](https://arjun-quant-projects.vercel.app)
 [![Python](https://img.shields.io/badge/Python-scikit--learn-3776ab?logo=python&logoColor=white)](https://scikit-learn.org)
 [![Next.js](https://img.shields.io/badge/Next.js-App_Router-000?logo=next.js)](https://nextjs.org)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-**Interactive version:** https://quant-projects.vercel.app
+**Interactive version:** https://arjun-quant-projects.vercel.app
 &nbsp;·&nbsp; **Full numeric results:** [`results/`](results/)
 &nbsp;·&nbsp; **All figures:** [`docs/figures/`](docs/figures/)
 
