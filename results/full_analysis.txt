@@ -158,7 +158,7 @@ Read the accuracy figure on its own first: 49.6% is below a coin
 flip. The positive average edge is not skill, it is a weak benchmark.
 Over the test window (2025-02-01 to 2026-06-26) the always-up rule only
 scored 47.8%, because the window was close to flat: the median
-stock moved -0% and 49 of 98 rose at all.
+stock moved -0.1% and 49 of 98 rose at all.
 Beating a poor benchmark from below a coin flip is not a result worth
 acting on.
 

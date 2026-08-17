@@ -363,7 +363,7 @@ def main() -> int:
     emit("flip. The positive average edge is not skill, it is a weak benchmark.")
     emit(f"Over the test window ({test_start} to {test_end}) the always-up rule only")
     emit(f"scored {mean_naive:.1%}, because the window was close to flat: the median")
-    emit(f"stock moved {median_rise:+.0%} and {n_rose} of {n_total} rose at all.")
+    emit(f"stock moved {median_rise:+.1%} and {n_rose} of {n_total} rose at all.")
     emit("Beating a poor benchmark from below a coin flip is not a result worth")
     emit("acting on.")
     emit()
