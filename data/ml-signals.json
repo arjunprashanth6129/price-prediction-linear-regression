@@ -1,0 +1,1962 @@
+{
+  "AARTIIND": {
+    "dataQuality": "full",
+    "deathCrossDays": 185,
+    "dirAccuracy": 0.438,
+    "goldenCrossDays": 162,
+    "maRatioWeight": -0.000842,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0202,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.4582,
+    "r2Return": -0.000545,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.004089,
+      "ma5": 0.00315,
+      "ma_ratio": -0.000842,
+      "ret": 0.001058
+    }
+  },
+  "AAVAS": {
+    "dataQuality": "full",
+    "deathCrossDays": 201,
+    "dirAccuracy": 0.5072,
+    "goldenCrossDays": 146,
+    "maRatioWeight": -0.004338,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0634,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4438,
+    "r2Return": -0.017325,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.019188,
+      "ma5": 0.018226,
+      "ma_ratio": -0.004338,
+      "ret": 0.002838
+    }
+  },
+  "ADANIGREEN": {
+    "dataQuality": "full",
+    "deathCrossDays": 162,
+    "dirAccuracy": 0.4957,
+    "goldenCrossDays": 185,
+    "maRatioWeight": 0.001041,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4957,
+    "r2Return": -0.054396,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.010824,
+      "ma5": 0.007399,
+      "ma_ratio": 0.001041,
+      "ret": 0.007468
+    }
+  },
+  "AJANTPHARM": {
+    "dataQuality": "partial",
+    "deathCrossDays": 168,
+    "dirAccuracy": 0.4942,
+    "goldenCrossDays": 178,
+    "maRatioWeight": -0.00175,
+    "marketCapCategory": "Mid",
+    "mlEdge": 0.0145,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4798,
+    "r2Return": -0.005446,
+    "testDays": 346,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.011799,
+      "ma5": 0.01143,
+      "ma_ratio": -0.00175,
+      "ret": 0.001192
+    }
+  },
+  "ALKEM": {
+    "dataQuality": "partial",
+    "deathCrossDays": 162,
+    "dirAccuracy": 0.4711,
+    "goldenCrossDays": 184,
+    "maRatioWeight": -0.001197,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0462,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.5173,
+    "r2Return": -0.01161,
+    "testDays": 346,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.013525,
+      "ma5": 0.012777,
+      "ma_ratio": -0.001197,
+      "ret": 0.00016
+    }
+  },
+  "AMBER": {
+    "dataQuality": "full",
+    "deathCrossDays": 171,
+    "dirAccuracy": 0.5187,
+    "goldenCrossDays": 176,
+    "maRatioWeight": -0.000185,
+    "marketCapCategory": "Mid",
+    "mlEdge": 0.0058,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.513,
+    "r2Return": -0.00146,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.001808,
+      "ma5": -0.00252,
+      "ma_ratio": -0.000185,
+      "ret": -0.001089
+    }
+  },
+  "AMBUJACEM": {
+    "dataQuality": "full",
+    "deathCrossDays": 218,
+    "dirAccuracy": 0.5274,
+    "goldenCrossDays": 129,
+    "maRatioWeight": 0.000607,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0346,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4928,
+    "r2Return": 0.005693,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.005314,
+      "ma5": -0.006199,
+      "ma_ratio": 0.000607,
+      "ret": -0.000829
+    }
+  },
+  "APCOTEXIND": {
+    "dataQuality": "partial",
+    "deathCrossDays": 157,
+    "dirAccuracy": 0.526,
+    "goldenCrossDays": 189,
+    "maRatioWeight": 0.004029,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0347,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4913,
+    "r2Return": 0.000184,
+    "testDays": 346,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.021012,
+      "ma5": -0.022174,
+      "ma_ratio": 0.004029,
+      "ret": -0.000953
+    }
+  },
+  "ARVIND": {
+    "dataQuality": "full",
+    "deathCrossDays": 175,
+    "dirAccuracy": 0.4524,
+    "goldenCrossDays": 172,
+    "maRatioWeight": 0.000514,
+    "marketCapCategory": "Small",
+    "mlEdge": -0.0086,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.4611,
+    "r2Return": -0.001422,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.007457,
+      "ma5": -0.007717,
+      "ma_ratio": 0.000514,
+      "ret": 0.001858
+    }
+  },
+  "ASTRAL": {
+    "dataQuality": "full",
+    "deathCrossDays": 185,
+    "dirAccuracy": 0.4841,
+    "goldenCrossDays": 162,
+    "maRatioWeight": -0.00168,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4841,
+    "r2Return": 0.000526,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.014443,
+      "ma5": 0.013146,
+      "ma_ratio": -0.00168,
+      "ret": -0.00036
+    }
+  },
+  "AXISBANK": {
+    "dataQuality": "full",
+    "deathCrossDays": 115,
+    "dirAccuracy": 0.4669,
+    "goldenCrossDays": 232,
+    "maRatioWeight": -0.0042,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0259,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.4928,
+    "r2Return": -0.051142,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.032614,
+      "ma5": 0.031839,
+      "ma_ratio": -0.0042,
+      "ret": -0.000416
+    }
+  },
+  "BAJAJCON": {
+    "dataQuality": "full",
+    "deathCrossDays": 119,
+    "dirAccuracy": 0.464,
+    "goldenCrossDays": 228,
+    "maRatioWeight": -0.000385,
+    "marketCapCategory": "Small",
+    "mlEdge": -0.049,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.513,
+    "r2Return": -0.068414,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.00386,
+      "ma5": 0.002459,
+      "ma_ratio": -0.000385,
+      "ret": -0.000258
+    }
+  },
+  "BAJAJFINSV": {
+    "dataQuality": "full",
+    "deathCrossDays": 170,
+    "dirAccuracy": 0.5101,
+    "goldenCrossDays": 177,
+    "maRatioWeight": 0.002829,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0346,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4755,
+    "r2Return": -0.008465,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.007085,
+      "ma5": -0.008149,
+      "ma_ratio": 0.002829,
+      "ret": 3.9e-05
+    }
+  },
+  "BAJFINANCE": {
+    "dataQuality": "full",
+    "deathCrossDays": 150,
+    "dirAccuracy": 0.487,
+    "goldenCrossDays": 197,
+    "maRatioWeight": 0.003029,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0202,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.5072,
+    "r2Return": -0.019772,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.008231,
+      "ma5": -0.009572,
+      "ma_ratio": 0.003029,
+      "ret": -0.000648
+    }
+  },
+  "BALKRISIND": {
+    "dataQuality": "partial",
+    "deathCrossDays": 188,
+    "dirAccuracy": 0.5029,
+    "goldenCrossDays": 158,
+    "maRatioWeight": -0.000219,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0636,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4393,
+    "r2Return": -0.002428,
+    "testDays": 346,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.002578,
+      "ma5": 0.00123,
+      "ma_ratio": -0.000219,
+      "ret": -0.000746
+    }
+  },
+  "BIOCON": {
+    "dataQuality": "full",
+    "deathCrossDays": 162,
+    "dirAccuracy": 0.5533,
+    "goldenCrossDays": 185,
+    "maRatioWeight": 0.000701,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0231,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.5303,
+    "r2Return": -0.001896,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.009175,
+      "ma5": -0.010279,
+      "ma_ratio": 0.000701,
+      "ret": -0.001019
+    }
+  },
+  "BOSCHLTD": {
+    "dataQuality": "partial",
+    "deathCrossDays": 179,
+    "dirAccuracy": 0.5087,
+    "goldenCrossDays": 167,
+    "maRatioWeight": -0.001232,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0029,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.5058,
+    "r2Return": -0.022492,
+    "testDays": 346,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.019563,
+      "ma5": 0.01934,
+      "ma_ratio": -0.001232,
+      "ret": -0.00046
+    }
+  },
+  "BPCL": {
+    "dataQuality": "full",
+    "deathCrossDays": 157,
+    "dirAccuracy": 0.5159,
+    "goldenCrossDays": 190,
+    "maRatioWeight": 0.001033,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0432,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4726,
+    "r2Return": -0.006602,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.004508,
+      "ma5": -0.005319,
+      "ma_ratio": 0.001033,
+      "ret": -0.000573
+    }
+  },
+  "BRITANNIA": {
+    "dataQuality": "full",
+    "deathCrossDays": 164,
+    "dirAccuracy": 0.4899,
+    "goldenCrossDays": 183,
+    "maRatioWeight": -0.002224,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0202,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.5101,
+    "r2Return": -0.009358,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.020402,
+      "ma5": 0.019772,
+      "ma_ratio": -0.002224,
+      "ret": -0.000337
+    }
+  },
+  "CCL": {
+    "dataQuality": "full",
+    "deathCrossDays": 137,
+    "dirAccuracy": 0.5245,
+    "goldenCrossDays": 210,
+    "maRatioWeight": -0.000492,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0461,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4784,
+    "r2Return": -0.009714,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.001321,
+      "ma5": 0.000678,
+      "ma_ratio": -0.000492,
+      "ret": -8e-06
+    }
+  },
+  "CERA": {
+    "dataQuality": "partial",
+    "deathCrossDays": 205,
+    "dirAccuracy": 0.4335,
+    "goldenCrossDays": 141,
+    "maRatioWeight": -0.000385,
+    "marketCapCategory": "Mid",
+    "mlEdge": -0.0029,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.4364,
+    "r2Return": -0.011738,
+    "testDays": 346,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.007292,
+      "ma5": 0.006618,
+      "ma_ratio": -0.000385,
+      "ret": -0.000997
+    }
+  },
+  "CHOLAFIN": {
+    "dataQuality": "full",
+    "deathCrossDays": 144,
+    "dirAccuracy": 0.5331,
+    "goldenCrossDays": 203,
+    "maRatioWeight": 0.00043,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.072,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4611,
+    "r2Return": -0.005256,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": -0.00035,
+      "ma5": -0.000568,
+      "ma_ratio": 0.00043,
+      "ret": -6.6e-05
+    }
+  },
+  "CIPLA": {
+    "dataQuality": "full",
+    "deathCrossDays": 186,
+    "dirAccuracy": 0.536,
+    "goldenCrossDays": 161,
+    "maRatioWeight": 0.002021,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0231,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.513,
+    "r2Return": 1.5e-05,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.021544,
+      "ma5": -0.02207,
+      "ma_ratio": 0.002021,
+      "ret": -0.00107
+    }
+  },
+  "COFORGE": {
+    "dataQuality": "full",
+    "deathCrossDays": 166,
+    "dirAccuracy": 0.4813,
+    "goldenCrossDays": 181,
+    "maRatioWeight": -6.1e-05,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0259,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.5072,
+    "r2Return": -0.007763,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.001526,
+      "ma5": -0.002473,
+      "ma_ratio": -6.1e-05,
+      "ret": -0.001391
+    }
+  },
+  "COLPAL": {
+    "dataQuality": "full",
+    "deathCrossDays": 211,
+    "dirAccuracy": 0.5043,
+    "goldenCrossDays": 136,
+    "maRatioWeight": -0.001426,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0231,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4813,
+    "r2Return": -0.007959,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.018778,
+      "ma5": 0.018562,
+      "ma_ratio": -0.001426,
+      "ret": 0.000103
+    }
+  },
+  "CYIENT": {
+    "dataQuality": "full",
+    "deathCrossDays": 225,
+    "dirAccuracy": 0.4323,
+    "goldenCrossDays": 122,
+    "maRatioWeight": 0.001982,
+    "marketCapCategory": "Mid",
+    "mlEdge": 0.0,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4323,
+    "r2Return": -0.008495,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.020514,
+      "ma5": -0.021243,
+      "ma_ratio": 0.001982,
+      "ret": 0.000348
+    }
+  },
+  "DCBBANK": {
+    "dataQuality": "full",
+    "deathCrossDays": 140,
+    "dirAccuracy": 0.5245,
+    "goldenCrossDays": 207,
+    "maRatioWeight": 0.000873,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0231,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.5014,
+    "r2Return": -0.035631,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.001653,
+      "ma5": -0.003672,
+      "ma_ratio": 0.000873,
+      "ret": 0.000878
+    }
+  },
+  "DEEPAKFERT": {
+    "dataQuality": "full",
+    "deathCrossDays": 176,
+    "dirAccuracy": 0.5043,
+    "goldenCrossDays": 171,
+    "maRatioWeight": 0.000117,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0317,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4726,
+    "r2Return": -0.001882,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.004836,
+      "ma5": -0.005904,
+      "ma_ratio": 0.000117,
+      "ret": 0.001089
+    }
+  },
+  "DIVISLAB": {
+    "dataQuality": "partial",
+    "deathCrossDays": 159,
+    "dirAccuracy": 0.4942,
+    "goldenCrossDays": 187,
+    "maRatioWeight": 0.002084,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0145,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.5087,
+    "r2Return": -0.007356,
+    "testDays": 346,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.023128,
+      "ma5": -0.023943,
+      "ma_ratio": 0.002084,
+      "ret": 8.3e-05
+    }
+  },
+  "DIXON": {
+    "dataQuality": "full",
+    "deathCrossDays": 205,
+    "dirAccuracy": 0.4669,
+    "goldenCrossDays": 142,
+    "maRatioWeight": -0.000115,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0115,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.4784,
+    "r2Return": -0.009389,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.002651,
+      "ma5": 0.001795,
+      "ma_ratio": -0.000115,
+      "ret": 0.001495
+    }
+  },
+  "DRREDDY": {
+    "dataQuality": "full",
+    "deathCrossDays": 162,
+    "dirAccuracy": 0.4784,
+    "goldenCrossDays": 185,
+    "maRatioWeight": -0.000567,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0403,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.5187,
+    "r2Return": -0.006109,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.005796,
+      "ma5": 0.004874,
+      "ma_ratio": -0.000567,
+      "ret": 0.000366
+    }
+  },
+  "FEDERALBNK": {
+    "dataQuality": "full",
+    "deathCrossDays": 132,
+    "dirAccuracy": 0.4755,
+    "goldenCrossDays": 215,
+    "maRatioWeight": 0.000714,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0461,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.5216,
+    "r2Return": -0.025308,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.003308,
+      "ma5": -0.003777,
+      "ma_ratio": 0.000714,
+      "ret": 0.000611
+    }
+  },
+  "GABRIEL": {
+    "dataQuality": "full",
+    "deathCrossDays": 136,
+    "dirAccuracy": 0.5303,
+    "goldenCrossDays": 211,
+    "maRatioWeight": 0.000751,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.049,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4813,
+    "r2Return": -0.005761,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.004281,
+      "ma5": -0.004626,
+      "ma_ratio": 0.000751,
+      "ret": 0.001884
+    }
+  },
+  "GARFIBRES": {
+    "dataQuality": "partial",
+    "deathCrossDays": 171,
+    "dirAccuracy": 0.5145,
+    "goldenCrossDays": 175,
+    "maRatioWeight": 0.001314,
+    "marketCapCategory": "Mid",
+    "mlEdge": 0.0896,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4249,
+    "r2Return": 0.013717,
+    "testDays": 346,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.020886,
+      "ma5": -0.021882,
+      "ma_ratio": 0.001314,
+      "ret": -0.000562
+    }
+  },
+  "GODREJCP": {
+    "dataQuality": "full",
+    "deathCrossDays": 180,
+    "dirAccuracy": 0.5245,
+    "goldenCrossDays": 167,
+    "maRatioWeight": -0.001416,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0461,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4784,
+    "r2Return": 0.000689,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.006488,
+      "ma5": 0.005902,
+      "ma_ratio": -0.001416,
+      "ret": 0.000237
+    }
+  },
+  "GRAVITA": {
+    "dataQuality": "full",
+    "deathCrossDays": 188,
+    "dirAccuracy": 0.4813,
+    "goldenCrossDays": 159,
+    "maRatioWeight": 0.001593,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0288,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4524,
+    "r2Return": -0.014199,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.0251,
+      "ma5": -0.025502,
+      "ma_ratio": 0.001593,
+      "ret": 0.000397
+    }
+  },
+  "GREENPANEL": {
+    "dataQuality": "partial",
+    "deathCrossDays": 195,
+    "dirAccuracy": 0.5122,
+    "goldenCrossDays": 133,
+    "maRatioWeight": 0.002213,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0701,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4421,
+    "r2Return": 0.008349,
+    "testDays": 328,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.018703,
+      "ma5": -0.020244,
+      "ma_ratio": 0.002213,
+      "ret": 0.004169
+    }
+  },
+  "GRINDWELL": {
+    "dataQuality": "partial",
+    "deathCrossDays": 138,
+    "dirAccuracy": 0.5029,
+    "goldenCrossDays": 208,
+    "maRatioWeight": -0.000656,
+    "marketCapCategory": "Mid",
+    "mlEdge": 0.0347,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4682,
+    "r2Return": -0.000405,
+    "testDays": 346,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.008218,
+      "ma5": 0.007264,
+      "ma_ratio": -0.000656,
+      "ret": 0.00116
+    }
+  },
+  "HAVELLS": {
+    "dataQuality": "full",
+    "deathCrossDays": 211,
+    "dirAccuracy": 0.4553,
+    "goldenCrossDays": 136,
+    "maRatioWeight": -0.001283,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0288,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.4841,
+    "r2Return": -0.01107,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.013055,
+      "ma5": 0.012539,
+      "ma_ratio": -0.001283,
+      "ret": -0.000177
+    }
+  },
+  "HCLTECH": {
+    "dataQuality": "full",
+    "deathCrossDays": 187,
+    "dirAccuracy": 0.4841,
+    "goldenCrossDays": 160,
+    "maRatioWeight": 0.001188,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0173,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4669,
+    "r2Return": -0.006292,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.008838,
+      "ma5": -0.009387,
+      "ma_ratio": 0.001188,
+      "ret": -0.000726
+    }
+  },
+  "HDFCBANK": {
+    "dataQuality": "full",
+    "deathCrossDays": 175,
+    "dirAccuracy": 0.5331,
+    "goldenCrossDays": 172,
+    "maRatioWeight": -0.000979,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0576,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4755,
+    "r2Return": -0.010349,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.003563,
+      "ma5": 0.002785,
+      "ma_ratio": -0.000979,
+      "ret": 0.000539
+    }
+  },
+  "HERITGFOOD": {
+    "dataQuality": "full",
+    "deathCrossDays": 213,
+    "dirAccuracy": 0.5101,
+    "goldenCrossDays": 134,
+    "maRatioWeight": -0.002253,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0634,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4467,
+    "r2Return": -0.019666,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.010311,
+      "ma5": 0.009851,
+      "ma_ratio": -0.002253,
+      "ret": 0.002916
+    }
+  },
+  "HIMATSEIDE": {
+    "dataQuality": "full",
+    "deathCrossDays": 219,
+    "dirAccuracy": 0.5274,
+    "goldenCrossDays": 128,
+    "maRatioWeight": 0.000409,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0893,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.438,
+    "r2Return": -0.013602,
+    "testDays": 347,
+    "topFeature": "ret",
+    "weights": {
+      "ma20": 0.00039,
+      "ma5": -0.002064,
+      "ma_ratio": 0.000409,
+      "ret": 0.002999
+    }
+  },
+  "IFBIND": {
+    "dataQuality": "full",
+    "deathCrossDays": 180,
+    "dirAccuracy": 0.4726,
+    "goldenCrossDays": 167,
+    "maRatioWeight": 0.0039,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0173,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4553,
+    "r2Return": -0.012653,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.020707,
+      "ma5": -0.022326,
+      "ma_ratio": 0.0039,
+      "ret": 0.00184
+    }
+  },
+  "IGL": {
+    "dataQuality": "full",
+    "deathCrossDays": 184,
+    "dirAccuracy": 0.4928,
+    "goldenCrossDays": 163,
+    "maRatioWeight": -0.010484,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0202,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4726,
+    "r2Return": -0.002455,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.034232,
+      "ma5": 0.032759,
+      "ma_ratio": -0.010484,
+      "ret": -0.000108
+    }
+  },
+  "INDHOTEL": {
+    "dataQuality": "full",
+    "deathCrossDays": 175,
+    "dirAccuracy": 0.5101,
+    "goldenCrossDays": 172,
+    "maRatioWeight": 0.001331,
+    "marketCapCategory": "Mid",
+    "mlEdge": 0.0,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.5101,
+    "r2Return": -0.011578,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": 0.017959,
+      "ma5": -0.017928,
+      "ma_ratio": 0.001331,
+      "ret": -0.001113
+    }
+  },
+  "INFY": {
+    "dataQuality": "full",
+    "deathCrossDays": 175,
+    "dirAccuracy": 0.5187,
+    "goldenCrossDays": 172,
+    "maRatioWeight": -0.000884,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0548,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.464,
+    "r2Return": -0.007988,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.007212,
+      "ma5": 0.006335,
+      "ma_ratio": -0.000884,
+      "ret": -0.000431
+    }
+  },
+  "ITC": {
+    "dataQuality": "full",
+    "deathCrossDays": 199,
+    "dirAccuracy": 0.487,
+    "goldenCrossDays": 148,
+    "maRatioWeight": -0.00063,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0288,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4582,
+    "r2Return": -0.017582,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.010356,
+      "ma5": 0.010295,
+      "ma_ratio": -0.00063,
+      "ret": -0.000646
+    }
+  },
+  "JAMNAAUTO": {
+    "dataQuality": "full",
+    "deathCrossDays": 143,
+    "dirAccuracy": 0.4957,
+    "goldenCrossDays": 204,
+    "maRatioWeight": 0.003771,
+    "marketCapCategory": "Small",
+    "mlEdge": -0.0202,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.5159,
+    "r2Return": -0.040965,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.051476,
+      "ma5": -0.052487,
+      "ma_ratio": 0.003771,
+      "ret": -0.000449
+    }
+  },
+  "JUBLFOOD": {
+    "dataQuality": "full",
+    "deathCrossDays": 226,
+    "dirAccuracy": 0.4726,
+    "goldenCrossDays": 121,
+    "maRatioWeight": 0.000739,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0375,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4352,
+    "r2Return": 0.000157,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.006959,
+      "ma5": -0.008197,
+      "ma_ratio": 0.000739,
+      "ret": -0.000876
+    }
+  },
+  "JYOTHYLAB": {
+    "dataQuality": "full",
+    "deathCrossDays": 228,
+    "dirAccuracy": 0.4207,
+    "goldenCrossDays": 119,
+    "maRatioWeight": 0.000292,
+    "marketCapCategory": "Mid",
+    "mlEdge": -0.0058,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.4265,
+    "r2Return": -0.020976,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.006146,
+      "ma5": -0.006396,
+      "ma_ratio": 0.000292,
+      "ret": 0.000762
+    }
+  },
+  "KAJARIACER": {
+    "dataQuality": "full",
+    "deathCrossDays": 192,
+    "dirAccuracy": 0.5245,
+    "goldenCrossDays": 155,
+    "maRatioWeight": 0.000871,
+    "marketCapCategory": "Mid",
+    "mlEdge": 0.0432,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4813,
+    "r2Return": 0.005371,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.005748,
+      "ma5": -0.006662,
+      "ma_ratio": 0.000871,
+      "ret": 0.001113
+    }
+  },
+  "KARURVYSYA": {
+    "dataQuality": "full",
+    "deathCrossDays": 133,
+    "dirAccuracy": 0.4755,
+    "goldenCrossDays": 214,
+    "maRatioWeight": 0.002681,
+    "marketCapCategory": "Small",
+    "mlEdge": -0.0288,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.5043,
+    "r2Return": -0.054113,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.037715,
+      "ma5": -0.037822,
+      "ma_ratio": 0.002681,
+      "ret": 0.000837
+    }
+  },
+  "KEI": {
+    "dataQuality": "full",
+    "deathCrossDays": 127,
+    "dirAccuracy": 0.513,
+    "goldenCrossDays": 220,
+    "maRatioWeight": 0.001273,
+    "marketCapCategory": "Mid",
+    "mlEdge": -0.0144,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.5274,
+    "r2Return": -0.017256,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.039254,
+      "ma5": -0.039643,
+      "ma_ratio": 0.001273,
+      "ret": 0.000328
+    }
+  },
+  "KIRLOSENG": {
+    "dataQuality": "partial",
+    "deathCrossDays": 126,
+    "dirAccuracy": 0.5087,
+    "goldenCrossDays": 220,
+    "maRatioWeight": 0.001209,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0145,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4942,
+    "r2Return": -0.008595,
+    "testDays": 346,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.006454,
+      "ma5": -0.006784,
+      "ma_ratio": 0.001209,
+      "ret": 7e-05
+    }
+  },
+  "KOTAKBANK": {
+    "dataQuality": "full",
+    "deathCrossDays": 152,
+    "dirAccuracy": 0.5187,
+    "goldenCrossDays": 195,
+    "maRatioWeight": -0.003868,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0259,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4928,
+    "r2Return": -0.017689,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.012579,
+      "ma5": 0.011454,
+      "ma_ratio": -0.003868,
+      "ret": -0.000738
+    }
+  },
+  "KPITTECH": {
+    "dataQuality": "full",
+    "deathCrossDays": 208,
+    "dirAccuracy": 0.4553,
+    "goldenCrossDays": 139,
+    "maRatioWeight": 0.001631,
+    "marketCapCategory": "Mid",
+    "mlEdge": 0.0086,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4467,
+    "r2Return": -0.029071,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.025316,
+      "ma5": -0.026201,
+      "ma_ratio": 0.001631,
+      "ret": 0.002947
+    }
+  },
+  "LAURUSLABS": {
+    "dataQuality": "full",
+    "deathCrossDays": 99,
+    "dirAccuracy": 0.4669,
+    "goldenCrossDays": 248,
+    "maRatioWeight": 0.001942,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0893,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.5562,
+    "r2Return": -0.130133,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.013206,
+      "ma5": -0.014638,
+      "ma_ratio": 0.001942,
+      "ret": 0.002342
+    }
+  },
+  "LTTS": {
+    "dataQuality": "full",
+    "deathCrossDays": 220,
+    "dirAccuracy": 0.487,
+    "goldenCrossDays": 127,
+    "maRatioWeight": 0.00037,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0288,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4582,
+    "r2Return": -0.008144,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.00432,
+      "ma5": 0.003494,
+      "ma_ratio": 0.00037,
+      "ret": -0.000103
+    }
+  },
+  "LUMAXIND": {
+    "dataQuality": "partial",
+    "deathCrossDays": 121,
+    "dirAccuracy": 0.5434,
+    "goldenCrossDays": 225,
+    "maRatioWeight": 0.001116,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0462,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4971,
+    "r2Return": -0.036471,
+    "testDays": 346,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.008606,
+      "ma5": -0.009609,
+      "ma_ratio": 0.001116,
+      "ret": 0.000964
+    }
+  },
+  "MANAPPURAM": {
+    "dataQuality": "full",
+    "deathCrossDays": 125,
+    "dirAccuracy": 0.5101,
+    "goldenCrossDays": 222,
+    "maRatioWeight": -0.002621,
+    "marketCapCategory": "Mid",
+    "mlEdge": 0.0202,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4899,
+    "r2Return": -0.127896,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.010932,
+      "ma5": 0.009465,
+      "ma_ratio": -0.002621,
+      "ret": 0.000237
+    }
+  },
+  "MARICO": {
+    "dataQuality": "full",
+    "deathCrossDays": 149,
+    "dirAccuracy": 0.5331,
+    "goldenCrossDays": 198,
+    "maRatioWeight": 0.000992,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0317,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.5014,
+    "r2Return": -0.017323,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.015344,
+      "ma5": -0.015707,
+      "ma_ratio": 0.000992,
+      "ret": -0.000722
+    }
+  },
+  "MINDACORP": {
+    "dataQuality": "partial",
+    "deathCrossDays": 161,
+    "dirAccuracy": 0.5,
+    "goldenCrossDays": 185,
+    "maRatioWeight": 0.000328,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0202,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4798,
+    "r2Return": -0.0037,
+    "testDays": 346,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.018011,
+      "ma5": -0.018209,
+      "ma_ratio": 0.000328,
+      "ret": 0.000432
+    }
+  },
+  "MPHASIS": {
+    "dataQuality": "full",
+    "deathCrossDays": 179,
+    "dirAccuracy": 0.4669,
+    "goldenCrossDays": 168,
+    "maRatioWeight": 0.002617,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0086,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.4755,
+    "r2Return": -0.010343,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.020161,
+      "ma5": -0.021025,
+      "ma_ratio": 0.002617,
+      "ret": -0.000981
+    }
+  },
+  "MUTHOOTFIN": {
+    "dataQuality": "full",
+    "deathCrossDays": 138,
+    "dirAccuracy": 0.5504,
+    "goldenCrossDays": 209,
+    "maRatioWeight": 2.4e-05,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0346,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.5159,
+    "r2Return": -0.014366,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.006511,
+      "ma5": -0.007263,
+      "ma_ratio": 2.4e-05,
+      "ret": -0.000341
+    }
+  },
+  "NAVINFLUOR": {
+    "dataQuality": "partial",
+    "deathCrossDays": 119,
+    "dirAccuracy": 0.4855,
+    "goldenCrossDays": 227,
+    "maRatioWeight": -0.002831,
+    "marketCapCategory": "Mid",
+    "mlEdge": -0.0405,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.526,
+    "r2Return": -0.05864,
+    "testDays": 346,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.013088,
+      "ma5": 0.010576,
+      "ma_ratio": -0.002831,
+      "ret": 0.000426
+    }
+  },
+  "NESTLEIND": {
+    "dataQuality": "full",
+    "deathCrossDays": 150,
+    "dirAccuracy": 0.513,
+    "goldenCrossDays": 197,
+    "maRatioWeight": -0.001869,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0086,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.5043,
+    "r2Return": -0.017449,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.014001,
+      "ma5": 0.013027,
+      "ma_ratio": -0.001869,
+      "ret": -0.00098
+    }
+  },
+  "NEWGEN": {
+    "dataQuality": "full",
+    "deathCrossDays": 220,
+    "dirAccuracy": 0.4409,
+    "goldenCrossDays": 127,
+    "maRatioWeight": 0.001712,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.049,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.3919,
+    "r2Return": -0.012972,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.005685,
+      "ma5": -0.006071,
+      "ma_ratio": 0.001712,
+      "ret": 0.001167
+    }
+  },
+  "NILKAMAL": {
+    "dataQuality": "partial",
+    "deathCrossDays": 217,
+    "dirAccuracy": 0.4133,
+    "goldenCrossDays": 129,
+    "maRatioWeight": 0.001043,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0029,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4104,
+    "r2Return": -0.014193,
+    "testDays": 346,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.010431,
+      "ma5": -0.011443,
+      "ma_ratio": 0.001043,
+      "ret": 0.000422
+    }
+  },
+  "NOCIL": {
+    "dataQuality": "full",
+    "deathCrossDays": 202,
+    "dirAccuracy": 0.4669,
+    "goldenCrossDays": 145,
+    "maRatioWeight": 0.001641,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0259,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4409,
+    "r2Return": -0.004851,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.02104,
+      "ma5": -0.02231,
+      "ma_ratio": 0.001641,
+      "ret": -0.000893
+    }
+  },
+  "PAGEIND": {
+    "dataQuality": "partial",
+    "deathCrossDays": 213,
+    "dirAccuracy": 0.5,
+    "goldenCrossDays": 133,
+    "maRatioWeight": 0.001192,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0318,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4682,
+    "r2Return": 0.000222,
+    "testDays": 346,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.016607,
+      "ma5": -0.01732,
+      "ma_ratio": 0.001192,
+      "ret": 0.000123
+    }
+  },
+  "PAYTM": {
+    "dataQuality": "partial",
+    "deathCrossDays": 118,
+    "dirAccuracy": 0.5422,
+    "goldenCrossDays": 107,
+    "maRatioWeight": -0.004841,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0889,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4533,
+    "r2Return": -0.083542,
+    "testDays": 225,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.019997,
+      "ma5": 0.016647,
+      "ma_ratio": -0.004841,
+      "ret": 0.003473
+    }
+  },
+  "PERSISTENT": {
+    "dataQuality": "full",
+    "deathCrossDays": 180,
+    "dirAccuracy": 0.4697,
+    "goldenCrossDays": 167,
+    "maRatioWeight": 0.0009,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0029,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4669,
+    "r2Return": -0.002862,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.008545,
+      "ma5": -0.00909,
+      "ma_ratio": 0.0009,
+      "ret": 0.001072
+    }
+  },
+  "POLYCAB": {
+    "dataQuality": "full",
+    "deathCrossDays": 108,
+    "dirAccuracy": 0.5447,
+    "goldenCrossDays": 239,
+    "maRatioWeight": -0.000759,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0058,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.5504,
+    "r2Return": -0.002855,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.006301,
+      "ma5": 0.005441,
+      "ma_ratio": -0.000759,
+      "ret": 0.00105
+    }
+  },
+  "RAJESHEXPO": {
+    "dataQuality": "full",
+    "deathCrossDays": 194,
+    "dirAccuracy": 0.5187,
+    "goldenCrossDays": 153,
+    "maRatioWeight": -0.003518,
+    "marketCapCategory": "Mid",
+    "mlEdge": 0.0548,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.464,
+    "r2Return": -0.028759,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": -0.0173,
+      "ma5": 0.018202,
+      "ma_ratio": -0.003518,
+      "ret": -0.000381
+    }
+  },
+  "RAYMOND": {
+    "dataQuality": "full",
+    "deathCrossDays": 214,
+    "dirAccuracy": 0.464,
+    "goldenCrossDays": 133,
+    "maRatioWeight": 0.002145,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0259,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.438,
+    "r2Return": -0.002702,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.015269,
+      "ma5": -0.01599,
+      "ma_ratio": 0.002145,
+      "ret": 0.001132
+    }
+  },
+  "RELAXO": {
+    "dataQuality": "partial",
+    "deathCrossDays": 222,
+    "dirAccuracy": 0.4249,
+    "goldenCrossDays": 124,
+    "maRatioWeight": -0.000442,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4249,
+    "r2Return": -0.012241,
+    "testDays": 346,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.00142,
+      "ma5": 0.000553,
+      "ma_ratio": -0.000442,
+      "ret": 0.000557
+    }
+  },
+  "RELIANCE": {
+    "dataQuality": "full",
+    "deathCrossDays": 168,
+    "dirAccuracy": 0.5101,
+    "goldenCrossDays": 179,
+    "maRatioWeight": 0.002458,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0259,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4841,
+    "r2Return": -0.007951,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.01777,
+      "ma5": -0.018805,
+      "ma_ratio": 0.002458,
+      "ret": -0.001233
+    }
+  },
+  "REPCOHOME": {
+    "dataQuality": "full",
+    "deathCrossDays": 181,
+    "dirAccuracy": 0.5245,
+    "goldenCrossDays": 166,
+    "maRatioWeight": 0.002024,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0634,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4611,
+    "r2Return": -0.015917,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.003599,
+      "ma5": -0.004964,
+      "ma_ratio": 0.002024,
+      "ret": 0.003108
+    }
+  },
+  "RPOWER": {
+    "dataQuality": "full",
+    "deathCrossDays": 225,
+    "dirAccuracy": 0.5389,
+    "goldenCrossDays": 122,
+    "maRatioWeight": 0.002849,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0951,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4438,
+    "r2Return": -0.072346,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.019382,
+      "ma5": -0.020505,
+      "ma_ratio": 0.002849,
+      "ret": 0.007941
+    }
+  },
+  "SANDESH": {
+    "dataQuality": "partial",
+    "deathCrossDays": 226,
+    "dirAccuracy": 0.5029,
+    "goldenCrossDays": 120,
+    "maRatioWeight": 0.000215,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0231,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4798,
+    "r2Return": -0.013831,
+    "testDays": 346,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.010314,
+      "ma5": -0.010738,
+      "ma_ratio": 0.000215,
+      "ret": -0.001586
+    }
+  },
+  "SRF": {
+    "dataQuality": "full",
+    "deathCrossDays": 159,
+    "dirAccuracy": 0.5159,
+    "goldenCrossDays": 188,
+    "maRatioWeight": 0.000465,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0548,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4611,
+    "r2Return": 0.017134,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.008848,
+      "ma5": -0.009911,
+      "ma_ratio": 0.000465,
+      "ret": -0.001324
+    }
+  },
+  "SUNDARMFIN": {
+    "dataQuality": "full",
+    "deathCrossDays": 177,
+    "dirAccuracy": 0.5418,
+    "goldenCrossDays": 170,
+    "maRatioWeight": 0.001077,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0346,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.5072,
+    "r2Return": 0.008284,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.011005,
+      "ma5": -0.011353,
+      "ma_ratio": 0.001077,
+      "ret": 0.000379
+    }
+  },
+  "SUPRAJIT": {
+    "dataQuality": "partial",
+    "deathCrossDays": 156,
+    "dirAccuracy": 0.5289,
+    "goldenCrossDays": 190,
+    "maRatioWeight": 0.002169,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0665,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4624,
+    "r2Return": 0.014298,
+    "testDays": 346,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.017525,
+      "ma5": -0.018505,
+      "ma_ratio": 0.002169,
+      "ret": -0.000435
+    }
+  },
+  "SUPREMEIND": {
+    "dataQuality": "full",
+    "deathCrossDays": 196,
+    "dirAccuracy": 0.4582,
+    "goldenCrossDays": 151,
+    "maRatioWeight": 6.6e-05,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0086,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4496,
+    "r2Return": 0.001028,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.003052,
+      "ma5": 0.002337,
+      "ma_ratio": 6.6e-05,
+      "ret": -0.000135
+    }
+  },
+  "TANLA": {
+    "dataQuality": "full",
+    "deathCrossDays": 198,
+    "dirAccuracy": 0.4899,
+    "goldenCrossDays": 149,
+    "maRatioWeight": 0.004125,
+    "marketCapCategory": "Mid",
+    "mlEdge": 0.0375,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4524,
+    "r2Return": -0.055466,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.02189,
+      "ma5": -0.023636,
+      "ma_ratio": 0.004125,
+      "ret": 0.006908
+    }
+  },
+  "TATACONSUM": {
+    "dataQuality": "full",
+    "deathCrossDays": 173,
+    "dirAccuracy": 0.4928,
+    "goldenCrossDays": 174,
+    "maRatioWeight": -0.000433,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0058,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.487,
+    "r2Return": 0.004112,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.01042,
+      "ma5": 0.009312,
+      "ma_ratio": -0.000433,
+      "ret": -0.000915
+    }
+  },
+  "TATAELXSI": {
+    "dataQuality": "full",
+    "deathCrossDays": 224,
+    "dirAccuracy": 0.4755,
+    "goldenCrossDays": 123,
+    "maRatioWeight": 0.001537,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0288,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4467,
+    "r2Return": -0.012015,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.009183,
+      "ma5": -0.010642,
+      "ma_ratio": 0.001537,
+      "ret": 0.001084
+    }
+  },
+  "TATAMOTORS": {
+    "dataQuality": "full",
+    "deathCrossDays": 195,
+    "dirAccuracy": 0.4611,
+    "goldenCrossDays": 152,
+    "maRatioWeight": 0.004191,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0058,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.4669,
+    "r2Return": -0.005871,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.028344,
+      "ma5": -0.029235,
+      "ma_ratio": 0.004191,
+      "ret": -4.8e-05
+    }
+  },
+  "TECHM": {
+    "dataQuality": "full",
+    "deathCrossDays": 165,
+    "dirAccuracy": 0.5187,
+    "goldenCrossDays": 182,
+    "maRatioWeight": 0.001327,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0231,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4957,
+    "r2Return": -0.000973,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.007853,
+      "ma5": -0.008494,
+      "ma_ratio": 0.001327,
+      "ret": -0.00082
+    }
+  },
+  "THERMAX": {
+    "dataQuality": "partial",
+    "deathCrossDays": 144,
+    "dirAccuracy": 0.5,
+    "goldenCrossDays": 202,
+    "maRatioWeight": 0.000453,
+    "marketCapCategory": "Mid",
+    "mlEdge": 0.0087,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4913,
+    "r2Return": 0.000102,
+    "testDays": 346,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.007805,
+      "ma5": -0.008249,
+      "ma_ratio": 0.000453,
+      "ret": -0.000274
+    }
+  },
+  "TORNTPHARM": {
+    "dataQuality": "full",
+    "deathCrossDays": 123,
+    "dirAccuracy": 0.4957,
+    "goldenCrossDays": 224,
+    "maRatioWeight": -0.002858,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0231,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.5187,
+    "r2Return": -0.022851,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.029544,
+      "ma5": 0.029307,
+      "ma_ratio": -0.002858,
+      "ret": -0.000176
+    }
+  },
+  "VBL": {
+    "dataQuality": "full",
+    "deathCrossDays": 173,
+    "dirAccuracy": 0.4726,
+    "goldenCrossDays": 174,
+    "maRatioWeight": -0.000686,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0259,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4467,
+    "r2Return": -0.029742,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.00966,
+      "ma5": -0.010156,
+      "ma_ratio": -0.000686,
+      "ret": -0.001314
+    }
+  },
+  "VOLTAS": {
+    "dataQuality": "full",
+    "deathCrossDays": 164,
+    "dirAccuracy": 0.4928,
+    "goldenCrossDays": 183,
+    "maRatioWeight": -0.000263,
+    "marketCapCategory": "Large",
+    "mlEdge": -0.0058,
+    "mlSignal": "negative",
+    "naiveBaseline": 0.4986,
+    "r2Return": -0.002663,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.005348,
+      "ma5": 0.004638,
+      "ma_ratio": -0.000263,
+      "ret": -0.000353
+    }
+  },
+  "WIPRO": {
+    "dataQuality": "full",
+    "deathCrossDays": 201,
+    "dirAccuracy": 0.5159,
+    "goldenCrossDays": 146,
+    "maRatioWeight": 0.000213,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0259,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4899,
+    "r2Return": -0.008498,
+    "testDays": 347,
+    "topFeature": "ma20",
+    "weights": {
+      "ma20": -0.002004,
+      "ma5": 0.001434,
+      "ma_ratio": 0.000213,
+      "ret": 0.000177
+    }
+  },
+  "ZEEL": {
+    "dataQuality": "full",
+    "deathCrossDays": 193,
+    "dirAccuracy": 0.5101,
+    "goldenCrossDays": 154,
+    "maRatioWeight": 0.003497,
+    "marketCapCategory": "Large",
+    "mlEdge": 0.0259,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4841,
+    "r2Return": -0.016678,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.008643,
+      "ma5": -0.011231,
+      "ma_ratio": 0.003497,
+      "ret": -0.002971
+    }
+  },
+  "ZENSARTECH": {
+    "dataQuality": "full",
+    "deathCrossDays": 229,
+    "dirAccuracy": 0.4813,
+    "goldenCrossDays": 118,
+    "maRatioWeight": 0.002912,
+    "marketCapCategory": "Mid",
+    "mlEdge": 0.0317,
+    "mlSignal": "neutral",
+    "naiveBaseline": 0.4496,
+    "r2Return": -0.041215,
+    "testDays": 347,
+    "topFeature": "ma5",
+    "weights": {
+      "ma20": 0.024833,
+      "ma5": -0.024942,
+      "ma_ratio": 0.002912,
+      "ret": 0.001084
+    }
+  },
+  "ZENTEC": {
+    "dataQuality": "full",
+    "deathCrossDays": 178,
+    "dirAccuracy": 0.5216,
+    "goldenCrossDays": 169,
+    "maRatioWeight": 0.001054,
+    "marketCapCategory": "Small",
+    "mlEdge": 0.0231,
+    "mlSignal": "positive",
+    "naiveBaseline": 0.4986,
+    "r2Return": 0.04203,
+    "testDays": 347,
+    "topFeature": "ret",
+    "weights": {
+      "ma20": 0.004151,
+      "ma5": -0.004456,
+      "ma_ratio": 0.001054,
+      "ret": 0.005721
+    }
+  }
+}

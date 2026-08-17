@@ -1,0 +1,205 @@
+========================================================================================================
+MOMENTUM SIGNAL STUDY - FULL ANALYSIS
+========================================================================================================
+Universe 100 | modelled 98 | skipped 2
+Features ['ma5', 'ma20', 'ret', 'ma_ratio'] | LinearRegression on tomorrow's return
+Split: first 80% train / last 20% test, chronological, never shuffled
+
+========================================================================================================
+1. RANKED BY DIRECTIONAL EDGE (descending)
+========================================================================================================
+Ticker      | Cap   |  Dir acc |   Naive |    Edge |         R2 | Top feature| Days
+-----------------------------------------------------------------------------------
+RPOWER      | Small |   53.9% |  44.4% |  +9.5% |    -0.0723 | ma5        | 347
+GARFIBRES   | Mid   |   51.4% |  42.5% |  +9.0% |    +0.0137 | ma5        | 346
+HIMATSEIDE  | Small |   52.7% |  43.8% |  +8.9% |    -0.0136 | ret        | 347
+PAYTM       | Large |   54.2% |  45.3% |  +8.9% |    -0.0835 | ma20       | 225
+CHOLAFIN    | Large |   53.3% |  46.1% |  +7.2% |    -0.0053 | ma5        | 347
+GREENPANEL  | Small |   51.2% |  44.2% |  +7.0% |    +0.0083 | ma5        | 328
+SUPRAJIT    | Small |   52.9% |  46.2% |  +6.7% |    +0.0143 | ma5        | 346
+BALKRISIND  | Large |   50.3% |  43.9% |  +6.4% |    -0.0024 | ma20       | 346
+AAVAS       | Large |   50.7% |  44.4% |  +6.3% |    -0.0173 | ma20       | 347
+HERITGFOOD  | Small |   51.0% |  44.7% |  +6.3% |    -0.0197 | ma20       | 347
+REPCOHOME   | Small |   52.4% |  46.1% |  +6.3% |    -0.0159 | ma5        | 347
+HDFCBANK    | Large |   53.3% |  47.5% |  +5.8% |    -0.0103 | ma20       | 347
+INFY        | Large |   51.9% |  46.4% |  +5.5% |    -0.0080 | ma20       | 347
+RAJESHEXPO  | Mid   |   51.9% |  46.4% |  +5.5% |    -0.0288 | ma5        | 347
+SRF         | Large |   51.6% |  46.1% |  +5.5% |    +0.0171 | ma5        | 347
+GABRIEL     | Small |   53.0% |  48.1% |  +4.9% |    -0.0058 | ma5        | 347
+NEWGEN      | Small |   44.1% |  39.2% |  +4.9% |    -0.0130 | ma5        | 347
+LUMAXIND    | Small |   54.3% |  49.7% |  +4.6% |    -0.0365 | ma5        | 346
+CCL         | Small |   52.4% |  47.8% |  +4.6% |    -0.0097 | ma20       | 347
+GODREJCP    | Large |   52.4% |  47.8% |  +4.6% |    +0.0007 | ma20       | 347
+BPCL        | Large |   51.6% |  47.3% |  +4.3% |    -0.0066 | ma5        | 347
+KAJARIACER  | Mid   |   52.4% |  48.1% |  +4.3% |    +0.0054 | ma5        | 347
+JUBLFOOD    | Large |   47.3% |  43.5% |  +3.8% |    +0.0002 | ma5        | 347
+TANLA       | Mid   |   49.0% |  45.2% |  +3.8% |    -0.0555 | ma5        | 347
+APCOTEXIND  | Small |   52.6% |  49.1% |  +3.5% |    +0.0002 | ma5        | 346
+GRINDWELL   | Mid   |   50.3% |  46.8% |  +3.5% |    -0.0004 | ma20       | 346
+AMBUJACEM   | Large |   52.7% |  49.3% |  +3.5% |    +0.0057 | ma5        | 347
+BAJAJFINSV  | Large |   51.0% |  47.5% |  +3.5% |    -0.0085 | ma5        | 347
+MUTHOOTFIN  | Large |   55.0% |  51.6% |  +3.5% |    -0.0144 | ma5        | 347
+SUNDARMFIN  | Large |   54.2% |  50.7% |  +3.5% |    +0.0083 | ma5        | 347
+PAGEIND     | Large |   50.0% |  46.8% |  +3.2% |    +0.0002 | ma5        | 346
+DEEPAKFERT  | Small |   50.4% |  47.3% |  +3.2% |    -0.0019 | ma5        | 347
+MARICO      | Large |   53.3% |  50.1% |  +3.2% |    -0.0173 | ma5        | 347
+ZENSARTECH  | Mid   |   48.1% |  45.0% |  +3.2% |    -0.0412 | ma5        | 347
+GRAVITA     | Small |   48.1% |  45.2% |  +2.9% |    -0.0142 | ma5        | 347
+ITC         | Large |   48.7% |  45.8% |  +2.9% |    -0.0176 | ma20       | 347
+LTTS        | Large |   48.7% |  45.8% |  +2.9% |    -0.0081 | ma20       | 347
+TATAELXSI   | Large |   47.5% |  44.7% |  +2.9% |    -0.0120 | ma5        | 347
+KOTAKBANK   | Large |   51.9% |  49.3% |  +2.6% |    -0.0177 | ma20       | 347
+NOCIL       | Small |   46.7% |  44.1% |  +2.6% |    -0.0049 | ma5        | 347
+RAYMOND     | Small |   46.4% |  43.8% |  +2.6% |    -0.0027 | ma5        | 347
+RELIANCE    | Large |   51.0% |  48.4% |  +2.6% |    -0.0080 | ma5        | 347
+VBL         | Large |   47.3% |  44.7% |  +2.6% |    -0.0297 | ma5        | 347
+WIPRO       | Large |   51.6% |  49.0% |  +2.6% |    -0.0085 | ma20       | 347
+ZEEL        | Large |   51.0% |  48.4% |  +2.6% |    -0.0167 | ma5        | 347
+BIOCON      | Large |   55.3% |  53.0% |  +2.3% |    -0.0019 | ma5        | 347
+CIPLA       | Large |   53.6% |  51.3% |  +2.3% |    +0.0000 | ma5        | 347
+COLPAL      | Large |   50.4% |  48.1% |  +2.3% |    -0.0080 | ma20       | 347
+DCBBANK     | Small |   52.4% |  50.1% |  +2.3% |    -0.0356 | ma5        | 347
+SANDESH     | Small |   50.3% |  48.0% |  +2.3% |    -0.0138 | ma5        | 346
+TECHM       | Large |   51.9% |  49.6% |  +2.3% |    -0.0010 | ma5        | 347
+ZENTEC      | Small |   52.2% |  49.9% |  +2.3% |    +0.0420 | ret        | 347
+IGL         | Large |   49.3% |  47.3% |  +2.0% |    -0.0025 | ma20       | 347
+MANAPPURAM  | Mid   |   51.0% |  49.0% |  +2.0% |    -0.1279 | ma20       | 347
+MINDACORP   | Small |   50.0% |  48.0% |  +2.0% |    -0.0037 | ma5        | 346
+HCLTECH     | Large |   48.4% |  46.7% |  +1.7% |    -0.0063 | ma5        | 347
+IFBIND      | Small |   47.3% |  45.5% |  +1.7% |    -0.0127 | ma5        | 347
+AJANTPHARM  | Mid   |   49.4% |  48.0% |  +1.5% |    -0.0054 | ma20       | 346
+KIRLOSENG   | Small |   50.9% |  49.4% |  +1.5% |    -0.0086 | ma5        | 346
+THERMAX     | Mid   |   50.0% |  49.1% |  +0.9% |    +0.0001 | ma5        | 346
+KPITTECH    | Mid   |   45.5% |  44.7% |  +0.9% |    -0.0291 | ma5        | 347
+NESTLEIND   | Large |   51.3% |  50.4% |  +0.9% |    -0.0174 | ma20       | 347
+SUPREMEIND  | Large |   45.8% |  45.0% |  +0.9% |    +0.0010 | ma20       | 347
+AMBER       | Mid   |   51.9% |  51.3% |  +0.6% |    -0.0015 | ma5        | 347
+TATACONSUM  | Large |   49.3% |  48.7% |  +0.6% |    +0.0041 | ma20       | 347
+BOSCHLTD    | Large |   50.9% |  50.6% |  +0.3% |    -0.0225 | ma20       | 346
+NILKAMAL    | Small |   41.3% |  41.0% |  +0.3% |    -0.0142 | ma5        | 346
+PERSISTENT  | Large |   47.0% |  46.7% |  +0.3% |    -0.0029 | ma5        | 347
+ADANIGREEN  | Large |   49.6% |  49.6% |  +0.0% |    -0.0544 | ma20       | 347
+ASTRAL      | Large |   48.4% |  48.4% |  +0.0% |    +0.0005 | ma20       | 347
+CYIENT      | Mid   |   43.2% |  43.2% |  +0.0% |    -0.0085 | ma5        | 347
+INDHOTEL    | Mid   |   51.0% |  51.0% |  +0.0% |    -0.0116 | ma20       | 347
+RELAXO      | Large |   42.5% |  42.5% |  +0.0% |    -0.0122 | ma20       | 346
+CERA        | Mid   |   43.4% |  43.6% |  -0.3% |    -0.0117 | ma20       | 346
+JYOTHYLAB   | Mid   |   42.1% |  42.6% |  -0.6% |    -0.0210 | ma5        | 347
+POLYCAB     | Large |   54.5% |  55.0% |  -0.6% |    -0.0029 | ma20       | 347
+TATAMOTORS  | Large |   46.1% |  46.7% |  -0.6% |    -0.0059 | ma5        | 347
+VOLTAS      | Large |   49.3% |  49.9% |  -0.6% |    -0.0027 | ma20       | 347
+ARVIND      | Small |   45.2% |  46.1% |  -0.9% |    -0.0014 | ma5        | 347
+MPHASIS     | Large |   46.7% |  47.5% |  -0.9% |    -0.0103 | ma5        | 347
+DIXON       | Large |   46.7% |  47.8% |  -1.1% |    -0.0094 | ma20       | 347
+KEI         | Mid   |   51.3% |  52.7% |  -1.4% |    -0.0173 | ma5        | 347
+DIVISLAB    | Large |   49.4% |  50.9% |  -1.5% |    -0.0074 | ma5        | 346
+AARTIIND    | Large |   43.8% |  45.8% |  -2.0% |    -0.0005 | ma20       | 347
+BAJFINANCE  | Large |   48.7% |  50.7% |  -2.0% |    -0.0198 | ma5        | 347
+BRITANNIA   | Large |   49.0% |  51.0% |  -2.0% |    -0.0094 | ma20       | 347
+JAMNAAUTO   | Small |   49.6% |  51.6% |  -2.0% |    -0.0410 | ma5        | 347
+TORNTPHARM  | Large |   49.6% |  51.9% |  -2.3% |    -0.0229 | ma20       | 347
+AXISBANK    | Large |   46.7% |  49.3% |  -2.6% |    -0.0511 | ma20       | 347
+COFORGE     | Large |   48.1% |  50.7% |  -2.6% |    -0.0078 | ma5        | 347
+HAVELLS     | Large |   45.5% |  48.4% |  -2.9% |    -0.0111 | ma20       | 347
+KARURVYSYA  | Small |   47.5% |  50.4% |  -2.9% |    -0.0541 | ma5        | 347
+DRREDDY     | Large |   47.8% |  51.9% |  -4.0% |    -0.0061 | ma20       | 347
+NAVINFLUOR  | Mid   |   48.5% |  52.6% |  -4.0% |    -0.0586 | ma20       | 346
+FEDERALBNK  | Large |   47.5% |  52.2% |  -4.6% |    -0.0253 | ma5        | 347
+ALKEM       | Large |   47.1% |  51.7% |  -4.6% |    -0.0116 | ma20       | 346
+BAJAJCON    | Small |   46.4% |  51.3% |  -4.9% |    -0.0684 | ma20       | 347
+LAURUSLABS  | Large |   46.7% |  55.6% |  -8.9% |    -0.1301 | ma5        | 347
+
+========================================================================================================
+2. FINDINGS
+========================================================================================================
+Processed successfully      : 98
+Skipped                     : 2
+
+Signal positive             : 37 (38%)
+Signal negative             : 25 (26%)
+Signal neutral              : 36 (37%)
+
+Average directional edge    : +1.85%
+Average directional accuracy: 49.6%
+Average naive baseline      : 47.8%
+Average R2 (return)         : -0.0155
+Stocks with R2 above zero   : 17 of 98
+Stocks beating own baseline : 68 of 98
+
+segment         n   avg edge   avg dir acc   avg |ma_ratio wt|
+Large          55     +1.31%         49.8%             0.00162
+Mid            17     +1.68%         48.9%             0.00165
+Small          26     +3.09%         49.8%             0.00160
+
+Largest-weight feature counts: ma5 58, ma20 38, ret 2, ma_ratio 0
+ma_ratio was the largest weight for 0 of 98 stocks
+ma_ratio sign split              : 61 positive / 37 negative
+ma_ratio average absolute weight : 0.00162
+
+Caveat on ma_ratio weights: ma_ratio is ma5/ma20, a deterministic
+function of two features already in the model. Near-redundant
+predictors let a linear fit trade large offsetting weights between them
+without changing its predictions, so the individual coefficients are
+unstable and a large one is not evidence the cross signal matters.
+Directional accuracy against the naive baseline is the column to trust.
+
+========================================================================================================
+3. EFFICIENT MARKET HYPOTHESIS - CONCLUSION
+========================================================================================================
+
+Across 98 NSE stocks, a linear model given 7 years of
+daily prices and four of the most widely known technical inputs - two
+moving averages, their ratio, and the day's own return - predicted the
+direction of tomorrow's move 49.6% of the time, against a naive
+always-up baseline of 47.8%. The average edge was +1.85%, and
+68 of 98 stocks (69%) finished above their own baseline.
+
+Read the accuracy figure on its own first: 49.6% is below a coin
+flip. The positive average edge is not skill, it is a weak benchmark.
+Over the test window (2025-02-01 to 2026-06-26) the always-up rule only
+scored 47.8%, because the window was close to flat: the median
+stock moved -0% and 49 of 98 rose at all.
+Beating a poor benchmark from below a coin flip is not a result worth
+acting on.
+
+Average R2 on returns was -0.0155. Note the sign: on average the
+model predicted tomorrow's return slightly WORSE than simply guessing the
+mean return every day.
+
+Test periods average 345 days, so the standard error on a
+single stock's directional accuracy is roughly 2.7%. Two standard
+errors is about 5%, so any one stock's edge inside that band is
+indistinguishable from luck - and with 98 stocks ranked, a
+handful will clear it by chance alone. The top of the ranked table should
+be read as sampling variation, not discovered signal, until it survives
+an untouched second period.
+
+This is the weak form of the efficient market hypothesis behaving exactly
+as advertised: information already contained in the public price history
+is already reflected in the price. Moving averages and lagged returns are
+the most heavily studied indicators in existence; any edge they carried
+would have been arbitraged away long before it reached a 7-year
+sample of large, mid and small-cap NSE names.
+
+The golden cross specifically - tested here as ma_ratio - was the largest
+weight for 0 of 98 stocks, and its average absolute
+weight was 0.00162, close enough to zero that the model is
+effectively ignoring it. Its sign split 61 positive to 37
+negative, so 62% of fits read golden-cross
+territory as nudging tomorrow higher and the rest read it the other
+way. A signal carrying real directional information would point the same
+way for nearly every stock and would earn a weight large enough to act
+on. This one does neither.
+
+Honest caveats. This tests linear relationships only, at a one-day
+horizon, on price-derived features alone; none of that rules out
+non-linear structure, longer horizons, or signals in volume,
+fundamentals, order flow or news. Dividends are excluded and transaction
+costs are ignored, both of which flatter the momentum side. Two
+uncorrected demergers (Raymond, Tata Motors) sit inside the test period.
+And 7 years is short for a question the literature answers over
+decades.
+
+The finding is not that markets are unbeatable. It is the narrower and
+better-supported claim that these particular features, at this horizon,
+carry no exploitable information for this universe.

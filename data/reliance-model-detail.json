@@ -1,0 +1,8059 @@
+{
+  "trainDateRange": {
+    "start": "2019-07-01",
+    "end": "2025-01-31"
+  },
+  "testDateRange": {
+    "start": "2025-02-01",
+    "end": "2026-06-26"
+  },
+  "featureWeights": {
+    "ma5": -0.018805,
+    "ma20": 0.01777,
+    "ret": -0.001233,
+    "ma_ratio": 0.002458,
+    "bias": 0.000752
+  },
+  "testPeriodData": [
+    {
+      "date": "2025-02-01",
+      "actualReturn": -0.014787,
+      "predictedReturn": 9e-05
+    },
+    {
+      "date": "2025-02-03",
+      "actualReturn": 0.031543,
+      "predictedReturn": 0.001009
+    },
+    {
+      "date": "2025-02-04",
+      "actualReturn": -0.005447,
+      "predictedReturn": -0.002224
+    },
+    {
+      "date": "2025-02-05",
+      "actualReturn": 0.002621,
+      "predictedReturn": 0.000161
+    },
+    {
+      "date": "2025-02-06",
+      "actualReturn": -0.011588,
+      "predictedReturn": -0.000406
+    },
+    {
+      "date": "2025-02-07",
+      "actualReturn": -0.010302,
+      "predictedReturn": 0.000547
+    },
+    {
+      "date": "2025-02-10",
+      "actualReturn": -0.014996,
+      "predictedReturn": 0.000445
+    },
+    {
+      "date": "2025-02-11",
+      "actualReturn": -0.01482,
+      "predictedReturn": 0.000919
+    },
+    {
+      "date": "2025-02-12",
+      "actualReturn": -0.00037,
+      "predictedReturn": 0.001087
+    },
+    {
+      "date": "2025-02-13",
+      "actualReturn": 0.000946,
+      "predictedReturn": 0.000292
+    },
+    {
+      "date": "2025-02-14",
+      "actualReturn": 0.006285,
+      "predictedReturn": 0.000312
+    },
+    {
+      "date": "2025-02-17",
+      "actualReturn": 0.000408,
+      "predictedReturn": 2e-05
+    },
+    {
+      "date": "2025-02-18",
+      "actualReturn": 0.001673,
+      "predictedReturn": 0.000406
+    },
+    {
+      "date": "2025-02-19",
+      "actualReturn": 0.004522,
+      "predictedReturn": 0.000262
+    },
+    {
+      "date": "2025-02-20",
+      "actualReturn": -0.003933,
+      "predictedReturn": 8e-06
+    },
+    {
+      "date": "2025-02-21",
+      "actualReturn": -0.011074,
+      "predictedReturn": 0.000532
+    },
+    {
+      "date": "2025-02-24",
+      "actualReturn": -0.008686,
+      "predictedReturn": 0.001028
+    },
+    {
+      "date": "2025-02-25",
+      "actualReturn": 0.002575,
+      "predictedReturn": 0.000919
+    },
+    {
+      "date": "2025-02-27",
+      "actualReturn": -0.005799,
+      "predictedReturn": 0.000207
+    },
+    {
+      "date": "2025-02-28",
+      "actualReturn": -0.02404,
+      "predictedReturn": 0.000827
+    },
+    {
+      "date": "2025-03-03",
+      "actualReturn": -0.007983,
+      "predictedReturn": 0.002159
+    },
+    {
+      "date": "2025-03-04",
+      "actualReturn": 0.011791,
+      "predictedReturn": 0.001203
+    },
+    {
+      "date": "2025-03-05",
+      "actualReturn": 0.028921,
+      "predictedReturn": -9.4e-05
+    },
+    {
+      "date": "2025-03-06",
+      "actualReturn": 0.033234,
+      "predictedReturn": -0.001284
+    },
+    {
+      "date": "2025-03-07",
+      "actualReturn": -0.009122,
+      "predictedReturn": -0.001742
+    },
+    {
+      "date": "2025-03-10",
+      "actualReturn": 0.007187,
+      "predictedReturn": 0.00085
+    },
+    {
+      "date": "2025-03-11",
+      "actualReturn": 0.007817,
+      "predictedReturn": -0.000495
+    },
+    {
+      "date": "2025-03-12",
+      "actualReturn": -0.007279,
+      "predictedReturn": -0.000773
+    },
+    {
+      "date": "2025-03-13",
+      "actualReturn": -0.007252,
+      "predictedReturn": 0.000128
+    },
+    {
+      "date": "2025-03-17",
+      "actualReturn": 0.0,
+      "predictedReturn": 0.000171
+    },
+    {
+      "date": "2025-03-18",
+      "actualReturn": 0.0067,
+      "predictedReturn": -0.000301
+    },
+    {
+      "date": "2025-03-19",
+      "actualReturn": 0.01764,
+      "predictedReturn": -0.000734
+    },
+    {
+      "date": "2025-03-20",
+      "actualReturn": 0.005673,
+      "predictedReturn": -0.001476
+    },
+    {
+      "date": "2025-03-21",
+      "actualReturn": 0.020175,
+      "predictedReturn": -0.000745
+    },
+    {
+      "date": "2025-03-24",
+      "actualReturn": -0.012787,
+      "predictedReturn": -0.001872
+    },
+    {
+      "date": "2025-03-25",
+      "actualReturn": -0.009646,
+      "predictedReturn": 0.000198
+    },
+    {
+      "date": "2025-03-26",
+      "actualReturn": 0.004045,
+      "predictedReturn": -6.5e-05
+    },
+    {
+      "date": "2025-03-27",
+      "actualReturn": -0.002425,
+      "predictedReturn": -0.000966
+    },
+    {
+      "date": "2025-03-28",
+      "actualReturn": -0.017646,
+      "predictedReturn": -0.000497
+    },
+    {
+      "date": "2025-04-01",
+      "actualReturn": -0.001157,
+      "predictedReturn": 0.000704
+    },
+    {
+      "date": "2025-04-02",
+      "actualReturn": -0.001958,
+      "predictedReturn": -0.000231
+    },
+    {
+      "date": "2025-04-03",
+      "actualReturn": -0.035237,
+      "predictedReturn": -4.4e-05
+    },
+    {
+      "date": "2025-04-04",
+      "actualReturn": -0.032373,
+      "predictedReturn": 0.002433
+    },
+    {
+      "date": "2025-04-07",
+      "actualReturn": 0.014155,
+      "predictedReturn": 0.002583
+    },
+    {
+      "date": "2025-04-08",
+      "actualReturn": 0.002665,
+      "predictedReturn": -0.000319
+    },
+    {
+      "date": "2025-04-09",
+      "actualReturn": 0.028346,
+      "predictedReturn": 0.000625
+    },
+    {
+      "date": "2025-04-11",
+      "actualReturn": 0.017351,
+      "predictedReturn": -0.001003
+    },
+    {
+      "date": "2025-04-15",
+      "actualReturn": -0.000645,
+      "predictedReturn": -0.000402
+    },
+    {
+      "date": "2025-04-16",
+      "actualReturn": 0.028403,
+      "predictedReturn": 0.000545
+    },
+    {
+      "date": "2025-04-17",
+      "actualReturn": 0.016477,
+      "predictedReturn": -0.001665
+    },
+    {
+      "date": "2025-04-21",
+      "actualReturn": -0.003319,
+      "predictedReturn": -0.001202
+    },
+    {
+      "date": "2025-04-22",
+      "actualReturn": 0.006815,
+      "predictedReturn": -0.000102
+    },
+    {
+      "date": "2025-04-23",
+      "actualReturn": 0.001231,
+      "predictedReturn": -0.000958
+    },
+    {
+      "date": "2025-04-24",
+      "actualReturn": -0.000922,
+      "predictedReturn": -0.000783
+    },
+    {
+      "date": "2025-04-25",
+      "actualReturn": 0.052599,
+      "predictedReturn": -0.000729
+    },
+    {
+      "date": "2025-04-28",
+      "actualReturn": 0.022574,
+      "predictedReturn": -0.004487
+    },
+    {
+      "date": "2025-04-29",
+      "actualReturn": 0.003787,
+      "predictedReturn": -0.0028
+    },
+    {
+      "date": "2025-04-30",
+      "actualReturn": 0.010534,
+      "predictedReturn": -0.001856
+    },
+    {
+      "date": "2025-05-02",
+      "actualReturn": 0.0081,
+      "predictedReturn": -0.002653
+    },
+    {
+      "date": "2025-05-05",
+      "actualReturn": -0.007266,
+      "predictedReturn": -0.002881
+    },
+    {
+      "date": "2025-05-06",
+      "actualReturn": -0.010486,
+      "predictedReturn": -0.001973
+    },
+    {
+      "date": "2025-05-07",
+      "actualReturn": 0.000711,
+      "predictedReturn": -0.001705
+    },
+    {
+      "date": "2025-05-08",
+      "actualReturn": -0.02118,
+      "predictedReturn": -0.002348
+    },
+    {
+      "date": "2025-05-09",
+      "actualReturn": 0.043058,
+      "predictedReturn": -0.000604
+    },
+    {
+      "date": "2025-05-12",
+      "actualReturn": -0.01448,
+      "predictedReturn": -0.004728
+    },
+    {
+      "date": "2025-05-13",
+      "actualReturn": 0.006146,
+      "predictedReturn": -0.000727
+    },
+    {
+      "date": "2025-05-14",
+      "actualReturn": 0.020921,
+      "predictedReturn": -0.002023
+    },
+    {
+      "date": "2025-05-15",
+      "actualReturn": 0.001513,
+      "predictedReturn": -0.003043
+    },
+    {
+      "date": "2025-05-16",
+      "actualReturn": -0.010711,
+      "predictedReturn": -0.001928
+    },
+    {
+      "date": "2025-05-19",
+      "actualReturn": -0.011244,
+      "predictedReturn": -0.001003
+    },
+    {
+      "date": "2025-05-20",
+      "actualReturn": 0.003229,
+      "predictedReturn": -0.000901
+    },
+    {
+      "date": "2025-05-21",
+      "actualReturn": -0.013854,
+      "predictedReturn": -0.001767
+    },
+    {
+      "date": "2025-05-22",
+      "actualReturn": 0.012346,
+      "predictedReturn": -0.000333
+    },
+    {
+      "date": "2025-05-23",
+      "actualReturn": 0.005607,
+      "predictedReturn": -0.001824
+    },
+    {
+      "date": "2025-05-26",
+      "actualReturn": -0.008851,
+      "predictedReturn": -0.001223
+    },
+    {
+      "date": "2025-05-27",
+      "actualReturn": -0.006469,
+      "predictedReturn": -0.0002
+    },
+    {
+      "date": "2025-05-28",
+      "actualReturn": 0.003468,
+      "predictedReturn": -0.000269
+    },
+    {
+      "date": "2025-05-29",
+      "actualReturn": 0.002186,
+      "predictedReturn": -0.000956
+    },
+    {
+      "date": "2025-05-30",
+      "actualReturn": -0.005067,
+      "predictedReturn": -0.000842
+    },
+    {
+      "date": "2025-06-02",
+      "actualReturn": -0.0058,
+      "predictedReturn": -0.000279
+    },
+    {
+      "date": "2025-06-03",
+      "actualReturn": 0.012807,
+      "predictedReturn": -0.000168
+    },
+    {
+      "date": "2025-06-04",
+      "actualReturn": 0.013277,
+      "predictedReturn": -0.001436
+    },
+    {
+      "date": "2025-06-05",
+      "actualReturn": 0.000763,
+      "predictedReturn": -0.001548
+    },
+    {
+      "date": "2025-06-06",
+      "actualReturn": 0.003672,
+      "predictedReturn": -0.000758
+    },
+    {
+      "date": "2025-06-09",
+      "actualReturn": -0.007109,
+      "predictedReturn": -0.001105
+    },
+    {
+      "date": "2025-06-10",
+      "actualReturn": 0.00723,
+      "predictedReturn": -0.000523
+    },
+    {
+      "date": "2025-06-11",
+      "actualReturn": -0.005038,
+      "predictedReturn": -0.001572
+    },
+    {
+      "date": "2025-06-12",
+      "actualReturn": -0.009503,
+      "predictedReturn": -0.000765
+    },
+    {
+      "date": "2025-06-13",
+      "actualReturn": 0.006933,
+      "predictedReturn": -0.000422
+    },
+    {
+      "date": "2025-06-16",
+      "actualReturn": -0.00459,
+      "predictedReturn": -0.001465
+    },
+    {
+      "date": "2025-06-17",
+      "actualReturn": -0.000768,
+      "predictedReturn": -0.000659
+    },
+    {
+      "date": "2025-06-18",
+      "actualReturn": 0.002238,
+      "predictedReturn": -0.000823
+    },
+    {
+      "date": "2025-06-19",
+      "actualReturn": 0.022954,
+      "predictedReturn": -0.00096
+    },
+    {
+      "date": "2025-06-20",
+      "actualReturn": -0.006411,
+      "predictedReturn": -0.002479
+    },
+    {
+      "date": "2025-06-23",
+      "actualReturn": -0.004119,
+      "predictedReturn": -0.000598
+    },
+    {
+      "date": "2025-06-24",
+      "actualReturn": 0.011373,
+      "predictedReturn": -0.000816
+    },
+    {
+      "date": "2025-06-25",
+      "actualReturn": 0.019083,
+      "predictedReturn": -0.001969
+    },
+    {
+      "date": "2025-06-26",
+      "actualReturn": 0.013442,
+      "predictedReturn": -0.002704
+    },
+    {
+      "date": "2025-06-27",
+      "actualReturn": -0.009766,
+      "predictedReturn": -0.002477
+    },
+    {
+      "date": "2025-06-30",
+      "actualReturn": 0.018526,
+      "predictedReturn": -0.001065
+    },
+    {
+      "date": "2025-07-01",
+      "actualReturn": -0.006281,
+      "predictedReturn": -0.003206
+    },
+    {
+      "date": "2025-07-02",
+      "actualReturn": -0.000659,
+      "predictedReturn": -0.001721
+    },
+    {
+      "date": "2025-07-03",
+      "actualReturn": 0.006259,
+      "predictedReturn": -0.002135
+    },
+    {
+      "date": "2025-07-04",
+      "actualReturn": 0.009297,
+      "predictedReturn": -0.002573
+    },
+    {
+      "date": "2025-07-07",
+      "actualReturn": -0.00253,
+      "predictedReturn": -0.00289
+    },
+    {
+      "date": "2025-07-08",
+      "actualReturn": -0.012097,
+      "predictedReturn": -0.002054
+    },
+    {
+      "date": "2025-07-09",
+      "actualReturn": -0.001185,
+      "predictedReturn": -0.001351
+    },
+    {
+      "date": "2025-07-10",
+      "actualReturn": -0.0145,
+      "predictedReturn": -0.001998
+    },
+    {
+      "date": "2025-07-11",
+      "actualReturn": -0.007691,
+      "predictedReturn": -0.000882
+    },
+    {
+      "date": "2025-07-14",
+      "actualReturn": 0.001146,
+      "predictedReturn": -0.000991
+    },
+    {
+      "date": "2025-07-15",
+      "actualReturn": 0.000135,
+      "predictedReturn": -0.001253
+    },
+    {
+      "date": "2025-07-16",
+      "actualReturn": -0.006193,
+      "predictedReturn": -0.000954
+    },
+    {
+      "date": "2025-07-17",
+      "actualReturn": -0.000271,
+      "predictedReturn": -0.000275
+    },
+    {
+      "date": "2025-07-18",
+      "actualReturn": -0.032114,
+      "predictedReturn": -0.000558
+    },
+    {
+      "date": "2025-07-21",
+      "actualReturn": -0.01106,
+      "predictedReturn": 0.001809
+    },
+    {
+      "date": "2025-07-22",
+      "actualReturn": 0.008352,
+      "predictedReturn": 0.000742
+    },
+    {
+      "date": "2025-07-23",
+      "actualReturn": -0.015232,
+      "predictedReturn": -0.000282
+    },
+    {
+      "date": "2025-07-24",
+      "actualReturn": -0.007983,
+      "predictedReturn": 0.001554
+    },
+    {
+      "date": "2025-07-25",
+      "actualReturn": -0.002946,
+      "predictedReturn": 0.001357
+    },
+    {
+      "date": "2025-07-28",
+      "actualReturn": 0.02126,
+      "predictedReturn": 0.001097
+    },
+    {
+      "date": "2025-07-29",
+      "actualReturn": -0.00494,
+      "predictedReturn": -0.000661
+    },
+    {
+      "date": "2025-07-30",
+      "actualReturn": -0.014113,
+      "predictedReturn": 0.001026
+    },
+    {
+      "date": "2025-07-31",
+      "actualReturn": 0.002518,
+      "predictedReturn": 0.001554
+    },
+    {
+      "date": "2025-08-01",
+      "actualReturn": 0.012772,
+      "predictedReturn": 0.000291
+    },
+    {
+      "date": "2025-08-04",
+      "actualReturn": -0.014028,
+      "predictedReturn": -0.000648
+    },
+    {
+      "date": "2025-08-05",
+      "actualReturn": 0.00079,
+      "predictedReturn": 0.001098
+    },
+    {
+      "date": "2025-08-06",
+      "actualReturn": -0.002441,
+      "predictedReturn": 6.4e-05
+    },
+    {
+      "date": "2025-08-07",
+      "actualReturn": -0.015546,
+      "predictedReturn": 0.00015
+    },
+    {
+      "date": "2025-08-08",
+      "actualReturn": 0.013452,
+      "predictedReturn": 0.001012
+    },
+    {
+      "date": "2025-08-11",
+      "actualReturn": -0.004184,
+      "predictedReturn": -0.000894
+    },
+    {
+      "date": "2025-08-12",
+      "actualReturn": 0.001594,
+      "predictedReturn": 0.000224
+    },
+    {
+      "date": "2025-08-13",
+      "actualReturn": -0.002396,
+      "predictedReturn": -0.000214
+    },
+    {
+      "date": "2025-08-14",
+      "actualReturn": 0.00575,
+      "predictedReturn": 3e-06
+    },
+    {
+      "date": "2025-08-18",
+      "actualReturn": 0.027792,
+      "predictedReturn": -0.000711
+    },
+    {
+      "date": "2025-08-19",
+      "actualReturn": -0.005,
+      "predictedReturn": -0.002355
+    },
+    {
+      "date": "2025-08-20",
+      "actualReturn": 0.008351,
+      "predictedReturn": -0.000344
+    },
+    {
+      "date": "2025-08-21",
+      "actualReturn": -0.010949,
+      "predictedReturn": -0.00144
+    },
+    {
+      "date": "2025-08-22",
+      "actualReturn": 0.002413,
+      "predictedReturn": -0.000308
+    },
+    {
+      "date": "2025-08-25",
+      "actualReturn": -0.019609,
+      "predictedReturn": -0.001312
+    },
+    {
+      "date": "2025-08-26",
+      "actualReturn": 0.000722,
+      "predictedReturn": 0.000313
+    },
+    {
+      "date": "2025-08-28",
+      "actualReturn": -0.020709,
+      "predictedReturn": -0.000938
+    },
+    {
+      "date": "2025-08-29",
+      "actualReturn": -0.002431,
+      "predictedReturn": 0.000747
+    },
+    {
+      "date": "2025-09-01",
+      "actualReturn": 0.009306,
+      "predictedReturn": -0.000246
+    },
+    {
+      "date": "2025-09-02",
+      "actualReturn": 0.004464,
+      "predictedReturn": -0.000839
+    },
+    {
+      "date": "2025-09-03",
+      "actualReturn": -0.00969,
+      "predictedReturn": -0.000494
+    },
+    {
+      "date": "2025-09-04",
+      "actualReturn": 0.01155,
+      "predictedReturn": 0.00054
+    },
+    {
+      "date": "2025-09-05",
+      "actualReturn": 0.002545,
+      "predictedReturn": -0.000962
+    },
+    {
+      "date": "2025-09-08",
+      "actualReturn": -0.001669,
+      "predictedReturn": -0.000479
+    },
+    {
+      "date": "2025-09-09",
+      "actualReturn": 0.000581,
+      "predictedReturn": -0.000229
+    },
+    {
+      "date": "2025-09-10",
+      "actualReturn": 0.004575,
+      "predictedReturn": -0.000402
+    },
+    {
+      "date": "2025-09-11",
+      "actualReturn": 0.008458,
+      "predictedReturn": -0.000766
+    },
+    {
+      "date": "2025-09-12",
+      "actualReturn": 0.003082,
+      "predictedReturn": -0.001097
+    },
+    {
+      "date": "2025-09-15",
+      "actualReturn": 0.004288,
+      "predictedReturn": -0.00081
+    },
+    {
+      "date": "2025-09-16",
+      "actualReturn": 0.006049,
+      "predictedReturn": -0.000999
+    },
+    {
+      "date": "2025-09-17",
+      "actualReturn": 0.000849,
+      "predictedReturn": -0.001287
+    },
+    {
+      "date": "2025-09-18",
+      "actualReturn": -0.005371,
+      "predictedReturn": -0.001082
+    },
+    {
+      "date": "2025-09-19",
+      "actualReturn": -0.011937,
+      "predictedReturn": -0.00074
+    },
+    {
+      "date": "2025-09-22",
+      "actualReturn": -0.000575,
+      "predictedReturn": -0.000281
+    },
+    {
+      "date": "2025-09-23",
+      "actualReturn": -0.004893,
+      "predictedReturn": -0.000986
+    },
+    {
+      "date": "2025-09-24",
+      "actualReturn": -0.007664,
+      "predictedReturn": -0.000563
+    },
+    {
+      "date": "2025-09-25",
+      "actualReturn": 0.003789,
+      "predictedReturn": -0.000201
+    },
+    {
+      "date": "2025-09-26",
+      "actualReturn": -0.003484,
+      "predictedReturn": -0.00081
+    },
+    {
+      "date": "2025-09-29",
+      "actualReturn": -0.00641,
+      "predictedReturn": -0.00023
+    },
+    {
+      "date": "2025-09-30",
+      "actualReturn": 0.003446,
+      "predictedReturn": 7.7e-05
+    },
+    {
+      "date": "2025-10-01",
+      "actualReturn": -0.003872,
+      "predictedReturn": -0.000517
+    },
+    {
+      "date": "2025-10-03",
+      "actualReturn": 0.008508,
+      "predictedReturn": 1.3e-05
+    },
+    {
+      "date": "2025-10-06",
+      "actualReturn": 0.007127,
+      "predictedReturn": -0.000798
+    },
+    {
+      "date": "2025-10-07",
+      "actualReturn": -0.012565,
+      "predictedReturn": -0.000754
+    },
+    {
+      "date": "2025-10-08",
+      "actualReturn": 0.007606,
+      "predictedReturn": 0.000531
+    },
+    {
+      "date": "2025-10-09",
+      "actualReturn": 0.002831,
+      "predictedReturn": -0.000849
+    },
+    {
+      "date": "2025-10-10",
+      "actualReturn": -0.004849,
+      "predictedReturn": -0.000615
+    },
+    {
+      "date": "2025-10-13",
+      "actualReturn": 0.000655,
+      "predictedReturn": -0.000124
+    },
+    {
+      "date": "2025-10-14",
+      "actualReturn": -0.001163,
+      "predictedReturn": -0.000471
+    },
+    {
+      "date": "2025-10-15",
+      "actualReturn": 0.017463,
+      "predictedReturn": -0.000409
+    },
+    {
+      "date": "2025-10-16",
+      "actualReturn": 0.01323,
+      "predictedReturn": -0.001752
+    },
+    {
+      "date": "2025-10-17",
+      "actualReturn": 0.035291,
+      "predictedReturn": -0.001625
+    },
+    {
+      "date": "2025-10-20",
+      "actualReturn": -0.001091,
+      "predictedReturn": -0.003446
+    },
+    {
+      "date": "2025-10-21",
+      "actualReturn": -0.011466,
+      "predictedReturn": -0.001366
+    },
+    {
+      "date": "2025-10-23",
+      "actualReturn": 0.002209,
+      "predictedReturn": -0.000961
+    },
+    {
+      "date": "2025-10-24",
+      "actualReturn": 0.022389,
+      "predictedReturn": -0.002053
+    },
+    {
+      "date": "2025-10-27",
+      "actualReturn": 0.001887,
+      "predictedReturn": -0.003607
+    },
+    {
+      "date": "2025-10-28",
+      "actualReturn": 0.011635,
+      "predictedReturn": -0.002247
+    },
+    {
+      "date": "2025-10-29",
+      "actualReturn": -0.010437,
+      "predictedReturn": -0.002964
+    },
+    {
+      "date": "2025-10-30",
+      "actualReturn": -0.001411,
+      "predictedReturn": -0.00158
+    },
+    {
+      "date": "2025-10-31",
+      "actualReturn": -0.001144,
+      "predictedReturn": -0.002242
+    },
+    {
+      "date": "2025-11-03",
+      "actualReturn": -0.007813,
+      "predictedReturn": -0.002156
+    },
+    {
+      "date": "2025-11-04",
+      "actualReturn": 0.015613,
+      "predictedReturn": -0.001559
+    },
+    {
+      "date": "2025-11-06",
+      "actualReturn": -0.012098,
+      "predictedReturn": -0.002973
+    },
+    {
+      "date": "2025-11-07",
+      "actualReturn": 0.007646,
+      "predictedReturn": -0.000978
+    },
+    {
+      "date": "2025-11-10",
+      "actualReturn": 0.002753,
+      "predictedReturn": -0.002196
+    },
+    {
+      "date": "2025-11-11",
+      "actualReturn": 0.01212,
+      "predictedReturn": -0.001804
+    },
+    {
+      "date": "2025-11-12",
+      "actualReturn": -0.000397,
+      "predictedReturn": -0.002482
+    },
+    {
+      "date": "2025-11-13",
+      "actualReturn": 0.005295,
+      "predictedReturn": -0.00159
+    },
+    {
+      "date": "2025-11-14",
+      "actualReturn": -0.000395,
+      "predictedReturn": -0.002028
+    },
+    {
+      "date": "2025-11-17",
+      "actualReturn": 0.000724,
+      "predictedReturn": -0.001675
+    },
+    {
+      "date": "2025-11-18",
+      "actualReturn": -0.000329,
+      "predictedReturn": -0.001776
+    },
+    {
+      "date": "2025-11-19",
+      "actualReturn": 0.019883,
+      "predictedReturn": -0.00169
+    },
+    {
+      "date": "2025-11-20",
+      "actualReturn": -0.001614,
+      "predictedReturn": -0.003143
+    },
+    {
+      "date": "2025-11-21",
+      "actualReturn": -0.006918,
+      "predictedReturn": -0.001756
+    },
+    {
+      "date": "2025-11-24",
+      "actualReturn": 0.002474,
+      "predictedReturn": -0.001407
+    },
+    {
+      "date": "2025-11-25",
+      "actualReturn": 0.019614,
+      "predictedReturn": -0.002078
+    },
+    {
+      "date": "2025-11-26",
+      "actualReturn": -0.00414,
+      "predictedReturn": -0.003398
+    },
+    {
+      "date": "2025-11-27",
+      "actualReturn": 0.002623,
+      "predictedReturn": -0.001833
+    },
+    {
+      "date": "2025-11-28",
+      "actualReturn": -0.000893,
+      "predictedReturn": -0.002309
+    },
+    {
+      "date": "2025-12-01",
+      "actualReturn": -0.012643,
+      "predictedReturn": -0.002152
+    },
+    {
+      "date": "2025-12-02",
+      "actualReturn": -0.00485,
+      "predictedReturn": -0.00134
+    },
+    {
+      "date": "2025-12-03",
+      "actualReturn": -0.00208,
+      "predictedReturn": -0.001618
+    },
+    {
+      "date": "2025-12-04",
+      "actualReturn": 0.003256,
+      "predictedReturn": -0.001608
+    },
+    {
+      "date": "2025-12-05",
+      "actualReturn": 0.001558,
+      "predictedReturn": -0.001746
+    },
+    {
+      "date": "2025-12-08",
+      "actualReturn": -0.008814,
+      "predictedReturn": -0.001446
+    },
+    {
+      "date": "2025-12-09",
+      "actualReturn": 0.004904,
+      "predictedReturn": -0.000623
+    },
+    {
+      "date": "2025-12-10",
+      "actualReturn": 0.00527,
+      "predictedReturn": -0.001494
+    },
+    {
+      "date": "2025-12-11",
+      "actualReturn": 0.007443,
+      "predictedReturn": -0.00153
+    },
+    {
+      "date": "2025-12-12",
+      "actualReturn": -0.000193,
+      "predictedReturn": -0.001718
+    },
+    {
+      "date": "2025-12-15",
+      "actualReturn": -0.008932,
+      "predictedReturn": -0.001239
+    },
+    {
+      "date": "2025-12-16",
+      "actualReturn": 0.001362,
+      "predictedReturn": -0.000703
+    },
+    {
+      "date": "2025-12-17",
+      "actualReturn": 0.0,
+      "predictedReturn": -0.001398
+    },
+    {
+      "date": "2025-12-18",
+      "actualReturn": 0.013403,
+      "predictedReturn": -0.00131
+    },
+    {
+      "date": "2025-12-19",
+      "actualReturn": 0.006581,
+      "predictedReturn": -0.002226
+    },
+    {
+      "date": "2025-12-22",
+      "actualReturn": -0.002983,
+      "predictedReturn": -0.001832
+    },
+    {
+      "date": "2025-12-23",
+      "actualReturn": -0.007958,
+      "predictedReturn": -0.001318
+    },
+    {
+      "date": "2025-12-24",
+      "actualReturn": 0.000642,
+      "predictedReturn": -0.001078
+    },
+    {
+      "date": "2025-12-26",
+      "actualReturn": -0.008722,
+      "predictedReturn": -0.001736
+    },
+    {
+      "date": "2025-12-29",
+      "actualReturn": -0.003753,
+      "predictedReturn": -0.001031
+    },
+    {
+      "date": "2025-12-30",
+      "actualReturn": 0.019873,
+      "predictedReturn": -0.001195
+    },
+    {
+      "date": "2025-12-31",
+      "actualReturn": 0.003311,
+      "predictedReturn": -0.002734
+    },
+    {
+      "date": "2026-01-01",
+      "actualReturn": 0.010599,
+      "predictedReturn": -0.001688
+    },
+    {
+      "date": "2026-01-02",
+      "actualReturn": -0.008918,
+      "predictedReturn": -0.002289
+    },
+    {
+      "date": "2026-01-05",
+      "actualReturn": -0.044674,
+      "predictedReturn": -0.00113
+    },
+    {
+      "date": "2026-01-06",
+      "actualReturn": -0.002255,
+      "predictedReturn": 0.001382
+    },
+    {
+      "date": "2026-01-07",
+      "actualReturn": -0.022337,
+      "predictedReturn": -0.001097
+    },
+    {
+      "date": "2026-01-08",
+      "actualReturn": 0.003196,
+      "predictedReturn": 0.000739
+    },
+    {
+      "date": "2026-01-09",
+      "actualReturn": 0.005355,
+      "predictedReturn": -0.000396
+    },
+    {
+      "date": "2026-01-12",
+      "actualReturn": -0.020496,
+      "predictedReturn": -0.000109
+    },
+    {
+      "date": "2026-01-13",
+      "actualReturn": 0.00413,
+      "predictedReturn": 0.001779
+    },
+    {
+      "date": "2026-01-14",
+      "actualReturn": 0.0,
+      "predictedReturn": 0.000287
+    },
+    {
+      "date": "2026-01-15",
+      "actualReturn": -0.000617,
+      "predictedReturn": 0.000519
+    },
+    {
+      "date": "2026-01-16",
+      "actualReturn": -0.030386,
+      "predictedReturn": 0.000547
+    },
+    {
+      "date": "2026-01-19",
+      "actualReturn": -0.013865,
+      "predictedReturn": 0.00271
+    },
+    {
+      "date": "2026-01-20",
+      "actualReturn": 0.007604,
+      "predictedReturn": 0.001703
+    },
+    {
+      "date": "2026-01-21",
+      "actualReturn": -0.001495,
+      "predictedReturn": 0.000359
+    },
+    {
+      "date": "2026-01-22",
+      "actualReturn": -0.011693,
+      "predictedReturn": 0.001068
+    },
+    {
+      "date": "2026-01-23",
+      "actualReturn": -0.00404,
+      "predictedReturn": 0.001907
+    },
+    {
+      "date": "2026-01-27",
+      "actualReturn": 0.011735,
+      "predictedReturn": 0.001369
+    },
+    {
+      "date": "2026-01-28",
+      "actualReturn": -0.004081,
+      "predictedReturn": 0.000139
+    },
+    {
+      "date": "2026-01-29",
+      "actualReturn": 0.003163,
+      "predictedReturn": 0.00105
+    },
+    {
+      "date": "2026-01-30",
+      "actualReturn": -0.003583,
+      "predictedReturn": 0.000399
+    },
+    {
+      "date": "2026-02-02",
+      "actualReturn": 0.033587,
+      "predictedReturn": 0.000604
+    },
+    {
+      "date": "2026-02-03",
+      "actualReturn": 0.013708,
+      "predictedReturn": -0.002289
+    },
+    {
+      "date": "2026-02-04",
+      "actualReturn": -0.009198,
+      "predictedReturn": -0.001309
+    },
+    {
+      "date": "2026-02-05",
+      "actualReturn": 0.005127,
+      "predictedReturn": -9.9e-05
+    },
+    {
+      "date": "2026-02-06",
+      "actualReturn": 0.007444,
+      "predictedReturn": -0.001334
+    },
+    {
+      "date": "2026-02-09",
+      "actualReturn": -0.002121,
+      "predictedReturn": -0.001839
+    },
+    {
+      "date": "2026-02-10",
+      "actualReturn": 0.006994,
+      "predictedReturn": -0.001329
+    },
+    {
+      "date": "2026-02-11",
+      "actualReturn": -0.013481,
+      "predictedReturn": -0.001976
+    },
+    {
+      "date": "2026-02-12",
+      "actualReturn": -0.020222,
+      "predictedReturn": -0.000652
+    },
+    {
+      "date": "2026-02-13",
+      "actualReturn": 0.012327,
+      "predictedReturn": -9.2e-05
+    },
+    {
+      "date": "2026-02-16",
+      "actualReturn": -0.009811,
+      "predictedReturn": -0.002157
+    },
+    {
+      "date": "2026-02-17",
+      "actualReturn": 0.01286,
+      "predictedReturn": -0.00051
+    },
+    {
+      "date": "2026-02-18",
+      "actualReturn": -0.022063,
+      "predictedReturn": -0.001841
+    },
+    {
+      "date": "2026-02-19",
+      "actualReturn": 0.007024,
+      "predictedReturn": 0.00067
+    },
+    {
+      "date": "2026-02-20",
+      "actualReturn": 0.006059,
+      "predictedReturn": -0.001244
+    },
+    {
+      "date": "2026-02-23",
+      "actualReturn": 0.00056,
+      "predictedReturn": -0.001095
+    },
+    {
+      "date": "2026-02-24",
+      "actualReturn": -0.021207,
+      "predictedReturn": -0.00071
+    },
+    {
+      "date": "2026-02-25",
+      "actualReturn": 0.005935,
+      "predictedReturn": 0.000942
+    },
+    {
+      "date": "2026-02-26",
+      "actualReturn": -0.00917,
+      "predictedReturn": -0.000831
+    },
+    {
+      "date": "2026-02-27",
+      "actualReturn": -0.025755,
+      "predictedReturn": 0.000293
+    },
+    {
+      "date": "2026-03-02",
+      "actualReturn": -0.009573,
+      "predictedReturn": 0.001696
+    },
+    {
+      "date": "2026-03-04",
+      "actualReturn": 0.033011,
+      "predictedReturn": 0.000923
+    },
+    {
+      "date": "2026-03-05",
+      "actualReturn": 0.011084,
+      "predictedReturn": -0.001932
+    },
+    {
+      "date": "2026-03-06",
+      "actualReturn": 0.013667,
+      "predictedReturn": -0.000507
+    },
+    {
+      "date": "2026-03-09",
+      "actualReturn": -0.010674,
+      "predictedReturn": -0.000848
+    },
+    {
+      "date": "2026-03-10",
+      "actualReturn": -0.013203,
+      "predictedReturn": 0.000476
+    },
+    {
+      "date": "2026-03-11",
+      "actualReturn": 0.001439,
+      "predictedReturn": 0.000366
+    },
+    {
+      "date": "2026-03-12",
+      "actualReturn": -0.00826,
+      "predictedReturn": -0.000694
+    },
+    {
+      "date": "2026-03-13",
+      "actualReturn": 0.01043,
+      "predictedReturn": -4e-06
+    },
+    {
+      "date": "2026-03-16",
+      "actualReturn": 0.001792,
+      "predictedReturn": -0.001135
+    },
+    {
+      "date": "2026-03-17",
+      "actualReturn": 0.007513,
+      "predictedReturn": -0.000548
+    },
+    {
+      "date": "2026-03-18",
+      "actualReturn": -0.016547,
+      "predictedReturn": -0.001024
+    },
+    {
+      "date": "2026-03-19",
+      "actualReturn": 0.021375,
+      "predictedReturn": 0.000554
+    },
+    {
+      "date": "2026-03-20",
+      "actualReturn": -0.004666,
+      "predictedReturn": -0.002114
+    },
+    {
+      "date": "2026-03-23",
+      "actualReturn": 0.002841,
+      "predictedReturn": -0.000453
+    },
+    {
+      "date": "2026-03-24",
+      "actualReturn": 0.000921,
+      "predictedReturn": -0.001031
+    },
+    {
+      "date": "2026-03-25",
+      "actualReturn": -0.045998,
+      "predictedReturn": -0.000941
+    },
+    {
+      "date": "2026-03-27",
+      "actualReturn": -0.003115,
+      "predictedReturn": 0.002295
+    },
+    {
+      "date": "2026-03-30",
+      "actualReturn": 0.018826,
+      "predictedReturn": -0.000292
+    },
+    {
+      "date": "2026-04-01",
+      "actualReturn": -0.013658,
+      "predictedReturn": -0.001598
+    },
+    {
+      "date": "2026-04-02",
+      "actualReturn": -0.033913,
+      "predictedReturn": 0.000828
+    },
+    {
+      "date": "2026-04-06",
+      "actualReturn": -7.7e-05,
+      "predictedReturn": 0.002621
+    },
+    {
+      "date": "2026-04-07",
+      "actualReturn": 0.033114,
+      "predictedReturn": 0.000484
+    },
+    {
+      "date": "2026-04-08",
+      "actualReturn": -0.013207,
+      "predictedReturn": -0.001794
+    },
+    {
+      "date": "2026-04-09",
+      "actualReturn": 0.015188,
+      "predictedReturn": 0.001363
+    },
+    {
+      "date": "2026-04-10",
+      "actualReturn": -0.025996,
+      "predictedReturn": -0.000578
+    },
+    {
+      "date": "2026-04-13",
+      "actualReturn": 0.022052,
+      "predictedReturn": 0.002039
+    },
+    {
+      "date": "2026-04-15",
+      "actualReturn": -0.000595,
+      "predictedReturn": -0.001368
+    },
+    {
+      "date": "2026-04-16",
+      "actualReturn": 0.016154,
+      "predictedReturn": 0.00012
+    },
+    {
+      "date": "2026-04-17",
+      "actualReturn": -0.001245,
+      "predictedReturn": -0.001171
+    },
+    {
+      "date": "2026-04-20",
+      "actualReturn": -0.007335,
+      "predictedReturn": -0.000102
+    },
+    {
+      "date": "2026-04-21",
+      "actualReturn": 0.006503,
+      "predictedReturn": 9e-05
+    },
+    {
+      "date": "2026-04-22",
+      "actualReturn": -0.013729,
+      "predictedReturn": -0.000926
+    },
+    {
+      "date": "2026-04-23",
+      "actualReturn": -0.011612,
+      "predictedReturn": 0.000357
+    },
+    {
+      "date": "2026-04-24",
+      "actualReturn": 0.028619,
+      "predictedReturn": 0.000306
+    },
+    {
+      "date": "2026-04-27",
+      "actualReturn": 0.016913,
+      "predictedReturn": -0.002415
+    },
+    {
+      "date": "2026-04-28",
+      "actualReturn": 0.02628,
+      "predictedReturn": -0.001807
+    },
+    {
+      "date": "2026-04-29",
+      "actualReturn": 0.003788,
+      "predictedReturn": -0.002632
+    },
+    {
+      "date": "2026-04-30",
+      "actualReturn": 0.0,
+      "predictedReturn": -0.001438
+    },
+    {
+      "date": "2026-05-01",
+      "actualReturn": 0.022575,
+      "predictedReturn": -0.001577
+    },
+    {
+      "date": "2026-05-04",
+      "actualReturn": 0.000342,
+      "predictedReturn": -0.003409
+    },
+    {
+      "date": "2026-05-05",
+      "actualReturn": -0.017559,
+      "predictedReturn": -0.002137
+    },
+    {
+      "date": "2026-05-06",
+      "actualReturn": -0.001182,
+      "predictedReturn": -0.000901
+    },
+    {
+      "date": "2026-05-07",
+      "actualReturn": -0.000696,
+      "predictedReturn": -0.001943
+    },
+    {
+      "date": "2026-05-08",
+      "actualReturn": -0.032748,
+      "predictedReturn": -0.001911
+    },
+    {
+      "date": "2026-05-11",
+      "actualReturn": -0.017433,
+      "predictedReturn": 0.000586
+    },
+    {
+      "date": "2026-05-12",
+      "actualReturn": -0.003812,
+      "predictedReturn": 6e-05
+    },
+    {
+      "date": "2026-05-13",
+      "actualReturn": 0.002208,
+      "predictedReturn": -0.000473
+    },
+    {
+      "date": "2026-05-14",
+      "actualReturn": -0.018652,
+      "predictedReturn": -0.000519
+    },
+    {
+      "date": "2026-05-15",
+      "actualReturn": -0.000374,
+      "predictedReturn": 0.001286
+    },
+    {
+      "date": "2026-05-18",
+      "actualReturn": -0.009881,
+      "predictedReturn": 0.000281
+    },
+    {
+      "date": "2026-05-19",
+      "actualReturn": 0.027973,
+      "predictedReturn": 0.001068
+    },
+    {
+      "date": "2026-05-20",
+      "actualReturn": -0.007428,
+      "predictedReturn": -0.001452
+    },
+    {
+      "date": "2026-05-21",
+      "actualReturn": 0.003631,
+      "predictedReturn": 0.00096
+    },
+    {
+      "date": "2026-05-22",
+      "actualReturn": 0.009229,
+      "predictedReturn": 0.000171
+    },
+    {
+      "date": "2026-05-25",
+      "actualReturn": -0.007827,
+      "predictedReturn": -0.00034
+    },
+    {
+      "date": "2026-05-26",
+      "actualReturn": -0.004276,
+      "predictedReturn": 0.000609
+    },
+    {
+      "date": "2026-05-27",
+      "actualReturn": 0.0,
+      "predictedReturn": 0.000342
+    },
+    {
+      "date": "2026-05-28",
+      "actualReturn": -0.021696,
+      "predictedReturn": -2.3e-05
+    },
+    {
+      "date": "2026-05-29",
+      "actualReturn": -0.000908,
+      "predictedReturn": 0.001461
+    },
+    {
+      "date": "2026-06-01",
+      "actualReturn": -0.004091,
+      "predictedReturn": 0.000152
+    },
+    {
+      "date": "2026-06-02",
+      "actualReturn": -0.001065,
+      "predictedReturn": 0.000406
+    },
+    {
+      "date": "2026-06-03",
+      "actualReturn": -0.007234,
+      "predictedReturn": 0.00025
+    },
+    {
+      "date": "2026-06-04",
+      "actualReturn": -0.005163,
+      "predictedReturn": 0.000736
+    },
+    {
+      "date": "2026-06-05",
+      "actualReturn": -0.021456,
+      "predictedReturn": 0.000576
+    },
+    {
+      "date": "2026-06-08",
+      "actualReturn": 0.00467,
+      "predictedReturn": 0.001762
+    },
+    {
+      "date": "2026-06-09",
+      "actualReturn": -0.008194,
+      "predictedReturn": 0.000109
+    },
+    {
+      "date": "2026-06-10",
+      "actualReturn": 0.003336,
+      "predictedReturn": 0.001077
+    },
+    {
+      "date": "2026-06-11",
+      "actualReturn": 0.023753,
+      "predictedReturn": 0.000368
+    },
+    {
+      "date": "2026-06-12",
+      "actualReturn": 0.010828,
+      "predictedReturn": -0.001028
+    },
+    {
+      "date": "2026-06-15",
+      "actualReturn": 0.016679,
+      "predictedReturn": -0.000364
+    },
+    {
+      "date": "2026-06-16",
+      "actualReturn": 0.002935,
+      "predictedReturn": -0.000981
+    },
+    {
+      "date": "2026-06-17",
+      "actualReturn": -0.003452,
+      "predictedReturn": -0.00038
+    },
+    {
+      "date": "2026-06-18",
+      "actualReturn": -0.014005,
+      "predictedReturn": -0.000227
+    },
+    {
+      "date": "2026-06-19",
+      "actualReturn": 0.012982,
+      "predictedReturn": 0.000378
+    },
+    {
+      "date": "2026-06-22",
+      "actualReturn": -0.012816,
+      "predictedReturn": -0.001517
+    },
+    {
+      "date": "2026-06-23",
+      "actualReturn": 0.003131,
+      "predictedReturn": 0.000242
+    },
+    {
+      "date": "2026-06-24",
+      "actualReturn": 0.003426,
+      "predictedReturn": -0.000764
+    },
+    {
+      "date": "2026-06-25",
+      "actualReturn": 0.0,
+      "predictedReturn": -0.000764
+    },
+    {
+      "date": "2026-06-26",
+      "actualReturn": -0.012973,
+      "predictedReturn": -0.000568
+    }
+  ],
+  "metrics": {
+    "r2Return": -0.007951,
+    "dirAccuracy": 0.510086,
+    "naiveBaseline": 0.48415,
+    "edge": 0.025937,
+    "testDays": 347
+  },
+  "priceModel": {
+    "mae": 18.2339,
+    "rmse": 23.6998,
+    "r2": 0.936276,
+    "dirAccuracy": 0.469741,
+    "featureWeights": {
+      "ma5": 277.426641,
+      "ma20": -18.100005,
+      "ret": 11.695481,
+      "ma_ratio": 1.885128,
+      "bias": 1054.543911
+    },
+    "featureWeightsPctOfTarget": {
+      "ma5": 20.006,
+      "ma20": -1.3052,
+      "ret": 0.8434,
+      "ma_ratio": 0.1359
+    },
+    "meanTestClose": 1386.71,
+    "testPeriodData": [
+      {
+        "date": "2025-02-01",
+        "actual": 1235.23,
+        "predicted": 1238.5
+      },
+      {
+        "date": "2025-02-03",
+        "actual": 1274.2,
+        "predicted": 1231.93
+      },
+      {
+        "date": "2025-02-04",
+        "actual": 1267.26,
+        "predicted": 1271.92
+      },
+      {
+        "date": "2025-02-05",
+        "actual": 1270.58,
+        "predicted": 1254.01
+      },
+      {
+        "date": "2025-02-06",
+        "actual": 1255.85,
+        "predicted": 1262.48
+      },
+      {
+        "date": "2025-02-07",
+        "actual": 1242.92,
+        "predicted": 1253.84
+      },
+      {
+        "date": "2025-02-10",
+        "actual": 1224.28,
+        "predicted": 1256.27
+      },
+      {
+        "date": "2025-02-11",
+        "actual": 1206.13,
+        "predicted": 1242.36
+      },
+      {
+        "date": "2025-02-12",
+        "actual": 1205.69,
+        "predicted": 1229.21
+      },
+      {
+        "date": "2025-02-13",
+        "actual": 1206.83,
+        "predicted": 1224.42
+      },
+      {
+        "date": "2025-02-14",
+        "actual": 1214.41,
+        "predicted": 1214.88
+      },
+      {
+        "date": "2025-02-17",
+        "actual": 1214.91,
+        "predicted": 1212.2
+      },
+      {
+        "date": "2025-02-18",
+        "actual": 1216.94,
+        "predicted": 1206.7
+      },
+      {
+        "date": "2025-02-19",
+        "actual": 1222.44,
+        "predicted": 1210.09
+      },
+      {
+        "date": "2025-02-20",
+        "actual": 1217.63,
+        "predicted": 1215.67
+      },
+      {
+        "date": "2025-02-21",
+        "actual": 1204.15,
+        "predicted": 1212.75
+      },
+      {
+        "date": "2025-02-24",
+        "actual": 1193.69,
+        "predicted": 1206.08
+      },
+      {
+        "date": "2025-02-25",
+        "actual": 1196.76,
+        "predicted": 1203.06
+      },
+      {
+        "date": "2025-02-27",
+        "actual": 1189.82,
+        "predicted": 1205.94
+      },
+      {
+        "date": "2025-02-28",
+        "actual": 1161.22,
+        "predicted": 1193.8
+      },
+      {
+        "date": "2025-03-03",
+        "actual": 1151.95,
+        "predicted": 1170.32
+      },
+      {
+        "date": "2025-03-04",
+        "actual": 1165.53,
+        "predicted": 1169.33
+      },
+      {
+        "date": "2025-03-05",
+        "actual": 1199.24,
+        "predicted": 1176.15
+      },
+      {
+        "date": "2025-03-06",
+        "actual": 1239.1,
+        "predicted": 1187.88
+      },
+      {
+        "date": "2025-03-07",
+        "actual": 1227.8,
+        "predicted": 1201.69
+      },
+      {
+        "date": "2025-03-10",
+        "actual": 1236.62,
+        "predicted": 1189.92
+      },
+      {
+        "date": "2025-03-11",
+        "actual": 1246.29,
+        "predicted": 1219.01
+      },
+      {
+        "date": "2025-03-12",
+        "actual": 1237.22,
+        "predicted": 1237.18
+      },
+      {
+        "date": "2025-03-13",
+        "actual": 1228.24,
+        "predicted": 1235.91
+      },
+      {
+        "date": "2025-03-17",
+        "actual": 1228.24,
+        "predicted": 1233.39
+      },
+      {
+        "date": "2025-03-18",
+        "actual": 1236.47,
+        "predicted": 1237.94
+      },
+      {
+        "date": "2025-03-19",
+        "actual": 1258.28,
+        "predicted": 1242.0
+      },
+      {
+        "date": "2025-03-20",
+        "actual": 1265.42,
+        "predicted": 1251.31
+      },
+      {
+        "date": "2025-03-21",
+        "actual": 1290.95,
+        "predicted": 1249.75
+      },
+      {
+        "date": "2025-03-24",
+        "actual": 1274.44,
+        "predicted": 1272.39
+      },
+      {
+        "date": "2025-03-25",
+        "actual": 1262.15,
+        "predicted": 1261.54
+      },
+      {
+        "date": "2025-03-26",
+        "actual": 1267.26,
+        "predicted": 1268.88
+      },
+      {
+        "date": "2025-03-27",
+        "actual": 1264.18,
+        "predicted": 1279.07
+      },
+      {
+        "date": "2025-03-28",
+        "actual": 1241.88,
+        "predicted": 1274.34
+      },
+      {
+        "date": "2025-04-01",
+        "actual": 1240.44,
+        "predicted": 1253.58
+      },
+      {
+        "date": "2025-04-02",
+        "actual": 1238.01,
+        "predicted": 1256.0
+      },
+      {
+        "date": "2025-04-03",
+        "actual": 1194.39,
+        "predicted": 1249.66
+      },
+      {
+        "date": "2025-04-04",
+        "actual": 1155.72,
+        "predicted": 1212.4
+      },
+      {
+        "date": "2025-04-07",
+        "actual": 1172.08,
+        "predicted": 1190.42
+      },
+      {
+        "date": "2025-04-08",
+        "actual": 1175.2,
+        "predicted": 1204.65
+      },
+      {
+        "date": "2025-04-09",
+        "actual": 1208.51,
+        "predicted": 1183.25
+      },
+      {
+        "date": "2025-04-11",
+        "actual": 1229.48,
+        "predicted": 1193.06
+      },
+      {
+        "date": "2025-04-15",
+        "actual": 1228.69,
+        "predicted": 1193.99
+      },
+      {
+        "date": "2025-04-16",
+        "actual": 1263.59,
+        "predicted": 1198.87
+      },
+      {
+        "date": "2025-04-17",
+        "actual": 1284.41,
+        "predicted": 1237.24
+      },
+      {
+        "date": "2025-04-21",
+        "actual": 1280.14,
+        "predicted": 1253.6
+      },
+      {
+        "date": "2025-04-22",
+        "actual": 1288.87,
+        "predicted": 1256.75
+      },
+      {
+        "date": "2025-04-23",
+        "actual": 1290.46,
+        "predicted": 1276.12
+      },
+      {
+        "date": "2025-04-24",
+        "actual": 1289.27,
+        "predicted": 1286.13
+      },
+      {
+        "date": "2025-04-25",
+        "actual": 1357.08,
+        "predicted": 1290.47
+      },
+      {
+        "date": "2025-04-28",
+        "actual": 1387.72,
+        "predicted": 1339.82
+      },
+      {
+        "date": "2025-04-29",
+        "actual": 1392.97,
+        "predicted": 1344.01
+      },
+      {
+        "date": "2025-04-30",
+        "actual": 1407.64,
+        "predicted": 1354.5
+      },
+      {
+        "date": "2025-05-02",
+        "actual": 1419.05,
+        "predicted": 1383.87
+      },
+      {
+        "date": "2025-05-05",
+        "actual": 1408.73,
+        "predicted": 1410.04
+      },
+      {
+        "date": "2025-05-06",
+        "actual": 1393.96,
+        "predicted": 1410.82
+      },
+      {
+        "date": "2025-05-07",
+        "actual": 1394.95,
+        "predicted": 1409.29
+      },
+      {
+        "date": "2025-05-08",
+        "actual": 1365.41,
+        "predicted": 1415.64
+      },
+      {
+        "date": "2025-05-09",
+        "actual": 1424.2,
+        "predicted": 1391.34
+      },
+      {
+        "date": "2025-05-12",
+        "actual": 1403.58,
+        "predicted": 1431.55
+      },
+      {
+        "date": "2025-05-13",
+        "actual": 1412.2,
+        "predicted": 1392.89
+      },
+      {
+        "date": "2025-05-14",
+        "actual": 1441.75,
+        "predicted": 1408.79
+      },
+      {
+        "date": "2025-05-15",
+        "actual": 1443.93,
+        "predicted": 1427.27
+      },
+      {
+        "date": "2025-05-16",
+        "actual": 1428.46,
+        "predicted": 1431.19
+      },
+      {
+        "date": "2025-05-19",
+        "actual": 1412.4,
+        "predicted": 1423.53
+      },
+      {
+        "date": "2025-05-20",
+        "actual": 1416.96,
+        "predicted": 1424.44
+      },
+      {
+        "date": "2025-05-21",
+        "actual": 1397.33,
+        "predicted": 1433.87
+      },
+      {
+        "date": "2025-05-22",
+        "actual": 1414.58,
+        "predicted": 1412.72
+      },
+      {
+        "date": "2025-05-23",
+        "actual": 1422.52,
+        "predicted": 1422.09
+      },
+      {
+        "date": "2025-05-26",
+        "actual": 1409.92,
+        "predicted": 1415.82
+      },
+      {
+        "date": "2025-05-27",
+        "actual": 1400.8,
+        "predicted": 1405.89
+      },
+      {
+        "date": "2025-05-28",
+        "actual": 1405.66,
+        "predicted": 1403.75
+      },
+      {
+        "date": "2025-05-29",
+        "actual": 1408.73,
+        "predicted": 1411.78
+      },
+      {
+        "date": "2025-05-30",
+        "actual": 1401.6,
+        "predicted": 1409.68
+      },
+      {
+        "date": "2025-06-02",
+        "actual": 1393.47,
+        "predicted": 1400.59
+      },
+      {
+        "date": "2025-06-03",
+        "actual": 1411.31,
+        "predicted": 1396.58
+      },
+      {
+        "date": "2025-06-04",
+        "actual": 1430.05,
+        "predicted": 1410.53
+      },
+      {
+        "date": "2025-06-05",
+        "actual": 1431.14,
+        "predicted": 1416.02
+      },
+      {
+        "date": "2025-06-06",
+        "actual": 1436.4,
+        "predicted": 1412.72
+      },
+      {
+        "date": "2025-06-09",
+        "actual": 1426.18,
+        "predicted": 1422.16
+      },
+      {
+        "date": "2025-06-10",
+        "actual": 1436.49,
+        "predicted": 1422.46
+      },
+      {
+        "date": "2025-06-11",
+        "actual": 1429.26,
+        "predicted": 1436.91
+      },
+      {
+        "date": "2025-06-12",
+        "actual": 1415.67,
+        "predicted": 1429.08
+      },
+      {
+        "date": "2025-06-13",
+        "actual": 1425.49,
+        "predicted": 1423.0
+      },
+      {
+        "date": "2025-06-16",
+        "actual": 1418.95,
+        "predicted": 1430.97
+      },
+      {
+        "date": "2025-06-17",
+        "actual": 1417.86,
+        "predicted": 1422.08
+      },
+      {
+        "date": "2025-06-18",
+        "actual": 1421.03,
+        "predicted": 1420.38
+      },
+      {
+        "date": "2025-06-19",
+        "actual": 1453.65,
+        "predicted": 1420.33
+      },
+      {
+        "date": "2025-06-20",
+        "actual": 1444.33,
+        "predicted": 1441.55
+      },
+      {
+        "date": "2025-06-23",
+        "actual": 1438.38,
+        "predicted": 1427.08
+      },
+      {
+        "date": "2025-06-24",
+        "actual": 1454.74,
+        "predicted": 1432.65
+      },
+      {
+        "date": "2025-06-25",
+        "actual": 1482.5,
+        "predicted": 1450.25
+      },
+      {
+        "date": "2025-06-26",
+        "actual": 1502.43,
+        "predicted": 1468.25
+      },
+      {
+        "date": "2025-06-27",
+        "actual": 1487.75,
+        "predicted": 1474.94
+      },
+      {
+        "date": "2025-06-30",
+        "actual": 1515.31,
+        "predicted": 1469.43
+      },
+      {
+        "date": "2025-07-01",
+        "actual": 1505.8,
+        "predicted": 1503.55
+      },
+      {
+        "date": "2025-07-02",
+        "actual": 1504.8,
+        "predicted": 1498.66
+      },
+      {
+        "date": "2025-07-03",
+        "actual": 1514.22,
+        "predicted": 1506.72
+      },
+      {
+        "date": "2025-07-04",
+        "actual": 1528.3,
+        "predicted": 1513.23
+      },
+      {
+        "date": "2025-07-07",
+        "actual": 1524.44,
+        "predicted": 1523.58
+      },
+      {
+        "date": "2025-07-08",
+        "actual": 1505.99,
+        "predicted": 1517.62
+      },
+      {
+        "date": "2025-07-09",
+        "actual": 1504.21,
+        "predicted": 1511.26
+      },
+      {
+        "date": "2025-07-10",
+        "actual": 1482.4,
+        "predicted": 1517.61
+      },
+      {
+        "date": "2025-07-11",
+        "actual": 1471.0,
+        "predicted": 1501.86
+      },
+      {
+        "date": "2025-07-14",
+        "actual": 1472.68,
+        "predicted": 1493.3
+      },
+      {
+        "date": "2025-07-15",
+        "actual": 1472.88,
+        "predicted": 1487.19
+      },
+      {
+        "date": "2025-07-16",
+        "actual": 1463.76,
+        "predicted": 1478.98
+      },
+      {
+        "date": "2025-07-17",
+        "actual": 1463.36,
+        "predicted": 1465.87
+      },
+      {
+        "date": "2025-07-18",
+        "actual": 1416.37,
+        "predicted": 1465.36
+      },
+      {
+        "date": "2025-07-21",
+        "actual": 1400.7,
+        "predicted": 1433.42
+      },
+      {
+        "date": "2025-07-22",
+        "actual": 1412.4,
+        "predicted": 1431.04
+      },
+      {
+        "date": "2025-07-23",
+        "actual": 1390.89,
+        "predicted": 1430.18
+      },
+      {
+        "date": "2025-07-24",
+        "actual": 1379.78,
+        "predicted": 1399.76
+      },
+      {
+        "date": "2025-07-25",
+        "actual": 1375.72,
+        "predicted": 1386.56
+      },
+      {
+        "date": "2025-07-28",
+        "actual": 1404.97,
+        "predicted": 1381.37
+      },
+      {
+        "date": "2025-07-29",
+        "actual": 1398.03,
+        "predicted": 1398.13
+      },
+      {
+        "date": "2025-07-30",
+        "actual": 1378.3,
+        "predicted": 1379.01
+      },
+      {
+        "date": "2025-07-31",
+        "actual": 1381.77,
+        "predicted": 1371.12
+      },
+      {
+        "date": "2025-08-01",
+        "actual": 1399.41,
+        "predicted": 1382.72
+      },
+      {
+        "date": "2025-08-04",
+        "actual": 1379.78,
+        "predicted": 1395.08
+      },
+      {
+        "date": "2025-08-05",
+        "actual": 1380.87,
+        "predicted": 1373.4
+      },
+      {
+        "date": "2025-08-06",
+        "actual": 1377.5,
+        "predicted": 1379.62
+      },
+      {
+        "date": "2025-08-07",
+        "actual": 1356.09,
+        "predicted": 1378.08
+      },
+      {
+        "date": "2025-08-08",
+        "actual": 1374.33,
+        "predicted": 1364.83
+      },
+      {
+        "date": "2025-08-11",
+        "actual": 1368.58,
+        "predicted": 1378.08
+      },
+      {
+        "date": "2025-08-12",
+        "actual": 1370.76,
+        "predicted": 1365.05
+      },
+      {
+        "date": "2025-08-13",
+        "actual": 1367.48,
+        "predicted": 1367.0
+      },
+      {
+        "date": "2025-08-14",
+        "actual": 1375.34,
+        "predicted": 1362.79
+      },
+      {
+        "date": "2025-08-18",
+        "actual": 1413.56,
+        "predicted": 1372.64
+      },
+      {
+        "date": "2025-08-19",
+        "actual": 1406.5,
+        "predicted": 1395.19
+      },
+      {
+        "date": "2025-08-20",
+        "actual": 1418.24,
+        "predicted": 1382.87
+      },
+      {
+        "date": "2025-08-21",
+        "actual": 1402.71,
+        "predicted": 1401.72
+      },
+      {
+        "date": "2025-08-22",
+        "actual": 1406.1,
+        "predicted": 1397.27
+      },
+      {
+        "date": "2025-08-25",
+        "actual": 1378.53,
+        "predicted": 1412.33
+      },
+      {
+        "date": "2025-08-26",
+        "actual": 1379.52,
+        "predicted": 1390.71
+      },
+      {
+        "date": "2025-08-28",
+        "actual": 1350.95,
+        "predicted": 1397.71
+      },
+      {
+        "date": "2025-08-29",
+        "actual": 1347.67,
+        "predicted": 1369.61
+      },
+      {
+        "date": "2025-09-01",
+        "actual": 1360.21,
+        "predicted": 1369.15
+      },
+      {
+        "date": "2025-09-02",
+        "actual": 1366.28,
+        "predicted": 1366.54
+      },
+      {
+        "date": "2025-09-03",
+        "actual": 1353.04,
+        "predicted": 1360.97
+      },
+      {
+        "date": "2025-09-04",
+        "actual": 1368.67,
+        "predicted": 1346.35
+      },
+      {
+        "date": "2025-09-05",
+        "actual": 1372.16,
+        "predicted": 1363.71
+      },
+      {
+        "date": "2025-09-08",
+        "actual": 1369.87,
+        "predicted": 1363.46
+      },
+      {
+        "date": "2025-09-09",
+        "actual": 1370.66,
+        "predicted": 1362.86
+      },
+      {
+        "date": "2025-09-10",
+        "actual": 1376.93,
+        "predicted": 1365.27
+      },
+      {
+        "date": "2025-09-11",
+        "actual": 1388.58,
+        "predicted": 1373.01
+      },
+      {
+        "date": "2025-09-12",
+        "actual": 1392.86,
+        "predicted": 1379.75
+      },
+      {
+        "date": "2025-09-15",
+        "actual": 1398.83,
+        "predicted": 1380.8
+      },
+      {
+        "date": "2025-09-16",
+        "actual": 1407.29,
+        "predicted": 1387.82
+      },
+      {
+        "date": "2025-09-17",
+        "actual": 1408.49,
+        "predicted": 1397.05
+      },
+      {
+        "date": "2025-09-18",
+        "actual": 1400.92,
+        "predicted": 1400.72
+      },
+      {
+        "date": "2025-09-19",
+        "actual": 1384.2,
+        "predicted": 1399.62
+      },
+      {
+        "date": "2025-09-22",
+        "actual": 1383.4,
+        "predicted": 1393.67
+      },
+      {
+        "date": "2025-09-23",
+        "actual": 1376.64,
+        "predicted": 1397.55
+      },
+      {
+        "date": "2025-09-24",
+        "actual": 1366.08,
+        "predicted": 1388.07
+      },
+      {
+        "date": "2025-09-25",
+        "actual": 1371.26,
+        "predicted": 1377.04
+      },
+      {
+        "date": "2025-09-26",
+        "actual": 1366.48,
+        "predicted": 1377.61
+      },
+      {
+        "date": "2025-09-29",
+        "actual": 1357.72,
+        "predicted": 1369.01
+      },
+      {
+        "date": "2025-09-30",
+        "actual": 1362.4,
+        "predicted": 1361.52
+      },
+      {
+        "date": "2025-10-01",
+        "actual": 1357.13,
+        "predicted": 1364.61
+      },
+      {
+        "date": "2025-10-03",
+        "actual": 1368.67,
+        "predicted": 1358.0
+      },
+      {
+        "date": "2025-10-06",
+        "actual": 1378.43,
+        "predicted": 1365.23
+      },
+      {
+        "date": "2025-10-07",
+        "actual": 1361.11,
+        "predicted": 1366.96
+      },
+      {
+        "date": "2025-10-08",
+        "actual": 1371.46,
+        "predicted": 1355.35
+      },
+      {
+        "date": "2025-10-09",
+        "actual": 1375.34,
+        "predicted": 1370.05
+      },
+      {
+        "date": "2025-10-10",
+        "actual": 1368.67,
+        "predicted": 1371.07
+      },
+      {
+        "date": "2025-10-13",
+        "actual": 1369.57,
+        "predicted": 1366.34
+      },
+      {
+        "date": "2025-10-14",
+        "actual": 1367.98,
+        "predicted": 1367.97
+      },
+      {
+        "date": "2025-10-15",
+        "actual": 1391.86,
+        "predicted": 1368.51
+      },
+      {
+        "date": "2025-10-16",
+        "actual": 1410.28,
+        "predicted": 1384.83
+      },
+      {
+        "date": "2025-10-17",
+        "actual": 1460.05,
+        "predicted": 1389.86
+      },
+      {
+        "date": "2025-10-20",
+        "actual": 1458.46,
+        "predicted": 1423.61
+      },
+      {
+        "date": "2025-10-21",
+        "actual": 1441.73,
+        "predicted": 1419.89
+      },
+      {
+        "date": "2025-10-23",
+        "actual": 1444.92,
+        "predicted": 1429.31
+      },
+      {
+        "date": "2025-10-24",
+        "actual": 1477.27,
+        "predicted": 1449.26
+      },
+      {
+        "date": "2025-10-27",
+        "actual": 1480.06,
+        "predicted": 1476.14
+      },
+      {
+        "date": "2025-10-28",
+        "actual": 1497.28,
+        "predicted": 1467.04
+      },
+      {
+        "date": "2025-10-29",
+        "actual": 1481.65,
+        "predicted": 1481.04
+      },
+      {
+        "date": "2025-10-30",
+        "actual": 1479.56,
+        "predicted": 1475.26
+      },
+      {
+        "date": "2025-10-31",
+        "actual": 1477.87,
+        "predicted": 1487.95
+      },
+      {
+        "date": "2025-11-03",
+        "actual": 1466.32,
+        "predicted": 1487.59
+      },
+      {
+        "date": "2025-11-04",
+        "actual": 1489.21,
+        "predicted": 1479.84
+      },
+      {
+        "date": "2025-11-06",
+        "actual": 1471.2,
+        "predicted": 1492.23
+      },
+      {
+        "date": "2025-11-07",
+        "actual": 1482.45,
+        "predicted": 1471.88
+      },
+      {
+        "date": "2025-11-10",
+        "actual": 1486.53,
+        "predicted": 1484.36
+      },
+      {
+        "date": "2025-11-11",
+        "actual": 1504.54,
+        "predicted": 1482.59
+      },
+      {
+        "date": "2025-11-12",
+        "actual": 1503.95,
+        "predicted": 1496.19
+      },
+      {
+        "date": "2025-11-13",
+        "actual": 1511.91,
+        "predicted": 1490.84
+      },
+      {
+        "date": "2025-11-14",
+        "actual": 1511.31,
+        "predicted": 1502.62
+      },
+      {
+        "date": "2025-11-17",
+        "actual": 1512.41,
+        "predicted": 1504.76
+      },
+      {
+        "date": "2025-11-18",
+        "actual": 1511.91,
+        "predicted": 1510.63
+      },
+      {
+        "date": "2025-11-19",
+        "actual": 1541.97,
+        "predicted": 1511.31
+      },
+      {
+        "date": "2025-11-20",
+        "actual": 1539.48,
+        "predicted": 1531.97
+      },
+      {
+        "date": "2025-11-21",
+        "actual": 1528.83,
+        "predicted": 1523.98
+      },
+      {
+        "date": "2025-11-24",
+        "actual": 1532.61,
+        "predicted": 1524.05
+      },
+      {
+        "date": "2025-11-25",
+        "actual": 1562.67,
+        "predicted": 1534.12
+      },
+      {
+        "date": "2025-11-26",
+        "actual": 1556.2,
+        "predicted": 1555.66
+      },
+      {
+        "date": "2025-11-27",
+        "actual": 1560.29,
+        "predicted": 1543.51
+      },
+      {
+        "date": "2025-11-28",
+        "actual": 1558.89,
+        "predicted": 1551.94
+      },
+      {
+        "date": "2025-12-01",
+        "actual": 1539.18,
+        "predicted": 1555.92
+      },
+      {
+        "date": "2025-12-02",
+        "actual": 1531.72,
+        "predicted": 1549.64
+      },
+      {
+        "date": "2025-12-03",
+        "actual": 1528.53,
+        "predicted": 1547.4
+      },
+      {
+        "date": "2025-12-04",
+        "actual": 1533.51,
+        "predicted": 1542.85
+      },
+      {
+        "date": "2025-12-05",
+        "actual": 1535.9,
+        "predicted": 1540.0
+      },
+      {
+        "date": "2025-12-08",
+        "actual": 1522.36,
+        "predicted": 1533.6
+      },
+      {
+        "date": "2025-12-09",
+        "actual": 1529.83,
+        "predicted": 1523.18
+      },
+      {
+        "date": "2025-12-10",
+        "actual": 1537.89,
+        "predicted": 1531.28
+      },
+      {
+        "date": "2025-12-11",
+        "actual": 1549.34,
+        "predicted": 1533.39
+      },
+      {
+        "date": "2025-12-12",
+        "actual": 1549.04,
+        "predicted": 1538.04
+      },
+      {
+        "date": "2025-12-15",
+        "actual": 1535.2,
+        "predicted": 1535.93
+      },
+      {
+        "date": "2025-12-16",
+        "actual": 1537.29,
+        "predicted": 1533.12
+      },
+      {
+        "date": "2025-12-17",
+        "actual": 1537.29,
+        "predicted": 1541.12
+      },
+      {
+        "date": "2025-12-18",
+        "actual": 1557.9,
+        "predicted": 1540.15
+      },
+      {
+        "date": "2025-12-19",
+        "actual": 1568.15,
+        "predicted": 1550.39
+      },
+      {
+        "date": "2025-12-22",
+        "actual": 1563.47,
+        "predicted": 1550.08
+      },
+      {
+        "date": "2025-12-23",
+        "actual": 1551.03,
+        "predicted": 1550.11
+      },
+      {
+        "date": "2025-12-24",
+        "actual": 1552.02,
+        "predicted": 1550.06
+      },
+      {
+        "date": "2025-12-26",
+        "actual": 1538.49,
+        "predicted": 1558.74
+      },
+      {
+        "date": "2025-12-29",
+        "actual": 1532.71,
+        "predicted": 1548.68
+      },
+      {
+        "date": "2025-12-30",
+        "actual": 1563.17,
+        "predicted": 1544.16
+      },
+      {
+        "date": "2025-12-31",
+        "actual": 1568.35,
+        "predicted": 1558.86
+      },
+      {
+        "date": "2026-01-01",
+        "actual": 1584.97,
+        "predicted": 1552.04
+      },
+      {
+        "date": "2026-01-02",
+        "actual": 1570.84,
+        "predicted": 1563.58
+      },
+      {
+        "date": "2026-01-05",
+        "actual": 1500.66,
+        "predicted": 1558.2
+      },
+      {
+        "date": "2026-01-06",
+        "actual": 1497.28,
+        "predicted": 1528.81
+      },
+      {
+        "date": "2026-01-07",
+        "actual": 1463.83,
+        "predicted": 1541.18
+      },
+      {
+        "date": "2026-01-08",
+        "actual": 1468.51,
+        "predicted": 1505.9
+      },
+      {
+        "date": "2026-01-09",
+        "actual": 1476.37,
+        "predicted": 1496.74
+      },
+      {
+        "date": "2026-01-12",
+        "actual": 1446.11,
+        "predicted": 1477.71
+      },
+      {
+        "date": "2026-01-13",
+        "actual": 1452.09,
+        "predicted": 1449.96
+      },
+      {
+        "date": "2026-01-14",
+        "actual": 1452.09,
+        "predicted": 1455.96
+      },
+      {
+        "date": "2026-01-15",
+        "actual": 1451.19,
+        "predicted": 1451.21
+      },
+      {
+        "date": "2026-01-16",
+        "actual": 1407.09,
+        "predicted": 1447.46
+      },
+      {
+        "date": "2026-01-19",
+        "actual": 1387.58,
+        "predicted": 1414.24
+      },
+      {
+        "date": "2026-01-20",
+        "actual": 1398.14,
+        "predicted": 1412.7
+      },
+      {
+        "date": "2026-01-21",
+        "actual": 1396.05,
+        "predicted": 1415.2
+      },
+      {
+        "date": "2026-01-22",
+        "actual": 1379.72,
+        "predicted": 1397.93
+      },
+      {
+        "date": "2026-01-23",
+        "actual": 1374.15,
+        "predicted": 1376.67
+      },
+      {
+        "date": "2026-01-27",
+        "actual": 1390.27,
+        "predicted": 1375.08
+      },
+      {
+        "date": "2026-01-28",
+        "actual": 1384.6,
+        "predicted": 1386.35
+      },
+      {
+        "date": "2026-01-29",
+        "actual": 1388.98,
+        "predicted": 1374.33
+      },
+      {
+        "date": "2026-01-30",
+        "actual": 1384.0,
+        "predicted": 1378.27
+      },
+      {
+        "date": "2026-02-02",
+        "actual": 1430.49,
+        "predicted": 1376.01
+      },
+      {
+        "date": "2026-02-03",
+        "actual": 1450.1,
+        "predicted": 1412.58
+      },
+      {
+        "date": "2026-02-04",
+        "actual": 1436.76,
+        "predicted": 1413.51
+      },
+      {
+        "date": "2026-02-05",
+        "actual": 1444.12,
+        "predicted": 1410.89
+      },
+      {
+        "date": "2026-02-06",
+        "actual": 1454.87,
+        "predicted": 1432.17
+      },
+      {
+        "date": "2026-02-09",
+        "actual": 1451.79,
+        "predicted": 1449.33
+      },
+      {
+        "date": "2026-02-10",
+        "actual": 1461.94,
+        "predicted": 1448.13
+      },
+      {
+        "date": "2026-02-11",
+        "actual": 1442.23,
+        "predicted": 1456.39
+      },
+      {
+        "date": "2026-02-12",
+        "actual": 1413.07,
+        "predicted": 1444.75
+      },
+      {
+        "date": "2026-02-13",
+        "actual": 1430.49,
+        "predicted": 1433.87
+      },
+      {
+        "date": "2026-02-16",
+        "actual": 1416.45,
+        "predicted": 1449.11
+      },
+      {
+        "date": "2026-02-17",
+        "actual": 1434.67,
+        "predicted": 1427.33
+      },
+      {
+        "date": "2026-02-18",
+        "actual": 1403.01,
+        "predicted": 1435.35
+      },
+      {
+        "date": "2026-02-19",
+        "actual": 1412.87,
+        "predicted": 1404.67
+      },
+      {
+        "date": "2026-02-20",
+        "actual": 1421.43,
+        "predicted": 1422.87
+      },
+      {
+        "date": "2026-02-23",
+        "actual": 1422.22,
+        "predicted": 1420.04
+      },
+      {
+        "date": "2026-02-24",
+        "actual": 1392.06,
+        "predicted": 1417.59
+      },
+      {
+        "date": "2026-02-25",
+        "actual": 1400.33,
+        "predicted": 1394.48
+      },
+      {
+        "date": "2026-02-26",
+        "actual": 1387.48,
+        "predicted": 1410.91
+      },
+      {
+        "date": "2026-02-27",
+        "actual": 1351.75,
+        "predicted": 1395.8
+      },
+      {
+        "date": "2026-03-02",
+        "actual": 1338.81,
+        "predicted": 1370.17
+      },
+      {
+        "date": "2026-03-04",
+        "actual": 1383.01,
+        "predicted": 1362.46
+      },
+      {
+        "date": "2026-03-05",
+        "actual": 1398.33,
+        "predicted": 1387.65
+      },
+      {
+        "date": "2026-03-06",
+        "actual": 1417.45,
+        "predicted": 1373.6
+      },
+      {
+        "date": "2026-03-09",
+        "actual": 1402.32,
+        "predicted": 1381.97
+      },
+      {
+        "date": "2026-03-10",
+        "actual": 1383.8,
+        "predicted": 1378.06
+      },
+      {
+        "date": "2026-03-11",
+        "actual": 1385.79,
+        "predicted": 1386.75
+      },
+      {
+        "date": "2026-03-12",
+        "actual": 1374.35,
+        "predicted": 1396.99
+      },
+      {
+        "date": "2026-03-13",
+        "actual": 1388.68,
+        "predicted": 1385.96
+      },
+      {
+        "date": "2026-03-16",
+        "actual": 1391.17,
+        "predicted": 1391.52
+      },
+      {
+        "date": "2026-03-17",
+        "actual": 1401.62,
+        "predicted": 1383.83
+      },
+      {
+        "date": "2026-03-18",
+        "actual": 1378.43,
+        "predicted": 1391.44
+      },
+      {
+        "date": "2026-03-19",
+        "actual": 1407.89,
+        "predicted": 1374.96
+      },
+      {
+        "date": "2026-03-20",
+        "actual": 1401.32,
+        "predicted": 1406.22
+      },
+      {
+        "date": "2026-03-23",
+        "actual": 1405.3,
+        "predicted": 1392.66
+      },
+      {
+        "date": "2026-03-24",
+        "actual": 1406.6,
+        "predicted": 1400.6
+      },
+      {
+        "date": "2026-03-25",
+        "actual": 1341.9,
+        "predicted": 1400.57
+      },
+      {
+        "date": "2026-03-27",
+        "actual": 1337.71,
+        "predicted": 1363.22
+      },
+      {
+        "date": "2026-03-30",
+        "actual": 1362.9,
+        "predicted": 1375.1
+      },
+      {
+        "date": "2026-04-01",
+        "actual": 1344.28,
+        "predicted": 1380.58
+      },
+      {
+        "date": "2026-04-02",
+        "actual": 1298.7,
+        "predicted": 1346.69
+      },
+      {
+        "date": "2026-04-06",
+        "actual": 1298.6,
+        "predicted": 1310.34
+      },
+      {
+        "date": "2026-04-07",
+        "actual": 1341.6,
+        "predicted": 1322.55
+      },
+      {
+        "date": "2026-04-08",
+        "actual": 1323.88,
+        "predicted": 1344.62
+      },
+      {
+        "date": "2026-04-09",
+        "actual": 1343.99,
+        "predicted": 1307.32
+      },
+      {
+        "date": "2026-04-10",
+        "actual": 1309.05,
+        "predicted": 1325.46
+      },
+      {
+        "date": "2026-04-13",
+        "actual": 1337.91,
+        "predicted": 1302.19
+      },
+      {
+        "date": "2026-04-15",
+        "actual": 1337.12,
+        "predicted": 1341.4
+      },
+      {
+        "date": "2026-04-16",
+        "actual": 1358.72,
+        "predicted": 1326.34
+      },
+      {
+        "date": "2026-04-17",
+        "actual": 1357.03,
+        "predicted": 1344.75
+      },
+      {
+        "date": "2026-04-20",
+        "actual": 1347.07,
+        "predicted": 1336.85
+      },
+      {
+        "date": "2026-04-21",
+        "actual": 1355.83,
+        "predicted": 1341.7
+      },
+      {
+        "date": "2026-04-22",
+        "actual": 1337.22,
+        "predicted": 1354.5
+      },
+      {
+        "date": "2026-04-23",
+        "actual": 1321.69,
+        "predicted": 1342.15
+      },
+      {
+        "date": "2026-04-24",
+        "actual": 1359.51,
+        "predicted": 1335.74
+      },
+      {
+        "date": "2026-04-27",
+        "actual": 1382.51,
+        "predicted": 1361.89
+      },
+      {
+        "date": "2026-04-28",
+        "actual": 1418.84,
+        "predicted": 1362.47
+      },
+      {
+        "date": "2026-04-29",
+        "actual": 1424.22,
+        "predicted": 1381.87
+      },
+      {
+        "date": "2026-04-30",
+        "actual": 1424.22,
+        "predicted": 1386.43
+      },
+      {
+        "date": "2026-05-01",
+        "actual": 1456.37,
+        "predicted": 1406.35
+      },
+      {
+        "date": "2026-05-04",
+        "actual": 1456.86,
+        "predicted": 1441.33
+      },
+      {
+        "date": "2026-05-05",
+        "actual": 1431.28,
+        "predicted": 1442.87
+      },
+      {
+        "date": "2026-05-06",
+        "actual": 1429.59,
+        "predicted": 1433.61
+      },
+      {
+        "date": "2026-05-07",
+        "actual": 1428.59,
+        "predicted": 1444.63
+      },
+      {
+        "date": "2026-05-08",
+        "actual": 1381.81,
+        "predicted": 1445.33
+      },
+      {
+        "date": "2026-05-11",
+        "actual": 1357.72,
+        "predicted": 1408.48
+      },
+      {
+        "date": "2026-05-12",
+        "actual": 1352.55,
+        "predicted": 1396.0
+      },
+      {
+        "date": "2026-05-13",
+        "actual": 1355.53,
+        "predicted": 1387.14
+      },
+      {
+        "date": "2026-05-14",
+        "actual": 1330.25,
+        "predicted": 1374.5
+      },
+      {
+        "date": "2026-05-15",
+        "actual": 1329.75,
+        "predicted": 1339.81
+      },
+      {
+        "date": "2026-05-18",
+        "actual": 1316.61,
+        "predicted": 1339.99
+      },
+      {
+        "date": "2026-05-19",
+        "actual": 1353.44,
+        "predicted": 1325.09
+      },
+      {
+        "date": "2026-05-20",
+        "actual": 1343.39,
+        "predicted": 1349.16
+      },
+      {
+        "date": "2026-05-21",
+        "actual": 1348.27,
+        "predicted": 1324.14
+      },
+      {
+        "date": "2026-05-22",
+        "actual": 1360.71,
+        "predicted": 1334.94
+      },
+      {
+        "date": "2026-05-25",
+        "actual": 1350.06,
+        "predicted": 1345.29
+      },
+      {
+        "date": "2026-05-26",
+        "actual": 1344.28,
+        "predicted": 1342.09
+      },
+      {
+        "date": "2026-05-27",
+        "actual": 1344.28,
+        "predicted": 1342.71
+      },
+      {
+        "date": "2026-05-28",
+        "actual": 1315.12,
+        "predicted": 1346.03
+      },
+      {
+        "date": "2026-05-29",
+        "actual": 1313.92,
+        "predicted": 1325.63
+      },
+      {
+        "date": "2026-06-01",
+        "actual": 1308.55,
+        "predicted": 1329.16
+      },
+      {
+        "date": "2026-06-02",
+        "actual": 1307.16,
+        "predicted": 1318.79
+      },
+      {
+        "date": "2026-06-03",
+        "actual": 1297.7,
+        "predicted": 1313.16
+      },
+      {
+        "date": "2026-06-04",
+        "actual": 1291.0,
+        "predicted": 1299.7
+      },
+      {
+        "date": "2026-06-05",
+        "actual": 1263.3,
+        "predicted": 1296.42
+      },
+      {
+        "date": "2026-06-08",
+        "actual": 1269.2,
+        "predicted": 1275.61
+      },
+      {
+        "date": "2026-06-09",
+        "actual": 1258.8,
+        "predicted": 1283.85
+      },
+      {
+        "date": "2026-06-10",
+        "actual": 1263.0,
+        "predicted": 1265.57
+      },
+      {
+        "date": "2026-06-11",
+        "actual": 1293.0,
+        "predicted": 1265.67
+      },
+      {
+        "date": "2026-06-12",
+        "actual": 1307.0,
+        "predicted": 1279.17
+      },
+      {
+        "date": "2026-06-15",
+        "actual": 1328.8,
+        "predicted": 1280.81
+      },
+      {
+        "date": "2026-06-16",
+        "actual": 1332.7,
+        "predicted": 1297.6
+      },
+      {
+        "date": "2026-06-17",
+        "actual": 1328.1,
+        "predicted": 1305.39
+      },
+      {
+        "date": "2026-06-18",
+        "actual": 1309.5,
+        "predicted": 1315.84
+      },
+      {
+        "date": "2026-06-19",
+        "actual": 1326.5,
+        "predicted": 1313.05
+      },
+      {
+        "date": "2026-06-22",
+        "actual": 1309.5,
+        "predicted": 1334.55
+      },
+      {
+        "date": "2026-06-23",
+        "actual": 1313.6,
+        "predicted": 1314.25
+      },
+      {
+        "date": "2026-06-24",
+        "actual": 1318.1,
+        "predicted": 1320.24
+      },
+      {
+        "date": "2026-06-25",
+        "actual": 1318.1,
+        "predicted": 1318.36
+      },
+      {
+        "date": "2026-06-26",
+        "actual": 1301.0,
+        "predicted": 1318.09
+      }
+    ]
+  },
+  "naiveModel": {
+    "mae": 13.2562,
+    "rmse": 18.0755,
+    "r2": 0.962932,
+    "dirAccuracy": 0.51585
+  },
+  "returnModel": {
+    "mae": 0.00971,
+    "rmse": 0.013269,
+    "r2": -0.007951,
+    "dirAccuracy": 0.510086,
+    "naiveDirAccuracy": 0.48415,
+    "featureWeights": {
+      "ma5": -0.018805,
+      "ma20": 0.01777,
+      "ret": -0.001233,
+      "ma_ratio": 0.002458,
+      "bias": 0.000752
+    },
+    "featureWeightsPctOfTarget": {
+      "ma5": -1.8805,
+      "ma20": 1.777,
+      "ret": -0.1233,
+      "ma_ratio": 0.2458
+    },
+    "testPeriodData": [
+      {
+        "date": "2025-02-01",
+        "ma5Scaled": 0.7169,
+        "ma20Scaled": 0.7557,
+        "actualReturn": -0.014787,
+        "predictedReturn": 9e-05,
+        "residual": -0.014877
+      },
+      {
+        "date": "2025-02-03",
+        "ma5Scaled": 0.7257,
+        "ma20Scaled": 0.7566,
+        "actualReturn": 0.031543,
+        "predictedReturn": 0.001009,
+        "residual": 0.030534
+      },
+      {
+        "date": "2025-02-04",
+        "ma5Scaled": 0.7635,
+        "ma20Scaled": 0.7604,
+        "actualReturn": -0.005447,
+        "predictedReturn": -0.002224,
+        "residual": -0.003222
+      },
+      {
+        "date": "2025-02-05",
+        "ma5Scaled": 0.7826,
+        "ma20Scaled": 0.7648,
+        "actualReturn": 0.002621,
+        "predictedReturn": 0.000161,
+        "residual": 0.00246
+      },
+      {
+        "date": "2025-02-06",
+        "ma5Scaled": 0.7952,
+        "ma20Scaled": 0.7724,
+        "actualReturn": -0.011588,
+        "predictedReturn": -0.000406,
+        "residual": -0.011181
+      },
+      {
+        "date": "2025-02-07",
+        "ma5Scaled": 0.7968,
+        "ma20Scaled": 0.7775,
+        "actualReturn": -0.010302,
+        "predictedReturn": 0.000547,
+        "residual": -0.010849
+      },
+      {
+        "date": "2025-02-10",
+        "ma5Scaled": 0.8027,
+        "ma20Scaled": 0.7803,
+        "actualReturn": -0.014996,
+        "predictedReturn": 0.000445,
+        "residual": -0.015441
+      },
+      {
+        "date": "2025-02-11",
+        "ma5Scaled": 0.7643,
+        "ma20Scaled": 0.777,
+        "actualReturn": -0.01482,
+        "predictedReturn": 0.000919,
+        "residual": -0.015739
+      },
+      {
+        "date": "2025-02-12",
+        "ma5Scaled": 0.7174,
+        "ma20Scaled": 0.7675,
+        "actualReturn": -0.00037,
+        "predictedReturn": 0.001087,
+        "residual": -0.001457
+      },
+      {
+        "date": "2025-02-13",
+        "ma5Scaled": 0.6676,
+        "ma20Scaled": 0.7511,
+        "actualReturn": 0.000946,
+        "predictedReturn": 0.000292,
+        "residual": 0.000653
+      },
+      {
+        "date": "2025-02-14",
+        "ma5Scaled": 0.6299,
+        "ma20Scaled": 0.7344,
+        "actualReturn": 0.006285,
+        "predictedReturn": 0.000312,
+        "residual": 0.005973
+      },
+      {
+        "date": "2025-02-17",
+        "ma5Scaled": 0.6081,
+        "ma20Scaled": 0.7251,
+        "actualReturn": 0.000408,
+        "predictedReturn": 2e-05,
+        "residual": 0.000388
+      },
+      {
+        "date": "2025-02-18",
+        "ma5Scaled": 0.6009,
+        "ma20Scaled": 0.7153,
+        "actualReturn": 0.001673,
+        "predictedReturn": 0.000406,
+        "residual": 0.001267
+      },
+      {
+        "date": "2025-02-19",
+        "ma5Scaled": 0.6092,
+        "ma20Scaled": 0.7085,
+        "actualReturn": 0.004522,
+        "predictedReturn": 0.000262,
+        "residual": 0.00426
+      },
+      {
+        "date": "2025-02-20",
+        "ma5Scaled": 0.622,
+        "ma20Scaled": 0.7059,
+        "actualReturn": -0.003933,
+        "predictedReturn": 8e-06,
+        "residual": -0.003941
+      },
+      {
+        "date": "2025-02-21",
+        "ma5Scaled": 0.6303,
+        "ma20Scaled": 0.7057,
+        "actualReturn": -0.011074,
+        "predictedReturn": 0.000532,
+        "residual": -0.011606
+      },
+      {
+        "date": "2025-02-24",
+        "ma5Scaled": 0.6224,
+        "ma20Scaled": 0.7019,
+        "actualReturn": -0.008686,
+        "predictedReturn": 0.001028,
+        "residual": -0.009714
+      },
+      {
+        "date": "2025-02-25",
+        "ma5Scaled": 0.6062,
+        "ma20Scaled": 0.696,
+        "actualReturn": 0.002575,
+        "predictedReturn": 0.000919,
+        "residual": 0.001656
+      },
+      {
+        "date": "2025-02-27",
+        "ma5Scaled": 0.5907,
+        "ma20Scaled": 0.6872,
+        "actualReturn": -0.005799,
+        "predictedReturn": 0.000207,
+        "residual": -0.006006
+      },
+      {
+        "date": "2025-02-28",
+        "ma5Scaled": 0.5656,
+        "ma20Scaled": 0.6749,
+        "actualReturn": -0.02404,
+        "predictedReturn": 0.000827,
+        "residual": -0.024867
+      },
+      {
+        "date": "2025-03-03",
+        "ma5Scaled": 0.5223,
+        "ma20Scaled": 0.6572,
+        "actualReturn": -0.007983,
+        "predictedReturn": 0.002159,
+        "residual": -0.010142
+      },
+      {
+        "date": "2025-03-04",
+        "ma5Scaled": 0.4822,
+        "ma20Scaled": 0.6412,
+        "actualReturn": 0.011791,
+        "predictedReturn": 0.001203,
+        "residual": 0.010588
+      },
+      {
+        "date": "2025-03-05",
+        "ma5Scaled": 0.4606,
+        "ma20Scaled": 0.6204,
+        "actualReturn": 0.028921,
+        "predictedReturn": -9.4e-05,
+        "residual": 0.029015
+      },
+      {
+        "date": "2025-03-06",
+        "ma5Scaled": 0.4625,
+        "ma20Scaled": 0.6074,
+        "actualReturn": 0.033234,
+        "predictedReturn": -0.001284,
+        "residual": 0.034518
+      },
+      {
+        "date": "2025-03-07",
+        "ma5Scaled": 0.5004,
+        "ma20Scaled": 0.6014,
+        "actualReturn": -0.009122,
+        "predictedReturn": -0.001742,
+        "residual": -0.00738
+      },
+      {
+        "date": "2025-03-10",
+        "ma5Scaled": 0.5515,
+        "ma20Scaled": 0.596,
+        "actualReturn": 0.007187,
+        "predictedReturn": 0.00085,
+        "residual": 0.006337
+      },
+      {
+        "date": "2025-03-11",
+        "ma5Scaled": 0.6165,
+        "ma20Scaled": 0.5948,
+        "actualReturn": 0.007817,
+        "predictedReturn": -0.000495,
+        "residual": 0.008312
+      },
+      {
+        "date": "2025-03-12",
+        "ma5Scaled": 0.6785,
+        "ma20Scaled": 0.599,
+        "actualReturn": -0.007279,
+        "predictedReturn": -0.000773,
+        "residual": -0.006506
+      },
+      {
+        "date": "2025-03-13",
+        "ma5Scaled": 0.7076,
+        "ma20Scaled": 0.605,
+        "actualReturn": -0.007252,
+        "predictedReturn": 0.000128,
+        "residual": -0.00738
+      },
+      {
+        "date": "2025-03-17",
+        "ma5Scaled": 0.6993,
+        "ma20Scaled": 0.6093,
+        "actualReturn": 0.0,
+        "predictedReturn": 0.000171,
+        "residual": -0.000171
+      },
+      {
+        "date": "2025-03-18",
+        "ma5Scaled": 0.6996,
+        "ma20Scaled": 0.6134,
+        "actualReturn": 0.0067,
+        "predictedReturn": -0.000301,
+        "residual": 0.007001
+      },
+      {
+        "date": "2025-03-19",
+        "ma5Scaled": 0.6995,
+        "ma20Scaled": 0.6176,
+        "actualReturn": 0.01764,
+        "predictedReturn": -0.000734,
+        "residual": 0.018375
+      },
+      {
+        "date": "2025-03-20",
+        "ma5Scaled": 0.7087,
+        "ma20Scaled": 0.6259,
+        "actualReturn": 0.005673,
+        "predictedReturn": -0.001476,
+        "residual": 0.007149
+      },
+      {
+        "date": "2025-03-21",
+        "ma5Scaled": 0.7304,
+        "ma20Scaled": 0.6352,
+        "actualReturn": 0.020175,
+        "predictedReturn": -0.000745,
+        "residual": 0.02092
+      },
+      {
+        "date": "2025-03-24",
+        "ma5Scaled": 0.7785,
+        "ma20Scaled": 0.6483,
+        "actualReturn": -0.012787,
+        "predictedReturn": -0.001872,
+        "residual": -0.010915
+      },
+      {
+        "date": "2025-03-25",
+        "ma5Scaled": 0.814,
+        "ma20Scaled": 0.6592,
+        "actualReturn": -0.009646,
+        "predictedReturn": 0.000198,
+        "residual": -0.009844
+      },
+      {
+        "date": "2025-03-26",
+        "ma5Scaled": 0.8337,
+        "ma20Scaled": 0.6703,
+        "actualReturn": 0.004045,
+        "predictedReturn": -6.5e-05,
+        "residual": 0.00411
+      },
+      {
+        "date": "2025-03-27",
+        "ma5Scaled": 0.8406,
+        "ma20Scaled": 0.6844,
+        "actualReturn": -0.002425,
+        "predictedReturn": -0.000966,
+        "residual": -0.001459
+      },
+      {
+        "date": "2025-03-28",
+        "ma5Scaled": 0.8396,
+        "ma20Scaled": 0.6973,
+        "actualReturn": -0.017646,
+        "predictedReturn": -0.000497,
+        "residual": -0.017148
+      },
+      {
+        "date": "2025-04-01",
+        "ma5Scaled": 0.802,
+        "ma20Scaled": 0.7073,
+        "actualReturn": -0.001157,
+        "predictedReturn": 0.000704,
+        "residual": -0.001862
+      },
+      {
+        "date": "2025-04-02",
+        "ma5Scaled": 0.7759,
+        "ma20Scaled": 0.7224,
+        "actualReturn": -0.001958,
+        "predictedReturn": -0.000231,
+        "residual": -0.001727
+      },
+      {
+        "date": "2025-04-03",
+        "ma5Scaled": 0.7573,
+        "ma20Scaled": 0.7389,
+        "actualReturn": -0.035237,
+        "predictedReturn": -4.4e-05,
+        "residual": -0.035193
+      },
+      {
+        "date": "2025-04-04",
+        "ma5Scaled": 0.7014,
+        "ma20Scaled": 0.7444,
+        "actualReturn": -0.032373,
+        "predictedReturn": 0.002433,
+        "residual": -0.034807
+      },
+      {
+        "date": "2025-04-07",
+        "ma5Scaled": 0.6181,
+        "ma20Scaled": 0.7361,
+        "actualReturn": 0.014155,
+        "predictedReturn": 0.002583,
+        "residual": 0.011572
+      },
+      {
+        "date": "2025-04-08",
+        "ma5Scaled": 0.5645,
+        "ma20Scaled": 0.7233,
+        "actualReturn": 0.002665,
+        "predictedReturn": -0.000319,
+        "residual": 0.002983
+      },
+      {
+        "date": "2025-04-09",
+        "ma5Scaled": 0.5144,
+        "ma20Scaled": 0.7132,
+        "actualReturn": 0.028346,
+        "predictedReturn": 0.000625,
+        "residual": 0.027721
+      },
+      {
+        "date": "2025-04-11",
+        "ma5Scaled": 0.4918,
+        "ma20Scaled": 0.7078,
+        "actualReturn": 0.017351,
+        "predictedReturn": -0.001003,
+        "residual": 0.018354
+      },
+      {
+        "date": "2025-04-15",
+        "ma5Scaled": 0.5187,
+        "ma20Scaled": 0.7046,
+        "actualReturn": -0.000645,
+        "predictedReturn": -0.000402,
+        "residual": -0.000243
+      },
+      {
+        "date": "2025-04-16",
+        "ma5Scaled": 0.5748,
+        "ma20Scaled": 0.703,
+        "actualReturn": 0.028403,
+        "predictedReturn": 0.000545,
+        "residual": 0.027858
+      },
+      {
+        "date": "2025-04-17",
+        "ma5Scaled": 0.645,
+        "ma20Scaled": 0.7097,
+        "actualReturn": 0.016477,
+        "predictedReturn": -0.001665,
+        "residual": 0.018142
+      },
+      {
+        "date": "2025-04-21",
+        "ma5Scaled": 0.7289,
+        "ma20Scaled": 0.7205,
+        "actualReturn": -0.003319,
+        "predictedReturn": -0.001202,
+        "residual": -0.002117
+      },
+      {
+        "date": "2025-04-22",
+        "ma5Scaled": 0.7839,
+        "ma20Scaled": 0.7288,
+        "actualReturn": 0.006815,
+        "predictedReturn": -0.000102,
+        "residual": 0.006918
+      },
+      {
+        "date": "2025-04-23",
+        "ma5Scaled": 0.8294,
+        "ma20Scaled": 0.7347,
+        "actualReturn": 0.001231,
+        "predictedReturn": -0.000958,
+        "residual": 0.002189
+      },
+      {
+        "date": "2025-04-24",
+        "ma5Scaled": 0.8769,
+        "ma20Scaled": 0.7395,
+        "actualReturn": -0.000922,
+        "predictedReturn": -0.000783,
+        "residual": -0.000139
+      },
+      {
+        "date": "2025-04-25",
+        "ma5Scaled": 0.8966,
+        "ma20Scaled": 0.7392,
+        "actualReturn": 0.052599,
+        "predictedReturn": -0.000729,
+        "residual": 0.053328
+      },
+      {
+        "date": "2025-04-28",
+        "ma5Scaled": 0.9524,
+        "ma20Scaled": 0.755,
+        "actualReturn": 0.022574,
+        "predictedReturn": -0.004487,
+        "residual": 0.027061
+      },
+      {
+        "date": "2025-04-29",
+        "ma5Scaled": 1.035,
+        "ma20Scaled": 0.779,
+        "actualReturn": 0.003787,
+        "predictedReturn": -0.0028,
+        "residual": 0.006587
+      },
+      {
+        "date": "2025-04-30",
+        "ma5Scaled": 1.1149,
+        "ma20Scaled": 0.8031,
+        "actualReturn": 0.010534,
+        "predictedReturn": -0.001856,
+        "residual": 0.012389
+      },
+      {
+        "date": "2025-05-02",
+        "ma5Scaled": 1.2048,
+        "ma20Scaled": 0.8306,
+        "actualReturn": 0.0081,
+        "predictedReturn": -0.002653,
+        "residual": 0.010753
+      },
+      {
+        "date": "2025-05-05",
+        "ma5Scaled": 1.3045,
+        "ma20Scaled": 0.8645,
+        "actualReturn": -0.007266,
+        "predictedReturn": -0.002881,
+        "residual": -0.004385
+      },
+      {
+        "date": "2025-05-06",
+        "ma5Scaled": 1.3441,
+        "ma20Scaled": 0.8967,
+        "actualReturn": -0.010486,
+        "predictedReturn": -0.001973,
+        "residual": -0.008513
+      },
+      {
+        "date": "2025-05-07",
+        "ma5Scaled": 1.3489,
+        "ma20Scaled": 0.9265,
+        "actualReturn": 0.000711,
+        "predictedReturn": -0.001705,
+        "residual": 0.002416
+      },
+      {
+        "date": "2025-05-08",
+        "ma5Scaled": 1.3505,
+        "ma20Scaled": 0.9649,
+        "actualReturn": -0.02118,
+        "predictedReturn": -0.002348,
+        "residual": -0.018832
+      },
+      {
+        "date": "2025-05-09",
+        "ma5Scaled": 1.318,
+        "ma20Scaled": 1.0051,
+        "actualReturn": 0.043058,
+        "predictedReturn": -0.000604,
+        "residual": 0.043663
+      },
+      {
+        "date": "2025-05-12",
+        "ma5Scaled": 1.322,
+        "ma20Scaled": 1.0534,
+        "actualReturn": -0.01448,
+        "predictedReturn": -0.004728,
+        "residual": -0.009752
+      },
+      {
+        "date": "2025-05-13",
+        "ma5Scaled": 1.318,
+        "ma20Scaled": 1.0971,
+        "actualReturn": 0.006146,
+        "predictedReturn": -0.000727,
+        "residual": 0.006872
+      },
+      {
+        "date": "2025-05-14",
+        "ma5Scaled": 1.332,
+        "ma20Scaled": 1.1361,
+        "actualReturn": 0.020921,
+        "predictedReturn": -0.002023,
+        "residual": 0.022944
+      },
+      {
+        "date": "2025-05-15",
+        "ma5Scaled": 1.368,
+        "ma20Scaled": 1.1767,
+        "actualReturn": 0.001513,
+        "predictedReturn": -0.003043,
+        "residual": 0.004556
+      },
+      {
+        "date": "2025-05-16",
+        "ma5Scaled": 1.4282,
+        "ma20Scaled": 1.2179,
+        "actualReturn": -0.010711,
+        "predictedReturn": -0.001928,
+        "residual": -0.008783
+      },
+      {
+        "date": "2025-05-19",
+        "ma5Scaled": 1.4315,
+        "ma20Scaled": 1.2495,
+        "actualReturn": -0.011244,
+        "predictedReturn": -0.001003,
+        "residual": -0.010241
+      },
+      {
+        "date": "2025-05-20",
+        "ma5Scaled": 1.4383,
+        "ma20Scaled": 1.274,
+        "actualReturn": 0.003229,
+        "predictedReturn": -0.000901,
+        "residual": 0.00413
+      },
+      {
+        "date": "2025-05-21",
+        "ma5Scaled": 1.4419,
+        "ma20Scaled": 1.3002,
+        "actualReturn": -0.013854,
+        "predictedReturn": -0.001767,
+        "residual": -0.012087
+      },
+      {
+        "date": "2025-05-22",
+        "ma5Scaled": 1.4078,
+        "ma20Scaled": 1.3209,
+        "actualReturn": 0.012346,
+        "predictedReturn": -0.000333,
+        "residual": 0.012679
+      },
+      {
+        "date": "2025-05-23",
+        "ma5Scaled": 1.3853,
+        "ma20Scaled": 1.3447,
+        "actualReturn": 0.005607,
+        "predictedReturn": -0.001824,
+        "residual": 0.007431
+      },
+      {
+        "date": "2025-05-26",
+        "ma5Scaled": 1.3807,
+        "ma20Scaled": 1.3702,
+        "actualReturn": -0.008851,
+        "predictedReturn": -0.001223,
+        "residual": -0.007629
+      },
+      {
+        "date": "2025-05-27",
+        "ma5Scaled": 1.3788,
+        "ma20Scaled": 1.3803,
+        "actualReturn": -0.006469,
+        "predictedReturn": -0.0002,
+        "residual": -0.006269
+      },
+      {
+        "date": "2025-05-28",
+        "ma5Scaled": 1.3664,
+        "ma20Scaled": 1.3828,
+        "actualReturn": 0.003468,
+        "predictedReturn": -0.000269,
+        "residual": 0.003737
+      },
+      {
+        "date": "2025-05-29",
+        "ma5Scaled": 1.3728,
+        "ma20Scaled": 1.3853,
+        "actualReturn": 0.002186,
+        "predictedReturn": -0.000956,
+        "residual": 0.003143
+      },
+      {
+        "date": "2025-05-30",
+        "ma5Scaled": 1.3683,
+        "ma20Scaled": 1.3855,
+        "actualReturn": -0.005067,
+        "predictedReturn": -0.000842,
+        "residual": -0.004225
+      },
+      {
+        "date": "2025-06-02",
+        "ma5Scaled": 1.3523,
+        "ma20Scaled": 1.3821,
+        "actualReturn": -0.0058,
+        "predictedReturn": -0.000279,
+        "residual": -0.005521
+      },
+      {
+        "date": "2025-06-03",
+        "ma5Scaled": 1.3396,
+        "ma20Scaled": 1.3792,
+        "actualReturn": 0.012807,
+        "predictedReturn": -0.000168,
+        "residual": 0.012975
+      },
+      {
+        "date": "2025-06-04",
+        "ma5Scaled": 1.3477,
+        "ma20Scaled": 1.3825,
+        "actualReturn": 0.013277,
+        "predictedReturn": -0.001436,
+        "residual": 0.014713
+      },
+      {
+        "date": "2025-06-05",
+        "ma5Scaled": 1.3664,
+        "ma20Scaled": 1.3893,
+        "actualReturn": 0.000763,
+        "predictedReturn": -0.001548,
+        "residual": 0.00231
+      },
+      {
+        "date": "2025-06-06",
+        "ma5Scaled": 1.3836,
+        "ma20Scaled": 1.4018,
+        "actualReturn": 0.003672,
+        "predictedReturn": -0.000758,
+        "residual": 0.00443
+      },
+      {
+        "date": "2025-06-09",
+        "ma5Scaled": 1.4104,
+        "ma20Scaled": 1.4042,
+        "actualReturn": -0.007109,
+        "predictedReturn": -0.001105,
+        "residual": -0.006004
+      },
+      {
+        "date": "2025-06-10",
+        "ma5Scaled": 1.4355,
+        "ma20Scaled": 1.4085,
+        "actualReturn": 0.00723,
+        "predictedReturn": -0.000523,
+        "residual": 0.007753
+      },
+      {
+        "date": "2025-06-11",
+        "ma5Scaled": 1.4548,
+        "ma20Scaled": 1.4132,
+        "actualReturn": -0.005038,
+        "predictedReturn": -0.001572,
+        "residual": -0.003466
+      },
+      {
+        "date": "2025-06-12",
+        "ma5Scaled": 1.4542,
+        "ma20Scaled": 1.4108,
+        "actualReturn": -0.009503,
+        "predictedReturn": -0.000765,
+        "residual": -0.008738
+      },
+      {
+        "date": "2025-06-13",
+        "ma5Scaled": 1.4423,
+        "ma20Scaled": 1.4054,
+        "actualReturn": 0.006933,
+        "predictedReturn": -0.000422,
+        "residual": 0.007356
+      },
+      {
+        "date": "2025-06-16",
+        "ma5Scaled": 1.434,
+        "ma20Scaled": 1.4048,
+        "actualReturn": -0.00459,
+        "predictedReturn": -0.001465,
+        "residual": -0.003126
+      },
+      {
+        "date": "2025-06-17",
+        "ma5Scaled": 1.4284,
+        "ma20Scaled": 1.406,
+        "actualReturn": -0.000768,
+        "predictedReturn": -0.000659,
+        "residual": -0.00011
+      },
+      {
+        "date": "2025-06-18",
+        "ma5Scaled": 1.4141,
+        "ma20Scaled": 1.4062,
+        "actualReturn": 0.002238,
+        "predictedReturn": -0.000823,
+        "residual": 0.003061
+      },
+      {
+        "date": "2025-06-19",
+        "ma5Scaled": 1.4078,
+        "ma20Scaled": 1.4107,
+        "actualReturn": 0.022954,
+        "predictedReturn": -0.00096,
+        "residual": 0.023914
+      },
+      {
+        "date": "2025-06-20",
+        "ma5Scaled": 1.4369,
+        "ma20Scaled": 1.4182,
+        "actualReturn": -0.006411,
+        "predictedReturn": -0.002479,
+        "residual": -0.003932
+      },
+      {
+        "date": "2025-06-23",
+        "ma5Scaled": 1.4514,
+        "ma20Scaled": 1.4224,
+        "actualReturn": -0.004119,
+        "predictedReturn": -0.000598,
+        "residual": -0.003521
+      },
+      {
+        "date": "2025-06-24",
+        "ma5Scaled": 1.4663,
+        "ma20Scaled": 1.4278,
+        "actualReturn": 0.011373,
+        "predictedReturn": -0.000816,
+        "residual": 0.012189
+      },
+      {
+        "date": "2025-06-25",
+        "ma5Scaled": 1.4946,
+        "ma20Scaled": 1.4382,
+        "actualReturn": 0.019083,
+        "predictedReturn": -0.001969,
+        "residual": 0.021052
+      },
+      {
+        "date": "2025-06-26",
+        "ma5Scaled": 1.5418,
+        "ma20Scaled": 1.4529,
+        "actualReturn": 0.013442,
+        "predictedReturn": -0.002704,
+        "residual": 0.016146
+      },
+      {
+        "date": "2025-06-27",
+        "ma5Scaled": 1.5793,
+        "ma20Scaled": 1.4708,
+        "actualReturn": -0.009766,
+        "predictedReturn": -0.002477,
+        "residual": -0.00729
+      },
+      {
+        "date": "2025-06-30",
+        "ma5Scaled": 1.6126,
+        "ma20Scaled": 1.4873,
+        "actualReturn": 0.018526,
+        "predictedReturn": -0.001065,
+        "residual": 0.019591
+      },
+      {
+        "date": "2025-07-01",
+        "ma5Scaled": 1.6717,
+        "ma20Scaled": 1.5106,
+        "actualReturn": -0.006281,
+        "predictedReturn": -0.003206,
+        "residual": -0.003075
+      },
+      {
+        "date": "2025-07-02",
+        "ma5Scaled": 1.7109,
+        "ma20Scaled": 1.5287,
+        "actualReturn": -0.000659,
+        "predictedReturn": -0.001721,
+        "residual": 0.001063
+      },
+      {
+        "date": "2025-07-03",
+        "ma5Scaled": 1.728,
+        "ma20Scaled": 1.543,
+        "actualReturn": 0.006259,
+        "predictedReturn": -0.002135,
+        "residual": 0.008394
+      },
+      {
+        "date": "2025-07-04",
+        "ma5Scaled": 1.737,
+        "ma20Scaled": 1.5589,
+        "actualReturn": 0.009297,
+        "predictedReturn": -0.002573,
+        "residual": 0.01187
+      },
+      {
+        "date": "2025-07-07",
+        "ma5Scaled": 1.7682,
+        "ma20Scaled": 1.5765,
+        "actualReturn": -0.00253,
+        "predictedReturn": -0.00289,
+        "residual": 0.00036
+      },
+      {
+        "date": "2025-07-08",
+        "ma5Scaled": 1.7752,
+        "ma20Scaled": 1.5954,
+        "actualReturn": -0.012097,
+        "predictedReturn": -0.002054,
+        "residual": -0.010042
+      },
+      {
+        "date": "2025-07-09",
+        "ma5Scaled": 1.7753,
+        "ma20Scaled": 1.6087,
+        "actualReturn": -0.001185,
+        "predictedReturn": -0.001351,
+        "residual": 0.000166
+      },
+      {
+        "date": "2025-07-10",
+        "ma5Scaled": 1.7749,
+        "ma20Scaled": 1.623,
+        "actualReturn": -0.0145,
+        "predictedReturn": -0.001998,
+        "residual": -0.012503
+      },
+      {
+        "date": "2025-07-11",
+        "ma5Scaled": 1.7504,
+        "ma20Scaled": 1.6358,
+        "actualReturn": -0.007691,
+        "predictedReturn": -0.000882,
+        "residual": -0.00681
+      },
+      {
+        "date": "2025-07-14",
+        "ma5Scaled": 1.7064,
+        "ma20Scaled": 1.6445,
+        "actualReturn": 0.001146,
+        "predictedReturn": -0.000991,
+        "residual": 0.002137
+      },
+      {
+        "date": "2025-07-15",
+        "ma5Scaled": 1.6667,
+        "ma20Scaled": 1.6548,
+        "actualReturn": 0.000135,
+        "predictedReturn": -0.001253,
+        "residual": 0.001387
+      },
+      {
+        "date": "2025-07-16",
+        "ma5Scaled": 1.6413,
+        "ma20Scaled": 1.6653,
+        "actualReturn": -0.006193,
+        "predictedReturn": -0.000954,
+        "residual": -0.005239
+      },
+      {
+        "date": "2025-07-17",
+        "ma5Scaled": 1.6102,
+        "ma20Scaled": 1.6735,
+        "actualReturn": -0.000271,
+        "predictedReturn": -0.000275,
+        "residual": 4e-06
+      },
+      {
+        "date": "2025-07-18",
+        "ma5Scaled": 1.5956,
+        "ma20Scaled": 1.6754,
+        "actualReturn": -0.032114,
+        "predictedReturn": -0.000558,
+        "residual": -0.031555
+      },
+      {
+        "date": "2025-07-21",
+        "ma5Scaled": 1.5537,
+        "ma20Scaled": 1.67,
+        "actualReturn": -0.01106,
+        "predictedReturn": 0.001809,
+        "residual": -0.012869
+      },
+      {
+        "date": "2025-07-22",
+        "ma5Scaled": 1.4984,
+        "ma20Scaled": 1.6628,
+        "actualReturn": 0.008352,
+        "predictedReturn": 0.000742,
+        "residual": 0.00761
+      },
+      {
+        "date": "2025-07-23",
+        "ma5Scaled": 1.452,
+        "ma20Scaled": 1.6547,
+        "actualReturn": -0.015232,
+        "predictedReturn": -0.000282,
+        "residual": -0.01495
+      },
+      {
+        "date": "2025-07-24",
+        "ma5Scaled": 1.396,
+        "ma20Scaled": 1.6371,
+        "actualReturn": -0.007983,
+        "predictedReturn": 0.001554,
+        "residual": -0.009537
+      },
+      {
+        "date": "2025-07-25",
+        "ma5Scaled": 1.3319,
+        "ma20Scaled": 1.6137,
+        "actualReturn": -0.002946,
+        "predictedReturn": 0.001357,
+        "residual": -0.004303
+      },
+      {
+        "date": "2025-07-28",
+        "ma5Scaled": 1.3007,
+        "ma20Scaled": 1.5922,
+        "actualReturn": 0.02126,
+        "predictedReturn": 0.001097,
+        "residual": 0.020163
+      },
+      {
+        "date": "2025-07-29",
+        "ma5Scaled": 1.3039,
+        "ma20Scaled": 1.5711,
+        "actualReturn": -0.00494,
+        "predictedReturn": -0.000661,
+        "residual": -0.004278
+      },
+      {
+        "date": "2025-07-30",
+        "ma5Scaled": 1.2929,
+        "ma20Scaled": 1.5505,
+        "actualReturn": -0.014113,
+        "predictedReturn": 0.001026,
+        "residual": -0.015139
+      },
+      {
+        "date": "2025-07-31",
+        "ma5Scaled": 1.2832,
+        "ma20Scaled": 1.5262,
+        "actualReturn": 0.002518,
+        "predictedReturn": 0.001554,
+        "residual": 0.000964
+      },
+      {
+        "date": "2025-08-01",
+        "ma5Scaled": 1.2848,
+        "ma20Scaled": 1.5009,
+        "actualReturn": 0.012772,
+        "predictedReturn": 0.000291,
+        "residual": 0.012481
+      },
+      {
+        "date": "2025-08-04",
+        "ma5Scaled": 1.303,
+        "ma20Scaled": 1.4762,
+        "actualReturn": -0.014028,
+        "predictedReturn": -0.000648,
+        "residual": -0.01338
+      },
+      {
+        "date": "2025-08-05",
+        "ma5Scaled": 1.2836,
+        "ma20Scaled": 1.4485,
+        "actualReturn": 0.00079,
+        "predictedReturn": 0.001098,
+        "residual": -0.000308
+      },
+      {
+        "date": "2025-08-06",
+        "ma5Scaled": 1.2705,
+        "ma20Scaled": 1.4246,
+        "actualReturn": -0.002441,
+        "predictedReturn": 6.4e-05,
+        "residual": -0.002505
+      },
+      {
+        "date": "2025-08-07",
+        "ma5Scaled": 1.2698,
+        "ma20Scaled": 1.4003,
+        "actualReturn": -0.015546,
+        "predictedReturn": 0.00015,
+        "residual": -0.015696
+      },
+      {
+        "date": "2025-08-08",
+        "ma5Scaled": 1.2501,
+        "ma20Scaled": 1.3761,
+        "actualReturn": 0.013452,
+        "predictedReturn": 0.001012,
+        "residual": 0.01244
+      },
+      {
+        "date": "2025-08-11",
+        "ma5Scaled": 1.2309,
+        "ma20Scaled": 1.3576,
+        "actualReturn": -0.004184,
+        "predictedReturn": -0.000894,
+        "residual": -0.00329
+      },
+      {
+        "date": "2025-08-12",
+        "ma5Scaled": 1.2223,
+        "ma20Scaled": 1.3377,
+        "actualReturn": 0.001594,
+        "predictedReturn": 0.000224,
+        "residual": 0.001369
+      },
+      {
+        "date": "2025-08-13",
+        "ma5Scaled": 1.2145,
+        "ma20Scaled": 1.3181,
+        "actualReturn": -0.002396,
+        "predictedReturn": -0.000214,
+        "residual": -0.002182
+      },
+      {
+        "date": "2025-08-14",
+        "ma5Scaled": 1.2068,
+        "ma20Scaled": 1.2997,
+        "actualReturn": 0.00575,
+        "predictedReturn": 3e-06,
+        "residual": 0.005748
+      },
+      {
+        "date": "2025-08-18",
+        "ma5Scaled": 1.2216,
+        "ma20Scaled": 1.2829,
+        "actualReturn": 0.027792,
+        "predictedReturn": -0.000711,
+        "residual": 0.028502
+      },
+      {
+        "date": "2025-08-19",
+        "ma5Scaled": 1.2517,
+        "ma20Scaled": 1.2823,
+        "actualReturn": -0.005,
+        "predictedReturn": -0.002355,
+        "residual": -0.002645
+      },
+      {
+        "date": "2025-08-20",
+        "ma5Scaled": 1.2808,
+        "ma20Scaled": 1.2834,
+        "actualReturn": 0.008351,
+        "predictedReturn": -0.000344,
+        "residual": 0.008695
+      },
+      {
+        "date": "2025-08-21",
+        "ma5Scaled": 1.3173,
+        "ma20Scaled": 1.2845,
+        "actualReturn": -0.010949,
+        "predictedReturn": -0.00144,
+        "residual": -0.009509
+      },
+      {
+        "date": "2025-08-22",
+        "ma5Scaled": 1.3443,
+        "ma20Scaled": 1.2868,
+        "actualReturn": 0.002413,
+        "predictedReturn": -0.000308,
+        "residual": 0.002721
+      },
+      {
+        "date": "2025-08-25",
+        "ma5Scaled": 1.3679,
+        "ma20Scaled": 1.2918,
+        "actualReturn": -0.019609,
+        "predictedReturn": -0.001312,
+        "residual": -0.018298
+      },
+      {
+        "date": "2025-08-26",
+        "ma5Scaled": 1.341,
+        "ma20Scaled": 1.2924,
+        "actualReturn": 0.000722,
+        "predictedReturn": 0.000313,
+        "residual": 0.000409
+      },
+      {
+        "date": "2025-08-28",
+        "ma5Scaled": 1.3203,
+        "ma20Scaled": 1.2875,
+        "actualReturn": -0.020709,
+        "predictedReturn": -0.000938,
+        "residual": -0.019771
+      },
+      {
+        "date": "2025-08-29",
+        "ma5Scaled": 1.2687,
+        "ma20Scaled": 1.2785,
+        "actualReturn": -0.002431,
+        "predictedReturn": 0.000747,
+        "residual": -0.003179
+      },
+      {
+        "date": "2025-09-01",
+        "ma5Scaled": 1.2264,
+        "ma20Scaled": 1.2726,
+        "actualReturn": 0.009306,
+        "predictedReturn": -0.000246,
+        "residual": 0.009552
+      },
+      {
+        "date": "2025-09-02",
+        "ma5Scaled": 1.1912,
+        "ma20Scaled": 1.2685,
+        "actualReturn": 0.004464,
+        "predictedReturn": -0.000839,
+        "residual": 0.005303
+      },
+      {
+        "date": "2025-09-03",
+        "ma5Scaled": 1.1818,
+        "ma20Scaled": 1.2622,
+        "actualReturn": -0.00969,
+        "predictedReturn": -0.000494,
+        "residual": -0.009196
+      },
+      {
+        "date": "2025-09-04",
+        "ma5Scaled": 1.1615,
+        "ma20Scaled": 1.257,
+        "actualReturn": 0.01155,
+        "predictedReturn": 0.00054,
+        "residual": 0.01101
+      },
+      {
+        "date": "2025-09-05",
+        "ma5Scaled": 1.1751,
+        "ma20Scaled": 1.2547,
+        "actualReturn": 0.002545,
+        "predictedReturn": -0.000962,
+        "residual": 0.003507
+      },
+      {
+        "date": "2025-09-08",
+        "ma5Scaled": 1.1939,
+        "ma20Scaled": 1.2537,
+        "actualReturn": -0.001669,
+        "predictedReturn": -0.000479,
+        "residual": -0.00119
+      },
+      {
+        "date": "2025-09-09",
+        "ma5Scaled": 1.2013,
+        "ma20Scaled": 1.2563,
+        "actualReturn": 0.000581,
+        "predictedReturn": -0.000229,
+        "residual": 0.00081
+      },
+      {
+        "date": "2025-09-10",
+        "ma5Scaled": 1.2046,
+        "ma20Scaled": 1.2556,
+        "actualReturn": 0.004575,
+        "predictedReturn": -0.000402,
+        "residual": 0.004977
+      },
+      {
+        "date": "2025-09-11",
+        "ma5Scaled": 1.223,
+        "ma20Scaled": 1.2572,
+        "actualReturn": 0.008458,
+        "predictedReturn": -0.000766,
+        "residual": 0.009224
+      },
+      {
+        "date": "2025-09-12",
+        "ma5Scaled": 1.2383,
+        "ma20Scaled": 1.2606,
+        "actualReturn": 0.003082,
+        "predictedReturn": -0.001097,
+        "residual": 0.004179
+      },
+      {
+        "date": "2025-09-15",
+        "ma5Scaled": 1.2542,
+        "ma20Scaled": 1.2655,
+        "actualReturn": 0.004288,
+        "predictedReturn": -0.00081,
+        "residual": 0.005098
+      },
+      {
+        "date": "2025-09-16",
+        "ma5Scaled": 1.2764,
+        "ma20Scaled": 1.27,
+        "actualReturn": 0.006049,
+        "predictedReturn": -0.000999,
+        "residual": 0.007047
+      },
+      {
+        "date": "2025-09-17",
+        "ma5Scaled": 1.3045,
+        "ma20Scaled": 1.2688,
+        "actualReturn": 0.000849,
+        "predictedReturn": -0.001287,
+        "residual": 0.002135
+      },
+      {
+        "date": "2025-09-18",
+        "ma5Scaled": 1.3287,
+        "ma20Scaled": 1.2692,
+        "actualReturn": -0.005371,
+        "predictedReturn": -0.001082,
+        "residual": -0.004289
+      },
+      {
+        "date": "2025-09-19",
+        "ma5Scaled": 1.3382,
+        "ma20Scaled": 1.2659,
+        "actualReturn": -0.011937,
+        "predictedReturn": -0.00074,
+        "residual": -0.011197
+      },
+      {
+        "date": "2025-09-22",
+        "ma5Scaled": 1.3316,
+        "ma20Scaled": 1.2623,
+        "actualReturn": -0.000575,
+        "predictedReturn": -0.000281,
+        "residual": -0.000294
+      },
+      {
+        "date": "2025-09-23",
+        "ma5Scaled": 1.3197,
+        "ma20Scaled": 1.258,
+        "actualReturn": -0.004893,
+        "predictedReturn": -0.000986,
+        "residual": -0.003907
+      },
+      {
+        "date": "2025-09-24",
+        "ma5Scaled": 1.2962,
+        "ma20Scaled": 1.2576,
+        "actualReturn": -0.007664,
+        "predictedReturn": -0.000563,
+        "residual": -0.007101
+      },
+      {
+        "date": "2025-09-25",
+        "ma5Scaled": 1.2636,
+        "ma20Scaled": 1.255,
+        "actualReturn": 0.003789,
+        "predictedReturn": -0.000201,
+        "residual": 0.00399
+      },
+      {
+        "date": "2025-09-26",
+        "ma5Scaled": 1.2409,
+        "ma20Scaled": 1.2589,
+        "actualReturn": -0.003484,
+        "predictedReturn": -0.00081,
+        "residual": -0.002674
+      },
+      {
+        "date": "2025-09-29",
+        "ma5Scaled": 1.2273,
+        "ma20Scaled": 1.2625,
+        "actualReturn": -0.00641,
+        "predictedReturn": -0.00023,
+        "residual": -0.00618
+      },
+      {
+        "date": "2025-09-30",
+        "ma5Scaled": 1.2075,
+        "ma20Scaled": 1.262,
+        "actualReturn": 0.003446,
+        "predictedReturn": 7.7e-05,
+        "residual": 0.003369
+      },
+      {
+        "date": "2025-10-01",
+        "ma5Scaled": 1.1966,
+        "ma20Scaled": 1.2613,
+        "actualReturn": -0.003872,
+        "predictedReturn": -0.000517,
+        "residual": -0.003355
+      },
+      {
+        "date": "2025-10-03",
+        "ma5Scaled": 1.1897,
+        "ma20Scaled": 1.2621,
+        "actualReturn": 0.008508,
+        "predictedReturn": 1.3e-05,
+        "residual": 0.008495
+      },
+      {
+        "date": "2025-10-06",
+        "ma5Scaled": 1.1877,
+        "ma20Scaled": 1.2621,
+        "actualReturn": 0.007127,
+        "predictedReturn": -0.000798,
+        "residual": 0.007925
+      },
+      {
+        "date": "2025-10-07",
+        "ma5Scaled": 1.1969,
+        "ma20Scaled": 1.2633,
+        "actualReturn": -0.012565,
+        "predictedReturn": -0.000754,
+        "residual": -0.011811
+      },
+      {
+        "date": "2025-10-08",
+        "ma5Scaled": 1.1995,
+        "ma20Scaled": 1.2616,
+        "actualReturn": 0.007606,
+        "predictedReturn": 0.000531,
+        "residual": 0.007075
+      },
+      {
+        "date": "2025-10-09",
+        "ma5Scaled": 1.2065,
+        "ma20Scaled": 1.2618,
+        "actualReturn": 0.002831,
+        "predictedReturn": -0.000849,
+        "residual": 0.003679
+      },
+      {
+        "date": "2025-10-10",
+        "ma5Scaled": 1.2205,
+        "ma20Scaled": 1.2615,
+        "actualReturn": -0.004849,
+        "predictedReturn": -0.000615,
+        "residual": -0.004234
+      },
+      {
+        "date": "2025-10-13",
+        "ma5Scaled": 1.2205,
+        "ma20Scaled": 1.2576,
+        "actualReturn": 0.000655,
+        "predictedReturn": -0.000124,
+        "residual": 0.000778
+      },
+      {
+        "date": "2025-10-14",
+        "ma5Scaled": 1.2137,
+        "ma20Scaled": 1.2532,
+        "actualReturn": -0.001163,
+        "predictedReturn": -0.000471,
+        "residual": -0.000692
+      },
+      {
+        "date": "2025-10-15",
+        "ma5Scaled": 1.2189,
+        "ma20Scaled": 1.2473,
+        "actualReturn": 0.017463,
+        "predictedReturn": -0.000409,
+        "residual": 0.017873
+      },
+      {
+        "date": "2025-10-16",
+        "ma5Scaled": 1.2346,
+        "ma20Scaled": 1.2443,
+        "actualReturn": 0.01323,
+        "predictedReturn": -0.001752,
+        "residual": 0.014982
+      },
+      {
+        "date": "2025-10-17",
+        "ma5Scaled": 1.2614,
+        "ma20Scaled": 1.2447,
+        "actualReturn": 0.035291,
+        "predictedReturn": -0.001625,
+        "residual": 0.036915
+      },
+      {
+        "date": "2025-10-20",
+        "ma5Scaled": 1.3316,
+        "ma20Scaled": 1.256,
+        "actualReturn": -0.001091,
+        "predictedReturn": -0.003446,
+        "residual": 0.002355
+      },
+      {
+        "date": "2025-10-21",
+        "ma5Scaled": 1.3998,
+        "ma20Scaled": 1.2702,
+        "actualReturn": -0.011466,
+        "predictedReturn": -0.001366,
+        "residual": -0.0101
+      },
+      {
+        "date": "2025-10-23",
+        "ma5Scaled": 1.4564,
+        "ma20Scaled": 1.2814,
+        "actualReturn": 0.002209,
+        "predictedReturn": -0.000961,
+        "residual": 0.00317
+      },
+      {
+        "date": "2025-10-24",
+        "ma5Scaled": 1.4972,
+        "ma20Scaled": 1.2944,
+        "actualReturn": 0.022389,
+        "predictedReturn": -0.002053,
+        "residual": 0.024442
+      },
+      {
+        "date": "2025-10-27",
+        "ma5Scaled": 1.5486,
+        "ma20Scaled": 1.3157,
+        "actualReturn": 0.001887,
+        "predictedReturn": -0.003607,
+        "residual": 0.005494
+      },
+      {
+        "date": "2025-10-28",
+        "ma5Scaled": 1.564,
+        "ma20Scaled": 1.3366,
+        "actualReturn": 0.011635,
+        "predictedReturn": -0.002247,
+        "residual": 0.013882
+      },
+      {
+        "date": "2025-10-29",
+        "ma5Scaled": 1.5938,
+        "ma20Scaled": 1.3616,
+        "actualReturn": -0.010437,
+        "predictedReturn": -0.002964,
+        "residual": -0.007473
+      },
+      {
+        "date": "2025-10-30",
+        "ma5Scaled": 1.6244,
+        "ma20Scaled": 1.3853,
+        "actualReturn": -0.001411,
+        "predictedReturn": -0.00158,
+        "residual": 0.000169
+      },
+      {
+        "date": "2025-10-31",
+        "ma5Scaled": 1.651,
+        "ma20Scaled": 1.4077,
+        "actualReturn": -0.001144,
+        "predictedReturn": -0.002242,
+        "residual": 0.001098
+      },
+      {
+        "date": "2025-11-03",
+        "ma5Scaled": 1.6515,
+        "ma20Scaled": 1.4309,
+        "actualReturn": -0.007813,
+        "predictedReturn": -0.002156,
+        "residual": -0.005657
+      },
+      {
+        "date": "2025-11-04",
+        "ma5Scaled": 1.6409,
+        "ma20Scaled": 1.4496,
+        "actualReturn": 0.015613,
+        "predictedReturn": -0.001559,
+        "residual": 0.017172
+      },
+      {
+        "date": "2025-11-06",
+        "ma5Scaled": 1.6347,
+        "ma20Scaled": 1.4708,
+        "actualReturn": -0.012098,
+        "predictedReturn": -0.002973,
+        "residual": -0.009125
+      },
+      {
+        "date": "2025-11-07",
+        "ma5Scaled": 1.6267,
+        "ma20Scaled": 1.4918,
+        "actualReturn": 0.007646,
+        "predictedReturn": -0.000978,
+        "residual": 0.008623
+      },
+      {
+        "date": "2025-11-10",
+        "ma5Scaled": 1.6289,
+        "ma20Scaled": 1.5131,
+        "actualReturn": 0.002753,
+        "predictedReturn": -0.002196,
+        "residual": 0.004949
+      },
+      {
+        "date": "2025-11-11",
+        "ma5Scaled": 1.6356,
+        "ma20Scaled": 1.5344,
+        "actualReturn": 0.01212,
+        "predictedReturn": -0.001804,
+        "residual": 0.013924
+      },
+      {
+        "date": "2025-11-12",
+        "ma5Scaled": 1.6649,
+        "ma20Scaled": 1.5604,
+        "actualReturn": -0.000397,
+        "predictedReturn": -0.002482,
+        "residual": 0.002086
+      },
+      {
+        "date": "2025-11-13",
+        "ma5Scaled": 1.6762,
+        "ma20Scaled": 1.5861,
+        "actualReturn": 0.005295,
+        "predictedReturn": -0.00159,
+        "residual": 0.006885
+      },
+      {
+        "date": "2025-11-14",
+        "ma5Scaled": 1.7075,
+        "ma20Scaled": 1.6137,
+        "actualReturn": -0.000395,
+        "predictedReturn": -0.002028,
+        "residual": 0.001633
+      },
+      {
+        "date": "2025-11-17",
+        "ma5Scaled": 1.7296,
+        "ma20Scaled": 1.6365,
+        "actualReturn": 0.000724,
+        "predictedReturn": -0.001675,
+        "residual": 0.002399
+      },
+      {
+        "date": "2025-11-18",
+        "ma5Scaled": 1.7495,
+        "ma20Scaled": 1.6561,
+        "actualReturn": -0.000329,
+        "predictedReturn": -0.001776,
+        "residual": 0.001447
+      },
+      {
+        "date": "2025-11-19",
+        "ma5Scaled": 1.7552,
+        "ma20Scaled": 1.666,
+        "actualReturn": 0.019883,
+        "predictedReturn": -0.00169,
+        "residual": 0.021573
+      },
+      {
+        "date": "2025-11-20",
+        "ma5Scaled": 1.7844,
+        "ma20Scaled": 1.682,
+        "actualReturn": -0.001614,
+        "predictedReturn": -0.003143,
+        "residual": 0.001529
+      },
+      {
+        "date": "2025-11-21",
+        "ma5Scaled": 1.8055,
+        "ma20Scaled": 1.7007,
+        "actualReturn": -0.006918,
+        "predictedReturn": -0.001756,
+        "residual": -0.005162
+      },
+      {
+        "date": "2025-11-24",
+        "ma5Scaled": 1.819,
+        "ma20Scaled": 1.7168,
+        "actualReturn": 0.002474,
+        "predictedReturn": -0.001407,
+        "residual": 0.003881
+      },
+      {
+        "date": "2025-11-25",
+        "ma5Scaled": 1.8345,
+        "ma20Scaled": 1.7274,
+        "actualReturn": 0.019614,
+        "predictedReturn": -0.002078,
+        "residual": 0.021693
+      },
+      {
+        "date": "2025-11-26",
+        "ma5Scaled": 1.8735,
+        "ma20Scaled": 1.7432,
+        "actualReturn": -0.00414,
+        "predictedReturn": -0.003398,
+        "residual": -0.000742
+      },
+      {
+        "date": "2025-11-27",
+        "ma5Scaled": 1.8844,
+        "ma20Scaled": 1.7545,
+        "actualReturn": 0.002623,
+        "predictedReturn": -0.001833,
+        "residual": 0.004456
+      },
+      {
+        "date": "2025-11-28",
+        "ma5Scaled": 1.9004,
+        "ma20Scaled": 1.7695,
+        "actualReturn": -0.000893,
+        "predictedReturn": -0.002309,
+        "residual": 0.001416
+      },
+      {
+        "date": "2025-12-01",
+        "ma5Scaled": 1.9234,
+        "ma20Scaled": 1.7847,
+        "actualReturn": -0.012643,
+        "predictedReturn": -0.002152,
+        "residual": -0.010491
+      },
+      {
+        "date": "2025-12-02",
+        "ma5Scaled": 1.9285,
+        "ma20Scaled": 1.7965,
+        "actualReturn": -0.00485,
+        "predictedReturn": -0.00134,
+        "residual": -0.00351
+      },
+      {
+        "date": "2025-12-03",
+        "ma5Scaled": 1.9047,
+        "ma20Scaled": 1.809,
+        "actualReturn": -0.00208,
+        "predictedReturn": -0.001618,
+        "residual": -0.000462
+      },
+      {
+        "date": "2025-12-04",
+        "ma5Scaled": 1.8835,
+        "ma20Scaled": 1.8165,
+        "actualReturn": 0.003256,
+        "predictedReturn": -0.001608,
+        "residual": 0.004864
+      },
+      {
+        "date": "2025-12-05",
+        "ma5Scaled": 1.8629,
+        "ma20Scaled": 1.8284,
+        "actualReturn": 0.001558,
+        "predictedReturn": -0.001746,
+        "residual": 0.003303
+      },
+      {
+        "date": "2025-12-08",
+        "ma5Scaled": 1.8453,
+        "ma20Scaled": 1.8387,
+        "actualReturn": -0.008814,
+        "predictedReturn": -0.001446,
+        "residual": -0.007368
+      },
+      {
+        "date": "2025-12-09",
+        "ma5Scaled": 1.8323,
+        "ma20Scaled": 1.8455,
+        "actualReturn": 0.004904,
+        "predictedReturn": -0.000623,
+        "residual": 0.005527
+      },
+      {
+        "date": "2025-12-10",
+        "ma5Scaled": 1.8309,
+        "ma20Scaled": 1.8504,
+        "actualReturn": 0.00527,
+        "predictedReturn": -0.001494,
+        "residual": 0.006765
+      },
+      {
+        "date": "2025-12-11",
+        "ma5Scaled": 1.8381,
+        "ma20Scaled": 1.8569,
+        "actualReturn": 0.007443,
+        "predictedReturn": -0.00153,
+        "residual": 0.008974
+      },
+      {
+        "date": "2025-12-12",
+        "ma5Scaled": 1.8502,
+        "ma20Scaled": 1.864,
+        "actualReturn": -0.000193,
+        "predictedReturn": -0.001718,
+        "residual": 0.001525
+      },
+      {
+        "date": "2025-12-15",
+        "ma5Scaled": 1.8603,
+        "ma20Scaled": 1.8713,
+        "actualReturn": -0.008932,
+        "predictedReturn": -0.001239,
+        "residual": -0.007693
+      },
+      {
+        "date": "2025-12-16",
+        "ma5Scaled": 1.8702,
+        "ma20Scaled": 1.8756,
+        "actualReturn": 0.001362,
+        "predictedReturn": -0.000703,
+        "residual": 0.002065
+      },
+      {
+        "date": "2025-12-17",
+        "ma5Scaled": 1.8759,
+        "ma20Scaled": 1.8805,
+        "actualReturn": 0.0,
+        "predictedReturn": -0.001398,
+        "residual": 0.001398
+      },
+      {
+        "date": "2025-12-18",
+        "ma5Scaled": 1.8754,
+        "ma20Scaled": 1.8796,
+        "actualReturn": 0.013403,
+        "predictedReturn": -0.00131,
+        "residual": 0.014713
+      },
+      {
+        "date": "2025-12-19",
+        "ma5Scaled": 1.882,
+        "ma20Scaled": 1.8831,
+        "actualReturn": 0.006581,
+        "predictedReturn": -0.002226,
+        "residual": 0.008807
+      },
+      {
+        "date": "2025-12-22",
+        "ma5Scaled": 1.8967,
+        "ma20Scaled": 1.8906,
+        "actualReturn": -0.002983,
+        "predictedReturn": -0.001832,
+        "residual": -0.001151
+      },
+      {
+        "date": "2025-12-23",
+        "ma5Scaled": 1.9184,
+        "ma20Scaled": 1.8965,
+        "actualReturn": -0.007958,
+        "predictedReturn": -0.001318,
+        "residual": -0.00664
+      },
+      {
+        "date": "2025-12-24",
+        "ma5Scaled": 1.9289,
+        "ma20Scaled": 1.8943,
+        "actualReturn": 0.000642,
+        "predictedReturn": -0.001078,
+        "residual": 0.001719
+      },
+      {
+        "date": "2025-12-26",
+        "ma5Scaled": 1.9402,
+        "ma20Scaled": 1.8935,
+        "actualReturn": -0.008722,
+        "predictedReturn": -0.001736,
+        "residual": -0.006987
+      },
+      {
+        "date": "2025-12-29",
+        "ma5Scaled": 1.9253,
+        "ma20Scaled": 1.8893,
+        "actualReturn": -0.003753,
+        "predictedReturn": -0.001031,
+        "residual": -0.002721
+      },
+      {
+        "date": "2025-12-30",
+        "ma5Scaled": 1.8981,
+        "ma20Scaled": 1.8843,
+        "actualReturn": 0.019873,
+        "predictedReturn": -0.001195,
+        "residual": 0.021068
+      },
+      {
+        "date": "2025-12-31",
+        "ma5Scaled": 1.8979,
+        "ma20Scaled": 1.8889,
+        "actualReturn": 0.003311,
+        "predictedReturn": -0.002734,
+        "residual": 0.006046
+      },
+      {
+        "date": "2026-01-01",
+        "ma5Scaled": 1.9112,
+        "ma20Scaled": 1.8959,
+        "actualReturn": 0.010599,
+        "predictedReturn": -0.001688,
+        "residual": 0.012287
+      },
+      {
+        "date": "2026-01-02",
+        "ma5Scaled": 1.9365,
+        "ma20Scaled": 1.9067,
+        "actualReturn": -0.008918,
+        "predictedReturn": -0.002289,
+        "residual": -0.006629
+      },
+      {
+        "date": "2026-01-05",
+        "ma5Scaled": 1.9613,
+        "ma20Scaled": 1.9139,
+        "actualReturn": -0.044674,
+        "predictedReturn": -0.00113,
+        "residual": -0.043544
+      },
+      {
+        "date": "2026-01-06",
+        "ma5Scaled": 1.9367,
+        "ma20Scaled": 1.9071,
+        "actualReturn": -0.002255,
+        "predictedReturn": 0.001382,
+        "residual": -0.003638
+      },
+      {
+        "date": "2026-01-07",
+        "ma5Scaled": 1.8861,
+        "ma20Scaled": 1.9023,
+        "actualReturn": -0.022337,
+        "predictedReturn": -0.001097,
+        "residual": -0.02124
+      },
+      {
+        "date": "2026-01-08",
+        "ma5Scaled": 1.8059,
+        "ma20Scaled": 1.8897,
+        "actualReturn": 0.003196,
+        "predictedReturn": 0.000739,
+        "residual": 0.002457
+      },
+      {
+        "date": "2026-01-09",
+        "ma5Scaled": 1.7165,
+        "ma20Scaled": 1.8764,
+        "actualReturn": 0.005355,
+        "predictedReturn": -0.000396,
+        "residual": 0.005751
+      },
+      {
+        "date": "2026-01-12",
+        "ma5Scaled": 1.644,
+        "ma20Scaled": 1.8625,
+        "actualReturn": -0.020496,
+        "predictedReturn": -0.000109,
+        "residual": -0.020388
+      },
+      {
+        "date": "2026-01-13",
+        "ma5Scaled": 1.6021,
+        "ma20Scaled": 1.8428,
+        "actualReturn": 0.00413,
+        "predictedReturn": 0.001779,
+        "residual": 0.002351
+      },
+      {
+        "date": "2026-01-14",
+        "ma5Scaled": 1.5674,
+        "ma20Scaled": 1.8268,
+        "actualReturn": 0.0,
+        "predictedReturn": 0.000287,
+        "residual": -0.000287
+      },
+      {
+        "date": "2026-01-15",
+        "ma5Scaled": 1.5584,
+        "ma20Scaled": 1.8105,
+        "actualReturn": -0.000617,
+        "predictedReturn": 0.000519,
+        "residual": -0.001136
+      },
+      {
+        "date": "2026-01-16",
+        "ma5Scaled": 1.5451,
+        "ma20Scaled": 1.794,
+        "actualReturn": -0.030386,
+        "predictedReturn": 0.000547,
+        "residual": -0.030933
+      },
+      {
+        "date": "2026-01-19",
+        "ma5Scaled": 1.4919,
+        "ma20Scaled": 1.7652,
+        "actualReturn": -0.013865,
+        "predictedReturn": 0.00271,
+        "residual": -0.016575
+      },
+      {
+        "date": "2026-01-20",
+        "ma5Scaled": 1.447,
+        "ma20Scaled": 1.7306,
+        "actualReturn": 0.007604,
+        "predictedReturn": 0.001703,
+        "residual": 0.005901
+      },
+      {
+        "date": "2026-01-21",
+        "ma5Scaled": 1.4055,
+        "ma20Scaled": 1.699,
+        "actualReturn": -0.001495,
+        "predictedReturn": 0.000359,
+        "residual": -0.001855
+      },
+      {
+        "date": "2026-01-22",
+        "ma5Scaled": 1.3625,
+        "ma20Scaled": 1.6693,
+        "actualReturn": -0.011693,
+        "predictedReturn": 0.001068,
+        "residual": -0.012762
+      },
+      {
+        "date": "2026-01-23",
+        "ma5Scaled": 1.3076,
+        "ma20Scaled": 1.6363,
+        "actualReturn": -0.00404,
+        "predictedReturn": 0.001907,
+        "residual": -0.005947
+      },
+      {
+        "date": "2026-01-27",
+        "ma5Scaled": 1.2824,
+        "ma20Scaled": 1.6048,
+        "actualReturn": 0.011735,
+        "predictedReturn": 0.001369,
+        "residual": 0.010365
+      },
+      {
+        "date": "2026-01-28",
+        "ma5Scaled": 1.2844,
+        "ma20Scaled": 1.5776,
+        "actualReturn": -0.004081,
+        "predictedReturn": 0.000139,
+        "residual": -0.00422
+      },
+      {
+        "date": "2026-01-29",
+        "ma5Scaled": 1.274,
+        "ma20Scaled": 1.5434,
+        "actualReturn": 0.003163,
+        "predictedReturn": 0.00105,
+        "residual": 0.002113
+      },
+      {
+        "date": "2026-01-30",
+        "ma5Scaled": 1.2686,
+        "ma20Scaled": 1.509,
+        "actualReturn": -0.003583,
+        "predictedReturn": 0.000399,
+        "residual": -0.003983
+      },
+      {
+        "date": "2026-02-02",
+        "ma5Scaled": 1.2719,
+        "ma20Scaled": 1.4706,
+        "actualReturn": 0.033587,
+        "predictedReturn": 0.000604,
+        "residual": 0.032984
+      },
+      {
+        "date": "2026-02-03",
+        "ma5Scaled": 1.3151,
+        "ma20Scaled": 1.4437,
+        "actualReturn": 0.013708,
+        "predictedReturn": -0.002289,
+        "residual": 0.015997
+      },
+      {
+        "date": "2026-02-04",
+        "ma5Scaled": 1.3611,
+        "ma20Scaled": 1.434,
+        "actualReturn": -0.009198,
+        "predictedReturn": -0.001309,
+        "residual": -0.007889
+      },
+      {
+        "date": "2026-02-05",
+        "ma5Scaled": 1.4011,
+        "ma20Scaled": 1.4224,
+        "actualReturn": 0.005127,
+        "predictedReturn": -9.9e-05,
+        "residual": 0.005226
+      },
+      {
+        "date": "2026-02-06",
+        "ma5Scaled": 1.4434,
+        "ma20Scaled": 1.4187,
+        "actualReturn": 0.007444,
+        "predictedReturn": -0.001334,
+        "residual": 0.008778
+      },
+      {
+        "date": "2026-02-09",
+        "ma5Scaled": 1.4979,
+        "ma20Scaled": 1.416,
+        "actualReturn": -0.002121,
+        "predictedReturn": -0.001839,
+        "residual": -0.000282
+      },
+      {
+        "date": "2026-02-10",
+        "ma5Scaled": 1.5142,
+        "ma20Scaled": 1.4113,
+        "actualReturn": 0.006994,
+        "predictedReturn": -0.001329,
+        "residual": 0.008322
+      },
+      {
+        "date": "2026-02-11",
+        "ma5Scaled": 1.5233,
+        "ma20Scaled": 1.4144,
+        "actualReturn": -0.013481,
+        "predictedReturn": -0.001976,
+        "residual": -0.011505
+      },
+      {
+        "date": "2026-02-12",
+        "ma5Scaled": 1.5275,
+        "ma20Scaled": 1.4125,
+        "actualReturn": -0.020222,
+        "predictedReturn": -0.000652,
+        "residual": -0.019571
+      },
+      {
+        "date": "2026-02-13",
+        "ma5Scaled": 1.5037,
+        "ma20Scaled": 1.405,
+        "actualReturn": 0.012327,
+        "predictedReturn": -9.2e-05,
+        "residual": 0.01242
+      },
+      {
+        "date": "2026-02-16",
+        "ma5Scaled": 1.4849,
+        "ma20Scaled": 1.401,
+        "actualReturn": -0.009811,
+        "predictedReturn": -0.002157,
+        "residual": -0.007654
+      },
+      {
+        "date": "2026-02-17",
+        "ma5Scaled": 1.4578,
+        "ma20Scaled": 1.4028,
+        "actualReturn": 0.01286,
+        "predictedReturn": -0.00051,
+        "residual": 0.013371
+      },
+      {
+        "date": "2026-02-18",
+        "ma5Scaled": 1.4369,
+        "ma20Scaled": 1.4118,
+        "actualReturn": -0.022063,
+        "predictedReturn": -0.001841,
+        "residual": -0.020223
+      },
+      {
+        "date": "2026-02-19",
+        "ma5Scaled": 1.4068,
+        "ma20Scaled": 1.4128,
+        "actualReturn": 0.007024,
+        "predictedReturn": 0.00067,
+        "residual": 0.006354
+      },
+      {
+        "date": "2026-02-20",
+        "ma5Scaled": 1.4066,
+        "ma20Scaled": 1.416,
+        "actualReturn": 0.006059,
+        "predictedReturn": -0.001244,
+        "residual": 0.007303
+      },
+      {
+        "date": "2026-02-23",
+        "ma5Scaled": 1.3997,
+        "ma20Scaled": 1.424,
+        "actualReturn": 0.00056,
+        "predictedReturn": -0.001095,
+        "residual": 0.001655
+      },
+      {
+        "date": "2026-02-24",
+        "ma5Scaled": 1.4041,
+        "ma20Scaled": 1.4332,
+        "actualReturn": -0.021207,
+        "predictedReturn": -0.00071,
+        "residual": -0.020497
+      },
+      {
+        "date": "2026-02-25",
+        "ma5Scaled": 1.3714,
+        "ma20Scaled": 1.4335,
+        "actualReturn": 0.005935,
+        "predictedReturn": 0.000942,
+        "residual": 0.004993
+      },
+      {
+        "date": "2026-02-26",
+        "ma5Scaled": 1.3693,
+        "ma20Scaled": 1.4365,
+        "actualReturn": -0.00917,
+        "predictedReturn": -0.000831,
+        "residual": -0.008339
+      },
+      {
+        "date": "2026-02-27",
+        "ma5Scaled": 1.3498,
+        "ma20Scaled": 1.4363,
+        "actualReturn": -0.025755,
+        "predictedReturn": 0.000293,
+        "residual": -0.026048
+      },
+      {
+        "date": "2026-03-02",
+        "ma5Scaled": 1.2963,
+        "ma20Scaled": 1.4301,
+        "actualReturn": -0.009573,
+        "predictedReturn": 0.001696,
+        "residual": -0.011268
+      },
+      {
+        "date": "2026-03-04",
+        "ma5Scaled": 1.2323,
+        "ma20Scaled": 1.4125,
+        "actualReturn": 0.033011,
+        "predictedReturn": 0.000923,
+        "residual": 0.032088
+      },
+      {
+        "date": "2026-03-05",
+        "ma5Scaled": 1.2253,
+        "ma20Scaled": 1.3997,
+        "actualReturn": 0.011084,
+        "predictedReturn": -0.001932,
+        "residual": 0.013016
+      },
+      {
+        "date": "2026-03-06",
+        "ma5Scaled": 1.2238,
+        "ma20Scaled": 1.3923,
+        "actualReturn": 0.013667,
+        "predictedReturn": -0.000507,
+        "residual": 0.014174
+      },
+      {
+        "date": "2026-03-09",
+        "ma5Scaled": 1.2468,
+        "ma20Scaled": 1.3872,
+        "actualReturn": -0.010674,
+        "predictedReturn": -0.000848,
+        "residual": -0.009826
+      },
+      {
+        "date": "2026-03-10",
+        "ma5Scaled": 1.2856,
+        "ma20Scaled": 1.3772,
+        "actualReturn": -0.013203,
+        "predictedReturn": 0.000476,
+        "residual": -0.013679
+      },
+      {
+        "date": "2026-03-11",
+        "ma5Scaled": 1.3202,
+        "ma20Scaled": 1.3641,
+        "actualReturn": 0.001439,
+        "predictedReturn": 0.000366,
+        "residual": 0.001073
+      },
+      {
+        "date": "2026-03-12",
+        "ma5Scaled": 1.3223,
+        "ma20Scaled": 1.3496,
+        "actualReturn": -0.00826,
+        "predictedReturn": -0.000694,
+        "residual": -0.007567
+      },
+      {
+        "date": "2026-03-13",
+        "ma5Scaled": 1.3039,
+        "ma20Scaled": 1.3366,
+        "actualReturn": 0.01043,
+        "predictedReturn": -4e-06,
+        "residual": 0.010433
+      },
+      {
+        "date": "2026-03-16",
+        "ma5Scaled": 1.2818,
+        "ma20Scaled": 1.3319,
+        "actualReturn": 0.001792,
+        "predictedReturn": -0.001135,
+        "residual": 0.002927
+      },
+      {
+        "date": "2026-03-17",
+        "ma5Scaled": 1.2733,
+        "ma20Scaled": 1.3244,
+        "actualReturn": 0.007513,
+        "predictedReturn": -0.000548,
+        "residual": 0.008061
+      },
+      {
+        "date": "2026-03-18",
+        "ma5Scaled": 1.2869,
+        "ma20Scaled": 1.3215,
+        "actualReturn": -0.016547,
+        "predictedReturn": -0.001024,
+        "residual": -0.015523
+      },
+      {
+        "date": "2026-03-19",
+        "ma5Scaled": 1.2813,
+        "ma20Scaled": 1.3108,
+        "actualReturn": 0.021375,
+        "predictedReturn": 0.000554,
+        "residual": 0.020821
+      },
+      {
+        "date": "2026-03-20",
+        "ma5Scaled": 1.307,
+        "ma20Scaled": 1.3117,
+        "actualReturn": -0.004666,
+        "predictedReturn": -0.002114,
+        "residual": -0.002553
+      },
+      {
+        "date": "2026-03-23",
+        "ma5Scaled": 1.3167,
+        "ma20Scaled": 1.3095,
+        "actualReturn": 0.002841,
+        "predictedReturn": -0.000453,
+        "residual": 0.003294
+      },
+      {
+        "date": "2026-03-24",
+        "ma5Scaled": 1.3276,
+        "ma20Scaled": 1.3064,
+        "actualReturn": 0.000921,
+        "predictedReturn": -0.001031,
+        "residual": 0.001952
+      },
+      {
+        "date": "2026-03-25",
+        "ma5Scaled": 1.3314,
+        "ma20Scaled": 1.3034,
+        "actualReturn": -0.045998,
+        "predictedReturn": -0.000941,
+        "residual": -0.045057
+      },
+      {
+        "date": "2026-03-27",
+        "ma5Scaled": 1.3034,
+        "ma20Scaled": 1.2938,
+        "actualReturn": -0.003115,
+        "predictedReturn": 0.002295,
+        "residual": -0.005411
+      },
+      {
+        "date": "2026-03-30",
+        "ma5Scaled": 1.2495,
+        "ma20Scaled": 1.2818,
+        "actualReturn": 0.018826,
+        "predictedReturn": -0.000292,
+        "residual": 0.019117
+      },
+      {
+        "date": "2026-04-01",
+        "ma5Scaled": 1.22,
+        "ma20Scaled": 1.2771,
+        "actualReturn": -0.013658,
+        "predictedReturn": -0.001598,
+        "residual": -0.01206
+      },
+      {
+        "date": "2026-04-02",
+        "ma5Scaled": 1.1731,
+        "ma20Scaled": 1.2757,
+        "actualReturn": -0.033913,
+        "predictedReturn": 0.000828,
+        "residual": -0.034741
+      },
+      {
+        "date": "2026-04-06",
+        "ma5Scaled": 1.0903,
+        "ma20Scaled": 1.268,
+        "actualReturn": -7.7e-05,
+        "predictedReturn": 0.002621,
+        "residual": -0.002697
+      },
+      {
+        "date": "2026-04-07",
+        "ma5Scaled": 1.0571,
+        "ma20Scaled": 1.2518,
+        "actualReturn": 0.033114,
+        "predictedReturn": 0.000484,
+        "residual": 0.03263
+      },
+      {
+        "date": "2026-04-08",
+        "ma5Scaled": 1.06,
+        "ma20Scaled": 1.241,
+        "actualReturn": -0.013207,
+        "predictedReturn": -0.001794,
+        "residual": -0.011413
+      },
+      {
+        "date": "2026-04-09",
+        "ma5Scaled": 1.0301,
+        "ma20Scaled": 1.2231,
+        "actualReturn": 0.015188,
+        "predictedReturn": 0.001363,
+        "residual": 0.013825
+      },
+      {
+        "date": "2026-04-10",
+        "ma5Scaled": 1.0299,
+        "ma20Scaled": 1.2119,
+        "actualReturn": -0.025996,
+        "predictedReturn": -0.000578,
+        "residual": -0.025418
+      },
+      {
+        "date": "2026-04-13",
+        "ma5Scaled": 1.0378,
+        "ma20Scaled": 1.1976,
+        "actualReturn": 0.022052,
+        "predictedReturn": 0.002039,
+        "residual": 0.020012
+      },
+      {
+        "date": "2026-04-15",
+        "ma5Scaled": 1.068,
+        "ma20Scaled": 1.1884,
+        "actualReturn": -0.000595,
+        "predictedReturn": -0.001368,
+        "residual": 0.000773
+      },
+      {
+        "date": "2026-04-16",
+        "ma5Scaled": 1.0646,
+        "ma20Scaled": 1.1813,
+        "actualReturn": 0.016154,
+        "predictedReturn": 0.00012,
+        "residual": 0.016034
+      },
+      {
+        "date": "2026-04-17",
+        "ma5Scaled": 1.0913,
+        "ma20Scaled": 1.1756,
+        "actualReturn": -0.001245,
+        "predictedReturn": -0.001171,
+        "residual": -7.5e-05
+      },
+      {
+        "date": "2026-04-20",
+        "ma5Scaled": 1.1013,
+        "ma20Scaled": 1.169,
+        "actualReturn": -0.007335,
+        "predictedReturn": -0.000102,
+        "residual": -0.007233
+      },
+      {
+        "date": "2026-04-21",
+        "ma5Scaled": 1.1305,
+        "ma20Scaled": 1.1586,
+        "actualReturn": 0.006503,
+        "predictedReturn": 9e-05,
+        "residual": 0.006413
+      },
+      {
+        "date": "2026-04-22",
+        "ma5Scaled": 1.1443,
+        "ma20Scaled": 1.1543,
+        "actualReturn": -0.013729,
+        "predictedReturn": -0.000926,
+        "residual": -0.012803
+      },
+      {
+        "date": "2026-04-23",
+        "ma5Scaled": 1.1443,
+        "ma20Scaled": 1.1407,
+        "actualReturn": -0.011612,
+        "predictedReturn": 0.000357,
+        "residual": -0.011969
+      },
+      {
+        "date": "2026-04-24",
+        "ma5Scaled": 1.1159,
+        "ma20Scaled": 1.1255,
+        "actualReturn": 0.028619,
+        "predictedReturn": 0.000306,
+        "residual": 0.028313
+      },
+      {
+        "date": "2026-04-27",
+        "ma5Scaled": 1.1178,
+        "ma20Scaled": 1.1167,
+        "actualReturn": 0.016913,
+        "predictedReturn": -0.002415,
+        "residual": 0.019328
+      },
+      {
+        "date": "2026-04-28",
+        "ma5Scaled": 1.145,
+        "ma20Scaled": 1.1121,
+        "actualReturn": 0.02628,
+        "predictedReturn": -0.001807,
+        "residual": 0.028087
+      },
+      {
+        "date": "2026-04-29",
+        "ma5Scaled": 1.1934,
+        "ma20Scaled": 1.1268,
+        "actualReturn": 0.003788,
+        "predictedReturn": -0.002632,
+        "residual": 0.00642
+      },
+      {
+        "date": "2026-04-30",
+        "ma5Scaled": 1.2602,
+        "ma20Scaled": 1.1434,
+        "actualReturn": 0.0,
+        "predictedReturn": -0.001438,
+        "residual": 0.001438
+      },
+      {
+        "date": "2026-05-01",
+        "ma5Scaled": 1.3389,
+        "ma20Scaled": 1.1551,
+        "actualReturn": 0.022575,
+        "predictedReturn": -0.001577,
+        "residual": 0.024152
+      },
+      {
+        "date": "2026-05-04",
+        "ma5Scaled": 1.4133,
+        "ma20Scaled": 1.1766,
+        "actualReturn": 0.000342,
+        "predictedReturn": -0.003409,
+        "residual": 0.00375
+      },
+      {
+        "date": "2026-05-05",
+        "ma5Scaled": 1.4703,
+        "ma20Scaled": 1.2069,
+        "actualReturn": -0.017559,
+        "predictedReturn": -0.002137,
+        "residual": -0.015423
+      },
+      {
+        "date": "2026-05-06",
+        "ma5Scaled": 1.4799,
+        "ma20Scaled": 1.2323,
+        "actualReturn": -0.001182,
+        "predictedReturn": -0.000901,
+        "residual": -0.000282
+      },
+      {
+        "date": "2026-05-07",
+        "ma5Scaled": 1.484,
+        "ma20Scaled": 1.2491,
+        "actualReturn": -0.000696,
+        "predictedReturn": -0.001943,
+        "residual": 0.001247
+      },
+      {
+        "date": "2026-05-08",
+        "ma5Scaled": 1.4874,
+        "ma20Scaled": 1.2692,
+        "actualReturn": -0.032748,
+        "predictedReturn": -0.001911,
+        "residual": -0.030837
+      },
+      {
+        "date": "2026-05-11",
+        "ma5Scaled": 1.4301,
+        "ma20Scaled": 1.2764,
+        "actualReturn": -0.017433,
+        "predictedReturn": 0.000586,
+        "residual": -0.018018
+      },
+      {
+        "date": "2026-05-12",
+        "ma5Scaled": 1.354,
+        "ma20Scaled": 1.2857,
+        "actualReturn": -0.003812,
+        "predictedReturn": 6e-05,
+        "residual": -0.003872
+      },
+      {
+        "date": "2026-05-13",
+        "ma5Scaled": 1.2936,
+        "ma20Scaled": 1.2885,
+        "actualReturn": 0.002208,
+        "predictedReturn": -0.000473,
+        "residual": 0.002681
+      },
+      {
+        "date": "2026-05-14",
+        "ma5Scaled": 1.2367,
+        "ma20Scaled": 1.2921,
+        "actualReturn": -0.018652,
+        "predictedReturn": -0.000519,
+        "residual": -0.018133
+      },
+      {
+        "date": "2026-05-15",
+        "ma5Scaled": 1.1612,
+        "ma20Scaled": 1.2866,
+        "actualReturn": -0.000374,
+        "predictedReturn": 0.001286,
+        "residual": -0.00166
+      },
+      {
+        "date": "2026-05-18",
+        "ma5Scaled": 1.1213,
+        "ma20Scaled": 1.2814,
+        "actualReturn": -0.009881,
+        "predictedReturn": 0.000281,
+        "residual": -0.010162
+      },
+      {
+        "date": "2026-05-19",
+        "ma5Scaled": 1.0897,
+        "ma20Scaled": 1.2756,
+        "actualReturn": 0.027973,
+        "predictedReturn": 0.001068,
+        "residual": 0.026905
+      },
+      {
+        "date": "2026-05-20",
+        "ma5Scaled": 1.0904,
+        "ma20Scaled": 1.2751,
+        "actualReturn": -0.007428,
+        "predictedReturn": -0.001452,
+        "residual": -0.005976
+      },
+      {
+        "date": "2026-05-21",
+        "ma5Scaled": 1.0811,
+        "ma20Scaled": 1.2763,
+        "actualReturn": 0.003631,
+        "predictedReturn": 0.00096,
+        "residual": 0.002671
+      },
+      {
+        "date": "2026-05-22",
+        "ma5Scaled": 1.0949,
+        "ma20Scaled": 1.2814,
+        "actualReturn": 0.009229,
+        "predictedReturn": 0.000171,
+        "residual": 0.009058
+      },
+      {
+        "date": "2026-05-25",
+        "ma5Scaled": 1.1187,
+        "ma20Scaled": 1.2816,
+        "actualReturn": -0.007827,
+        "predictedReturn": -0.00034,
+        "residual": -0.007487
+      },
+      {
+        "date": "2026-05-26",
+        "ma5Scaled": 1.1443,
+        "ma20Scaled": 1.2754,
+        "actualReturn": -0.004276,
+        "predictedReturn": 0.000609,
+        "residual": -0.004885
+      },
+      {
+        "date": "2026-05-27",
+        "ma5Scaled": 1.1373,
+        "ma20Scaled": 1.2611,
+        "actualReturn": 0.0,
+        "predictedReturn": 0.000342,
+        "residual": -0.000342
+      },
+      {
+        "date": "2026-05-28",
+        "ma5Scaled": 1.138,
+        "ma20Scaled": 1.2458,
+        "actualReturn": -0.021696,
+        "predictedReturn": -2.3e-05,
+        "residual": -0.021673
+      },
+      {
+        "date": "2026-05-29",
+        "ma5Scaled": 1.1125,
+        "ma20Scaled": 1.2249,
+        "actualReturn": -0.000908,
+        "predictedReturn": 0.001461,
+        "residual": -0.00237
+      },
+      {
+        "date": "2026-06-01",
+        "ma5Scaled": 1.0766,
+        "ma20Scaled": 1.1977,
+        "actualReturn": -0.004091,
+        "predictedReturn": 0.000152,
+        "residual": -0.004243
+      },
+      {
+        "date": "2026-06-02",
+        "ma5Scaled": 1.0448,
+        "ma20Scaled": 1.1693,
+        "actualReturn": -0.001065,
+        "predictedReturn": 0.000406,
+        "residual": -0.001471
+      },
+      {
+        "date": "2026-06-03",
+        "ma5Scaled": 1.0163,
+        "ma20Scaled": 1.1455,
+        "actualReturn": -0.007234,
+        "predictedReturn": 0.00025,
+        "residual": -0.007484
+      },
+      {
+        "date": "2026-06-04",
+        "ma5Scaled": 0.9805,
+        "ma20Scaled": 1.1202,
+        "actualReturn": -0.005163,
+        "predictedReturn": 0.000736,
+        "residual": -0.005899
+      },
+      {
+        "date": "2026-06-05",
+        "ma5Scaled": 0.962,
+        "ma20Scaled": 1.0939,
+        "actualReturn": -0.021456,
+        "predictedReturn": 0.000576,
+        "residual": -0.022032
+      },
+      {
+        "date": "2026-06-08",
+        "ma5Scaled": 0.9231,
+        "ma20Scaled": 1.0712,
+        "actualReturn": 0.00467,
+        "predictedReturn": 0.001762,
+        "residual": 0.002909
+      },
+      {
+        "date": "2026-06-09",
+        "ma5Scaled": 0.8929,
+        "ma20Scaled": 1.0543,
+        "actualReturn": -0.008194,
+        "predictedReturn": 0.000109,
+        "residual": -0.008303
+      },
+      {
+        "date": "2026-06-10",
+        "ma5Scaled": 0.8558,
+        "ma20Scaled": 1.0363,
+        "actualReturn": 0.003336,
+        "predictedReturn": 0.001077,
+        "residual": 0.00226
+      },
+      {
+        "date": "2026-06-11",
+        "ma5Scaled": 0.8291,
+        "ma20Scaled": 1.0186,
+        "actualReturn": 0.023753,
+        "predictedReturn": 0.000368,
+        "residual": 0.023384
+      },
+      {
+        "date": "2026-06-12",
+        "ma5Scaled": 0.8307,
+        "ma20Scaled": 1.0115,
+        "actualReturn": 0.010828,
+        "predictedReturn": -0.001028,
+        "residual": 0.011856
+      },
+      {
+        "date": "2026-06-15",
+        "ma5Scaled": 0.8642,
+        "ma20Scaled": 1.0071,
+        "actualReturn": 0.016679,
+        "predictedReturn": -0.000364,
+        "residual": 0.017044
+      },
+      {
+        "date": "2026-06-16",
+        "ma5Scaled": 0.91,
+        "ma20Scaled": 1.0095,
+        "actualReturn": 0.002935,
+        "predictedReturn": -0.000981,
+        "residual": 0.003915
+      },
+      {
+        "date": "2026-06-17",
+        "ma5Scaled": 0.9667,
+        "ma20Scaled": 1.0055,
+        "actualReturn": -0.003452,
+        "predictedReturn": -0.00038,
+        "residual": -0.003072
+      },
+      {
+        "date": "2026-06-18",
+        "ma5Scaled": 1.0167,
+        "ma20Scaled": 1.0026,
+        "actualReturn": -0.014005,
+        "predictedReturn": -0.000227,
+        "residual": -0.013778
+      },
+      {
+        "date": "2026-06-19",
+        "ma5Scaled": 1.0294,
+        "ma20Scaled": 0.9951,
+        "actualReturn": 0.012982,
+        "predictedReturn": 0.000378,
+        "residual": 0.012604
+      },
+      {
+        "date": "2026-06-22",
+        "ma5Scaled": 1.0443,
+        "ma20Scaled": 0.9886,
+        "actualReturn": -0.012816,
+        "predictedReturn": -0.001517,
+        "residual": -0.011299
+      },
+      {
+        "date": "2026-06-23",
+        "ma5Scaled": 1.0295,
+        "ma20Scaled": 0.9808,
+        "actualReturn": 0.003131,
+        "predictedReturn": 0.000242,
+        "residual": 0.002889
+      },
+      {
+        "date": "2026-06-24",
+        "ma5Scaled": 1.0149,
+        "ma20Scaled": 0.9749,
+        "actualReturn": 0.003426,
+        "predictedReturn": -0.000764,
+        "residual": 0.00419
+      },
+      {
+        "date": "2026-06-25",
+        "ma5Scaled": 1.0072,
+        "ma20Scaled": 0.9699,
+        "actualReturn": 0.0,
+        "predictedReturn": -0.000764,
+        "residual": 0.000764
+      },
+      {
+        "date": "2026-06-26",
+        "ma5Scaled": 1.0138,
+        "ma20Scaled": 0.9705,
+        "actualReturn": -0.012973,
+        "predictedReturn": -0.000568,
+        "residual": -0.012405
+      }
+    ]
+  },
+  "pricePeriodData": [
+    {
+      "date": "2025-02-01",
+      "actual": 1235.23,
+      "predicted": 1238.5
+    },
+    {
+      "date": "2025-02-03",
+      "actual": 1274.2,
+      "predicted": 1231.93
+    },
+    {
+      "date": "2025-02-04",
+      "actual": 1267.26,
+      "predicted": 1271.92
+    },
+    {
+      "date": "2025-02-05",
+      "actual": 1270.58,
+      "predicted": 1254.01
+    },
+    {
+      "date": "2025-02-06",
+      "actual": 1255.85,
+      "predicted": 1262.48
+    },
+    {
+      "date": "2025-02-07",
+      "actual": 1242.92,
+      "predicted": 1253.84
+    },
+    {
+      "date": "2025-02-10",
+      "actual": 1224.28,
+      "predicted": 1256.27
+    },
+    {
+      "date": "2025-02-11",
+      "actual": 1206.13,
+      "predicted": 1242.36
+    },
+    {
+      "date": "2025-02-12",
+      "actual": 1205.69,
+      "predicted": 1229.21
+    },
+    {
+      "date": "2025-02-13",
+      "actual": 1206.83,
+      "predicted": 1224.42
+    },
+    {
+      "date": "2025-02-14",
+      "actual": 1214.41,
+      "predicted": 1214.88
+    },
+    {
+      "date": "2025-02-17",
+      "actual": 1214.91,
+      "predicted": 1212.2
+    },
+    {
+      "date": "2025-02-18",
+      "actual": 1216.94,
+      "predicted": 1206.7
+    },
+    {
+      "date": "2025-02-19",
+      "actual": 1222.44,
+      "predicted": 1210.09
+    },
+    {
+      "date": "2025-02-20",
+      "actual": 1217.63,
+      "predicted": 1215.67
+    },
+    {
+      "date": "2025-02-21",
+      "actual": 1204.15,
+      "predicted": 1212.75
+    },
+    {
+      "date": "2025-02-24",
+      "actual": 1193.69,
+      "predicted": 1206.08
+    },
+    {
+      "date": "2025-02-25",
+      "actual": 1196.76,
+      "predicted": 1203.06
+    },
+    {
+      "date": "2025-02-27",
+      "actual": 1189.82,
+      "predicted": 1205.94
+    },
+    {
+      "date": "2025-02-28",
+      "actual": 1161.22,
+      "predicted": 1193.8
+    },
+    {
+      "date": "2025-03-03",
+      "actual": 1151.95,
+      "predicted": 1170.32
+    },
+    {
+      "date": "2025-03-04",
+      "actual": 1165.53,
+      "predicted": 1169.33
+    },
+    {
+      "date": "2025-03-05",
+      "actual": 1199.24,
+      "predicted": 1176.15
+    },
+    {
+      "date": "2025-03-06",
+      "actual": 1239.1,
+      "predicted": 1187.88
+    },
+    {
+      "date": "2025-03-07",
+      "actual": 1227.8,
+      "predicted": 1201.69
+    },
+    {
+      "date": "2025-03-10",
+      "actual": 1236.62,
+      "predicted": 1189.92
+    },
+    {
+      "date": "2025-03-11",
+      "actual": 1246.29,
+      "predicted": 1219.01
+    },
+    {
+      "date": "2025-03-12",
+      "actual": 1237.22,
+      "predicted": 1237.18
+    },
+    {
+      "date": "2025-03-13",
+      "actual": 1228.24,
+      "predicted": 1235.91
+    },
+    {
+      "date": "2025-03-17",
+      "actual": 1228.24,
+      "predicted": 1233.39
+    },
+    {
+      "date": "2025-03-18",
+      "actual": 1236.47,
+      "predicted": 1237.94
+    },
+    {
+      "date": "2025-03-19",
+      "actual": 1258.28,
+      "predicted": 1242.0
+    },
+    {
+      "date": "2025-03-20",
+      "actual": 1265.42,
+      "predicted": 1251.31
+    },
+    {
+      "date": "2025-03-21",
+      "actual": 1290.95,
+      "predicted": 1249.75
+    },
+    {
+      "date": "2025-03-24",
+      "actual": 1274.44,
+      "predicted": 1272.39
+    },
+    {
+      "date": "2025-03-25",
+      "actual": 1262.15,
+      "predicted": 1261.54
+    },
+    {
+      "date": "2025-03-26",
+      "actual": 1267.26,
+      "predicted": 1268.88
+    },
+    {
+      "date": "2025-03-27",
+      "actual": 1264.18,
+      "predicted": 1279.07
+    },
+    {
+      "date": "2025-03-28",
+      "actual": 1241.88,
+      "predicted": 1274.34
+    },
+    {
+      "date": "2025-04-01",
+      "actual": 1240.44,
+      "predicted": 1253.58
+    },
+    {
+      "date": "2025-04-02",
+      "actual": 1238.01,
+      "predicted": 1256.0
+    },
+    {
+      "date": "2025-04-03",
+      "actual": 1194.39,
+      "predicted": 1249.66
+    },
+    {
+      "date": "2025-04-04",
+      "actual": 1155.72,
+      "predicted": 1212.4
+    },
+    {
+      "date": "2025-04-07",
+      "actual": 1172.08,
+      "predicted": 1190.42
+    },
+    {
+      "date": "2025-04-08",
+      "actual": 1175.2,
+      "predicted": 1204.65
+    },
+    {
+      "date": "2025-04-09",
+      "actual": 1208.51,
+      "predicted": 1183.25
+    },
+    {
+      "date": "2025-04-11",
+      "actual": 1229.48,
+      "predicted": 1193.06
+    },
+    {
+      "date": "2025-04-15",
+      "actual": 1228.69,
+      "predicted": 1193.99
+    },
+    {
+      "date": "2025-04-16",
+      "actual": 1263.59,
+      "predicted": 1198.87
+    },
+    {
+      "date": "2025-04-17",
+      "actual": 1284.41,
+      "predicted": 1237.24
+    },
+    {
+      "date": "2025-04-21",
+      "actual": 1280.14,
+      "predicted": 1253.6
+    },
+    {
+      "date": "2025-04-22",
+      "actual": 1288.87,
+      "predicted": 1256.75
+    },
+    {
+      "date": "2025-04-23",
+      "actual": 1290.46,
+      "predicted": 1276.12
+    },
+    {
+      "date": "2025-04-24",
+      "actual": 1289.27,
+      "predicted": 1286.13
+    },
+    {
+      "date": "2025-04-25",
+      "actual": 1357.08,
+      "predicted": 1290.47
+    },
+    {
+      "date": "2025-04-28",
+      "actual": 1387.72,
+      "predicted": 1339.82
+    },
+    {
+      "date": "2025-04-29",
+      "actual": 1392.97,
+      "predicted": 1344.01
+    },
+    {
+      "date": "2025-04-30",
+      "actual": 1407.64,
+      "predicted": 1354.5
+    },
+    {
+      "date": "2025-05-02",
+      "actual": 1419.05,
+      "predicted": 1383.87
+    },
+    {
+      "date": "2025-05-05",
+      "actual": 1408.73,
+      "predicted": 1410.04
+    },
+    {
+      "date": "2025-05-06",
+      "actual": 1393.96,
+      "predicted": 1410.82
+    },
+    {
+      "date": "2025-05-07",
+      "actual": 1394.95,
+      "predicted": 1409.29
+    },
+    {
+      "date": "2025-05-08",
+      "actual": 1365.41,
+      "predicted": 1415.64
+    },
+    {
+      "date": "2025-05-09",
+      "actual": 1424.2,
+      "predicted": 1391.34
+    },
+    {
+      "date": "2025-05-12",
+      "actual": 1403.58,
+      "predicted": 1431.55
+    },
+    {
+      "date": "2025-05-13",
+      "actual": 1412.2,
+      "predicted": 1392.89
+    },
+    {
+      "date": "2025-05-14",
+      "actual": 1441.75,
+      "predicted": 1408.79
+    },
+    {
+      "date": "2025-05-15",
+      "actual": 1443.93,
+      "predicted": 1427.27
+    },
+    {
+      "date": "2025-05-16",
+      "actual": 1428.46,
+      "predicted": 1431.19
+    },
+    {
+      "date": "2025-05-19",
+      "actual": 1412.4,
+      "predicted": 1423.53
+    },
+    {
+      "date": "2025-05-20",
+      "actual": 1416.96,
+      "predicted": 1424.44
+    },
+    {
+      "date": "2025-05-21",
+      "actual": 1397.33,
+      "predicted": 1433.87
+    },
+    {
+      "date": "2025-05-22",
+      "actual": 1414.58,
+      "predicted": 1412.72
+    },
+    {
+      "date": "2025-05-23",
+      "actual": 1422.52,
+      "predicted": 1422.09
+    },
+    {
+      "date": "2025-05-26",
+      "actual": 1409.92,
+      "predicted": 1415.82
+    },
+    {
+      "date": "2025-05-27",
+      "actual": 1400.8,
+      "predicted": 1405.89
+    },
+    {
+      "date": "2025-05-28",
+      "actual": 1405.66,
+      "predicted": 1403.75
+    },
+    {
+      "date": "2025-05-29",
+      "actual": 1408.73,
+      "predicted": 1411.78
+    },
+    {
+      "date": "2025-05-30",
+      "actual": 1401.6,
+      "predicted": 1409.68
+    },
+    {
+      "date": "2025-06-02",
+      "actual": 1393.47,
+      "predicted": 1400.59
+    },
+    {
+      "date": "2025-06-03",
+      "actual": 1411.31,
+      "predicted": 1396.58
+    },
+    {
+      "date": "2025-06-04",
+      "actual": 1430.05,
+      "predicted": 1410.53
+    },
+    {
+      "date": "2025-06-05",
+      "actual": 1431.14,
+      "predicted": 1416.02
+    },
+    {
+      "date": "2025-06-06",
+      "actual": 1436.4,
+      "predicted": 1412.72
+    },
+    {
+      "date": "2025-06-09",
+      "actual": 1426.18,
+      "predicted": 1422.16
+    },
+    {
+      "date": "2025-06-10",
+      "actual": 1436.49,
+      "predicted": 1422.46
+    },
+    {
+      "date": "2025-06-11",
+      "actual": 1429.26,
+      "predicted": 1436.91
+    },
+    {
+      "date": "2025-06-12",
+      "actual": 1415.67,
+      "predicted": 1429.08
+    },
+    {
+      "date": "2025-06-13",
+      "actual": 1425.49,
+      "predicted": 1423.0
+    },
+    {
+      "date": "2025-06-16",
+      "actual": 1418.95,
+      "predicted": 1430.97
+    },
+    {
+      "date": "2025-06-17",
+      "actual": 1417.86,
+      "predicted": 1422.08
+    },
+    {
+      "date": "2025-06-18",
+      "actual": 1421.03,
+      "predicted": 1420.38
+    },
+    {
+      "date": "2025-06-19",
+      "actual": 1453.65,
+      "predicted": 1420.33
+    },
+    {
+      "date": "2025-06-20",
+      "actual": 1444.33,
+      "predicted": 1441.55
+    },
+    {
+      "date": "2025-06-23",
+      "actual": 1438.38,
+      "predicted": 1427.08
+    },
+    {
+      "date": "2025-06-24",
+      "actual": 1454.74,
+      "predicted": 1432.65
+    },
+    {
+      "date": "2025-06-25",
+      "actual": 1482.5,
+      "predicted": 1450.25
+    },
+    {
+      "date": "2025-06-26",
+      "actual": 1502.43,
+      "predicted": 1468.25
+    },
+    {
+      "date": "2025-06-27",
+      "actual": 1487.75,
+      "predicted": 1474.94
+    },
+    {
+      "date": "2025-06-30",
+      "actual": 1515.31,
+      "predicted": 1469.43
+    },
+    {
+      "date": "2025-07-01",
+      "actual": 1505.8,
+      "predicted": 1503.55
+    },
+    {
+      "date": "2025-07-02",
+      "actual": 1504.8,
+      "predicted": 1498.66
+    },
+    {
+      "date": "2025-07-03",
+      "actual": 1514.22,
+      "predicted": 1506.72
+    },
+    {
+      "date": "2025-07-04",
+      "actual": 1528.3,
+      "predicted": 1513.23
+    },
+    {
+      "date": "2025-07-07",
+      "actual": 1524.44,
+      "predicted": 1523.58
+    },
+    {
+      "date": "2025-07-08",
+      "actual": 1505.99,
+      "predicted": 1517.62
+    },
+    {
+      "date": "2025-07-09",
+      "actual": 1504.21,
+      "predicted": 1511.26
+    },
+    {
+      "date": "2025-07-10",
+      "actual": 1482.4,
+      "predicted": 1517.61
+    },
+    {
+      "date": "2025-07-11",
+      "actual": 1471.0,
+      "predicted": 1501.86
+    },
+    {
+      "date": "2025-07-14",
+      "actual": 1472.68,
+      "predicted": 1493.3
+    },
+    {
+      "date": "2025-07-15",
+      "actual": 1472.88,
+      "predicted": 1487.19
+    },
+    {
+      "date": "2025-07-16",
+      "actual": 1463.76,
+      "predicted": 1478.98
+    },
+    {
+      "date": "2025-07-17",
+      "actual": 1463.36,
+      "predicted": 1465.87
+    },
+    {
+      "date": "2025-07-18",
+      "actual": 1416.37,
+      "predicted": 1465.36
+    },
+    {
+      "date": "2025-07-21",
+      "actual": 1400.7,
+      "predicted": 1433.42
+    },
+    {
+      "date": "2025-07-22",
+      "actual": 1412.4,
+      "predicted": 1431.04
+    },
+    {
+      "date": "2025-07-23",
+      "actual": 1390.89,
+      "predicted": 1430.18
+    },
+    {
+      "date": "2025-07-24",
+      "actual": 1379.78,
+      "predicted": 1399.76
+    },
+    {
+      "date": "2025-07-25",
+      "actual": 1375.72,
+      "predicted": 1386.56
+    },
+    {
+      "date": "2025-07-28",
+      "actual": 1404.97,
+      "predicted": 1381.37
+    },
+    {
+      "date": "2025-07-29",
+      "actual": 1398.03,
+      "predicted": 1398.13
+    },
+    {
+      "date": "2025-07-30",
+      "actual": 1378.3,
+      "predicted": 1379.01
+    },
+    {
+      "date": "2025-07-31",
+      "actual": 1381.77,
+      "predicted": 1371.12
+    },
+    {
+      "date": "2025-08-01",
+      "actual": 1399.41,
+      "predicted": 1382.72
+    },
+    {
+      "date": "2025-08-04",
+      "actual": 1379.78,
+      "predicted": 1395.08
+    },
+    {
+      "date": "2025-08-05",
+      "actual": 1380.87,
+      "predicted": 1373.4
+    },
+    {
+      "date": "2025-08-06",
+      "actual": 1377.5,
+      "predicted": 1379.62
+    },
+    {
+      "date": "2025-08-07",
+      "actual": 1356.09,
+      "predicted": 1378.08
+    },
+    {
+      "date": "2025-08-08",
+      "actual": 1374.33,
+      "predicted": 1364.83
+    },
+    {
+      "date": "2025-08-11",
+      "actual": 1368.58,
+      "predicted": 1378.08
+    },
+    {
+      "date": "2025-08-12",
+      "actual": 1370.76,
+      "predicted": 1365.05
+    },
+    {
+      "date": "2025-08-13",
+      "actual": 1367.48,
+      "predicted": 1367.0
+    },
+    {
+      "date": "2025-08-14",
+      "actual": 1375.34,
+      "predicted": 1362.79
+    },
+    {
+      "date": "2025-08-18",
+      "actual": 1413.56,
+      "predicted": 1372.64
+    },
+    {
+      "date": "2025-08-19",
+      "actual": 1406.5,
+      "predicted": 1395.19
+    },
+    {
+      "date": "2025-08-20",
+      "actual": 1418.24,
+      "predicted": 1382.87
+    },
+    {
+      "date": "2025-08-21",
+      "actual": 1402.71,
+      "predicted": 1401.72
+    },
+    {
+      "date": "2025-08-22",
+      "actual": 1406.1,
+      "predicted": 1397.27
+    },
+    {
+      "date": "2025-08-25",
+      "actual": 1378.53,
+      "predicted": 1412.33
+    },
+    {
+      "date": "2025-08-26",
+      "actual": 1379.52,
+      "predicted": 1390.71
+    },
+    {
+      "date": "2025-08-28",
+      "actual": 1350.95,
+      "predicted": 1397.71
+    },
+    {
+      "date": "2025-08-29",
+      "actual": 1347.67,
+      "predicted": 1369.61
+    },
+    {
+      "date": "2025-09-01",
+      "actual": 1360.21,
+      "predicted": 1369.15
+    },
+    {
+      "date": "2025-09-02",
+      "actual": 1366.28,
+      "predicted": 1366.54
+    },
+    {
+      "date": "2025-09-03",
+      "actual": 1353.04,
+      "predicted": 1360.97
+    },
+    {
+      "date": "2025-09-04",
+      "actual": 1368.67,
+      "predicted": 1346.35
+    },
+    {
+      "date": "2025-09-05",
+      "actual": 1372.16,
+      "predicted": 1363.71
+    },
+    {
+      "date": "2025-09-08",
+      "actual": 1369.87,
+      "predicted": 1363.46
+    },
+    {
+      "date": "2025-09-09",
+      "actual": 1370.66,
+      "predicted": 1362.86
+    },
+    {
+      "date": "2025-09-10",
+      "actual": 1376.93,
+      "predicted": 1365.27
+    },
+    {
+      "date": "2025-09-11",
+      "actual": 1388.58,
+      "predicted": 1373.01
+    },
+    {
+      "date": "2025-09-12",
+      "actual": 1392.86,
+      "predicted": 1379.75
+    },
+    {
+      "date": "2025-09-15",
+      "actual": 1398.83,
+      "predicted": 1380.8
+    },
+    {
+      "date": "2025-09-16",
+      "actual": 1407.29,
+      "predicted": 1387.82
+    },
+    {
+      "date": "2025-09-17",
+      "actual": 1408.49,
+      "predicted": 1397.05
+    },
+    {
+      "date": "2025-09-18",
+      "actual": 1400.92,
+      "predicted": 1400.72
+    },
+    {
+      "date": "2025-09-19",
+      "actual": 1384.2,
+      "predicted": 1399.62
+    },
+    {
+      "date": "2025-09-22",
+      "actual": 1383.4,
+      "predicted": 1393.67
+    },
+    {
+      "date": "2025-09-23",
+      "actual": 1376.64,
+      "predicted": 1397.55
+    },
+    {
+      "date": "2025-09-24",
+      "actual": 1366.08,
+      "predicted": 1388.07
+    },
+    {
+      "date": "2025-09-25",
+      "actual": 1371.26,
+      "predicted": 1377.04
+    },
+    {
+      "date": "2025-09-26",
+      "actual": 1366.48,
+      "predicted": 1377.61
+    },
+    {
+      "date": "2025-09-29",
+      "actual": 1357.72,
+      "predicted": 1369.01
+    },
+    {
+      "date": "2025-09-30",
+      "actual": 1362.4,
+      "predicted": 1361.52
+    },
+    {
+      "date": "2025-10-01",
+      "actual": 1357.13,
+      "predicted": 1364.61
+    },
+    {
+      "date": "2025-10-03",
+      "actual": 1368.67,
+      "predicted": 1358.0
+    },
+    {
+      "date": "2025-10-06",
+      "actual": 1378.43,
+      "predicted": 1365.23
+    },
+    {
+      "date": "2025-10-07",
+      "actual": 1361.11,
+      "predicted": 1366.96
+    },
+    {
+      "date": "2025-10-08",
+      "actual": 1371.46,
+      "predicted": 1355.35
+    },
+    {
+      "date": "2025-10-09",
+      "actual": 1375.34,
+      "predicted": 1370.05
+    },
+    {
+      "date": "2025-10-10",
+      "actual": 1368.67,
+      "predicted": 1371.07
+    },
+    {
+      "date": "2025-10-13",
+      "actual": 1369.57,
+      "predicted": 1366.34
+    },
+    {
+      "date": "2025-10-14",
+      "actual": 1367.98,
+      "predicted": 1367.97
+    },
+    {
+      "date": "2025-10-15",
+      "actual": 1391.86,
+      "predicted": 1368.51
+    },
+    {
+      "date": "2025-10-16",
+      "actual": 1410.28,
+      "predicted": 1384.83
+    },
+    {
+      "date": "2025-10-17",
+      "actual": 1460.05,
+      "predicted": 1389.86
+    },
+    {
+      "date": "2025-10-20",
+      "actual": 1458.46,
+      "predicted": 1423.61
+    },
+    {
+      "date": "2025-10-21",
+      "actual": 1441.73,
+      "predicted": 1419.89
+    },
+    {
+      "date": "2025-10-23",
+      "actual": 1444.92,
+      "predicted": 1429.31
+    },
+    {
+      "date": "2025-10-24",
+      "actual": 1477.27,
+      "predicted": 1449.26
+    },
+    {
+      "date": "2025-10-27",
+      "actual": 1480.06,
+      "predicted": 1476.14
+    },
+    {
+      "date": "2025-10-28",
+      "actual": 1497.28,
+      "predicted": 1467.04
+    },
+    {
+      "date": "2025-10-29",
+      "actual": 1481.65,
+      "predicted": 1481.04
+    },
+    {
+      "date": "2025-10-30",
+      "actual": 1479.56,
+      "predicted": 1475.26
+    },
+    {
+      "date": "2025-10-31",
+      "actual": 1477.87,
+      "predicted": 1487.95
+    },
+    {
+      "date": "2025-11-03",
+      "actual": 1466.32,
+      "predicted": 1487.59
+    },
+    {
+      "date": "2025-11-04",
+      "actual": 1489.21,
+      "predicted": 1479.84
+    },
+    {
+      "date": "2025-11-06",
+      "actual": 1471.2,
+      "predicted": 1492.23
+    },
+    {
+      "date": "2025-11-07",
+      "actual": 1482.45,
+      "predicted": 1471.88
+    },
+    {
+      "date": "2025-11-10",
+      "actual": 1486.53,
+      "predicted": 1484.36
+    },
+    {
+      "date": "2025-11-11",
+      "actual": 1504.54,
+      "predicted": 1482.59
+    },
+    {
+      "date": "2025-11-12",
+      "actual": 1503.95,
+      "predicted": 1496.19
+    },
+    {
+      "date": "2025-11-13",
+      "actual": 1511.91,
+      "predicted": 1490.84
+    },
+    {
+      "date": "2025-11-14",
+      "actual": 1511.31,
+      "predicted": 1502.62
+    },
+    {
+      "date": "2025-11-17",
+      "actual": 1512.41,
+      "predicted": 1504.76
+    },
+    {
+      "date": "2025-11-18",
+      "actual": 1511.91,
+      "predicted": 1510.63
+    },
+    {
+      "date": "2025-11-19",
+      "actual": 1541.97,
+      "predicted": 1511.31
+    },
+    {
+      "date": "2025-11-20",
+      "actual": 1539.48,
+      "predicted": 1531.97
+    },
+    {
+      "date": "2025-11-21",
+      "actual": 1528.83,
+      "predicted": 1523.98
+    },
+    {
+      "date": "2025-11-24",
+      "actual": 1532.61,
+      "predicted": 1524.05
+    },
+    {
+      "date": "2025-11-25",
+      "actual": 1562.67,
+      "predicted": 1534.12
+    },
+    {
+      "date": "2025-11-26",
+      "actual": 1556.2,
+      "predicted": 1555.66
+    },
+    {
+      "date": "2025-11-27",
+      "actual": 1560.29,
+      "predicted": 1543.51
+    },
+    {
+      "date": "2025-11-28",
+      "actual": 1558.89,
+      "predicted": 1551.94
+    },
+    {
+      "date": "2025-12-01",
+      "actual": 1539.18,
+      "predicted": 1555.92
+    },
+    {
+      "date": "2025-12-02",
+      "actual": 1531.72,
+      "predicted": 1549.64
+    },
+    {
+      "date": "2025-12-03",
+      "actual": 1528.53,
+      "predicted": 1547.4
+    },
+    {
+      "date": "2025-12-04",
+      "actual": 1533.51,
+      "predicted": 1542.85
+    },
+    {
+      "date": "2025-12-05",
+      "actual": 1535.9,
+      "predicted": 1540.0
+    },
+    {
+      "date": "2025-12-08",
+      "actual": 1522.36,
+      "predicted": 1533.6
+    },
+    {
+      "date": "2025-12-09",
+      "actual": 1529.83,
+      "predicted": 1523.18
+    },
+    {
+      "date": "2025-12-10",
+      "actual": 1537.89,
+      "predicted": 1531.28
+    },
+    {
+      "date": "2025-12-11",
+      "actual": 1549.34,
+      "predicted": 1533.39
+    },
+    {
+      "date": "2025-12-12",
+      "actual": 1549.04,
+      "predicted": 1538.04
+    },
+    {
+      "date": "2025-12-15",
+      "actual": 1535.2,
+      "predicted": 1535.93
+    },
+    {
+      "date": "2025-12-16",
+      "actual": 1537.29,
+      "predicted": 1533.12
+    },
+    {
+      "date": "2025-12-17",
+      "actual": 1537.29,
+      "predicted": 1541.12
+    },
+    {
+      "date": "2025-12-18",
+      "actual": 1557.9,
+      "predicted": 1540.15
+    },
+    {
+      "date": "2025-12-19",
+      "actual": 1568.15,
+      "predicted": 1550.39
+    },
+    {
+      "date": "2025-12-22",
+      "actual": 1563.47,
+      "predicted": 1550.08
+    },
+    {
+      "date": "2025-12-23",
+      "actual": 1551.03,
+      "predicted": 1550.11
+    },
+    {
+      "date": "2025-12-24",
+      "actual": 1552.02,
+      "predicted": 1550.06
+    },
+    {
+      "date": "2025-12-26",
+      "actual": 1538.49,
+      "predicted": 1558.74
+    },
+    {
+      "date": "2025-12-29",
+      "actual": 1532.71,
+      "predicted": 1548.68
+    },
+    {
+      "date": "2025-12-30",
+      "actual": 1563.17,
+      "predicted": 1544.16
+    },
+    {
+      "date": "2025-12-31",
+      "actual": 1568.35,
+      "predicted": 1558.86
+    },
+    {
+      "date": "2026-01-01",
+      "actual": 1584.97,
+      "predicted": 1552.04
+    },
+    {
+      "date": "2026-01-02",
+      "actual": 1570.84,
+      "predicted": 1563.58
+    },
+    {
+      "date": "2026-01-05",
+      "actual": 1500.66,
+      "predicted": 1558.2
+    },
+    {
+      "date": "2026-01-06",
+      "actual": 1497.28,
+      "predicted": 1528.81
+    },
+    {
+      "date": "2026-01-07",
+      "actual": 1463.83,
+      "predicted": 1541.18
+    },
+    {
+      "date": "2026-01-08",
+      "actual": 1468.51,
+      "predicted": 1505.9
+    },
+    {
+      "date": "2026-01-09",
+      "actual": 1476.37,
+      "predicted": 1496.74
+    },
+    {
+      "date": "2026-01-12",
+      "actual": 1446.11,
+      "predicted": 1477.71
+    },
+    {
+      "date": "2026-01-13",
+      "actual": 1452.09,
+      "predicted": 1449.96
+    },
+    {
+      "date": "2026-01-14",
+      "actual": 1452.09,
+      "predicted": 1455.96
+    },
+    {
+      "date": "2026-01-15",
+      "actual": 1451.19,
+      "predicted": 1451.21
+    },
+    {
+      "date": "2026-01-16",
+      "actual": 1407.09,
+      "predicted": 1447.46
+    },
+    {
+      "date": "2026-01-19",
+      "actual": 1387.58,
+      "predicted": 1414.24
+    },
+    {
+      "date": "2026-01-20",
+      "actual": 1398.14,
+      "predicted": 1412.7
+    },
+    {
+      "date": "2026-01-21",
+      "actual": 1396.05,
+      "predicted": 1415.2
+    },
+    {
+      "date": "2026-01-22",
+      "actual": 1379.72,
+      "predicted": 1397.93
+    },
+    {
+      "date": "2026-01-23",
+      "actual": 1374.15,
+      "predicted": 1376.67
+    },
+    {
+      "date": "2026-01-27",
+      "actual": 1390.27,
+      "predicted": 1375.08
+    },
+    {
+      "date": "2026-01-28",
+      "actual": 1384.6,
+      "predicted": 1386.35
+    },
+    {
+      "date": "2026-01-29",
+      "actual": 1388.98,
+      "predicted": 1374.33
+    },
+    {
+      "date": "2026-01-30",
+      "actual": 1384.0,
+      "predicted": 1378.27
+    },
+    {
+      "date": "2026-02-02",
+      "actual": 1430.49,
+      "predicted": 1376.01
+    },
+    {
+      "date": "2026-02-03",
+      "actual": 1450.1,
+      "predicted": 1412.58
+    },
+    {
+      "date": "2026-02-04",
+      "actual": 1436.76,
+      "predicted": 1413.51
+    },
+    {
+      "date": "2026-02-05",
+      "actual": 1444.12,
+      "predicted": 1410.89
+    },
+    {
+      "date": "2026-02-06",
+      "actual": 1454.87,
+      "predicted": 1432.17
+    },
+    {
+      "date": "2026-02-09",
+      "actual": 1451.79,
+      "predicted": 1449.33
+    },
+    {
+      "date": "2026-02-10",
+      "actual": 1461.94,
+      "predicted": 1448.13
+    },
+    {
+      "date": "2026-02-11",
+      "actual": 1442.23,
+      "predicted": 1456.39
+    },
+    {
+      "date": "2026-02-12",
+      "actual": 1413.07,
+      "predicted": 1444.75
+    },
+    {
+      "date": "2026-02-13",
+      "actual": 1430.49,
+      "predicted": 1433.87
+    },
+    {
+      "date": "2026-02-16",
+      "actual": 1416.45,
+      "predicted": 1449.11
+    },
+    {
+      "date": "2026-02-17",
+      "actual": 1434.67,
+      "predicted": 1427.33
+    },
+    {
+      "date": "2026-02-18",
+      "actual": 1403.01,
+      "predicted": 1435.35
+    },
+    {
+      "date": "2026-02-19",
+      "actual": 1412.87,
+      "predicted": 1404.67
+    },
+    {
+      "date": "2026-02-20",
+      "actual": 1421.43,
+      "predicted": 1422.87
+    },
+    {
+      "date": "2026-02-23",
+      "actual": 1422.22,
+      "predicted": 1420.04
+    },
+    {
+      "date": "2026-02-24",
+      "actual": 1392.06,
+      "predicted": 1417.59
+    },
+    {
+      "date": "2026-02-25",
+      "actual": 1400.33,
+      "predicted": 1394.48
+    },
+    {
+      "date": "2026-02-26",
+      "actual": 1387.48,
+      "predicted": 1410.91
+    },
+    {
+      "date": "2026-02-27",
+      "actual": 1351.75,
+      "predicted": 1395.8
+    },
+    {
+      "date": "2026-03-02",
+      "actual": 1338.81,
+      "predicted": 1370.17
+    },
+    {
+      "date": "2026-03-04",
+      "actual": 1383.01,
+      "predicted": 1362.46
+    },
+    {
+      "date": "2026-03-05",
+      "actual": 1398.33,
+      "predicted": 1387.65
+    },
+    {
+      "date": "2026-03-06",
+      "actual": 1417.45,
+      "predicted": 1373.6
+    },
+    {
+      "date": "2026-03-09",
+      "actual": 1402.32,
+      "predicted": 1381.97
+    },
+    {
+      "date": "2026-03-10",
+      "actual": 1383.8,
+      "predicted": 1378.06
+    },
+    {
+      "date": "2026-03-11",
+      "actual": 1385.79,
+      "predicted": 1386.75
+    },
+    {
+      "date": "2026-03-12",
+      "actual": 1374.35,
+      "predicted": 1396.99
+    },
+    {
+      "date": "2026-03-13",
+      "actual": 1388.68,
+      "predicted": 1385.96
+    },
+    {
+      "date": "2026-03-16",
+      "actual": 1391.17,
+      "predicted": 1391.52
+    },
+    {
+      "date": "2026-03-17",
+      "actual": 1401.62,
+      "predicted": 1383.83
+    },
+    {
+      "date": "2026-03-18",
+      "actual": 1378.43,
+      "predicted": 1391.44
+    },
+    {
+      "date": "2026-03-19",
+      "actual": 1407.89,
+      "predicted": 1374.96
+    },
+    {
+      "date": "2026-03-20",
+      "actual": 1401.32,
+      "predicted": 1406.22
+    },
+    {
+      "date": "2026-03-23",
+      "actual": 1405.3,
+      "predicted": 1392.66
+    },
+    {
+      "date": "2026-03-24",
+      "actual": 1406.6,
+      "predicted": 1400.6
+    },
+    {
+      "date": "2026-03-25",
+      "actual": 1341.9,
+      "predicted": 1400.57
+    },
+    {
+      "date": "2026-03-27",
+      "actual": 1337.71,
+      "predicted": 1363.22
+    },
+    {
+      "date": "2026-03-30",
+      "actual": 1362.9,
+      "predicted": 1375.1
+    },
+    {
+      "date": "2026-04-01",
+      "actual": 1344.28,
+      "predicted": 1380.58
+    },
+    {
+      "date": "2026-04-02",
+      "actual": 1298.7,
+      "predicted": 1346.69
+    },
+    {
+      "date": "2026-04-06",
+      "actual": 1298.6,
+      "predicted": 1310.34
+    },
+    {
+      "date": "2026-04-07",
+      "actual": 1341.6,
+      "predicted": 1322.55
+    },
+    {
+      "date": "2026-04-08",
+      "actual": 1323.88,
+      "predicted": 1344.62
+    },
+    {
+      "date": "2026-04-09",
+      "actual": 1343.99,
+      "predicted": 1307.32
+    },
+    {
+      "date": "2026-04-10",
+      "actual": 1309.05,
+      "predicted": 1325.46
+    },
+    {
+      "date": "2026-04-13",
+      "actual": 1337.91,
+      "predicted": 1302.19
+    },
+    {
+      "date": "2026-04-15",
+      "actual": 1337.12,
+      "predicted": 1341.4
+    },
+    {
+      "date": "2026-04-16",
+      "actual": 1358.72,
+      "predicted": 1326.34
+    },
+    {
+      "date": "2026-04-17",
+      "actual": 1357.03,
+      "predicted": 1344.75
+    },
+    {
+      "date": "2026-04-20",
+      "actual": 1347.07,
+      "predicted": 1336.85
+    },
+    {
+      "date": "2026-04-21",
+      "actual": 1355.83,
+      "predicted": 1341.7
+    },
+    {
+      "date": "2026-04-22",
+      "actual": 1337.22,
+      "predicted": 1354.5
+    },
+    {
+      "date": "2026-04-23",
+      "actual": 1321.69,
+      "predicted": 1342.15
+    },
+    {
+      "date": "2026-04-24",
+      "actual": 1359.51,
+      "predicted": 1335.74
+    },
+    {
+      "date": "2026-04-27",
+      "actual": 1382.51,
+      "predicted": 1361.89
+    },
+    {
+      "date": "2026-04-28",
+      "actual": 1418.84,
+      "predicted": 1362.47
+    },
+    {
+      "date": "2026-04-29",
+      "actual": 1424.22,
+      "predicted": 1381.87
+    },
+    {
+      "date": "2026-04-30",
+      "actual": 1424.22,
+      "predicted": 1386.43
+    },
+    {
+      "date": "2026-05-01",
+      "actual": 1456.37,
+      "predicted": 1406.35
+    },
+    {
+      "date": "2026-05-04",
+      "actual": 1456.86,
+      "predicted": 1441.33
+    },
+    {
+      "date": "2026-05-05",
+      "actual": 1431.28,
+      "predicted": 1442.87
+    },
+    {
+      "date": "2026-05-06",
+      "actual": 1429.59,
+      "predicted": 1433.61
+    },
+    {
+      "date": "2026-05-07",
+      "actual": 1428.59,
+      "predicted": 1444.63
+    },
+    {
+      "date": "2026-05-08",
+      "actual": 1381.81,
+      "predicted": 1445.33
+    },
+    {
+      "date": "2026-05-11",
+      "actual": 1357.72,
+      "predicted": 1408.48
+    },
+    {
+      "date": "2026-05-12",
+      "actual": 1352.55,
+      "predicted": 1396.0
+    },
+    {
+      "date": "2026-05-13",
+      "actual": 1355.53,
+      "predicted": 1387.14
+    },
+    {
+      "date": "2026-05-14",
+      "actual": 1330.25,
+      "predicted": 1374.5
+    },
+    {
+      "date": "2026-05-15",
+      "actual": 1329.75,
+      "predicted": 1339.81
+    },
+    {
+      "date": "2026-05-18",
+      "actual": 1316.61,
+      "predicted": 1339.99
+    },
+    {
+      "date": "2026-05-19",
+      "actual": 1353.44,
+      "predicted": 1325.09
+    },
+    {
+      "date": "2026-05-20",
+      "actual": 1343.39,
+      "predicted": 1349.16
+    },
+    {
+      "date": "2026-05-21",
+      "actual": 1348.27,
+      "predicted": 1324.14
+    },
+    {
+      "date": "2026-05-22",
+      "actual": 1360.71,
+      "predicted": 1334.94
+    },
+    {
+      "date": "2026-05-25",
+      "actual": 1350.06,
+      "predicted": 1345.29
+    },
+    {
+      "date": "2026-05-26",
+      "actual": 1344.28,
+      "predicted": 1342.09
+    },
+    {
+      "date": "2026-05-27",
+      "actual": 1344.28,
+      "predicted": 1342.71
+    },
+    {
+      "date": "2026-05-28",
+      "actual": 1315.12,
+      "predicted": 1346.03
+    },
+    {
+      "date": "2026-05-29",
+      "actual": 1313.92,
+      "predicted": 1325.63
+    },
+    {
+      "date": "2026-06-01",
+      "actual": 1308.55,
+      "predicted": 1329.16
+    },
+    {
+      "date": "2026-06-02",
+      "actual": 1307.16,
+      "predicted": 1318.79
+    },
+    {
+      "date": "2026-06-03",
+      "actual": 1297.7,
+      "predicted": 1313.16
+    },
+    {
+      "date": "2026-06-04",
+      "actual": 1291.0,
+      "predicted": 1299.7
+    },
+    {
+      "date": "2026-06-05",
+      "actual": 1263.3,
+      "predicted": 1296.42
+    },
+    {
+      "date": "2026-06-08",
+      "actual": 1269.2,
+      "predicted": 1275.61
+    },
+    {
+      "date": "2026-06-09",
+      "actual": 1258.8,
+      "predicted": 1283.85
+    },
+    {
+      "date": "2026-06-10",
+      "actual": 1263.0,
+      "predicted": 1265.57
+    },
+    {
+      "date": "2026-06-11",
+      "actual": 1293.0,
+      "predicted": 1265.67
+    },
+    {
+      "date": "2026-06-12",
+      "actual": 1307.0,
+      "predicted": 1279.17
+    },
+    {
+      "date": "2026-06-15",
+      "actual": 1328.8,
+      "predicted": 1280.81
+    },
+    {
+      "date": "2026-06-16",
+      "actual": 1332.7,
+      "predicted": 1297.6
+    },
+    {
+      "date": "2026-06-17",
+      "actual": 1328.1,
+      "predicted": 1305.39
+    },
+    {
+      "date": "2026-06-18",
+      "actual": 1309.5,
+      "predicted": 1315.84
+    },
+    {
+      "date": "2026-06-19",
+      "actual": 1326.5,
+      "predicted": 1313.05
+    },
+    {
+      "date": "2026-06-22",
+      "actual": 1309.5,
+      "predicted": 1334.55
+    },
+    {
+      "date": "2026-06-23",
+      "actual": 1313.6,
+      "predicted": 1314.25
+    },
+    {
+      "date": "2026-06-24",
+      "actual": 1318.1,
+      "predicted": 1320.24
+    },
+    {
+      "date": "2026-06-25",
+      "actual": 1318.1,
+      "predicted": 1318.36
+    },
+    {
+      "date": "2026-06-26",
+      "actual": 1301.0,
+      "predicted": 1318.09
+    }
+  ]
+}
