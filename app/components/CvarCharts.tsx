@@ -8,12 +8,13 @@ import {
   BarChart,
   CartesianGrid,
   Cell,
+  ComposedChart,
+  LabelList,
   Line,
   LineChart,
   ReferenceLine,
   ResponsiveContainer,
   Scatter,
-  ScatterChart,
   Tooltip,
   XAxis,
   YAxis,
@@ -210,180 +211,242 @@ export function Frontier({
     };
   });
 
-  const held = assets.filter((a) => (picked.weights[a] ?? 0) > 1e-4);
+  const held = assets
+    .filter((a) => (picked.weights[a] ?? 0) > 1e-4)
+    .sort((a, b) => picked.weights[b] - picked.weights[a]);
+
+  const pick = (d: FrontierDot | StrategyDot, title: string) =>
+    setPicked({
+      title,
+      sub: `${d.holdings} holdings above 0.01%`,
+      cvar: d.cvar,
+      ret: d.ret,
+      vol: d.vol,
+      dd: d.dd,
+      weights: d.weights,
+    });
+
+  // All five strategies sit inside the bottom-left corner of the frontier, so a
+  // single chart either shows the whole curve and squashes them together or
+  // shows them and loses the curve. Two panels do both: same data, same marks,
+  // different window, and the second one states its range in its title.
+  const zoom: [number, number] = [
+    Math.min(...strategies.map((d) => d.cvar)) - 0.08,
+    Math.max(...strategies.map((d) => d.cvar)) + 0.3,
+  ];
+  const zoomY: [number, number] = [
+    Math.min(...strategies.map((d) => d.ret)) - 2,
+    Math.max(...strategies.map((d) => d.ret)) + 3,
+  ];
+
+  const chart = (
+    xDomain: [number, number] | undefined,
+    yDomain: [number, number] | undefined,
+    tickFmt: (v: number) => string,
+  ) => (
+    <ResponsiveContainer width="100%" height={300}>
+      <ComposedChart
+        data={curve}
+        margin={{ top: 8, right: 14, bottom: 24, left: 2 }}
+      >
+        <CartesianGrid stroke={GRID} />
+        <XAxis
+          type="number"
+          dataKey="cvar"
+          domain={xDomain ?? [0.6, "dataMax + 0.4"]}
+          allowDataOverflow={xDomain != null}
+          {...axisProps}
+          tickFormatter={tickFmt}
+          label={{
+            value: "Daily CVaR 95% (loss)",
+            position: "insideBottom",
+            offset: -14,
+            fill: AXIS,
+            fontSize: 11,
+          }}
+        />
+        <YAxis
+          type="number"
+          dataKey="ret"
+          domain={yDomain ?? [0, "dataMax + 4"]}
+          allowDataOverflow={yDomain != null}
+          {...axisProps}
+          width={42}
+          tickFormatter={(v: number) => `${v.toFixed(0)}%`}
+        />
+        <ZAxis range={[46, 46]} />
+        {/* The frontier itself. Without it the 25 points read as a cloud
+            rather than as a boundary nothing can sit below. */}
+        <Line
+          type="monotone"
+          dataKey="ret"
+          stroke={AXIS}
+          strokeWidth={1.4}
+          strokeOpacity={0.5}
+          dot={false}
+          activeDot={false}
+          isAnimationActive={false}
+          legendType="none"
+        />
+        <Tooltip
+          cursor={{ strokeDasharray: "3 3", stroke: REF }}
+          content={({ active, payload }) => {
+            if (!active || !payload?.length) return null;
+            const d = payload[payload.length - 1].payload as FrontierDot & {
+              label?: string;
+            };
+            return (
+              <TipBox>
+                <div className="text-[12px] font-semibold text-fg">
+                  {d.label ?? `Frontier point ${d.index + 1}`}
+                </div>
+                <div className="mt-1 space-y-0.5 text-[11px] text-fg-muted">
+                  <div>
+                    return <span className="tnum text-fg">{d.ret.toFixed(2)}%</span>
+                  </div>
+                  <div>
+                    CVaR 95{" "}
+                    <span className="tnum text-fg">{d.cvar.toFixed(3)}%</span>
+                  </div>
+                  <div>
+                    max drawdown{" "}
+                    <span className="tnum text-fg">{d.dd.toFixed(2)}%</span>
+                  </div>
+                </div>
+              </TipBox>
+            );
+          }}
+        />
+        <Scatter
+          data={curve}
+          className="cursor-pointer"
+          shape={<Ring />}
+          onClick={(p: unknown) => {
+            const d = p as FrontierDot;
+            pick(d, `Frontier point ${d.index + 1}`);
+          }}
+        />
+        <Scatter
+          data={strategies}
+          shape={<Diamond />}
+          className="cursor-pointer"
+          onClick={(p: unknown) => {
+            const d = p as StrategyDot;
+            pick(d, d.label);
+          }}
+        >
+          {strategies.map((d) => (
+            <Cell key={d.key} fill={SERIES[d.key]} />
+          ))}
+        </Scatter>
+      </ComposedChart>
+    </ResponsiveContainer>
+  );
 
   return (
-    <div className="my-6 grid gap-4 lg:grid-cols-[minmax(0,1.75fr)_minmax(0,1fr)]">
-      <Figure
-        title="Expected annual return against daily CVaR 95%"
-        height={400}
-        caption={
-          <>
-            The grey dots are the {curve.length} frontier portfolios, each one a
-            separate optimisation; nothing exists below that curve. The coloured
-            diamonds are the five named strategies on the same axes. Click any mark
-            to load its exact weights into the panel. Min variance and min CVaR sit
-            0.006 points apart on CVaR, so their diamonds nearly coincide.
-          </>
-        }
-      >
-        <>
-        <SeriesLegend
-          keys={strategies.map((d) => d.key)}
-          labels={Object.fromEntries(strategies.map((d) => [d.key, d.label]))}
-        />
-        <ResponsiveContainer width="100%" height={354}>
-          <ScatterChart margin={{ top: 8, right: 16, bottom: 28, left: 6 }}>
-            <CartesianGrid stroke={GRID} />
-            <XAxis
-              type="number"
-              dataKey="cvar"
-              domain={[0.6, "dataMax + 0.4"]}
-              {...axisProps}
-              tickFormatter={(v: number) => `${v.toFixed(0)}%`}
-              label={{
-                value: "Daily CVaR 95% (loss)",
-                position: "insideBottom",
-                offset: -16,
-                fill: AXIS,
-                fontSize: 11,
-              }}
-            />
-            <YAxis
-              type="number"
-              dataKey="ret"
-              {...axisProps}
-              width={44}
-              tickFormatter={(v: number) => `${v.toFixed(0)}%`}
-            />
-            <ZAxis range={[46, 46]} />
-            <Tooltip
-              cursor={{ strokeDasharray: "3 3", stroke: REF }}
-              content={({ active, payload }) => {
-                if (!active || !payload?.length) return null;
-                const d = payload[0].payload as FrontierDot & { label?: string };
-                return (
-                  <TipBox>
-                    <div className="text-[12px] font-semibold text-fg">
-                      {d.label ?? `Frontier point ${d.index + 1}`}
-                    </div>
-                    <div className="mt-1 space-y-0.5 text-[11px] text-fg-muted">
-                      <div>
-                        return{" "}
-                        <span className="tnum text-fg">{d.ret.toFixed(2)}%</span>
-                      </div>
-                      <div>
-                        CVaR 95{" "}
-                        <span className="tnum text-fg">{d.cvar.toFixed(3)}%</span>
-                      </div>
-                      <div>
-                        max drawdown{" "}
-                        <span className="tnum text-fg">{d.dd.toFixed(2)}%</span>
-                      </div>
-                    </div>
-                  </TipBox>
-                );
-              }}
-            />
-            <Scatter
-              data={curve}
-              className="cursor-pointer"
-              shape={<Ring />}
-              onClick={(p: unknown) => {
-                const d = p as FrontierDot;
-                setPicked({
-                  title: `Frontier point ${d.index + 1}`,
-                  sub: `${d.holdings} holdings above 0.01%`,
-                  cvar: d.cvar,
-                  ret: d.ret,
-                  vol: d.vol,
-                  dd: d.dd,
-                  weights: d.weights,
-                });
-              }}
-            />
-            <Scatter
-              data={strategies}
-              shape={<Diamond />}
-              className="cursor-pointer"
-              onClick={(p: unknown) => {
-                const d = p as StrategyDot;
-                setPicked({
-                  title: d.label,
-                  sub: `${d.holdings} holdings above 0.01%`,
-                  cvar: d.cvar,
-                  ret: d.ret,
-                  vol: d.vol,
-                  dd: d.dd,
-                  weights: d.weights,
-                });
-              }}
-            >
-              {strategies.map((d) => (
-                <Cell key={d.key} fill={SERIES[d.key]} />
-              ))}
-            </Scatter>
-          </ScatterChart>
-        </ResponsiveContainer>
-        </>
-      </Figure>
+    <div className="my-6 space-y-4">
+      <SeriesLegend
+        keys={strategies.map((d) => d.key)}
+        labels={Object.fromEntries(strategies.map((d) => [d.key, d.label]))}
+      />
 
-      {/* Weights panel */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Figure
+          title="The whole frontier"
+          height={300}
+          caption={
+            <>
+              The {curve.length} rings are the frontier portfolios, each one a
+              separate optimisation. Nothing exists below the curve; anything above
+              it is a mistake made voluntarily. All five named strategies sit in the
+              bottom-left corner, magnified on the right.
+            </>
+          }
+        >
+          {chart(undefined, undefined, (v) => `${v.toFixed(0)}%`)}
+        </Figure>
+
+        <Figure
+          title={`The five strategies, magnified (CVaR ${zoom[0].toFixed(1)}% to ${zoom[1].toFixed(1)}%)`}
+          height={300}
+          caption={
+            <>
+              Min variance and min CVaR land 0.006 points apart on CVaR, so their
+              diamonds nearly coincide - min variance is drawn larger to stay
+              visible behind min CVaR. Click any mark in either panel to load its
+              exact weights below.
+            </>
+          }
+        >
+          {chart(zoom, zoomY, (v) => `${v.toFixed(1)}%`)}
+        </Figure>
+      </div>
+
+      {/* Weights panel. Laid out horizontally so it stays compact rather than
+          stretching to a chart's height with a four-row table in it. */}
       <div className="rounded-xl border border-line bg-ink-850/50 p-4 sm:p-5">
         <div className="flex items-baseline justify-between gap-3">
           <h3 className="text-[14px] font-semibold text-fg">{picked.title}</h3>
           <span className="text-[11px] text-fg-dim">{picked.sub}</span>
         </div>
 
-        <dl className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-line bg-line">
-          {[
-            ["Expected return", `${picked.ret.toFixed(2)}%`],
-            ["CVaR 95% (daily)", `${picked.cvar.toFixed(3)}%`],
-            ["Volatility", `${picked.vol.toFixed(2)}%`],
-            ["Max drawdown", `${picked.dd.toFixed(2)}%`],
-          ].map(([k, v]) => (
-            <div key={k} className="bg-ink-850 px-3 py-2.5">
-              <dt className="text-[10px] uppercase tracking-wider text-fg-dim">{k}</dt>
-              <dd className="tnum mt-1 text-[15px] font-semibold text-fg">{v}</dd>
-            </div>
-          ))}
-        </dl>
+        <div className="mt-4 grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+          <dl className="grid grid-cols-2 gap-px self-start overflow-hidden rounded-lg border border-line bg-line xs:grid-cols-4 lg:grid-cols-2">
+            {[
+              ["Expected return", `${picked.ret.toFixed(2)}%`],
+              ["CVaR 95% (daily)", `${picked.cvar.toFixed(3)}%`],
+              ["Volatility", `${picked.vol.toFixed(2)}%`],
+              ["Max drawdown", `${picked.dd.toFixed(2)}%`],
+            ].map(([k, v]) => (
+              <div key={k} className="bg-ink-850 px-3 py-2.5">
+                <dt className="text-[10px] uppercase tracking-wider text-fg-dim">
+                  {k}
+                </dt>
+                <dd className="tnum mt-1 text-[15px] font-semibold text-fg">{v}</dd>
+              </div>
+            ))}
+          </dl>
 
-        <h4 className="mt-5 text-[12px] font-medium text-fg">Allocation</h4>
-        <div className="mt-2 flex h-3 w-full overflow-hidden rounded-sm">
-          {held.map((a) => (
+          <div>
+            <h4 className="text-[12px] font-medium text-fg">Allocation</h4>
+            <div className="mt-2 flex h-3 w-full overflow-hidden rounded-sm">
+              {held.map((a) => (
+                <div
+                  key={a}
+                  style={{
+                    width: `${picked.weights[a] * 100}%`,
+                    background: colours[a],
+                  }}
+                  title={`${assetShort[a]} ${(picked.weights[a] * 100).toFixed(2)}%`}
+                />
+              ))}
+            </div>
+            {/* Two columns once there are more than four holdings, so a
+                twelve-asset frontier point does not run down the page. */}
             <div
-              key={a}
-              style={{
-                width: `${picked.weights[a] * 100}%`,
-                background: colours[a],
-              }}
-              title={`${assetShort[a]} ${(picked.weights[a] * 100).toFixed(2)}%`}
-            />
-          ))}
-        </div>
-        <table className="mt-3 w-full text-[12px]">
-          <tbody>
-            {held
-              .slice()
-              .sort((a, b) => picked.weights[b] - picked.weights[a])
-              .map((a) => (
-                <tr key={a} className="border-t border-line/60">
-                  <td className="py-1.5 text-fg-muted">
+              className={`mt-3 grid gap-x-6 ${held.length > 4 ? "sm:grid-cols-2" : ""}`}
+            >
+              {held.map((a) => (
+                <div
+                  key={a}
+                  className="flex items-baseline justify-between gap-3 border-t border-line/60 py-1.5 text-[12px]"
+                >
+                  <span className="text-fg-muted">
                     <span
                       aria-hidden
                       className="mr-2 inline-block h-2 w-2 rounded-sm align-middle"
                       style={{ background: colours[a] }}
                     />
                     {assetShort[a] ?? a}
-                  </td>
-                  <td className="tnum py-1.5 text-right font-medium text-fg">
+                  </span>
+                  <span className="tnum font-medium text-fg">
                     {(picked.weights[a] * 100).toFixed(2)}%
-                  </td>
-                </tr>
+                  </span>
+                </div>
               ))}
-          </tbody>
-        </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -488,7 +551,20 @@ export function Allocations({
                 stackId="w"
                 fill={colours[a]}
                 isAnimationActive={false}
-              />
+              >
+                {/* Only segments wide enough to hold text get a label; a number
+                    on every sliver would be unreadable. */}
+                <LabelList
+                  dataKey={a}
+                  position="center"
+                  fill="#0b0f18"
+                  fontSize={10}
+                  fontWeight={600}
+                  formatter={(v: React.ReactNode) =>
+                    Number(v) >= 7 ? `${Math.round(Number(v))}%` : ""
+                  }
+                />
+              </Bar>
             ))}
           </BarChart>
         </ResponsiveContainer>
@@ -703,7 +779,7 @@ export function EquityCurves({
                 stroke={SERIES[k]}
                 strokeWidth={k === "min_cvar" ? 2 : 1.2}
                 fill={SERIES[k]}
-                fillOpacity={k === "max_sharpe" ? 0.14 : 0.04}
+                fillOpacity={k === "max_sharpe" ? 0.1 : 0.02}
                 isAnimationActive={false}
               />
             ))}
@@ -728,10 +804,10 @@ export function SharpeShift({
       height={300}
       caption={
         <>
-          The hollow end is the fitted score, the filled end is what the strategy
-          actually earned on data it had never seen. Four strategies improve. Max
-          Sharpe is the only one that falls, and the only one of the five that
-          needs expected returns as an input.
+          The upper bar in each pair is the fitted score, the lower coloured one is
+          what the strategy actually earned on data it had never seen. Four
+          strategies improve. Max Sharpe is the only one that falls, and the only
+          one of the five that needs expected returns as an input.
         </>
       }
     >
@@ -744,7 +820,7 @@ export function SharpeShift({
             <i
               aria-hidden
               className="h-2 w-2 shrink-0 rounded-sm"
-              style={{ background: REF }}
+              style={{ background: "#3d4a63" }}
             />
             in sample
           </span>
@@ -813,11 +889,27 @@ export function SharpeShift({
           {/* Two bars per strategy rather than a dumbbell: Recharts has no
               dumbbell mark, and a paired bar still reads as "these two numbers
               belong together" while keeping the hover target large. */}
-          <Bar dataKey="ins" fill={REF} isAnimationActive={false} barSize={9} />
-          <Bar dataKey="oos" isAnimationActive={false} barSize={9}>
+          <Bar dataKey="ins" fill="#3d4a63" isAnimationActive={false} barSize={10}>
+            <LabelList
+              dataKey="ins"
+              position="right"
+              fill={AXIS}
+              fontSize={10}
+              formatter={(v: React.ReactNode) => Number(v).toFixed(3)}
+            />
+          </Bar>
+          <Bar dataKey="oos" isAnimationActive={false} barSize={10}>
             {data.map((d) => (
               <Cell key={d.key} fill={SERIES[d.key]} />
             ))}
+            <LabelList
+              dataKey="oos"
+              position="right"
+              fill={FG}
+              fontSize={10}
+              fontWeight={600}
+              formatter={(v: React.ReactNode) => Number(v).toFixed(3)}
+            />
           </Bar>
         </BarChart>
         </ResponsiveContainer>

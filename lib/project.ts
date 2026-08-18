@@ -25,10 +25,8 @@ export interface ProjectMeta {
   blurb: string;
   /** The repository that owns the analysis. */
   repo: string;
-  /** Method summary for the landing card. */
+  /** Method summary for the landing card. Deliberately states no outcome. */
   method: string;
-  /** The single result the project is actually about. */
-  finding: string;
 }
 
 export const PROJECTS: ProjectMeta[] = [
@@ -40,9 +38,7 @@ export const PROJECTS: ProjectMeta[] = [
       "Can price momentum predict tomorrow's return? A linear regression across 98 NSE stocks, and what the answer says about market efficiency.",
     repo: "https://github.com/arjunprashanth6129/price-prediction-linear-regression",
     method:
-      "Four price-derived features, one linear regression per stock, seven years of daily closes, a strict chronological 80/20 split.",
-    finding:
-      "It predicts nothing. R² of -0.02 on returns and direction correct 49.6% of the time, below a coin flip. The golden cross was never the heaviest feature for any stock.",
+      "Four price-derived features, one linear regression per stock, seven years of daily closes, and a strict chronological 80/20 split with the benchmark chosen before the score.",
   },
   {
     href: "/cvar",
@@ -52,9 +48,7 @@ export const PROJECTS: ProjectMeta[] = [
       "Building a portfolio around the worst days rather than the average one. Twelve assets in rupees, five strategies, and a walk-forward test that never sees the future.",
     repo: "https://github.com/arjunprashanth6129/cvar-portfolio-optimizer",
     method:
-      "Conditional Value-at-Risk minimised as a linear program via Rockafellar-Uryasev, stress-tested on 20,000 simulated scenarios and replayed through 2008.",
-    finding:
-      "The optimiser lost to splitting evenly. Equal weight had the best risk-adjusted return out of sample, though min CVaR had the shallowest drawdown and made money through Lehman.",
+      "Conditional Value-at-Risk minimised as a linear program via Rockafellar-Uryasev, stress-tested on 20,000 simulated scenarios, walk-forward tested and replayed through 2008.",
   },
 ];
 

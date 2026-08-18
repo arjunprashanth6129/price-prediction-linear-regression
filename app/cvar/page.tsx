@@ -364,9 +364,9 @@ export default function CvarStudy() {
             {num(bt.metrics_net.max_sharpe.sharpe, 3)}, and it is the only one of
             the five that consumes expected returns - the hardest quantity in
             finance to estimate. Min CVaR improved by the largest margin of the
-            five, {signed(head.shifts.min_cvar * 100, 1).replace("%", "")} points,
-            which is the strongest evidence in the project that it was not
-            overfitted.
+            five, {head.shifts.min_cvar >= 0 ? "+" : ""}
+            {num(head.shifts.min_cvar, 3)} on Sharpe, which is the strongest
+            evidence in the project that it was not overfitted.
           </p>
           <p className="rounded-xl border border-line bg-ink-850/50 px-5 py-4 text-[14px]">
             <strong className="font-semibold text-fg">

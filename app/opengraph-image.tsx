@@ -1,33 +1,13 @@
 import { ImageResponse } from "next/og";
 import { SITE, PROJECTS } from "@/lib/project";
-import { getMlSummary } from "@/lib/ml";
-import { getCvarHeadline } from "@/lib/cvar";
 
-export const alt = `${SITE.name} - ${SITE.tagline}`;
+export const alt = SITE.name;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Social preview card. The headline numbers are read from each study's saved
-// output rather than typed in, so the card cannot drift from the work.
+// Social preview card for the site as a whole. It names the two projects and
+// says nothing about their results - the same rule the landing page follows.
 export default function Og() {
-  const ml = getMlSummary();
-  const cv = getCvarHeadline();
-
-  // Satori requires any node with several children to declare display:flex, so
-  // each line of text is assembled as a single string.
-  const rows = [
-    {
-      n: "01",
-      name: PROJECTS[0].navName,
-      stat: `R² ${ml.avgR2.toFixed(2)} · direction ${(ml.avgDirAccuracy * 100).toFixed(1)}% · ${ml.total} NSE stocks`,
-    },
-    {
-      n: "02",
-      name: PROJECTS[1].navName,
-      stat: `Sharpe ${cv.bestSharpe.value.toFixed(2)} to 1/N · min CVaR drawdown ${cv.shallowestDrawdown.value.toFixed(1)}%`,
-    },
-  ];
-
   return new ImageResponse(
     (
       <div
@@ -38,7 +18,7 @@ export default function Og() {
           flexDirection: "column",
           justifyContent: "space-between",
           background: "#0b0f18",
-          padding: "68px",
+          padding: "72px",
           color: "#e8edf7",
           fontFamily: "sans-serif",
         }}
@@ -64,44 +44,45 @@ export default function Og() {
               <circle cx="19" cy="17" r="1.5" fill="#4d8dff" />
             </svg>
           </div>
-          <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: -0.5 }}>
+          {/* One text child: Satori requires display:flex on any node with
+              more than one, and an interpolation beside literal text is two. */}
+          <div style={{ fontSize: 24, color: "#9aa8c0", letterSpacing: 0.5 }}>
+            {`${SITE.author} Prashanth`}
+          </div>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          <div
+            style={{
+              fontSize: 88,
+              fontWeight: 800,
+              lineHeight: 1.02,
+              letterSpacing: -2.4,
+            }}
+          >
             {SITE.name}
+          </div>
+          <div style={{ fontSize: 27, color: "#9aa8c0", maxWidth: 940 }}>
+            {SITE.tagline}
           </div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          <div
-            style={{
-              fontSize: 54,
-              fontWeight: 800,
-              lineHeight: 1.06,
-              letterSpacing: -1.4,
-              maxWidth: 1000,
-            }}
-          >
-            Two studies, and neither found what it went looking for
-          </div>
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {rows.map((r) => (
+          {PROJECTS.map((p, i) => (
             <div
-              key={r.n}
+              key={p.href}
               style={{
                 display: "flex",
                 alignItems: "baseline",
-                gap: 18,
+                gap: 20,
                 borderTop: "1px solid #1c2537",
-                paddingTop: 16,
+                paddingTop: 15,
               }}
             >
-              <div style={{ fontSize: 20, color: "#4d8dff", fontWeight: 600 }}>
-                {r.n}
+              <div style={{ fontSize: 19, color: "#4d8dff", fontWeight: 600 }}>
+                {String(i + 1).padStart(2, "0")}
               </div>
-              <div style={{ fontSize: 26, fontWeight: 600, width: 430 }}>
-                {r.name}
-              </div>
-              <div style={{ fontSize: 21, color: "#9aa8c0" }}>{r.stat}</div>
+              <div style={{ fontSize: 28, fontWeight: 600 }}>{p.name}</div>
             </div>
           ))}
         </div>
