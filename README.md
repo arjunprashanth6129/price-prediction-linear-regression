@@ -4,14 +4,24 @@
 A linear regression study across 98 NSE stocks, and what the answer reveals
 about market efficiency.
 
-[![Live report](https://img.shields.io/badge/Live-report-000?logo=vercel)](https://arjun-quant-projects.vercel.app)
+[![Live report](https://img.shields.io/badge/Live-report-000?logo=vercel)](https://arjun-quant-projects.vercel.app/linear-regression)
 [![Python](https://img.shields.io/badge/Python-scikit--learn-3776ab?logo=python&logoColor=white)](https://scikit-learn.org)
 [![Next.js](https://img.shields.io/badge/Next.js-App_Router-000?logo=next.js)](https://nextjs.org)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-**Interactive version:** https://arjun-quant-projects.vercel.app
+**Interactive version:** https://arjun-quant-projects.vercel.app/linear-regression
 &nbsp;·&nbsp; **Full numeric results:** [`results/`](results/)
 &nbsp;·&nbsp; **All figures:** [`docs/figures/`](docs/figures/)
+
+> **This repository also hosts the site that presents my quant work.**
+> The study below is its own analysis and owns everything in `scripts/ml/`,
+> `data/` and `results/`. The site additionally carries a second project, a
+> [CVaR portfolio optimiser](https://arjun-quant-projects.vercel.app/cvar),
+> whose analysis lives in
+> [its own repository](https://github.com/arjunprashanth6129/cvar-portfolio-optimizer);
+> only that pipeline's committed JSON output is vendored here, under
+> `data/cvar/`, so the page can render without recomputing anything. Two
+> projects, two repositories, one site.
 
 ---
 
@@ -550,16 +560,21 @@ in the build.
 ## 10. Repository layout
 
 ```
-app/                          Next.js App Router - the interactive report
-  page.tsx                    the whole write-up, rendered from data/
+app/                          Next.js App Router
+  page.tsx                    landing page listing both projects
+  linear-regression/page.tsx  THIS study, rendered from data/ and lib/ml.ts
+  cvar/page.tsx               the CVaR project, rendered from data/cvar/
   components/
-    Charts.tsx                Recharts figures
+    Charts.tsx                Recharts figures for this study
+    CvarCharts.tsx            Recharts figures for the CVaR project
     CrossDiagram.tsx          golden/death cross, drawn from real Britannia closes
     Hyperplane3D.tsx          the fitted plane, interactive (Plotly, lazy-loaded)
-    SectionNav.tsx            scroll-spy anchor nav
+    TopNav.tsx                route nav; SectionNav.tsx is the in-page anchors
 lib/
-  ml.ts                       typed access to the results, summary statistics
+  ml.ts                       typed access to this study's results
   universe.ts                 ticker -> company name
+  cvar.ts                     typed access to the vendored CVaR output
+  project.ts                  site metadata and the project registry
 scripts/ml/
   figstyle.py                 one figure style shared by every stage that plots
   01_fetch_data.py            daily closes for the universe        (network)
@@ -570,6 +585,7 @@ scripts/ml/
   06_figures.py               every findings figure at 300 dpi
   raw_prices.csv              the exact dataset behind every number (committed)
 data/
+  cvar/                       the CVaR project's committed output, vendored
   universe.json               100 tickers -> company names
   market-caps.json            large / mid / small band per ticker
   ml-signals.json             per-stock results

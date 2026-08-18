@@ -1,23 +1,32 @@
 import { ImageResponse } from "next/og";
-import { PROJECT } from "@/lib/project";
+import { SITE, PROJECTS } from "@/lib/project";
 import { getMlSummary } from "@/lib/ml";
+import { getCvarHeadline } from "@/lib/cvar";
 
-export const alt = PROJECT.name;
+export const alt = `${SITE.name} - ${SITE.tagline}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Social preview card. The headline numbers are read from the results rather
-// than typed in, so the card cannot drift from the study behind it.
+// Social preview card. The headline numbers are read from each study's saved
+// output rather than typed in, so the card cannot drift from the work.
 export default function Og() {
-  const s = getMlSummary();
-  const pct = (x: number) => `${(x * 100).toFixed(1)}%`;
+  const ml = getMlSummary();
+  const cv = getCvarHeadline();
 
-  // Satori requires a node with several children to declare display:flex, so
-  // the deck is assembled as one string and rendered as a single text child.
-  const deck =
-    `${s.total} NSE stocks · seven years of daily closes · ` +
-    `R² ${s.avgR2.toFixed(2)} on returns, direction correct ` +
-    `${pct(s.avgDirAccuracy)} of the time`;
+  // Satori requires any node with several children to declare display:flex, so
+  // each line of text is assembled as a single string.
+  const rows = [
+    {
+      n: "01",
+      name: PROJECTS[0].navName,
+      stat: `R² ${ml.avgR2.toFixed(2)} · direction ${(ml.avgDirAccuracy * 100).toFixed(1)}% · ${ml.total} NSE stocks`,
+    },
+    {
+      n: "02",
+      name: PROJECTS[1].navName,
+      stat: `Sharpe ${cv.bestSharpe.value.toFixed(2)} to 1/N · min CVaR drawdown ${cv.shallowestDrawdown.value.toFixed(1)}%`,
+    },
+  ];
 
   return new ImageResponse(
     (
@@ -29,7 +38,7 @@ export default function Og() {
           flexDirection: "column",
           justifyContent: "space-between",
           background: "#0b0f18",
-          padding: "72px",
+          padding: "68px",
           color: "#e8edf7",
           fontFamily: "sans-serif",
         }}
@@ -55,41 +64,46 @@ export default function Og() {
               <circle cx="19" cy="17" r="1.5" fill="#4d8dff" />
             </svg>
           </div>
-          <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.5 }}>
-            Price prediction with a linear regression model
+          <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: -0.5 }}>
+            {SITE.name}
           </div>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <div
             style={{
-              fontSize: 62,
+              fontSize: 54,
               fontWeight: 800,
-              lineHeight: 1.05,
-              letterSpacing: -1.5,
-              maxWidth: 980,
+              lineHeight: 1.06,
+              letterSpacing: -1.4,
+              maxWidth: 1000,
             }}
           >
-            Can price momentum predict tomorrow&apos;s return?
-          </div>
-          <div style={{ fontSize: 27, color: "#9aa8c0", maxWidth: 940 }}>
-            {deck}
+            Two studies, and neither found what it went looking for
           </div>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            gap: 40,
-            fontSize: 23,
-            color: "#7c8aa4",
-            borderTop: "1px solid #1c2537",
-            paddingTop: 28,
-          }}
-        >
-          <span>scikit-learn · pandas</span>
-          <span>Next.js · TypeScript</span>
-          <span>Reproducible pipeline</span>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          {rows.map((r) => (
+            <div
+              key={r.n}
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                gap: 18,
+                borderTop: "1px solid #1c2537",
+                paddingTop: 16,
+              }}
+            >
+              <div style={{ fontSize: 20, color: "#4d8dff", fontWeight: 600 }}>
+                {r.n}
+              </div>
+              <div style={{ fontSize: 26, fontWeight: 600, width: 430 }}>
+                {r.name}
+              </div>
+              <div style={{ fontSize: 21, color: "#9aa8c0" }}>{r.stat}</div>
+            </div>
+          ))}
         </div>
       </div>
     ),

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, JetBrains_Mono } from "next/font/google";
-import { PROJECT } from "@/lib/project";
+import { SITE } from "@/lib/project";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 
@@ -21,32 +21,39 @@ const jetMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(PROJECT.live),
-  title: PROJECT.name,
-  description: PROJECT.description,
-  applicationName: PROJECT.name,
-  authors: [{ name: PROJECT.author }],
+  metadataBase: new URL(SITE.live),
+  // Each page sets its own title; this is the suffix they share.
+  title: {
+    default: `${SITE.name} - ${SITE.tagline}`,
+    template: `%s · ${SITE.name}`,
+  },
+  description: SITE.description,
+  applicationName: SITE.name,
+  authors: [{ name: SITE.author }],
   keywords: [
+    "quantitative finance",
     "linear regression",
     "momentum",
     "golden cross",
-    "moving average",
     "efficient market hypothesis",
+    "conditional value at risk",
+    "CVaR",
+    "portfolio optimisation",
     "NSE",
     "scikit-learn",
-    "quantitative finance",
+    "CVXPY",
   ],
   openGraph: {
-    type: "article",
-    url: PROJECT.live,
-    title: PROJECT.name,
-    description: PROJECT.description,
-    siteName: PROJECT.name,
+    type: "website",
+    url: SITE.live,
+    title: `${SITE.name} - ${SITE.tagline}`,
+    description: SITE.description,
+    siteName: SITE.name,
   },
   twitter: {
     card: "summary_large_image",
-    title: PROJECT.name,
-    description: PROJECT.description,
+    title: `${SITE.name} - ${SITE.tagline}`,
+    description: SITE.description,
   },
 };
 
