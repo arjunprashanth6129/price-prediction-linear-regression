@@ -145,8 +145,10 @@ devoted to it.
 shuffled.
 
 ```
-[<-- TRAIN 80% (Jun 2019 -> Jan 2025) --|-- TEST 20% (Feb 2025 -> Jun 2026) -->]
+[TRAIN 80% (Jun 2019 ➔ Jan 2025) / TEST 20% (Feb 2025 ➔ Jun 2026) 
 ```
+
+
 
 ![Chronological train/test split on the worked example](docs/figures/train-test-split.png)
 
