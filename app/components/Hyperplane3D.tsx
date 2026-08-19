@@ -82,12 +82,12 @@ export default function Hyperplane3D({ data, weights }: Props) {
         );
 
         const axis = {
-          color: "#9aa8c0",
-          gridcolor: "#2a3651",
-          zerolinecolor: "#3a4a6b",
+          color: "#64748b",
+          gridcolor: "#e2e8f0",
+          zerolinecolor: "#cbd5e1",
           showbackground: false,
-          titlefont: { size: 11, color: "#9aa8c0" },
-          tickfont: { size: 10, color: "#7c8aa4" },
+          titlefont: { size: 11, color: "#475569" },
+          tickfont: { size: 10, color: "#64748b" },
         };
 
         await Plotly.newPlot(
@@ -99,14 +99,16 @@ export default function Hyperplane3D({ data, weights }: Props) {
               y: gy,
               z: gz,
               showscale: false,
-              opacity: 0.32,
+              // Pale enough that the observations read on top of it. The plane
+              // is context here; the scatter is the evidence.
+              opacity: 0.42,
               colorscale: [
-                [0, "#1b7fa8"],
-                [1, "#4dd0e1"],
+                [0, "#bfdbfe"],
+                [1, "#93c5fd"],
               ],
               contours: {
-                x: { show: true, color: "#5fe3f5", width: 1 },
-                y: { show: true, color: "#5fe3f5", width: 1 },
+                x: { show: true, color: "#60a5fa", width: 1 },
+                y: { show: true, color: "#60a5fa", width: 1 },
               },
               hoverinfo: "skip",
               name: "fitted plane",
@@ -117,11 +119,17 @@ export default function Hyperplane3D({ data, weights }: Props) {
               x: xs,
               y: ys,
               z: zs,
+              /*
+                The points were near-white at 62% opacity, which was invisible
+                against a white surface. Dark slate at full opacity, a size up,
+                with a white halo so points that land on the plane still read
+                as separate marks rather than dissolving into it.
+              */
               marker: {
-                size: 2.6,
-                color: "#dbe8ff",
-                opacity: 0.62,
-                line: { width: 0 },
+                size: 3.4,
+                color: "#1e293b",
+                opacity: 0.85,
+                line: { width: 0.5, color: "#ffffff" },
               },
               text: data.map((d) => d.date),
               hovertemplate:
@@ -137,9 +145,9 @@ export default function Hyperplane3D({ data, weights }: Props) {
             plot_bgcolor: "rgba(0,0,0,0)",
             showlegend: false,
             hoverlabel: {
-              bgcolor: "#161f30",
-              bordercolor: "#2a3651",
-              font: { color: "#e8edf7", size: 11 },
+              bgcolor: "#ffffff",
+              bordercolor: "#cbd5e1",
+              font: { color: "#0f172a", size: 11 },
             },
             scene: {
               xaxis: { ...axis, title: { text: "ma5 (scaled)" } },

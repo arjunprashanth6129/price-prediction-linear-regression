@@ -468,7 +468,7 @@ export default function LinearRegressionStudy() {
           <p>
             Only <V>{outsideBand} of {s.total}</V> bars clear that band, which is
             roughly what ranking {s.total} noisy estimates produces by chance
-            alone. The green end of this ranking is what sampling variation looks
+            alone. The positive end of this ranking is what sampling variation looks
             like, not a shortlist. It is also worth noticing that several of the
             largest edges belong to stocks with clearly negative R²: they called
             direction slightly better than their baseline while modelling the size

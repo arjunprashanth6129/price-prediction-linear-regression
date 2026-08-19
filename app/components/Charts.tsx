@@ -117,7 +117,7 @@ export function R2Histogram({
       }
     >
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} margin={{ top: 28, right: 8, bottom: 4, left: 0 }}>
+        <BarChart data={data} margin={{ top: 42, right: 8, bottom: 4, left: 0 }}>
           {/* Five categories inside a 375px viewport leaves ~65px each, so the
               tick font drops a step to keep the bucket labels from colliding. */}
           <XAxis
@@ -154,6 +154,10 @@ export function R2Histogram({
           />
           {/* Boundary between "worse than the mean" and "better". The full
               sentence lives in the caption - a long label overflows at 375px. */}
+          {/* The reference label and the bar's own count label both sit at
+              "top", so on the tallest bucket they printed on top of each other
+              ("R²=0" through "35"). Offsetting the reference label above the
+              plot area separates them at every bar height. */}
           <ReferenceLine
             x="-0.01 to 0"
             stroke={REF}
@@ -161,6 +165,7 @@ export function R2Histogram({
             label={{
               value: "R² = 0",
               position: "top",
+              offset: 14,
               fill: AXIS,
               fontSize: 10,
             }}
@@ -503,8 +508,12 @@ export interface FitPoint {
   predicted: number;
 }
 
-const ACCENT = "#4d8dff";
-const ORANGE = "#eb6834";
+// The actual/predicted pair for the worked example. Both were carried over
+// from the dark theme, where #4d8dff read fine; on a white surface it is a
+// washed-out 2.6:1 against the panel. These match the page palette and hold
+// their separation under deuteranopia.
+const ACCENT = "#2563eb";
+const ORANGE = "#c2410c";
 
 export function PriceFit({ data, span }: { data: FitPoint[]; span: string }) {
   // Month ticks only - 347 daily labels would be unreadable.
@@ -1055,7 +1064,7 @@ export function EdgeRanked({
           <strong className="font-semibold text-ink">
             {negative} of {total}
           </strong>{" "}
-          stocks showed negative edge. The green bars do not survive significance
+          stocks showed negative edge. The positive bars do not survive significance
           testing at this sample size: with about {avgTestDays} test days per
           stock, anything inside roughly {noiseBand.toFixed(0)} points either way
           is what chance alone produces.
@@ -1067,7 +1076,10 @@ export function EdgeRanked({
           data={data}
           layout="vertical"
           margin={{ top: 4, right: 12, bottom: 24, left: 4 }}
-          barCategoryGap={0}
+          // A hairline between bars, matching the README figure. At zero the
+          // 98 bars fused into one solid block and the per-stock reading was
+          // lost.
+          barCategoryGap={1}
         >
           <XAxis
             type="number"
@@ -1169,7 +1181,9 @@ export function CapBreakdown({ data }: { data: CapRow[] }) {
         <ComposedChart
           data={data}
           layout="vertical"
-          margin={{ top: 8, right: 60, bottom: 26, left: 4 }}
+          // Headroom so the "coin flip" label is not clipped, and a right
+          // gutter wide enough to hold the edge values clear of the line.
+          margin={{ top: 26, right: 76, bottom: 26, left: 4 }}
         >
           <XAxis
             type="number"
@@ -1184,15 +1198,40 @@ export function CapBreakdown({ data }: { data: CapRow[] }) {
               fontSize: 11,
             }}
           />
+          {/* Recharts wrapped "Large (n=55)" onto two lines with no leading,
+              so the band name and its count collided. Drawn explicitly instead,
+              with the pair centred on the row. */}
           <YAxis
             type="category"
             dataKey="category"
             {...axisProps}
             width={96}
-            tick={{ fill: AXIS, fontSize: 11 }}
-            tickFormatter={(v: string) => {
-              const row = data.find((d) => d.category === v);
-              return row ? `${v} (n=${row.n})` : v;
+            tick={(tickProps: {
+              x?: string | number;
+              y?: string | number;
+              payload?: { value?: string | number };
+            }) => {
+              const tx = Number(tickProps.x);
+              const ty = Number(tickProps.y);
+              if (!Number.isFinite(tx) || !Number.isFinite(ty)) return <g />;
+              const band = String(tickProps.payload?.value ?? "");
+              const row = data.find((d) => d.category === band);
+              return (
+                <g>
+                  <text
+                    x={tx - 10}
+                    y={ty}
+                    textAnchor="end"
+                    fill={AXIS}
+                    fontSize={11}
+                  >
+                    <tspan dy={-3}>{band}</tspan>
+                    <tspan x={tx - 10} dy={15}>
+                      {row ? `n = ${row.n}` : ""}
+                    </tspan>
+                  </text>
+                </g>
+              );
             }}
           />
           <Tooltip
@@ -1246,11 +1285,24 @@ export function CapBreakdown({ data }: { data: CapRow[] }) {
             isAnimationActive={false}
           />
           <Scatter dataKey="baseline" shape={<CapHollow />} isAnimationActive={false} />
-          <Scatter dataKey="accuracy" shape={<CapSolid />} isAnimationActive={false}>
+          <Scatter dataKey="accuracy" shape={<CapSolid />} isAnimationActive={false} />
+          {/*
+            The edge values sit in a right-hand gutter rather than beside the
+            filled dot. Large caps land at 49.9% and the coin-flip line is at
+            50, so a label anchored to that dot ran straight through the dashed
+            line. Pinning every label to the same x also lets the three read as
+            a column. The marks themselves are invisible; only the labels show.
+          */}
+          <Scatter
+            dataKey={() => hi}
+            shape={<NoMark />}
+            isAnimationActive={false}
+          >
             <LabelList
               dataKey="edge"
               position="right"
-              fill={AXIS}
+              offset={12}
+              fill={POS}
               fontSize={10.5}
               formatter={(v: React.ReactNode) =>
                 `${Number(v) >= 0 ? "+" : ""}${Number(v).toFixed(2)} pts`
@@ -1261,6 +1313,11 @@ export function CapBreakdown({ data }: { data: CapRow[] }) {
       </ResponsiveContainer>
     </Frame>
   );
+}
+
+/** Anchor for the gutter labels: occupies a position, paints nothing. */
+function NoMark() {
+  return <g />;
 }
 
 function CapHollow(props: { cx?: number; cy?: number }) {
