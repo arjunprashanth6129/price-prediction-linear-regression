@@ -5,7 +5,7 @@
 // around them. Client-safe; no secrets.
 
 export const SITE = {
-  name: "Quant Projects",
+  name: "Quant Research Desk",
   tagline: "Two studies in quantitative finance, on Indian and global markets",
   description:
     "Two quantitative finance studies: whether momentum signals predict next-day returns across 98 NSE stocks, and a CVaR portfolio optimiser tested against fat tails, a walk-forward backtest and the 2008 crash.",

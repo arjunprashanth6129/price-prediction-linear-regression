@@ -17,9 +17,9 @@ export default function Og() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#0b0f18",
+          background: "#ffffff",
           padding: "72px",
-          color: "#e8edf7",
+          color: "#0f172a",
           fontFamily: "sans-serif",
         }}
       >
@@ -29,24 +29,24 @@ export default function Og() {
               width: 56,
               height: 56,
               borderRadius: 12,
-              border: "1px solid #2a3651",
-              background: "#161f30",
+              border: "1px solid #e2e8f0",
+              background: "#f8fafc",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-              <path d="M3 12h18" stroke="#4d8dff" strokeWidth={2} strokeLinecap="round" />
-              <circle cx="6.5" cy="7" r="1.5" fill="#4d8dff" />
-              <circle cx="11" cy="16.5" r="1.5" fill="#4d8dff" />
-              <circle cx="15.5" cy="6" r="1.5" fill="#4d8dff" />
-              <circle cx="19" cy="17" r="1.5" fill="#4d8dff" />
+              <path d="M3 12h18" stroke="#2563eb" strokeWidth={2} strokeLinecap="round" />
+              <circle cx="6.5" cy="7" r="1.5" fill="#2563eb" />
+              <circle cx="11" cy="16.5" r="1.5" fill="#2563eb" />
+              <circle cx="15.5" cy="6" r="1.5" fill="#2563eb" />
+              <circle cx="19" cy="17" r="1.5" fill="#2563eb" />
             </svg>
           </div>
           {/* One text child: Satori requires display:flex on any node with
               more than one, and an interpolation beside literal text is two. */}
-          <div style={{ fontSize: 24, color: "#9aa8c0", letterSpacing: 0.5 }}>
+          <div style={{ fontSize: 24, color: "#64748b", letterSpacing: 0.5 }}>
             {`${SITE.author} Prashanth`}
           </div>
         </div>
@@ -62,7 +62,7 @@ export default function Og() {
           >
             {SITE.name}
           </div>
-          <div style={{ fontSize: 27, color: "#9aa8c0", maxWidth: 940 }}>
+          <div style={{ fontSize: 27, color: "#64748b", maxWidth: 940 }}>
             {SITE.tagline}
           </div>
         </div>
@@ -75,11 +75,11 @@ export default function Og() {
                 display: "flex",
                 alignItems: "baseline",
                 gap: 20,
-                borderTop: "1px solid #1c2537",
+                borderTop: "1px solid #e2e8f0",
                 paddingTop: 15,
               }}
             >
-              <div style={{ fontSize: 19, color: "#4d8dff", fontWeight: 600 }}>
+              <div style={{ fontSize: 19, color: "#2563eb", fontWeight: 600 }}>
                 {String(i + 1).padStart(2, "0")}
               </div>
               <div style={{ fontSize: 28, fontWeight: 600 }}>{p.name}</div>

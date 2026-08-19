@@ -5,6 +5,7 @@ import {
   Bar,
   BarChart,
   Cell,
+  ComposedChart,
   LabelList,
   Legend,
   Line,
@@ -22,11 +23,19 @@ import { useMounted } from "./useMounted";
 
 // Recharts takes real colour values, not Tailwind classes, so the theme tokens
 // are mirrored here. Keep in step with app/globals.css.
-const POS = "#2fbf71";
-const NEG = "#f1566a";
-const AXIS = "#7c8aa4";
-const GRID = "#1c2537";
-const REF = "#2a3651";
+//
+// POS and NEG are blue and amber rather than green and red. Nearly every chart
+// in this file encodes a polarity, and green against red separates by a colour
+// distance of only about 3.5 under deuteranopia, so roughly one man in twelve
+// cannot tell the two bar colours apart. Blue against amber separates by about
+// 25 in the worst case, and polarity is additionally carried by position in
+// every one of these charts.
+const POS = "#2563eb";
+const NEG = "#b45309";
+const AXIS = "#64748b";
+const GRID = "#e2e8f0";
+const REF = "#cbd5e1";
+const SURFACE = "#ffffff";
 
 const axisProps = {
   stroke: GRID,
@@ -48,19 +57,19 @@ function Frame({
 }) {
   const mounted = useMounted();
   return (
-    <figure className="my-6 rounded-xl border border-line bg-ink-850/50 p-4 sm:p-5">
-      <figcaption className="mb-4 text-[13px] font-medium text-fg">
+    <figure className="my-6 rounded-xl border border-line bg-surface p-4 sm:p-5">
+      <figcaption className="mb-4 text-[13px] font-medium text-ink">
         {title}
       </figcaption>
       <div style={{ height }} className="w-full">
         {mounted ? (
           children
         ) : (
-          <div className="h-full w-full rounded-lg border border-line bg-ink-900" />
+          <div className="h-full w-full rounded-lg border border-line bg-surface-2" />
         )}
       </div>
       {caption && (
-        <p className="mt-4 text-[12px] leading-relaxed text-fg-dim">{caption}</p>
+        <p className="mt-4 text-[12px] leading-relaxed text-ink-dim">{caption}</p>
       )}
     </figure>
   );
@@ -68,7 +77,7 @@ function Frame({
 
 function TipBox({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-lg border border-line-strong bg-ink-800 px-3 py-2 shadow-xl shadow-ink-950/50">
+    <div className="rounded-lg border border-line-strong bg-paper px-3 py-2 shadow-lg shadow-ink/10">
       {children}
     </div>
   );
@@ -99,7 +108,7 @@ export function R2Histogram({
       height={300}
       caption={
         <>
-          <strong className="font-semibold text-fg">
+          <strong className="font-semibold text-ink">
             {aboveZero} of {total}
           </strong>{" "}
           stocks achieved R² above zero. Everything left of the marked line
@@ -129,14 +138,14 @@ export function R2Histogram({
             }}
           />
           <Tooltip
-            cursor={{ fill: "rgba(255,255,255,0.03)" }}
+            cursor={{ fill: "rgba(15,23,42,0.04)" }}
             content={({ active, payload }) => {
               if (!active || !payload?.length) return null;
               const d = payload[0].payload as R2Bucket;
               return (
                 <TipBox>
-                  <div className="text-[11px] text-fg-dim">R² {d.bucket}</div>
-                  <div className="tnum mt-0.5 text-sm font-semibold text-fg">
+                  <div className="text-[11px] text-ink-dim">R² {d.bucket}</div>
+                  <div className="tnum mt-0.5 text-sm font-semibold text-ink">
                     {d.count} {d.count === 1 ? "stock" : "stocks"}
                   </div>
                 </TipBox>
@@ -209,9 +218,9 @@ export function AccuracyScatter({
         height={340}
         caption={
           <>
-            <span className="text-pos">{above} stocks above baseline</span>
+            <span className="text-accent">{above} stocks above baseline</span>
             {" · "}
-            <span className="text-neg">{below} stocks below baseline</span>. Any
+            <span className="text-[#b45309]">{below} stocks below baseline</span>. Any
             dot under the diagonal is a stock where always guessing “up” beat the
             model. Click a dot for that stock&apos;s full metrics.
           </>
@@ -271,23 +280,23 @@ export function AccuracyScatter({
                 const d = payload[0].payload as ScatterPoint;
                 return (
                   <TipBox>
-                    <div className="text-[12px] font-semibold text-fg">
+                    <div className="text-[12px] font-semibold text-ink">
                       {d.ticker}
                     </div>
                     <div className="mt-1 space-y-0.5 text-[11px]">
-                      <div className="text-fg-muted">
+                      <div className="text-ink-muted">
                         Model:{" "}
-                        <span className="tnum text-fg">
+                        <span className="tnum text-ink">
                           {d.model.toFixed(1)}%
                         </span>
                       </div>
-                      <div className="text-fg-muted">
+                      <div className="text-ink-muted">
                         Naive:{" "}
-                        <span className="tnum text-fg">
+                        <span className="tnum text-ink">
                           {d.naive.toFixed(1)}%
                         </span>
                       </div>
-                      <div className={d.beats ? "text-pos" : "text-neg"}>
+                      <div className={d.beats ? "text-accent" : "text-[#b45309]"}>
                         Edge: {d.edge >= 0 ? "+" : ""}
                         {d.edge.toFixed(1)} pts
                       </div>
@@ -321,8 +330,8 @@ export function AccuracyScatter({
 function Row({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex items-baseline justify-between gap-4 border-t border-line/60 py-2 first:border-t-0">
-      <span className="text-[12px] text-fg-muted">{label}</span>
-      <span className="tnum text-[13px] font-medium text-fg">{value}</span>
+      <span className="text-[12px] text-ink-muted">{label}</span>
+      <span className="tnum text-[13px] font-medium text-ink">{value}</span>
     </div>
   );
 }
@@ -348,23 +357,23 @@ function StockModal({
       role="dialog"
       aria-modal="true"
       aria-label={`${p.ticker} model metrics`}
-      className="fixed inset-0 z-50 grid place-items-center bg-ink-950/70 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 grid place-items-center bg-ink/25 p-4 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-sm rounded-xl border border-line-strong bg-ink-850 p-5 shadow-2xl"
+        className="w-full max-w-sm rounded-xl border border-line-strong bg-surface-2 p-5 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4">
           <div>
-            <div className="text-[15px] font-semibold text-fg">{p.ticker}</div>
-            <div className="text-[12px] text-fg-dim">{p.name}</div>
+            <div className="text-[15px] font-semibold text-ink">{p.ticker}</div>
+            <div className="text-[12px] text-ink-dim">{p.name}</div>
           </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="rounded-md border border-line px-2 py-1 text-[12px] text-fg-muted transition-colors duration-200 hover:border-line-strong hover:text-fg"
+            className="rounded-md border border-line px-2 py-1 text-[12px] text-ink-muted transition-colors duration-200 hover:border-line-strong hover:text-ink"
           >
             Esc
           </button>
@@ -376,7 +385,7 @@ function StockModal({
           <Row
             label="Edge"
             value={
-              <span className={p.beats ? "text-pos" : "text-neg"}>
+              <span className={p.beats ? "text-accent" : "text-[#b45309]"}>
                 {p.edge >= 0 ? "+" : ""}
                 {p.edge.toFixed(1)} pts
               </span>
@@ -453,14 +462,14 @@ export function MaRatioSigns({
             }}
           />
           <Tooltip
-            cursor={{ fill: "rgba(255,255,255,0.03)" }}
+            cursor={{ fill: "rgba(15,23,42,0.04)" }}
             content={({ active, payload }) => {
               if (!active || !payload?.length) return null;
               const d = payload[0].payload as (typeof data)[number];
               return (
                 <TipBox>
-                  <div className="text-[11px] text-fg-dim">{d.label}</div>
-                  <div className="tnum mt-0.5 text-sm font-semibold text-fg">
+                  <div className="text-[11px] text-ink-dim">{d.label}</div>
+                  <div className="tnum mt-0.5 text-sm font-semibold text-ink">
                     {d.count} stocks
                   </div>
                 </TipBox>
@@ -549,7 +558,7 @@ export function PriceFit({ data, span }: { data: FitPoint[]; span: string }) {
               const d = payload[0].payload as FitPoint;
               return (
                 <TipBox>
-                  <div className="text-[11px] text-fg-dim">{fmt(d.date)}</div>
+                  <div className="text-[11px] text-ink-dim">{fmt(d.date)}</div>
                   <div className="tnum mt-0.5 text-[12px]" style={{ color: ACCENT }}>
                     actual ₹{d.actual.toFixed(2)}
                   </div>
@@ -663,7 +672,7 @@ export function ReturnFit({
               const d = payload[0].payload as ReturnFitPoint;
               return (
                 <TipBox>
-                  <div className="text-[11px] text-fg-dim">{fmt(d.date)}</div>
+                  <div className="text-[11px] text-ink-dim">{fmt(d.date)}</div>
                   <div className="tnum mt-0.5 text-[12px]" style={{ color: ACCENT }}>
                     actual {pct(d.actualReturn)}
                   </div>
@@ -787,16 +796,16 @@ export function ParityScatter({
               const resid = d.actual - d.predicted;
               return (
                 <TipBox>
-                  <div className="text-[11px] text-fg-dim">{d.date}</div>
-                  <div className="tnum mt-0.5 text-[11px] text-fg-muted">
+                  <div className="text-[11px] text-ink-dim">{d.date}</div>
+                  <div className="tnum mt-0.5 text-[11px] text-ink-muted">
                     predicted {fmt(d.predicted)}
                   </div>
-                  <div className="tnum text-[11px] text-fg-muted">
+                  <div className="tnum text-[11px] text-ink-muted">
                     actual {fmt(d.actual)}
                   </div>
                   <div
                     className={`tnum text-[11px] ${
-                      Math.abs(resid) > 0 ? "text-fg" : "text-fg-dim"
+                      Math.abs(resid) > 0 ? "text-ink" : "text-ink-dim"
                     }`}
                   >
                     residual {resid >= 0 ? "+" : ""}
@@ -806,7 +815,7 @@ export function ParityScatter({
               );
             }}
           />
-          <Scatter data={data} fill={ACCENT} fillOpacity={0.4} />
+          <Scatter data={data} fill={ACCENT} fillOpacity={0.5} />
         </ScatterChart>
       </ResponsiveContainer>
     </Frame>
@@ -837,7 +846,7 @@ export function ResidualPlot({
   // here, so it is emphasis rather than the only channel carrying the value.
   const shade = (r: number) => {
     const t = Math.min(Math.abs(r) / (worst || 1), 1);
-    return `rgba(241, 86, 106, ${0.22 + 0.68 * t})`;
+    return `rgba(180, 83, 9, ${0.25 + 0.65 * t})`;
   };
 
   return (
@@ -898,8 +907,8 @@ export function ResidualPlot({
               const d = payload[0].payload as ResidualPoint;
               return (
                 <TipBox>
-                  <div className="text-[11px] text-fg-dim">{d.date}</div>
-                  <div className="tnum mt-0.5 text-[12px] text-fg">
+                  <div className="text-[11px] text-ink-dim">{d.date}</div>
+                  <div className="tnum mt-0.5 text-[12px] text-ink">
                     missed by {d.residual >= 0 ? "+" : ""}
                     {d.residual.toFixed(2)}%
                   </div>
@@ -977,16 +986,16 @@ export function WeightBars({
             tick={{ fill: AXIS, fontSize: 11 }}
           />
           <Tooltip
-            cursor={{ fill: "rgba(255,255,255,0.03)" }}
+            cursor={{ fill: "rgba(15,23,42,0.04)" }}
             content={({ active, payload }) => {
               if (!active || !payload?.length) return null;
               const d = payload[0].payload as WeightBar;
               return (
                 <TipBox>
-                  <div className="text-[12px] font-semibold text-fg">
+                  <div className="text-[12px] font-semibold text-ink">
                     {d.feature}
                   </div>
-                  <div className="tnum mt-0.5 text-[11px] text-fg-muted">
+                  <div className="tnum mt-0.5 text-[11px] text-ink-muted">
                     coefficient {label(d.value)}
                   </div>
                 </TipBox>
@@ -1043,7 +1052,7 @@ export function EdgeRanked({
       height={520}
       caption={
         <>
-          <strong className="font-semibold text-fg">
+          <strong className="font-semibold text-ink">
             {negative} of {total}
           </strong>{" "}
           stocks showed negative edge. The green bars do not survive significance
@@ -1083,18 +1092,18 @@ export function EdgeRanked({
             tickFormatter={(v: number) => `${v}`}
           />
           <Tooltip
-            cursor={{ fill: "rgba(255,255,255,0.04)" }}
+            cursor={{ fill: "rgba(15,23,42,0.05)" }}
             content={({ active, payload }) => {
               if (!active || !payload?.length) return null;
               const d = payload[0].payload as EdgeBar;
               return (
                 <TipBox>
-                  <div className="text-[12px] font-semibold text-fg">
+                  <div className="text-[12px] font-semibold text-ink">
                     {d.ticker}
                   </div>
                   <div
                     className={`tnum mt-0.5 text-[12px] ${
-                      d.edge > 0 ? "text-pos" : "text-neg"
+                      d.edge > 0 ? "text-accent" : "text-[#b45309]"
                     }`}
                   >
                     {d.edge >= 0 ? "+" : ""}
@@ -1114,4 +1123,154 @@ export function EdgeRanked({
       </ResponsiveContainer>
     </Frame>
   );
+}
+
+/* ------------------------------------------------------------------ */
+/* 10. Accuracy and edge by market cap                                 */
+/* ------------------------------------------------------------------ */
+
+export interface CapRow {
+  category: string;
+  n: number;
+  accuracy: number;
+  baseline: number;
+  edge: number;
+}
+
+/**
+ * Accuracy by size band, drawn as a dumbbell rather than paired bars.
+ *
+ * The interesting range is 46 to 51%, and bars over that range would need a
+ * truncated baseline, which breaks the "length is the value" contract a bar
+ * makes and turns a two-point gap into an apparent doubling. Dots carry
+ * position rather than length, so a non-zero scale is honest, and the
+ * connecting segment is the edge itself.
+ */
+export function CapBreakdown({ data }: { data: CapRow[] }) {
+  const lo = Math.min(...data.map((d) => d.baseline)) - 1.2;
+  const hi = Math.max(...data.map((d) => d.accuracy), 50) + 1.2;
+
+  return (
+    <Frame
+      title="Directional accuracy by market-cap band"
+      height={300}
+      caption={
+        <>
+          The hollow mark is the always-up baseline, the filled mark is the
+          model, and the segment between them is the edge. Small caps show the
+          largest edge, which is the direction the momentum literature predicts,
+          but their model accuracy is identical to the large caps. The whole
+          difference comes from the small-cap baseline being weaker, not from the
+          model performing better on them.
+        </>
+      }
+    >
+      <ResponsiveContainer width="100%" height="100%">
+        <ComposedChart
+          data={data}
+          layout="vertical"
+          margin={{ top: 8, right: 60, bottom: 26, left: 4 }}
+        >
+          <XAxis
+            type="number"
+            domain={[lo, hi]}
+            {...axisProps}
+            tickFormatter={(v: number) => `${v.toFixed(0)}%`}
+            label={{
+              value: "Directional accuracy (%)",
+              position: "insideBottom",
+              offset: -16,
+              fill: AXIS,
+              fontSize: 11,
+            }}
+          />
+          <YAxis
+            type="category"
+            dataKey="category"
+            {...axisProps}
+            width={96}
+            tick={{ fill: AXIS, fontSize: 11 }}
+            tickFormatter={(v: string) => {
+              const row = data.find((d) => d.category === v);
+              return row ? `${v} (n=${row.n})` : v;
+            }}
+          />
+          <Tooltip
+            cursor={{ fill: "rgba(15,23,42,0.04)" }}
+            content={({ active, payload }) => {
+              if (!active || !payload?.length) return null;
+              const d = payload[0].payload as CapRow;
+              return (
+                <TipBox>
+                  <div className="text-[12px] font-semibold text-ink">
+                    {d.category} caps · {d.n} stocks
+                  </div>
+                  <div className="mt-1 space-y-0.5 text-[11px] text-ink-muted">
+                    <div>
+                      model{" "}
+                      <span className="tnum text-ink">
+                        {d.accuracy.toFixed(1)}%
+                      </span>
+                    </div>
+                    <div>
+                      baseline{" "}
+                      <span className="tnum text-ink">
+                        {d.baseline.toFixed(1)}%
+                      </span>
+                    </div>
+                    <div className="text-accent">
+                      edge {d.edge >= 0 ? "+" : ""}
+                      {d.edge.toFixed(2)} pts
+                    </div>
+                  </div>
+                </TipBox>
+              );
+            }}
+          />
+          {/* A coin flip, the number both bands should be read against first. */}
+          <ReferenceLine
+            x={50}
+            stroke={AXIS}
+            strokeDasharray="4 4"
+            label={{
+              value: "coin flip",
+              position: "top",
+              fill: AXIS,
+              fontSize: 10,
+            }}
+          />
+          <Bar
+            dataKey={(d: CapRow) => [d.baseline, d.accuracy]}
+            barSize={5}
+            fill={REF}
+            isAnimationActive={false}
+          />
+          <Scatter dataKey="baseline" shape={<CapHollow />} isAnimationActive={false} />
+          <Scatter dataKey="accuracy" shape={<CapSolid />} isAnimationActive={false}>
+            <LabelList
+              dataKey="edge"
+              position="right"
+              fill={AXIS}
+              fontSize={10.5}
+              formatter={(v: React.ReactNode) =>
+                `${Number(v) >= 0 ? "+" : ""}${Number(v).toFixed(2)} pts`
+              }
+            />
+          </Scatter>
+        </ComposedChart>
+      </ResponsiveContainer>
+    </Frame>
+  );
+}
+
+function CapHollow(props: { cx?: number; cy?: number }) {
+  const { cx, cy } = props;
+  if (cx == null || cy == null) return null;
+  return <circle cx={cx} cy={cy} r={5} fill={SURFACE} stroke={NEG} strokeWidth={2} />;
+}
+
+function CapSolid(props: { cx?: number; cy?: number }) {
+  const { cx, cy } = props;
+  if (cx == null || cy == null) return null;
+  return <circle cx={cx} cy={cy} r={5.5} fill={POS} />;
 }

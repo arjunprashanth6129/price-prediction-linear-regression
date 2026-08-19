@@ -1,49 +1,58 @@
 @import "tailwindcss";
 
 /*
-  Design system.
+  Quant Research design system.
 
-  A dark "research terminal" surface, a single restrained blue accent, and
-  hairline borders instead of glow. Financial data is the subject, so numerals
-  are monospaced and tabular everywhere, and colour is reserved almost entirely
-  for gain/loss semantics.
+  A white, professional research surface: monochrome slate for structure and
+  text, one blue accent reserved for interaction and emphasis, and hairline
+  borders instead of shadows. Financial figures are monospaced and tabular
+  everywhere so columns of numbers line up and can be compared down a column.
 */
 
 @theme {
-  /* Surfaces - steps from page background to raised card. */
-  --color-ink-950: #080b12;
-  --color-ink-900: #0b0f18;
-  --color-ink-850: #101725;
-  --color-ink-800: #161f30;
-  --color-ink-700: #1e2a40;
+  /* Surfaces, lightest to most raised. */
+  --color-paper: #ffffff;
+  --color-surface: #f8fafc;
+  --color-surface-2: #f1f5f9;
+  --color-surface-3: #e9eef5;
 
-  /* Hairlines. Borders carry the structure, not shadows. */
-  --color-line: #1c2537;
-  --color-line-strong: #2a3651;
+  /* Hairlines carry the structure. */
+  --color-line: #e2e8f0;
+  --color-line-strong: #cbd5e1;
 
-  /* Text ramp - all three pass 4.5:1 on ink-900. */
-  --color-fg: #e8edf7;
-  --color-fg-muted: #9aa8c0;
-  --color-fg-dim: #7c8aa4;
+  /* Text ramp. ink and ink-muted both clear 4.5:1 on paper and surface. */
+  --color-ink: #0f172a;
+  --color-ink-muted: #475569;
+  --color-ink-dim: #64748b;
 
-  /* Single accent. Used for interaction and emphasis, never decoration. */
-  --color-accent: #4d8dff;
-  --color-accent-dim: #1b2f57;
+  /* One accent, used for interaction and emphasis, never decoration. */
+  --color-accent: #2563eb;
+  --color-accent-strong: #1d4ed8;
+  --color-accent-soft: #eff6ff;
+  --color-accent-line: #bfdbfe;
 
-  /* Semantic market colours. */
-  --color-pos: #2fbf71;
-  --color-neg: #f1566a;
-  --color-warn: #e0a33e;
+  /*
+    Data hues. Blue and amber rather than green and red: most of these charts
+    encode a polarity, and green against red separates by a colour distance of
+    only about 3.5 under deuteranopia, so roughly one man in twelve cannot tell
+    the two apart. These separate by roughly 25 in the worst case.
+  */
+  --color-data-blue: #2563eb;
+  --color-data-amber: #b45309;
+  --color-data-teal: #0f766e;
+  --color-data-violet: #6d28d9;
+  --color-data-slate: #64748b;
 
-  --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jet), ui-monospace, "SF Mono", monospace;
 
-  /* Extra-small breakpoint for dense metric grids on large phones. */
   --breakpoint-xs: 30rem;
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
+  /* Width of the fixed sidebar, referenced by the main content offset. */
+  --sidebar-w: 17rem;
 }
 
 html {
@@ -52,15 +61,14 @@ html {
 }
 
 body {
-  background: var(--color-ink-900);
-  color: var(--color-fg);
+  background: var(--color-paper);
+  color: var(--color-ink);
   font-family: var(--font-sans);
-  /* Wide content (tables, charts) scrolls inside its own container; the page
-     body itself must never scroll sideways. */
+  /* Wide content scrolls inside its own container; the page never does. */
   overflow-x: hidden;
 }
 
-/* Every figure in this app is meant to be compared column-wise. */
+/* Every figure is meant to be compared column-wise. */
 .tnum {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
@@ -68,37 +76,22 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* Section eyebrows: small, wide-tracked, uppercase. */
+/* Small, wide-tracked, uppercase section labels. */
 .eyebrow {
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-fg-dim);
+  color: var(--color-ink-dim);
 }
 
-.thin-scroll::-webkit-scrollbar {
-  height: 8px;
-  width: 8px;
-}
-.thin-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
+.thin-scroll::-webkit-scrollbar { height: 8px; width: 8px; }
+.thin-scroll::-webkit-scrollbar-track { background: transparent; }
 .thin-scroll::-webkit-scrollbar-thumb {
   background: var(--color-line-strong);
   border-radius: 4px;
 }
-.thin-scroll::-webkit-scrollbar-thumb:hover {
-  background: #38455f;
-}
-
-/* Faint grid used behind hero sections. Pure CSS, no image request. */
-.grid-bg {
-  background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
-  background-size: 56px 56px;
-}
+.thin-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
 /* Consistent, visible keyboard focus on every interactive element. */
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
@@ -107,15 +100,27 @@ body {
   border-radius: 4px;
 }
 
+/*
+  Entrance animation.
+
+  Elements start hidden and are revealed by anime.js on scroll. The no-js and
+  reduced-motion cases below make sure content is never left invisible if the
+  animation does not run.
+*/
+[data-reveal] { opacity: 0; will-change: transform, opacity; }
+.js-ready [data-reveal] { opacity: 0; }
+html:not(.js-ready) [data-reveal] { opacity: 1; }
+
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
+  html { scroll-behavior: auto; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Recharts draws its own focus ring on the surface; suppress the duplicate. */
+.recharts-wrapper:focus,
+.recharts-surface:focus { outline: none; }
