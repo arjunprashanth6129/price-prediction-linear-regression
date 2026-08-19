@@ -181,7 +181,8 @@ export default function LinearRegressionStudy() {
               <p className="eyebrow">Abstract</p>
               <p className="mt-3 text-[14.5px] leading-[1.8] text-ink-muted">
                 Four price-derived signals were tested as predictors of next-day
-                returns across {s.total} NSE stocks: a 5-day moving average, a
+                returns across {s.total}{" "}
+                NSE stocks: a 5-day moving average, a
                 20-day moving average, the day&apos;s own return, and the ratio
                 between the two averages, which encodes the golden and death
                 cross as one continuous number. A linear regression was trained
@@ -191,7 +192,8 @@ export default function LinearRegressionStudy() {
                 model averaged an R² of <V>{s.avgR2.toFixed(4)}</V> on returns
                 and called direction correctly{" "}
                 <V>{pctf(s.avgDirAccuracy)}</V> of the time, which is below a
-                coin flip, against <V>{pctf(s.avgNaive)}</V> for simply guessing
+                coin flip, against <V>{pctf(s.avgNaive)}</V>{" "}
+                for simply guessing
                 &ldquo;up&rdquo; every day. The resulting edge of{" "}
                 <V>{signed(s.avgEdge, 2)}</V> comes from the baseline being weak
                 over this window rather than from the model being good. The
@@ -335,7 +337,8 @@ export default function LinearRegressionStudy() {
             the whole study measures anything at all. Predicting the price level
             scores an R² near 0.9 almost automatically, because prices barely move
             overnight. Measured directly here, the price model scored{" "}
-            <V>{ex.priceModel.r2.toFixed(2)}</V> while a &ldquo;tomorrow equals
+            <V>{ex.priceModel.r2.toFixed(2)}</V>{" "}
+            while a &ldquo;tomorrow equals
             today&rdquo; guess needing no model at all scored{" "}
             <V>{ex.naiveModel.r2.toFixed(2)}</V>. That number flatters
             autocorrelation, not skill. Returns strip the head start away.
@@ -362,7 +365,8 @@ export default function LinearRegressionStudy() {
             seen.
           </p>
           <p>
-            The scaler follows the same rule. <C>StandardScaler</C> is fitted on
+            The scaler follows the same rule. <C>StandardScaler</C>{" "}
+            is fitted on
             the training rows only, then applied to both. Fitting it on the whole
             dataset would bake the test period&apos;s mean and spread into the
             training transform, which is the same leak wearing a quieter disguise.
@@ -428,7 +432,8 @@ export default function LinearRegressionStudy() {
           <p>
             R² punishes a model for missing the size of a move. Direction is
             easier and is the question a decision actually rests on: buy or not.
-            The model called it correctly <V>{pctf(s.avgDirAccuracy)}</V> of the
+            The model called it correctly <V>{pctf(s.avgDirAccuracy)}</V>{" "}
+            of the
             time. Read that number on its own before reading anything else. After
             seven years of training data, the model calls tomorrow&apos;s
             direction correctly <V>less than half the time</V>.
@@ -592,14 +597,16 @@ export default function LinearRegressionStudy() {
             project early and goes straight into a slide deck. But doing nothing
             at all scores <V>{ex.naiveModel.r2.toFixed(4)}</V>, which is{" "}
             <em>higher</em>, with an average error of ₹
-            {ex.naiveModel.mae.toFixed(2)} against the model&apos;s ₹
+            {ex.naiveModel.mae.toFixed(2)}{" "}
+            against the model&apos;s ₹
             {ex.priceModel.mae.toFixed(2)}, about{" "}
             {Math.round((1 - ex.naiveModel.mae / ex.priceModel.mae) * 100)}% less
             error for no model. On direction the do-nothing rule is ahead too.
           </p>
           <Note>
             That is the whole trap in one row. A price-level R² near{" "}
-            {ex.priceModel.r2.toFixed(2)} is not measuring forecasting skill, it
+            {ex.priceModel.r2.toFixed(2)}{" "}
+            is not measuring forecasting skill, it
             is measuring that Reliance costs about the same today as it did
             yesterday. Any model handed today&apos;s price inherits that for free.
             Judged against zero it looks brilliant; judged against the only
@@ -749,7 +756,8 @@ export default function LinearRegressionStudy() {
             />
           </div>
           <Note>
-            Reporting the {ex.priceModel.r2.toFixed(2)} and stopping would have
+            Reporting the {ex.priceModel.r2.toFixed(2)}{" "}
+            and stopping would have
             produced a far more impressive-looking project. The reason it is not
             reported that way is that R² answers &ldquo;how much variance did you
             explain&rdquo;, not &ldquo;are you useful&rdquo;, and on an
