@@ -6,9 +6,9 @@
 
 export const SITE = {
   name: "Quant Research Desk",
-  tagline: "Two studies in quantitative finance, on Indian and global markets",
+  tagline: "Two research studies and one applied system, on Indian and global markets",
   description:
-    "Two quantitative finance studies: whether momentum signals predict next-day returns across 98 NSE stocks, and a CVaR portfolio optimiser tested against fat tails, a walk-forward backtest and the 2008 crash.",
+    "Quantitative finance work: whether momentum signals predict next-day returns across 98 NSE stocks, a CVaR portfolio optimiser tested against fat tails and the 2008 crash, and a market-neutral pairs-trading backtester.",
   live: "https://arjun-quant-projects.vercel.app",
   author: "Arjun",
   github: "https://github.com/arjunprashanth6129",
@@ -49,6 +49,16 @@ export const PROJECTS: ProjectMeta[] = [
     repo: "https://github.com/arjunprashanth6129/cvar-portfolio-optimizer",
     method:
       "Conditional Value-at-Risk minimised as a linear program via Rockafellar-Uryasev, stress-tested on 20,000 simulated scenarios, walk-forward tested and replayed through 2008.",
+  },
+  {
+    href: "/pairs-trading",
+    name: "Pairs-trading backtester",
+    navName: "Pairs-trading backtester",
+    blurb:
+      "A market-neutral statistical arbitrage system on Indian banks: cointegration selects the pairs, a rolling formation window fixes the parameters, and a walk-forward backtest charges every leg of every trade.",
+    repo: "https://github.com/arjunprashanth6129/pairs-trading-backtester",
+    method:
+      "Engle-Granger cointegration on each formation window, OLS hedge ratio, z-score entries and exits, and a walk-forward backtest charging costs on all four legs of every round trip.",
   },
 ];
 

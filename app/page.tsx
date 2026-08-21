@@ -5,6 +5,7 @@ import { IconArrowRight, IconGitHub } from "./components/Icons";
 import { SITE, PROJECTS } from "@/lib/project";
 import { getMlSummary } from "@/lib/ml";
 import { getBacktest, getCvarHeadline, getPortfolios } from "@/lib/cvar";
+import { getPairsMeta, getPairsSummary } from "@/lib/pairs";
 
 export const metadata = {
   title: SITE.name,
@@ -16,6 +17,8 @@ export default function Home() {
   const bt = getBacktest();
   const port = getPortfolios();
   const cv = getCvarHeadline();
+  const pm = getPairsMeta();
+  const ps = getPairsSummary();
 
   const scale: Record<string, { k: string; v: string }[]> = {
     "/linear-regression": [
@@ -29,6 +32,12 @@ export default function Home() {
       { k: "Trading days", v: port.meta.n_days.toLocaleString("en-IN") },
       { k: "Quarterly rebalances", v: `${bt.meta.n_rebalances}` },
       { k: "Simulated scenarios", v: "20,000" },
+    ],
+    "/pairs-trading": [
+      { k: "Bank stocks", v: `${pm.traded.length}` },
+      { k: "Candidate pairs tested", v: `${pm.candidate_pairs}` },
+      { k: "Formation windows", v: `${pm.n_windows}` },
+      { k: "Round trips traded", v: ps.trades.n_trades.toLocaleString("en-IN") },
     ],
   };
 
@@ -44,16 +53,17 @@ export default function Home() {
               Quant Research Desk
             </h1>
             <p className="mt-6 text-[17.5px] leading-[1.7] text-ink-muted">
-              Two studies in quantitative finance. The first asks whether the
-              momentum signals retail traders watch can forecast tomorrow&apos;s
-              return across the Indian market. The second builds a portfolio
-              around the worst days rather than the average one, and tests it on
-              data it has never seen.
+              Two research studies and one applied system. The first asks
+              whether the momentum signals retail traders watch can forecast
+              tomorrow&apos;s return across the Indian market. The second builds
+              a portfolio around the worst days rather than the average one. The
+              third takes a real statistical effect and asks whether a working
+              system built on it survives the cost of running it.
             </p>
             <p className="mt-4 text-[15.5px] leading-[1.7] text-ink-dim">
               Each has its own repository, its own fixed dataset, and a pipeline
               that reproduces every figure shown here. The benchmark and the
-              metric were chosen before the score in both cases, which is the
+              metric were chosen before the score in every case, which is the
               only reason the results are worth reading.
             </p>
           </header>
@@ -131,7 +141,7 @@ export default function Home() {
         <Reveal delay={80}>
           <section className="mt-14 rounded-2xl border border-line bg-surface px-6 py-7 sm:px-8">
             <h2 className="text-[17px] font-semibold tracking-tight text-ink">
-              How the two fit together
+              How they fit together
             </h2>
             <div className="mt-4 space-y-4 text-[15px] leading-[1.75] text-ink-muted">
               <p>
