@@ -43,6 +43,31 @@ const axisProps = {
   tickLine: false,
 } as const;
 
+/** Two-line x tick for the R² buckets: "-0.05 to -0.02" becomes "-0.05" over
+ *  "to -0.02", and "Below -0.05" becomes "Below" over "-0.05". */
+function BucketTick({
+  x = 0,
+  y = 0,
+  payload,
+}: {
+  x?: number;
+  y?: number;
+  payload?: { value: string };
+}) {
+  const value = payload?.value ?? "";
+  const [first, second] = value.includes(" to ")
+    ? [value.split(" to ")[0], `to ${value.split(" to ")[1]}`]
+    : [value.split(" ")[0], value.split(" ").slice(1).join(" ")];
+  return (
+    <text x={x} y={y + 10} textAnchor="middle" fill={AXIS} fontSize={10}>
+      <tspan x={x}>{first}</tspan>
+      <tspan x={x} dy={12}>
+        {second}
+      </tspan>
+    </text>
+  );
+}
+
 /** Reserve the final height so hydration never shifts the page. */
 function Frame({
   title,
@@ -118,13 +143,15 @@ export function R2Histogram({
     >
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 42, right: 8, bottom: 4, left: 0 }}>
-          {/* Five categories inside a 375px viewport leaves ~65px each, so the
-              tick font drops a step to keep the bucket labels from colliding. */}
+          {/* Five categories inside a 375px viewport leaves ~65px each, which
+              a one-line label like "-0.05 to -0.02" overflows, so each bucket
+              label is split over two lines. */}
           <XAxis
             dataKey="bucket"
             {...axisProps}
             interval={0}
-            tick={{ fill: AXIS, fontSize: 9.5 }}
+            height={38}
+            tick={<BucketTick />}
           />
           <YAxis
             {...axisProps}
@@ -432,12 +459,11 @@ export function MaRatioSigns({
       height={280}
       caption={
         <>
-          {share}% of fits lean one way - golden cross territory nudging the
-          prediction {leaning} - and the rest lean the other. A signal carrying
-          real information would point the same way for most stocks and would
-          earn a meaningful weight; this one splits and its average weight is
-          near zero. The signal is real and easy to compute. The edge is not
-          there.
+          {share}% of fits lean one way, with golden cross territory nudging the
+          prediction {leaning}, and the rest lean the other. A signal with real
+          information would point the same way for most stocks and earn a
+          meaningful weight. This one splits, and its average weight is near
+          zero.
         </>
       }
     >
@@ -539,10 +565,10 @@ export function PriceFit({ data, span }: { data: FitPoint[]; span: string }) {
       height={320}
       caption={
         <>
-          This is the chart that looks like success. The prediction tracks the
-          real price so closely the two lines are hard to separate - and it is
-          worthless, because the model is mostly reporting yesterday&apos;s
-          price back at you. The table above is what settles it.
+          This chart looks like success. The prediction tracks the real price so
+          closely that the two lines are hard to separate, but it tells you
+          little, because the model is mostly handing yesterday&apos;s price back
+          to you. The table above is what settles it.
         </>
       }
     >
@@ -649,12 +675,11 @@ export function ReturnFit({
       height={320}
       caption={
         <>
-          The orange line predicts almost exactly zero, every day. That is not a
-          broken model - it is a correct one with nothing to work with. When
-          features carry no reliable signal, the best a linear fit can do is
-          return the average of what it was trained on, and the average daily
-          move of a stock is approximately nothing. The flat line is the model
-          saying so.
+          The orange line predicts almost exactly zero, every day. The model
+          isn&apos;t broken, it just has nothing to work with. When the features
+          carry no reliable signal, the best a linear fit can do is return the
+          average of what it was trained on, and the average daily move of a
+          stock is approximately nothing.
         </>
       }
     >
@@ -867,10 +892,9 @@ export function ResidualPlot({
           A residual is what the model missed by: actual minus predicted. A
           model with real signal leaves small residuals scattered evenly around
           zero with no shape to them. These span the entire range of daily
-          moves, because the prediction was near zero every day - so the errors
+          moves, because the prediction was near zero every day, so the errors
           are essentially the returns themselves. Lay this over the raw return
-          series and you would struggle to tell them apart, which is what a
-          model that learned nothing looks like.
+          series and you would struggle to tell them apart.
         </>
       }
     >
@@ -1064,10 +1088,10 @@ export function EdgeRanked({
           <strong className="font-semibold text-ink">
             {negative} of {total}
           </strong>{" "}
-          stocks showed negative edge. The positive bars do not survive significance
-          testing at this sample size: with about {avgTestDays} test days per
-          stock, anything inside roughly {noiseBand.toFixed(0)} points either way
-          is what chance alone produces.
+          stocks showed negative edge. Most of the positive bars don&apos;t survive
+          significance testing at this sample size: with about {avgTestDays} test
+          days per stock, anything inside roughly {noiseBand.toFixed(1)} points
+          either way is within what chance produces.
         </>
       }
     >
@@ -1171,9 +1195,8 @@ export function CapBreakdown({ data }: { data: CapRow[] }) {
           The hollow mark is the always-up baseline, the filled mark is the
           model, and the segment between them is the edge. Small caps show the
           largest edge, which is the direction the momentum literature predicts,
-          but their model accuracy is identical to the large caps. The whole
-          difference comes from the small-cap baseline being weaker, not from the
-          model performing better on them.
+          but their model accuracy is the same as the large caps. The whole
+          difference comes from a weaker small-cap baseline.
         </>
       }
     >

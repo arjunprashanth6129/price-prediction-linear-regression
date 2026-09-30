@@ -213,12 +213,12 @@ export default function LinearRegressionStudy() {
               detail="Below a coin flip, after seven years of training data."
             />
             <StatCard
-              value={<CountUp value={s.avgR2} decimals={2} />}
+              value={<CountUp value={s.avgR2} decimals={4} />}
               label="Average R² on returns"
               detail="Below zero, so worse than guessing the average every day."
             />
             <StatCard
-              value={<CountUp value={s.avgEdge * 100} decimals={1} prefix="+" suffix="%" />}
+              value={<CountUp value={s.avgEdge * 100} decimals={2} prefix="+" suffix="%" />}
               label="Edge over the baseline"
               detail={`Against an always-up rule that scored only ${pctf(s.avgNaive)}.`}
               tone="accent"
@@ -237,10 +237,10 @@ export default function LinearRegressionStudy() {
             Momentum trading rests on a simple claim: that the recent shape of a
             price chart tells you something about where the price goes next.
             Moving averages and the golden cross are the most widely taught
-            version of that claim. Every trading platform draws them by default,
-            every introductory course explains them, and a great deal of retail
-            decision-making rests on reading them. If the claim holds, it should
-            be measurable. If it does not, that should be measurable too.
+            version of that claim. Most trading platforms draw them by default,
+            most introductory courses explain them, and plenty of retail
+            decisions come down to reading them. If the claim holds, it should
+            be measurable. If it doesn&apos;t, that should be measurable too.
           </p>
           <div className="grid gap-6 md:grid-cols-2">
             <Reveal><CrossDiagram /></Reveal>
@@ -249,30 +249,29 @@ export default function LinearRegressionStudy() {
                 The event being tested is drawn on the left, from real closes
                 rather than an illustration. When a fast moving average climbs
                 above a slow one, traders call it a golden cross and read it as
-                bullish. When it falls back below, that is a death cross. The
-                appeal is obvious: it is easy to compute, easy to see, and it
-                appears to describe a change in trend.
+                bullish. When it falls back below, that is a death cross. It is
+                easy to compute and easy to see, and it looks like a change in
+                trend.
               </p>
               <p>
-                The question asked here is deliberately narrow, because a narrow
-                question has a checkable answer: given only a stock&apos;s recent
-                price history, expressed through four of the most widely followed
-                technical indicators, can a linear model predict the direction and
-                size of tomorrow&apos;s return better than a benchmark that
-                requires no model at all?
+                I kept the question narrow so it would have a checkable answer.
+                Given only a stock&apos;s recent price history, seen through four
+                widely followed technical indicators, can a linear model predict
+                the direction and size of tomorrow&apos;s return better than a
+                benchmark that needs no model at all?
               </p>
               <p>
-                {s.total} NSE stocks, seven years of daily closes, and a strict
-                chronological split, so the model is only ever asked about days it
-                has genuinely never seen. No discretion, no hand-picked examples,
-                and no adjusting the method after seeing the answer.
+                The test uses {s.total} NSE stocks, seven years of daily closes,
+                and a strict chronological split, so the model is only ever asked
+                about days it has never seen. There were no hand-picked examples,
+                and I didn&apos;t adjust the method after seeing the answer.
               </p>
             </div>
           </div>
           <Note>
-            The benchmark and the metric were both chosen before any model was
-            fitted. That ordering is the single most important decision in this
-            project, and the worked example in section five is entirely about why.
+            I chose the benchmark and the metric before fitting any model. That
+            ordering matters more than anything else in the project, and the
+            worked example in section five shows why.
           </Note>
         </Section>
 
@@ -280,17 +279,17 @@ export default function LinearRegressionStudy() {
         <Section id="method" index={2} title="How the model was built">
           <p>
             The model is an ordinary linear regression from scikit-learn, fitted
-            independently for each stock. That is deliberately the simplest thing
-            that could work. If an edge only appears once you reach for an
-            elaborate model, that is usually the model talking rather than the
-            data, and a simple fit makes it much harder to fool yourself.
+            separately for each stock. I kept it as simple as I could. If an edge
+            only shows up once you reach for an elaborate model, that usually says
+            more about the model than about the market, and a plain fit is harder
+            to fool yourself with.
           </p>
 
           <Sub>The four features</Sub>
           <p>
-            All four are computed from closes up to and including today. Only the
-            target looks forward, which is the property that has to hold for the
-            exercise to mean anything.
+            All four use closes up to and including today. Only the target looks
+            forward. If a feature peeked ahead, the whole test would be
+            meaningless.
           </p>
           <Table
             minWidth={560}
@@ -323,25 +322,26 @@ export default function LinearRegressionStudy() {
           </Table>
           <p>
             The last of these is the one the project is really about.{" "}
-            <C>ma_ratio</C> turns a discrete event into a continuous quantity:
+            <C>ma_ratio</C> turns a discrete event into a continuous number:
             above 1.0 the fast average leads, which is golden cross territory,
-            below 1.0 it lags, and the distance from 1.0 is how emphatic the
-            signal is. That makes it something a regression can actually weigh,
-            rather than a yes-or-no flag that fires a handful of times.
+            below 1.0 it lags, and the distance from 1.0 says how strong the
+            signal is. A regression can weigh that, which it couldn&apos;t do
+            with a yes-or-no flag that fires a handful of times.
           </p>
 
           <Sub>The target, and why it is a return</Sub>
           <p>
             The model predicts tomorrow&apos;s <em>return</em>, not
-            tomorrow&apos;s price. This is the decision that determines whether
-            the whole study measures anything at all. Predicting the price level
-            scores an R² near 0.9 almost automatically, because prices barely move
-            overnight. Measured directly here, the price model scored{" "}
+            tomorrow&apos;s price, and that choice decides whether the study
+            measures anything. Predict the price level and you get an R² near 0.9
+            almost automatically, because prices barely move overnight. On the
+            Reliance example here, the price model scored{" "}
             <V>{ex.priceModel.r2.toFixed(2)}</V>{" "}
             while a &ldquo;tomorrow equals
             today&rdquo; guess needing no model at all scored{" "}
-            <V>{ex.naiveModel.r2.toFixed(2)}</V>. That number flatters
-            autocorrelation, not skill. Returns strip the head start away.
+            <V>{ex.naiveModel.r2.toFixed(2)}</V>. That number reflects
+            autocorrelation, not skill. Predicting returns takes the head start
+            away.
           </p>
 
           <Sub>The split, and why it is never shuffled</Sub>
@@ -353,15 +353,15 @@ export default function LinearRegressionStudy() {
             Jun 2026) --&gt;]
           </div>
           <p>
-            The usual <C>train_test_split(shuffle=True)</C> is correct for
-            independent samples and wrong here, for two separate reasons. It leaks
-            the future into the past, scattering 2026 days into the training set
-            and 2024 days into the test set, so the model studies the future and
-            is then examined on the past. In live use there is no future to study,
-            so the resulting score measures nothing. And neighbouring rows are
-            near-duplicates: a 20-day average on Tuesday and on Wednesday share
-            nineteen of their twenty inputs, so shuffling puts one in train and
-            one in test and the model is scored on rows it has effectively already
+            The usual <C>train_test_split(shuffle=True)</C> is fine for
+            independent samples and wrong here, for two reasons. First, it leaks
+            the future into the past. Shuffling scatters 2026 days into the
+            training set and 2024 days into the test set, so the model studies the
+            future and is then examined on the past, which can&apos;t happen in
+            live use and makes the score meaningless. Second, neighbouring rows are
+            near-duplicates. A 20-day average on Tuesday and on Wednesday share
+            nineteen of their twenty inputs, so if one lands in train and the
+            other in test, the model is scored on rows it has effectively already
             seen.
           </p>
           <p>
@@ -369,7 +369,7 @@ export default function LinearRegressionStudy() {
             is fitted on
             the training rows only, then applied to both. Fitting it on the whole
             dataset would bake the test period&apos;s mean and spread into the
-            training transform, which is the same leak wearing a quieter disguise.
+            training transform. It&apos;s the same leak, just harder to spot.
           </p>
 
           <Sub>What fitting a model actually means</Sub>
@@ -377,16 +377,16 @@ export default function LinearRegressionStudy() {
             With one feature, linear regression draws a line through the data.
             With two, it fits a flat plane: for every combination of the two
             inputs the plane gives the model&apos;s answer, and the vertical
-            distance from each real day up or down to that surface is the error
-            the fitting process is trying to make as small as possible. Adding
-            features keeps the idea and loses the picture, because with four the
-            surface lives in four dimensions and cannot be drawn at all.
+            distance from each real day to that surface is the error the fit is
+            trying to shrink. More features keep the idea but lose the picture.
+            With four, the surface lives in four dimensions and can&apos;t be
+            drawn.
           </p>
           <p>
             Below is a two-feature slice of the real fit, with <C>ret</C> and{" "}
-            <C>ma_ratio</C> held at their averages. It is a slice of the actual
-            model rather than a separately fitted one, so the tilt is the tilt the
-            model really has. Drag to rotate it.
+            <C>ma_ratio</C> held at their averages. It comes from the actual
+            model, not a separate one, so the tilt is the tilt the model really
+            has. Drag to rotate it.
           </p>
           <Reveal>
             <div className="rounded-xl border border-line bg-surface p-3">
@@ -399,12 +399,12 @@ export default function LinearRegressionStudy() {
                 }}
               />
               <p className="mt-3 text-[12px] leading-relaxed text-ink-dim">
-                The plane is what the model believes: for any pairing of
-                short-term and medium-term trend, this is the return it expects.
-                The dots are what those days actually did. Watch how little the
-                plane tilts as you rotate it. A model holding real signal would
-                tilt steeply with the days hugging it closely; here the surface is
-                nearly level and the observations scatter far above and below.
+                The plane is what the model expects: for any pairing of
+                short-term and medium-term trend, this is the return it predicts.
+                The dots are what those days actually did. Notice how little the
+                plane tilts as you rotate it. A model with real signal would tilt
+                steeply, with the days clustered close to it. Here the surface is
+                nearly level and the days scatter far above and below.
               </p>
             </div>
           </Reveal>
@@ -421,33 +421,32 @@ export default function LinearRegressionStudy() {
           </p>
           <R2Histogram data={r2Data} aboveZero={r2AboveZero} total={s.total} />
           <p>
-            The distribution is the point rather than the average. Every stock
-            lands between {Math.min(...r2Values).toFixed(2)} and{" "}
+            The spread matters more than the average. Every stock lands between{" "}
+            {Math.min(...r2Values).toFixed(2)} and{" "}
             {Math.max(...r2Values).toFixed(2)}, a tight pile just below zero.
             There is no tail of stocks where the model quietly worked, and the{" "}
-            {r2AboveZero} that clear zero clear it by a margin too small to matter.
+            {r2AboveZero} that clear zero do so by a margin too small to matter.
           </p>
 
           <Sub>Direction, which is the easier question</Sub>
           <p>
-            R² punishes a model for missing the size of a move. Direction is
-            easier and is the question a decision actually rests on: buy or not.
+            R² penalises a model for missing the size of a move. Direction is
+            easier, and it is what a decision actually rests on: buy or don&apos;t.
             The model called it correctly <V>{pctf(s.avgDirAccuracy)}</V>{" "}
             of the
-            time. Read that number on its own before reading anything else. After
-            seven years of training data, the model calls tomorrow&apos;s
-            direction correctly <V>less than half the time</V>.
+            time. Look at that number by itself first. After seven years of
+            training data, the model gets tomorrow&apos;s direction right{" "}
+            <V>less than half the time</V>.
           </p>
           <AccuracyScatter data={scatter} above={beats} below={s.total - beats} />
           <p>
             The nominal edge is positive, at {signed(s.avgEdge, 2)}, and{" "}
-            {s.positiveEdge} of {s.total} stocks beat their own baseline. That
-            looks like a result and is not one. The always-up rule only scored{" "}
-            {pctf(s.avgNaive)} here because the test window was close to flat, so
-            the benchmark was unusually easy to clear.{" "}
-            <V>Beating a poor benchmark from below a coin flip is not skill.</V>{" "}
-            This is exactly why the edge is reported next to the raw accuracy
-            rather than instead of it.
+            {s.positiveEdge} of {s.total} stocks beat their own baseline. The
+            always-up rule only scored {pctf(s.avgNaive)} here because the test
+            window was close to flat, so the benchmark was unusually easy to
+            clear. Beating a poor benchmark from below a coin flip is not skill.
+            That is why I report the edge next to the raw accuracy and not in
+            place of it.
           </p>
 
           <Sub>Almost nothing survives its own error bar</Sub>
@@ -455,7 +454,7 @@ export default function LinearRegressionStudy() {
             With about {Math.round(s.avgTestDays)} test days per stock, treating
             each day as a coin flip gives a standard error on any single accuracy
             figure of roughly {pctf(se)}. Two standard errors is about ±
-            {pctf(2 * se, 0)}, and any edge inside that band is indistinguishable
+            {pctf(2 * se)}, and any edge inside that band is indistinguishable
             from luck.
           </p>
           <EdgeRanked
@@ -466,20 +465,20 @@ export default function LinearRegressionStudy() {
             noiseBand={band}
           />
           <p>
-            Only <V>{outsideBand} of {s.total}</V> bars clear that band, which is
-            roughly what ranking {s.total} noisy estimates produces by chance
-            alone. The positive end of this ranking is what sampling variation looks
-            like, not a shortlist. It is also worth noticing that several of the
-            largest edges belong to stocks with clearly negative R²: they called
-            direction slightly better than their baseline while modelling the size
-            of the move worse than a constant guess. That combination is the
-            signature of noise rather than signal.
+            Only <V>{outsideBand} of {s.total}</V> bars clear that band, and with{" "}
+            {s.total} noisy estimates some will clear it by luck alone. The
+            positive end of this ranking is what sampling variation looks like,
+            so it shouldn&apos;t be read as a shortlist. Several of the
+            largest edges also belong to stocks with clearly negative R². They
+            called direction slightly better than their baseline while modelling
+            the size of the move worse than a constant guess, which is what noise
+            looks like.
           </p>
 
           <Sub>The golden cross earned nothing</Sub>
           <p>
             <C>ma_ratio</C> was the single heaviest weight for{" "}
-            <V>{s.maRatioTopFeature} of {s.total}</V> stocks. Not one. Its average
+            <V>{s.maRatioTopFeature} of {s.total}</V> stocks. Its average
             absolute coefficient was {s.avgAbsMaRatioWeight.toFixed(4)}, close
             enough to zero that the model is effectively ignoring it, and its sign
             split {s.maRatioPositive} positive to {s.maRatioNegative} negative.
@@ -490,34 +489,34 @@ export default function LinearRegressionStudy() {
             total={s.total}
           />
           <p>
-            That split is the tell. A signal carrying real directional information
-            would push the same way for nearly every stock, with golden cross
-            territory meaning the same thing for Infosys as for Britannia, and
-            would earn a weight large enough to matter. Instead the coefficient
-            points whichever way each stock&apos;s own noise happens to lean, at a
-            magnitude the model barely acts on. That is what a variable with
-            nothing to say looks like once it has been fitted.
+            The split is what matters here. A signal with real directional
+            information would push the same way for nearly every stock, so golden
+            cross territory would mean the same thing for Infosys as for
+            Britannia, and it would earn a weight large enough to matter. Instead
+            the coefficient leans whichever way each stock&apos;s own noise
+            happens to, at a size the model barely uses.
           </p>
           <p className="text-[14.5px]">
-            One caveat belongs with those coefficients rather than in a footnote.{" "}
+            One caveat on these coefficients.{" "}
             <C>ma_ratio</C> is <C>ma5 / ma20</C>, a deterministic function of two
-            features already in the model. Near-redundant predictors let a linear
-            fit trade large offsetting weights between them without changing a
-            single prediction, so the individual coefficients are unstable and a
-            large one would not by itself prove the cross signal mattered. That
-            cuts both ways, which is why the argument above rests on directional
-            accuracy against the baseline rather than on the weights alone.
+            features already in the model. When predictors are this close to
+            redundant, a linear fit can trade large offsetting weights between
+            them without changing a single prediction, so individual coefficients
+            are unstable and a large one wouldn&apos;t prove the cross signal
+            mattered either. That cuts both ways, which is why the argument above
+            rests on directional accuracy against the baseline and not on the
+            weights alone.
           </p>
         </Section>
 
         {/* ---------------- 04 size ---------------- */}
         <Section id="size" index={4} title="Does company size rescue it?">
           <p>
-            Momentum is documented to bite harder in smaller, less closely watched
+            Momentum is documented to work better in smaller, less closely watched
             companies, where less analyst attention plausibly leaves more pattern
-            unexploited. If the signal exists anywhere in this universe, that is
-            where it should be. So the {s.total} stocks were split by market
-            capitalisation, anchored at June 2021, and scored separately.
+            unexploited. If the signal exists anywhere in this universe, it should
+            be there. So I split the {s.total} stocks by market capitalisation,
+            anchored at June 2021, and scored each group separately.
           </p>
           <CapBreakdown data={capRows} />
           {large && small && (
@@ -528,9 +527,9 @@ export default function LinearRegressionStudy() {
               {pctf(small.avgDirAccuracy)}. Small caps do come out ahead on
               nominal edge, which is the direction the literature predicts, but{" "}
               <V>their directional accuracy is essentially identical to the large
-              caps</V>. The entire difference comes from the small-cap baseline
-              being weaker, not from the model performing better on them. That is
-              baseline drift dressed as a momentum premium.
+              caps</V>. The whole difference comes from the small-cap baseline
+              being weaker, so the gap is baseline drift and not a momentum
+              premium.
             </p>
           )}
         </Section>
@@ -538,11 +537,15 @@ export default function LinearRegressionStudy() {
         {/* ---------------- 05 worked ---------------- */}
         <Section id="worked" index={5} title="A worked example, and the R² trap">
           <p>
-            The aggregates hide the single most useful thing this project turned
-            up, so here is one stock in full. Reliance, same pipeline, trained on{" "}
-            {ex.trainDateRange.start} to {ex.trainDateRange.end} and scored on the{" "}
-            {testDays} trading days from {ex.testDateRange.start} to{" "}
-            {ex.testDateRange.end}.
+            The averages hide the most useful thing I found in this project, so
+            here is one stock in full. Reliance, same pipeline, trained on{" "}
+            <span className="whitespace-nowrap">{ex.trainDateRange.start}</span>{" "}
+            to{" "}
+            <span className="whitespace-nowrap">{ex.trainDateRange.end}</span> and
+            scored on the {testDays} trading days from{" "}
+            <span className="whitespace-nowrap">{ex.testDateRange.start}</span>{" "}
+            to{" "}
+            <span className="whitespace-nowrap">{ex.testDateRange.end}</span>.
           </p>
           <p>
             Two models were fitted on identical features and an identical split.
@@ -604,13 +607,11 @@ export default function LinearRegressionStudy() {
             error for no model. On direction the do-nothing rule is ahead too.
           </p>
           <Note>
-            That is the whole trap in one row. A price-level R² near{" "}
-            {ex.priceModel.r2.toFixed(2)}{" "}
-            is not measuring forecasting skill, it
-            is measuring that Reliance costs about the same today as it did
-            yesterday. Any model handed today&apos;s price inherits that for free.
-            Judged against zero it looks brilliant; judged against the only
-            benchmark that matters, it is worse than not bothering.
+            That is the whole trap. An R² near {ex.priceModel.r2.toFixed(2)}{" "}
+            on price isn&apos;t measuring forecasting skill. It is measuring the
+            fact that Reliance costs about what it did yesterday, and any model
+            handed today&apos;s price gets that for free. Next to zero it looks
+            brilliant. Next to the naive rule, it is worse than not bothering.
           </Note>
 
           <PriceFit
@@ -637,10 +638,9 @@ export default function LinearRegressionStudy() {
                 <>
                   The dots press so tightly against the diagonal that the line is
                   hard to pick out beneath them. It reads as near-perfect
-                  prediction and is nothing of the kind: the model is answering
-                  with approximately today&apos;s price, and prices move very
-                  little overnight. This is autocorrelation wearing
-                  accuracy&apos;s clothes.
+                  prediction, but the model is really just answering with
+                  today&apos;s price, and prices move very little overnight. That
+                  is autocorrelation, not accuracy.
                 </>
               }
             />
@@ -651,20 +651,19 @@ export default function LinearRegressionStudy() {
               unit="percent"
               caption={
                 <>
-                  This is the shape of no predictive power. Horizontally the cloud
-                  barely moves, with every prediction inside half a percent of
-                  zero. Vertically it covers the whole range of what actually
-                  happened. Genuine skill would tilt this into a diagonal cloud
-                  following the reference line; a vertical band means the
-                  predictions carry no information about which way the day went.
+                  This is what no predictive power looks like. Horizontally the
+                  cloud barely moves, with every prediction inside half a percent
+                  of zero. Vertically it covers the whole range of what actually
+                  happened. Real skill would tilt the cloud along the reference
+                  line. A vertical band means the predictions say nothing about
+                  which way the day went.
                 </>
               }
             />
           </div>
           <p>
-            Those two pictures are the finding in its cleanest form. Same model,
-            same inputs, same days. The difference is entirely in whether the
-            target still contains the answer.
+            Same model, same inputs, same days. The only difference between the
+            two plots is whether the target still contains the answer.
           </p>
 
           <ResidualPlot
@@ -672,10 +671,10 @@ export default function LinearRegressionStudy() {
             span={`${ex.testDateRange.start} to ${ex.testDateRange.end}`}
           />
           <p>
-            The residuals confirm there is nothing left in there. A model with
-            real signal leaves small errors scattered evenly around zero. These
-            span the entire range of daily moves, because the prediction was near
-            zero every day, so the errors are essentially the returns themselves.
+            The residuals tell the same story. A model with real signal leaves
+            small errors scattered evenly around zero. These span the entire range
+            of daily moves, because the prediction was near zero every day, so the
+            errors are essentially the returns themselves.
           </p>
 
           <ReturnFit
@@ -685,33 +684,33 @@ export default function LinearRegressionStudy() {
           <p>
             Put the price chart and the return chart side by side and the first
             looks like a triumph while the second looks like a failure. That
-            reading is exactly backwards. The price chart plots a <em>level</em>:
-            to land near ₹{Math.round(meanClose).toLocaleString("en-IN")}{" "}
+            reading is backwards. The price chart plots a <em>level</em>: to land
+            near ₹{Math.round(meanClose).toLocaleString("en-IN")}{" "}
             tomorrow, a model only has to notice that today&apos;s price is near ₹
             {Math.round(meanClose).toLocaleString("en-IN")}, so the two lines
-            trace each other. But the quantity it must get right is enormous
-            compared with the amount that actually changes overnight: it is
-            scoring well on the ₹{Math.round(meanClose).toLocaleString("en-IN")}{" "}
+            trace each other. But that level is huge compared with what actually
+            changes overnight. The model is scoring well on the ₹
+            {Math.round(meanClose).toLocaleString("en-IN")}{" "}
             it was handed, not on the ₹{Math.round(meanClose * meanAbsMove)} it
             was asked to anticipate.
           </p>
           <p>
-            The return chart plots a <em>change</em>, which deletes the part the
-            model was given for free and leaves only the part in dispute. The
-            actual line swings between {actualLo.toFixed(1)}% and +
+            The return chart plots a <em>change</em>, which removes the part the
+            model got for free and leaves only the part in dispute. The actual
+            line swings between {actualLo.toFixed(1)}% and +
             {actualHi.toFixed(1)}% while the prediction never leaves a band of
             about {predBand.toFixed(1)}% around zero. Nothing broke between the
-            two pictures; the second simply removed the scaffolding and showed
-            what was holding the first one up.
+            two charts. The second one just takes away what was propping up the
+            first.
           </p>
           <p>
-            A flat prediction is also the mathematically correct response to
-            having no signal. Least squares minimises squared error, and when the
-            inputs carry nothing that anticipates the target, the error-minimising
-            guess is the training mean. The mean daily move of a large stock is
-            close to zero, so the model converges on &ldquo;about nothing, again
-            today&rdquo;. That is not the model giving up. It is the model being
-            right about how little it knows.
+            A flat prediction is also the right response to having no signal.
+            Least squares minimises squared error, and when the inputs say
+            nothing about the target, the error-minimising guess is the training
+            mean. The mean daily move of a large stock is close to zero, so the
+            model settles on &ldquo;about nothing, again today&rdquo;. That isn&apos;t
+            a failed fit. It is the correct answer when the inputs have nothing
+            to say.
           </p>
 
           <Sub>What each model actually learned</Sub>
@@ -728,13 +727,12 @@ export default function LinearRegressionStudy() {
               rawUnit="rupees"
               caption={
                 <>
-                  The price model leans hard on <C>{heaviestPriceFeature}</C>, not
-                  because a short moving average predicts tomorrow&apos;s
-                  direction but because it stands in for today&apos;s price, which
-                  is most of the answer to &ldquo;what will the price be
-                  tomorrow&rdquo;. The big bar is the autocorrelation shortcut
-                  showing up in the coefficients: a symptom of the trap, not
-                  evidence of skill.
+                  The price model leans hard on <C>{heaviestPriceFeature}</C>. A
+                  short moving average doesn&apos;t predict tomorrow&apos;s
+                  direction; it stands in for today&apos;s price, which is most of
+                  the answer to &ldquo;what will the price be tomorrow&rdquo;. The
+                  big bar is the autocorrelation shortcut showing up in the
+                  coefficients, a symptom of the trap and not evidence of skill.
                 </>
               }
             />
@@ -745,21 +743,19 @@ export default function LinearRegressionStudy() {
               rawUnit="fraction"
               caption={
                 <>
-                  On the identical axis every bar collapses to a sliver you have
-                  to look for. Same data, same features, same algorithm. Only the
-                  target changed, and with it the model&apos;s confidence. Asked
-                  the honest question, it assigns weights near zero across the
-                  board, which is the model reporting that these four inputs tell
-                  it nothing dependable about tomorrow.
+                  On the same axis every bar shrinks to a sliver you have to look
+                  for. Same data, same features, same algorithm, and only the
+                  target changed. Asked the harder question, the model puts
+                  weights near zero on everything, which is it reporting that
+                  these four inputs tell it nothing dependable about tomorrow.
                 </>
               }
             />
           </div>
           <Note>
-            Reporting the {ex.priceModel.r2.toFixed(2)}{" "}
-            and stopping would have
-            produced a far more impressive-looking project. The reason it is not
-            reported that way is that R² answers &ldquo;how much variance did you
+            I could have reported the {ex.priceModel.r2.toFixed(2)}{" "}
+            and stopped, and the project would have looked far more impressive.
+            I didn&apos;t because R² answers &ldquo;how much variance did you
             explain&rdquo;, not &ldquo;are you useful&rdquo;, and on an
             autocorrelated series those two questions come apart completely.
             Choosing the benchmark before looking at the score is what keeps the
@@ -775,7 +771,7 @@ export default function LinearRegressionStudy() {
             knowable from a stock&apos;s past prices is already reflected in what
             it costs today. If some shape in the chart reliably preceded a rise,
             buyers would move ahead of it until the profit was gone. The pattern
-            does not vanish. It stops paying.
+            doesn&apos;t disappear, it just stops paying.
           </p>
           <p>
             Moving averages and the golden cross are the extreme case. They are
@@ -783,82 +779,77 @@ export default function LinearRegressionStudy() {
             people with real money, alongside professional desks running the same
             arithmetic on faster hardware with better execution. An edge that
             survived all of that and was still sitting in seven years of daily NSE
-            closes, waiting to be found by a linear regression, would be genuinely
-            surprising. These results say it was not there, which is the
-            unglamorous and expected answer.
+            closes, waiting for a linear regression to find it, would be a real
+            surprise. It wasn&apos;t there, which is the expected if unexciting
+            answer.
           </p>
           <p>
-            None of which means momentum never works. At institutional scale, with
+            None of this means momentum never works. At institutional scale, with
             transaction costs near zero and execution measured in milliseconds,
             edges far too small to see here can compound into real money, and over
             three to twelve months cross-sectional momentum is one of the
-            better-replicated findings in finance. The claim being made is
-            deliberately specific: these four features, in a linear model, on
-            daily data, across this universe, offer nothing a retail investor
-            could exploit at human speed once real costs are paid.
+            better-replicated findings in finance. My claim is a specific one:
+            these four features, in a linear model, on daily data, across this
+            universe, offer nothing a retail investor could exploit at human speed
+            once real costs are paid.
           </p>
         </Section>
 
         {/* ---------------- 07 meaning ---------------- */}
         <Section id="meaning" index={7} title="What this means for investing">
           <p>
-            The finding is narrow, and it is worth being precise about what it
-            does and does not touch. What has been ruled out is a one-day forecast
-            built from price history alone. That is the timescale short-term
-            technical trading operates on, and on this universe it came up empty.
+            The finding is narrow, so it helps to be precise about what it does
+            and doesn&apos;t touch. What I ruled out is a one-day forecast built
+            from price history alone. That is the timescale short-term technical
+            trading works on, and on this universe it came up empty.
           </p>
           <p>
-            Long-term investing makes a different bet on a different quantity. It
+            Long-term investing is a different bet on a different quantity. It
             asks whether a business earns well, reinvests well and is priced
-            reasonably against those earnings, questions answered by margins,
-            debt, cash flow and ownership rather than by the shape of a chart.
-            None of those inputs appear anywhere in this model, so nothing here
-            confirms or refutes them. What the study does establish is that the
-            alternative most often offered as a substitute for reading a business
-            carried no information at this horizon. Ruling out the shortcut is not
-            the same as validating the long route, and this page claims only the
-            first.
+            reasonably against those earnings, which margins, debt, cash flow and
+            ownership can answer and the shape of a chart can&apos;t. None of
+            those inputs are in this model, so nothing here confirms or refutes
+            them. What the study does show is that the usual shortcut for reading
+            a business carried no information at this horizon. Ruling out the
+            shortcut doesn&apos;t validate the long route, and this page only
+            claims the first.
           </p>
           <p>
-            The honest summary is asymmetric: a negative result about daily
-            momentum, and silence about everything else.
+            So the summary is lopsided: a negative result for daily momentum, and
+            nothing either way on everything else.
           </p>
         </Section>
 
         {/* ---------------- 08 why ---------------- */}
         <Section id="why" index={8} title="Why I built this">
           <div className="space-y-4 rounded-xl border border-line bg-surface px-6 py-6 text-[15.5px] leading-[1.8]">
-            <p>Three things I care about happened to meet in this project.</p>
+            <p>Three of my interests ended up meeting in this project.</p>
             <p>
-              I have been interested in markets since studying equity research
-              through BugleRock Capital, where I first ran into the argument
-              between fundamental analysis and technical trading, between people
-              who read balance sheets and people who read price charts. I wanted
-              to know which one the data actually backs, rather than which one
-              theory prefers.
+              I got into markets while studying equity research through BugleRock
+              Capital, which is where I first ran into the argument between
+              fundamental analysis and technical trading: people who read balance
+              sheets against people who read price charts. I wanted to know which
+              side the data backs, not which one theory prefers.
             </p>
             <p>
-              I have also always liked mathematics, particularly the moments when
-              something abstract turns out to answer a real question honestly
-              rather than comfortably. Machine learning sat exactly where that
-              interest met finance.
+              I have also always liked mathematics, especially when something
+              abstract turns out to answer a real question. Machine learning is
+              where that interest met finance.
             </p>
             <p>
-              And I wanted to understand the modelling properly rather than
-              superficially: not call a library and repeat whatever it printed,
-              but know what the algorithm was fitting, why each evaluation metric
-              means what it means, and what the numbers were really saying about
-              the data underneath. Choosing the benchmark and the metric before
-              running anything mattered more than any modelling decision that came
-              after.
+              And I wanted to understand the modelling properly, not just call a
+              library and repeat whatever it printed. That meant knowing what the
+              algorithm was fitting, why each metric means what it means, and what
+              the numbers said about the data underneath. Choosing the benchmark
+              and the metric before running anything mattered more than any
+              modelling decision that came after.
             </p>
             <p>
-              The answer that came back, with R² at zero, directional accuracy a
-              shade worse than a coin flip and the golden cross weighted at almost
-              nothing, was not a failure. It was the correct answer to the
-              question I asked. Finding out that something does not work is
-              exactly what research is for, and it is a great deal more useful
-              than a result that looks impressive because something leaked.
+              The answer that came back was an R² at zero, directional accuracy a
+              shade under a coin flip, and the golden cross weighted at almost
+              nothing. That wasn&apos;t a failure. It was the right answer to the
+              question I asked, and more useful than a good-looking result that
+              only exists because something leaked.
             </p>
           </div>
         </Section>
@@ -868,21 +859,21 @@ export default function LinearRegressionStudy() {
           <Sub>Where this study is weak</Sub>
           <Bullets
             items={[
-              <><V>Seven years is short for this question.</V> Roughly 1,750 trading days per stock, about {Math.round(s.avgTestDays)} of them held out. That covers several market regimes, which is the minimum for a result not to be an artifact of one mood, but published momentum work runs on decades and often a century of equity data, precisely because effects this small only separate from noise over very long samples. A seven-year window can show that a signal is not obviously there. It cannot rule out one that is small, slow and real.</>,
-              <><V>A linear model only.</V> If momentum works through thresholds or interactions, such as a golden cross that matters only in calm conditions, a straight-line fit cannot see it and would report exactly the null found here.</>,
-              <><V>Two uncorrected demergers.</V> Split and bonus adjustment does not repair demergers. Raymond in May 2025 and Tata Motors in October 2025 each show a one-day fall that is a corporate action rather than a market move, and both land inside the test period. They are reported rather than patched, and they add noise to two of the {s.total} stocks.</>,
+              <><V>Seven years is short for this question.</V> Roughly 1,750 trading days per stock, about {Math.round(s.avgTestDays)} of them held out. That covers several market regimes, about the minimum for a result not to be an artifact of one mood, but published momentum work uses decades and sometimes a century of equity data, because effects this small only separate from noise over very long samples. Seven years can show that a signal isn&apos;t obviously there. It can&apos;t rule out one that is small, slow and real.</>,
+              <><V>A linear model only.</V> If momentum works through thresholds or interactions, such as a golden cross that only matters in calm conditions, a straight-line fit can&apos;t see it and would report the same null I found.</>,
+              <><V>Two uncorrected demergers.</V> Split and bonus adjustment doesn&apos;t repair demergers. Raymond in May 2025 and Tata Motors in October 2025 each show a one-day fall that is a corporate action, not a market move, and both land inside the test period. I left them in and am flagging them here, and they add noise to two of the {s.total} stocks.</>,
               <><V>Price returns, not total returns.</V> Dividends are excluded, so real holding-period returns would be higher for the payers.</>,
-              <><V>No transaction costs.</V> This flatters the momentum side. A strategy trading daily signals would surrender much of any edge to brokerage, slippage and short-term tax, so breaking even here means losing money in practice.</>,
-              <><V>An efficiently priced universe.</V> Mostly large and mid-cap NSE names, among the most closely analysed stocks in the market. Finding no edge where theory most expects none is a weaker result than finding none in neglected corners.</>,
+              <><V>No transaction costs.</V> This flatters the momentum side. A strategy trading on daily signals would give up much of any edge to brokerage, slippage and short-term tax, so breaking even here would mean losing money in practice.</>,
+              <><V>An efficiently priced universe.</V> Mostly large and mid-cap NSE names, some of the most closely analysed stocks in the market. Finding no edge where theory expects none is a weaker result than finding none in neglected corners.</>,
             ]}
           />
           <Sub>What I would explore next</Sub>
           <Bullets
             items={[
-              <><V>A longer horizon.</V> One day is the hardest version of this problem. Three- to twelve-month momentum is one of the most replicated results in the literature, and testing whether it survives here net of costs would be a better use of the same machinery.</>,
-              <><V>A genuinely small-cap universe.</V> The size split hinted at nothing, but {small?.n ?? 26} small caps is thin, and the documented premium sits in smaller, less liquid, less analysed names than most of these.</>,
-              <><V>Fundamental momentum.</V> Earnings-revision trends and analyst upgrades are price-independent signals with real evidence behind them, and they would test the same question without reusing a price history already shown to be exhausted.</>,
-              <><V>Ensemble methods.</V> Random forests or gradient boosting would capture structure a linear fit cannot, but only with walk-forward cross-validation, because a flexible model on 1,750 rows will cheerfully memorise noise and report a wonderful score.</>,
+              <><V>A longer horizon.</V> One day is the hardest version of this problem. Three- to twelve-month momentum is one of the most replicated results in the literature, and testing whether it survives here after costs would be a better use of the same setup.</>,
+              <><V>A genuinely small-cap universe.</V> The size split showed nothing, but {small?.n ?? 26} small caps is a thin sample, and the documented premium sits in smaller, less liquid, less analysed names than most of these.</>,
+              <><V>Fundamental momentum.</V> Earnings-revision trends and analyst upgrades don&apos;t depend on price and have real evidence behind them. They would test the same question without reusing a price history that has already come up empty.</>,
+              <><V>Ensemble methods.</V> Random forests or gradient boosting could pick up structure a linear fit can&apos;t, but only with walk-forward cross-validation. A flexible model on 1,750 rows will happily memorise noise and report a great score.</>,
             ]}
           />
         </Section>
