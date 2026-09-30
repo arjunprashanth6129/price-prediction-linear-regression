@@ -245,12 +245,12 @@ export default function CvarStudy() {
         {/* ---------------- 01 findings ---------------- */}
         <Section id="findings" index={1} title="The result I did not want">
           <p>
-            I built an optimiser that minimises the average loss on the worst 5%
-            of days, then spent most of the project testing whether it actually
-            worked. The strategy I put the most work into did not win. An equally weighted portfolio, which requires no covariance
-            matrix, no expected returns and no optimisation at all, had the best
-            risk-adjusted return once everything was scored on data it had not
-            seen.
+            I built an optimiser to cut the average loss on the worst 5% of days,
+            and most of the project went into testing whether it actually did
+            that. It did, but it still wasn&apos;t the best strategy. Once every
+            strategy was scored on data it hadn&apos;t seen, the best
+            risk-adjusted return came from an equally weighted portfolio: no
+            covariance matrix, no return forecasts, no optimisation at all.
           </p>
           <p>
             The mechanism is <V>error maximisation</V>. Every optimiser needs
