@@ -53,7 +53,7 @@ export function V({ children }: { children: React.ReactNode }) {
 /** Inline code. */
 export function C({ children }: { children: React.ReactNode }) {
   return (
-    <code className="rounded border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-[13px] text-accent-strong">
+    <code className="whitespace-nowrap rounded border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-[13px] text-accent-strong">
       {children}
     </code>
   );

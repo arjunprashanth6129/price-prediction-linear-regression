@@ -189,6 +189,24 @@ function Diamond(props: {
   );
 }
 
+/** A frontier ring or a strategy diamond; `key` is set only on strategies. */
+type MarkDot = Omit<FrontierDot, "index"> & {
+  // Named `title`, not `label`: Recharts drops a `label` field from the
+  // tooltip payload, which left the tooltip heading blank.
+  title: string;
+  key?: string;
+  index?: number;
+};
+
+function Mark(props: { cx?: number; cy?: number; payload?: MarkDot }) {
+  const key = props.payload?.key;
+  return key ? (
+    <Diamond cx={props.cx} cy={props.cy} fill={SERIES[key]} payload={{ key }} />
+  ) : (
+    <Ring cx={props.cx} cy={props.cy} />
+  );
+}
+
 export function Frontier({
   curve,
   strategies,
@@ -228,7 +246,14 @@ export function Frontier({
     .filter((a) => (picked.weights[a] ?? 0) > 1e-4)
     .sort((a, b) => picked.weights[b] - picked.weights[a]);
 
-  const pick = (d: FrontierDot | StrategyDot, title: string) =>
+  // Frontier rings first and strategy diamonds after, so the diamonds draw on
+  // top. Every mark carries its own label.
+  const marks: MarkDot[] = [
+    ...curve.map((d) => ({ ...d, title: `Frontier point ${d.index + 1}` })),
+    ...strategies.map((d) => ({ ...d, title: d.label })),
+  ];
+
+  const pick = (d: FrontierDot | StrategyDot | MarkDot, title: string) =>
     setPicked({
       title,
       sub: `${d.holdings} holdings above 0.01%`,
@@ -243,117 +268,151 @@ export function Frontier({
   // single chart either shows the whole curve and squashes them together or
   // shows them and loses the curve. Two panels do both: same data, same marks,
   // different window, and the second one states its range in its title.
+  // Axis ends are rounded to the tick step, so no axis stops on an odd value
+  // like 79% or 2.2%.
+  const steps = (lo: number, hi: number, step: number) => {
+    const out: number[] = [];
+    for (let v = Math.ceil(lo / step - 1e-9) * step; v <= hi + 1e-9; v += step)
+      out.push(Number(v.toFixed(4)));
+    return out;
+  };
+  const full: [number, number] = [
+    0,
+    Math.ceil(Math.max(...curve.map((d) => d.cvar)) + 0.4),
+  ];
+  const fullY: [number, number] = [
+    0,
+    Math.ceil((Math.max(...curve.map((d) => d.ret)) + 4) / 20) * 20,
+  ];
   const zoom: [number, number] = [
-    Math.min(...strategies.map((d) => d.cvar)) - 0.08,
-    Math.max(...strategies.map((d) => d.cvar)) + 0.3,
+    Math.floor((Math.min(...strategies.map((d) => d.cvar)) - 0.08) * 5) / 5,
+    Math.ceil((Math.max(...strategies.map((d) => d.cvar)) + 0.3) * 5) / 5,
   ];
   const zoomY: [number, number] = [
-    Math.min(...strategies.map((d) => d.ret)) - 2,
-    Math.max(...strategies.map((d) => d.ret)) + 3,
+    Math.floor((Math.min(...strategies.map((d) => d.ret)) - 2) / 4) * 4,
+    Math.ceil((Math.max(...strategies.map((d) => d.ret)) + 3) / 4) * 4,
   ];
 
+  // The hover card is drawn here rather than by Recharts' <Tooltip>. With two
+  // kinds of mark on one chart, the Recharts tooltip resolved a hover by array
+  // position and reported the wrong portfolio (hovering frontier point 5 could
+  // show "Min CVaR"). The scatter's own mouse events carry the exact point, the
+  // same object a click receives, so the card and the weights panel agree.
+  const [hover, setHover] = useState<{
+    panel: string;
+    d: MarkDot;
+    x: number;
+    y: number;
+    flip: boolean;
+  } | null>(null);
+
   const chart = (
-    xDomain: [number, number] | undefined,
-    yDomain: [number, number] | undefined,
+    panel: string,
+    xDomain: [number, number],
+    yDomain: [number, number],
+    xTicks: number[],
+    yTicks: number[],
     tickFmt: (v: number) => string,
   ) => (
-    <ResponsiveContainer width="100%" height={300}>
-      <ComposedChart
-        data={curve}
-        margin={{ top: 8, right: 14, bottom: 24, left: 2 }}
-      >
-        <CartesianGrid stroke={GRID} />
-        <XAxis
-          type="number"
-          dataKey="cvar"
-          domain={xDomain ?? [0.6, "dataMax + 0.4"]}
-          allowDataOverflow={xDomain != null}
-          {...axisProps}
-          tickFormatter={tickFmt}
-          label={{
-            value: "Daily CVaR 95% (loss)",
-            position: "insideBottom",
-            offset: -14,
-            fill: AXIS,
-            fontSize: 11,
-          }}
-        />
-        <YAxis
-          type="number"
-          dataKey="ret"
-          domain={yDomain ?? [0, "dataMax + 4"]}
-          allowDataOverflow={yDomain != null}
-          {...axisProps}
-          width={42}
-          tickFormatter={(v: number) => `${v.toFixed(0)}%`}
-        />
-        <ZAxis range={[46, 46]} />
-        {/* The frontier itself. Without it the 25 points read as a cloud
-            rather than as a boundary nothing can sit below. */}
-        <Line
-          type="monotone"
-          dataKey="ret"
-          stroke={AXIS}
-          strokeWidth={1.4}
-          strokeOpacity={0.5}
-          dot={false}
-          activeDot={false}
-          isAnimationActive={false}
-          legendType="none"
-        />
-        <Tooltip
-          cursor={{ strokeDasharray: "3 3", stroke: REF }}
-          content={({ active, payload }) => {
-            if (!active || !payload?.length) return null;
-            const d = payload[payload.length - 1].payload as FrontierDot & {
-              label?: string;
-            };
-            return (
-              <TipBox>
-                <div className="text-[12px] font-semibold text-ink">
-                  {d.label ?? `Frontier point ${d.index + 1}`}
-                </div>
-                <div className="mt-1 space-y-0.5 text-[11px] text-ink-muted">
-                  <div>
-                    return <span className="tnum text-ink">{d.ret.toFixed(2)}%</span>
-                  </div>
-                  <div>
-                    CVaR 95{" "}
-                    <span className="tnum text-ink">{d.cvar.toFixed(3)}%</span>
-                  </div>
-                  <div>
-                    max drawdown{" "}
-                    <span className="tnum text-ink">{d.dd.toFixed(2)}%</span>
-                  </div>
-                </div>
-              </TipBox>
-            );
-          }}
-        />
-        <Scatter
-          data={curve}
-          className="cursor-pointer"
-          shape={<Ring />}
-          onClick={(p: unknown) => {
-            const d = p as FrontierDot;
-            pick(d, `Frontier point ${d.index + 1}`);
-          }}
-        />
-        <Scatter
-          data={strategies}
-          shape={<Diamond />}
-          className="cursor-pointer"
-          onClick={(p: unknown) => {
-            const d = p as StrategyDot;
-            pick(d, d.label);
+    <div className="relative" onMouseLeave={() => setHover(null)}>
+      <ResponsiveContainer width="100%" height={300}>
+        <ComposedChart margin={{ top: 8, right: 14, bottom: 24, left: 2 }}>
+          <CartesianGrid stroke={GRID} />
+          <XAxis
+            type="number"
+            dataKey="cvar"
+            domain={xDomain}
+            ticks={xTicks}
+            allowDataOverflow
+            {...axisProps}
+            tickFormatter={tickFmt}
+            label={{
+              value: "Daily CVaR 95% (loss)",
+              position: "insideBottom",
+              offset: -14,
+              fill: AXIS,
+              fontSize: 11,
+            }}
+          />
+          <YAxis
+            type="number"
+            dataKey="ret"
+            domain={yDomain}
+            ticks={yTicks}
+            allowDataOverflow
+            {...axisProps}
+            width={42}
+            tickFormatter={(v: number) => `${v.toFixed(0)}%`}
+          />
+          <ZAxis range={[46, 46]} />
+          {/* The frontier itself. Without it the 25 points read as a cloud
+              rather than as a boundary nothing can sit below. */}
+          <Line
+            data={curve}
+            type="monotone"
+            dataKey="ret"
+            stroke={AXIS}
+            strokeWidth={1.4}
+            strokeOpacity={0.5}
+            dot={false}
+            activeDot={false}
+            isAnimationActive={false}
+            legendType="none"
+          />
+          {/* Rings and diamonds are one series, rings first so the diamonds
+              draw on top. */}
+          <Scatter
+            data={marks}
+            className="cursor-pointer"
+            shape={<Mark />}
+            isAnimationActive={false}
+            onMouseEnter={(p: unknown, _i: number, e: React.MouseEvent) => {
+              const d = p as MarkDot & { cx: number; cy: number };
+              const svg = (e.target as SVGElement).ownerSVGElement;
+              const width = svg?.clientWidth ?? 0;
+              setHover({ panel, d, x: d.cx, y: d.cy, flip: d.cx > width * 0.6 });
+            }}
+            onMouseLeave={() => setHover(null)}
+            onClick={(p: unknown) => {
+              const d = p as MarkDot;
+              pick(d, d.title);
+            }}
+          />
+        </ComposedChart>
+      </ResponsiveContainer>
+      {hover?.panel === panel && (
+        <div
+          className="pointer-events-none absolute z-10"
+          style={{
+            left: hover.x,
+            top: hover.y,
+            transform: hover.flip
+              ? "translate(calc(-100% - 14px), -50%)"
+              : "translate(14px, -50%)",
           }}
         >
-          {strategies.map((d) => (
-            <Cell key={d.key} fill={SERIES[d.key]} />
-          ))}
-        </Scatter>
-      </ComposedChart>
-    </ResponsiveContainer>
+          <TipBox>
+            <div className="text-[12px] font-semibold text-ink">
+              {hover.d.title}
+            </div>
+            <div className="mt-1 space-y-0.5 whitespace-nowrap text-[11px] text-ink-muted">
+              <div>
+                return{" "}
+                <span className="tnum text-ink">{hover.d.ret.toFixed(2)}%</span>
+              </div>
+              <div>
+                CVaR 95{" "}
+                <span className="tnum text-ink">{hover.d.cvar.toFixed(3)}%</span>
+              </div>
+              <div>
+                max drawdown{" "}
+                <span className="tnum text-ink">{hover.d.dd.toFixed(2)}%</span>
+              </div>
+            </div>
+          </TipBox>
+        </div>
+      )}
+    </div>
   );
 
   return (
@@ -370,13 +429,13 @@ export function Frontier({
           caption={
             <>
               The {curve.length} rings are the frontier portfolios, each one a
-              separate optimisation. Nothing exists below the curve; anything above
-              it is a mistake made voluntarily. All five named strategies sit in the
-              bottom-left corner, magnified on the right.
+              separate optimisation. No portfolio of these assets can sit above or
+              left of the curve. All five named strategies are in the bottom-left
+              corner, magnified on the right.
             </>
           }
         >
-          {chart(undefined, undefined, (v) => `${v.toFixed(0)}%`)}
+          {chart("full", full, fullY, steps(full[0], full[1], 2), steps(fullY[0], fullY[1], 20), (v) => `${v.toFixed(0)}%`)}
         </Figure>
 
         <Figure
@@ -385,13 +444,13 @@ export function Frontier({
           caption={
             <>
               Min variance and min CVaR land 0.006 points apart on CVaR, so their
-              diamonds nearly coincide - min variance is drawn larger to stay
-              visible behind min CVaR. Click any mark in either panel to load its
-              exact weights below.
+              diamonds nearly overlap; min variance is drawn larger so it stays
+              visible. Hover any mark for its numbers, or click it to load its
+              weights below.
             </>
           }
         >
-          {chart(zoom, zoomY, (v) => `${v.toFixed(1)}%`)}
+          {chart("zoom", zoom, zoomY, steps(zoom[0], zoom[1], 0.4), steps(zoomY[0], zoomY[1], 4), (v) => `${v.toFixed(1)}%`)}
         </Figure>
       </div>
 
@@ -559,7 +618,7 @@ export function Allocations({
               type="category"
               dataKey="label"
               {...axisProps}
-              width={112}
+              width={126}
               tick={{ fill: AXIS, fontSize: 11 }}
             />
             <Tooltip
@@ -674,8 +733,8 @@ export function EquityCurves({
             Weights are re-optimised every quarter on the trailing 500 days only,
             then held; between rebalances they drift with the market. The dotted
             line is the Nifty bought and held, for contrast. Min CVaR is the
-            lowest line here and the flattest below, which is the trade the
-            strategy exists to make.
+            lowest line here and the flattest below, which is the trade-off it
+            was built for.
           </>
         }
         lead={<SeriesLegend keys={keys} labels={labels} />}
@@ -1080,6 +1139,7 @@ export function TailProfile({ data }: { data: TailRow[] }) {
               <LabelList
                 dataKey="ratio"
                 position="right"
+                offset={10}
                 fill={AXIS}
                 fontSize={10}
                 formatter={(v: React.ReactNode) => `${Number(v).toFixed(2)}x`}
@@ -1106,9 +1166,8 @@ export function TailProfile({ data }: { data: TailRow[] }) {
           <>
             Realised CVaR divided by the CVaR a normal distribution predicts.
             Every one of the twelve sits to the right of 1.00, so the bell curve
-            under-predicts the tail in every single case, by 1.18x for the Nifty
-            and 1.16x for Bitcoin. This is what variance cannot see, and it is
-            the argument for optimising CVaR instead.
+            under-predicts the tail in every case, by 1.18x for the Nifty and
+            1.16x for Bitcoin. Variance can&apos;t see any of this.
           </>
         }
       >
@@ -1238,6 +1297,14 @@ export function CrisisReplay({ data }: { data: CrisisRow[] }) {
       ? [Math.min(...gfcAll, 0), Math.max(...gfcAll, 0)]
       : [Math.min(...vals, 0), Math.max(...vals, 0)];
   const pad = (hi - lo) * 0.22 || 1;
+  // Round the axis to a tick step so it reads -30%, -20%, ... rather than
+  // stopping on values like -32% and 12%.
+  const span = hi - lo + 2 * pad;
+  const step = span > 60 ? 20 : span > 24 ? 10 : 5;
+  const x0 = Math.floor((lo - pad) / step) * step;
+  const x1 = Math.ceil((hi + pad) / step) * step;
+  const crisisTicks: number[] = [];
+  for (let v = x0; v <= x1; v += step) crisisTicks.push(v);
 
   return (
     <Figure
@@ -1268,7 +1335,7 @@ export function CrisisReplay({ data }: { data: CrisisRow[] }) {
       }
       caption={
         <>
-          Bitcoin did not exist in 2008 and no proxy for it is defensible, so two
+          Bitcoin did not exist in 2008 and there is no sensible proxy, so two
           bounds are reported: dropped and renormalised, or assumed to move at
           three times the S&amp;P. Min CVaR and min variance hold no Bitcoin, so
           switching between the first two measures does not move them at all.
@@ -1286,7 +1353,8 @@ export function CrisisReplay({ data }: { data: CrisisRow[] }) {
             <CartesianGrid stroke={GRID} horizontal={false} />
             <XAxis
               type="number"
-              domain={[lo - pad, hi + pad]}
+              domain={[x0, x1]}
+              ticks={crisisTicks}
               {...axisProps}
               tickFormatter={(v: number) => `${v.toFixed(0)}%`}
             />
