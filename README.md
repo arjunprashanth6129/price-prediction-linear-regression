@@ -5,7 +5,7 @@ fitted on seven years of daily closes for 98 NSE companies, with a strict
 chronological split and a benchmark chosen before any score was seen.
 
 **Live report:** https://arjun-quant-projects.vercel.app/linear-regression
-&nbsp;·&nbsp; **Full write-up:** [the wiki report](https://github.com/arjunprashanth6129/price-prediction-linear-regression/wiki/Report)
+&nbsp;·&nbsp; **Full write-up:** [the report](docs/REPORT.md)
 
 This is the first of three projects in my quant portfolio. The other two are a
 [CVaR portfolio optimiser](https://github.com/arjunprashanth6129/cvar-portfolio-optimizer)
@@ -149,7 +149,7 @@ mistaken for a good one.
 The choice of target matters just as much. Predicting tomorrow's *price* gives an
 R² of 0.94 on Reliance, and guessing "tomorrow = today" scores 0.96 with no model
 at all. That high R² comes from prices barely moving overnight, so the study
-predicts returns instead. The [wiki report](https://github.com/arjunprashanth6129/price-prediction-linear-regression/wiki/Report#5-worked-example-the-r-trap)
+predicts returns instead. The [full report](docs/REPORT.md#5-worked-example-the-r-trap)
 walks through this in full.
 
 ## A look at the results
@@ -157,18 +157,18 @@ walks through this in full.
 R² on next-day returns, one bar per bucket of stocks. Nothing sits meaningfully
 above zero:
 
-![Distribution of R² on next-day returns across 98 stocks](https://raw.githubusercontent.com/arjunprashanth6129/price-prediction-linear-regression/main/docs/figures/r2-distribution.png)
+![Distribution of R² on next-day returns across 98 stocks](https://arjun-quant-projects.vercel.app/figures/r2-distribution.png)
 
 The same model, features and days, asked two different questions. On the left it
 predicts the price and looks near-perfect; on the right it predicts the return and
 shows no skill at all:
 
-![Parity plots for the price model and the return model](https://raw.githubusercontent.com/arjunprashanth6129/price-prediction-linear-regression/main/docs/figures/parity-price-vs-return.png)
+![Parity plots for the price model and the return model](https://arjun-quant-projects.vercel.app/figures/parity-price-vs-return.png)
 
 The remaining figures, per-stock edge against its noise band, the `ma_ratio`
 coefficients, the market-cap split and the residuals, are in
 [`docs/figures/`](docs/figures/) and in the
-[wiki report](https://github.com/arjunprashanth6129/price-prediction-linear-regression/wiki/Report).
+[full report](docs/REPORT.md).
 
 ## Outputs
 
@@ -210,6 +210,8 @@ data/
   cvar/, pairs/               vendored output of the other two projects
 results/                      RESULTS.md, per-stock.csv, full_analysis.txt
 docs/figures/                 every figure
+docs/REPORT.md                the full write-up
+public/figures/               copies of the figures, served by the site
 app/                          Next.js App Router site
   linear-regression/          this study's page
   cvar/, pairs-trading/       the other two projects' pages
@@ -222,7 +224,7 @@ lib/
 
 ## Limitations
 
-The full list is in the [wiki report](https://github.com/arjunprashanth6129/price-prediction-linear-regression/wiki/Report#7-limitations).
+The full list is in the [full report](docs/REPORT.md#7-limitations).
 The ones that matter most:
 
 - **Seven years is short.** Published momentum research runs on decades. This

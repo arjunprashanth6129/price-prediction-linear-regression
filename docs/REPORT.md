@@ -2,7 +2,7 @@
 
 A linear regression study across 98 NSE stocks, and what the answer reveals about
 market efficiency. This is the full write-up. The code, data and a quick start are
-in the [repository README](https://github.com/arjunprashanth6129/price-prediction-linear-regression#readme),
+in the [repository README](../README.md),
 and there is an [interactive version](https://arjun-quant-projects.vercel.app/linear-regression)
 of the same analysis on the site.
 
@@ -118,7 +118,7 @@ suspended). They are excluded with a recorded reason rather than silently
 skipped. 77 of the 98 modelled stocks traded every session in the window; the
 other 21 are flagged `partial` in the results, mostly late listings.
 
-![Daily close for all 98 modelled stocks, 2019-06-01 to 2026-06-30](https://raw.githubusercontent.com/arjunprashanth6129/price-prediction-linear-regression/main/docs/figures/universe-closes.png)
+![Daily close for all 98 modelled stocks, 2019-06-01 to 2026-06-30](https://arjun-quant-projects.vercel.app/figures/universe-closes.png)
 
 `auto_adjust=True` folds splits and bonus issues back into the history. Without
 it, a 5:1 split reads as an 80% overnight crash and every return computed
@@ -153,7 +153,7 @@ shuffled.
 [<-- TRAIN 80% (Jun 2019 to Jan 2025) --|-- TEST 20% (Feb 2025 to Jun 2026) -->]
 ```
 
-![Chronological train/test split on the worked example](https://raw.githubusercontent.com/arjunprashanth6129/price-prediction-linear-regression/main/docs/figures/train-test-split.png)
+![Chronological train/test split on the worked example](https://arjun-quant-projects.vercel.app/figures/train-test-split.png)
 
 `train_test_split(shuffle=True)` is correct for independent samples and wrong
 here, for two separate reasons:
@@ -205,7 +205,7 @@ means none at all. The average here is **-0.0155**, which is *below* zero,
 meaning that on average the model did slightly worse than predicting the same
 average return every single day.
 
-![Distribution of R² on next-day returns across 98 stocks](https://raw.githubusercontent.com/arjunprashanth6129/price-prediction-linear-regression/main/docs/figures/r2-distribution.png)
+![Distribution of R² on next-day returns across 98 stocks](https://arjun-quant-projects.vercel.app/figures/r2-distribution.png)
 
 The spread matters more than the average. Every stock lands between -0.13 and +0.04: a
 tight pile just below zero. There is no tail of stocks where the model worked,
@@ -220,7 +220,7 @@ it correctly **49.6%** of the time.
 Look at that number by itself first. After seven years of training data, the
 model gets tomorrow's direction right **less than half the time.**
 
-![Model directional accuracy against the naive always-up baseline, one dot per stock](https://raw.githubusercontent.com/arjunprashanth6129/price-prediction-linear-regression/main/docs/figures/accuracy-vs-baseline.png)
+![Model directional accuracy against the naive always-up baseline, one dot per stock](https://arjun-quant-projects.vercel.app/figures/accuracy-vs-baseline.png)
 
 The nominal edge is *positive*, at +1.85 points, and 68 of 98 stocks beat their
 own baseline. The always-up rule only scored 47.8% here because the test window
@@ -234,7 +234,7 @@ With ~345 test days per stock, treating each day as a coin flip gives a standard
 error on any single accuracy figure of about **2.7 points**. Two standard errors
 is ±5.4 points, and any edge inside that band is indistinguishable from luck.
 
-![Directional edge per stock, sorted, against the noise band](https://raw.githubusercontent.com/arjunprashanth6129/price-prediction-linear-regression/main/docs/figures/edge-ranked.png)
+![Directional edge per stock, sorted, against the noise band](https://arjun-quant-projects.vercel.app/figures/edge-ranked.png)
 
 Only **16 of 98** bars clear that band, and with 98 noisy estimates some will
 clear it by luck alone. The top of this table is sampling variation, so it
@@ -266,7 +266,7 @@ Its average absolute coefficient was **0.0016**, close enough to zero
 that the model is effectively ignoring it, and its sign split 61 positive to 37
 negative.
 
-![Direction and magnitude of the ma_ratio coefficient across 98 stocks](https://raw.githubusercontent.com/arjunprashanth6129/price-prediction-linear-regression/main/docs/figures/ma-ratio-signs.png)
+![Direction and magnitude of the ma_ratio coefficient across 98 stocks](https://arjun-quant-projects.vercel.app/figures/ma-ratio-signs.png)
 
 The split is what matters here. A signal with real directional information would
 push the same way for nearly every stock, so golden-cross territory would mean the
@@ -302,7 +302,7 @@ companies, so the universe was split by market cap. It barely mattered.
 | Mid | 17 | 48.9% | 47.2% | +1.68 pts | 0.00165 |
 | Small | 26 | 49.8% | 46.7% | +3.09 pts | 0.00160 |
 
-![Accuracy and edge spread by market cap](https://raw.githubusercontent.com/arjunprashanth6129/price-prediction-linear-regression/main/docs/figures/edge-by-market-cap.png)
+![Accuracy and edge spread by market cap](https://arjun-quant-projects.vercel.app/figures/edge-by-market-cap.png)
 
 Small caps do come out ahead on nominal edge, which is the direction the
 literature predicts. But their **directional accuracy is identical to the large
@@ -346,7 +346,7 @@ The two parity plots make it visual. A flawless model puts every point on the
 45° diagonal; how far the cloud drifts off that line is the error. Same days,
 same features, same algorithm - only the question changed:
 
-![Parity plots for the price model and the return model](https://raw.githubusercontent.com/arjunprashanth6129/price-prediction-linear-regression/main/docs/figures/parity-price-vs-return.png)
+![Parity plots for the price model and the return model](https://arjun-quant-projects.vercel.app/figures/parity-price-vs-return.png)
 
 - **Left, the price model.** The dots press so tightly against the diagonal that
   the line is hard to pick out beneath them. It reads as near-perfect prediction,
@@ -361,9 +361,9 @@ same features, same algorithm - only the question changed:
 Plotted as a time series, the same pair looks like a triumph and a failure, and
 that reading is backwards:
 
-![Price model: actual against predicted close](https://raw.githubusercontent.com/arjunprashanth6129/price-prediction-linear-regression/main/docs/figures/reliance-price-fit.png)
+![Price model: actual against predicted close](https://arjun-quant-projects.vercel.app/figures/reliance-price-fit.png)
 
-![Return model: actual against predicted daily return](https://raw.githubusercontent.com/arjunprashanth6129/price-prediction-linear-regression/main/docs/figures/reliance-return-fit.png)
+![Return model: actual against predicted daily return](https://arjun-quant-projects.vercel.app/figures/reliance-return-fit.png)
 
 The price chart plots a **level**. To land near ₹1,400 tomorrow, a model only has
 to notice that today's price is near ₹1,400, so the orange line traces the blue
@@ -385,7 +385,7 @@ a failed fit. It is the correct answer when the inputs have nothing to say.
 
 The residuals confirm there is nothing left in there:
 
-![Residuals over the test period](https://raw.githubusercontent.com/arjunprashanth6129/price-prediction-linear-regression/main/docs/figures/residuals.png)
+![Residuals over the test period](https://arjun-quant-projects.vercel.app/figures/residuals.png)
 
 A model with real signal leaves small residuals scattered evenly around zero.
 These span the entire range of daily moves, because the prediction was near zero
@@ -397,7 +397,7 @@ A linear regression predicts by multiplying each feature by a weight and adding
 the results, so the weights are a direct readout of what it leaned on. Drawn on
 one shared axis:
 
-![Feature weights for both models on one shared axis](https://raw.githubusercontent.com/arjunprashanth6129/price-prediction-linear-regression/main/docs/figures/feature-weights.png)
+![Feature weights for both models on one shared axis](https://arjun-quant-projects.vercel.app/figures/feature-weights.png)
 
 | Feature | Price model (₹ per SD) | Return model (fraction per SD) |
 |---|---:|---:|
@@ -420,7 +420,7 @@ The same fit, drawn as a surface. `ret` and `ma_ratio` are held at their means,
 so this is a real two-feature slice of the real four-feature model rather than
 a separately fitted one:
 
-![A two-feature slice of the fitted regression plane](https://raw.githubusercontent.com/arjunprashanth6129/price-prediction-linear-regression/main/docs/figures/hyperplane-slice.png)
+![A two-feature slice of the fitted regression plane](https://arjun-quant-projects.vercel.app/figures/hyperplane-slice.png)
 
 The plane is what the model believes: for any pairing of short-term and
 medium-term trend, this is the return it expects. It is nearly level, and the
