@@ -5,18 +5,8 @@ fitted on seven years of daily closes for 98 NSE companies, with a strict
 chronological split and a benchmark chosen before any score was seen.
 
 **Live report:** https://arjun-quant-projects.vercel.app/linear-regression
-&nbsp;·&nbsp; **Full write-up:** [the report](docs/REPORT.md)
-
-This is the first of three projects in my quant portfolio. The other two are a
-[CVaR portfolio optimiser](https://github.com/arjunprashanth6129/cvar-portfolio-optimizer)
-and a [pairs-trading backtester](https://github.com/arjunprashanth6129/pairs-trading-backtester).
-This one is the research study: it asks whether a popular trading signal carries
-any information at all, and the answer is no.
-
-The repository also holds the Next.js site that presents all three projects. The
-analysis in `scripts/ml/`, `data/` and `results/` belongs to this study. The CVaR
-and pairs-trading pages are rendered from JSON vendored under `data/cvar/` and
-`data/pairs/`; their analysis lives in their own repositories.
+&nbsp;·&nbsp; 
+**Full write-up:** [the report](docs/REPORT.md)
 
 ---
 
