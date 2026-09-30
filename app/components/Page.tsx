@@ -110,7 +110,13 @@ export function Table({
   return (
     <Reveal className="my-6">
       <div className="thin-scroll overflow-x-auto rounded-xl border border-line">
-        <table className="w-full border-collapse text-sm" style={{ minWidth }}>
+        {/* Inset the first and last column from the rounded border. Row
+            headers carried no horizontal padding, so their text sat on the
+            table's edge and out of line with the column headings. */}
+        <table
+          className="w-full border-collapse text-sm [&_tr>*:first-child]:pl-4 [&_tr>*:last-child]:pr-4"
+          style={{ minWidth }}
+        >
           {head}
           {children}
         </table>
