@@ -1,21 +1,26 @@
 import TopBar from "../components/TopBar";
 import { Reveal } from "../components/Motion";
-import { Section, V, C, StatCard, Note, Table, TH } from "../components/Page";
+import { Section, Sub, V, C, StatCard, Note, Table, TH, Bullets } from "../components/Page";
 import {
+  AnnualChart,
   CostChart,
   EquityChart,
+  ExitWaterfall,
   PairMechanism,
 } from "../components/PairsCharts";
 import { PROJECTS } from "@/lib/project";
 import {
-  breakEvenBps, 
+  breakEvenBps,
+  getAnnual,
+  getByPvalue,
   getCostSensitivity,
   getExamplePair,
+  getExits,
   getPairsEquity,
-  getPairsMeta, 
+  getPairsMeta,
   getPairsSummary,
+  getReversion,
   getTopPairs,
-  getTradesByReason,
 } from "@/lib/pairs";
 
 const META = PROJECTS[2];
@@ -23,15 +28,24 @@ const META = PROJECTS[2];
 export const metadata = { title: META.name, description: META.blurb };
 
 const SECTIONS = [
-  { id: "result", label: "The result" },
-  { id: "gate", label: "Cointegration" },
-  { id: "mechanism", label: "The mechanism" },
-  { id: "lookahead", label: "No lookahead" },
-  { id: "equity", label: "Out-of-sample" },
+  { id: "result", label: "Result" },
+  { id: "selection", label: "Pair selection" },
+  { id: "rules", label: "Trading rules" },
+  { id: "pnl", label: "Where the P&L came from" },
+  { id: "formation", label: "What held, what did not" },
+  { id: "equity", label: "Over time" },
   { id: "costs", label: "Costs" },
   { id: "neutral", label: "Market neutrality" },
+  { id: "bug", label: "The re-entry bug" },
   { id: "limits", label: "Limitations" },
 ];
+
+const REASON_LABEL: Record<string, string> = {
+  reverted: "Reverted inside the exit band",
+  stop: "Stopped out beyond the stop",
+  timeout: "Timed out at 60 days",
+  window_end: "Trading period ended",
+};
 
 export default function PairsTrading() {
   const m = getPairsMeta();
@@ -40,21 +54,28 @@ export default function PairsTrading() {
   const cost = getCostSensitivity();
   const example = getExamplePair();
   const top = getTopPairs();
-  const reasons = getTradesByReason();
+  const exits = getExits();
+  const annual = getAnnual();
+  const byP = getByPvalue();
+  const rev = getReversion();
   const be = breakEvenBps();
 
   const pct = (v: number, d = 2) => `${v.toFixed(d)}%`;
   const signed = (v: number, d = 2) => `${v >= 0 ? "+" : ""}${v.toFixed(d)}%`;
   const mult = (v: number) => `${(1 + v / 100).toFixed(2)}x`;
-
-  const reasonOrder = ["reverted", "stop", "timeout", "window_end"];
-  const reasonLabel: Record<string, string> = {
-    reverted: "Reverted to the mean",
-    stop: "Stopped out, kept diverging",
-    timeout: "Timed out, never reverted",
-    window_end: "Window closed while open",
-  };
-  const totalTrades = s.trades.n_trades;
+  const inr = (v: number) =>
+    `${v < 0 ? "-" : ""}₹${Math.abs(Math.round(v)).toLocaleString("en-IN")}`;
+  const n = s.trades.n_trades;
+  const ex = Object.fromEntries(exits.map((e) => [e.reason, e]));
+  const gross = exits.reduce((a, e) => a + e.gross, 0);
+  const costs = exits.reduce((a, e) => a + e.cost, 0);
+  const avgRev = ex.reverted.gross / ex.reverted.n;
+  const avgStop = ex.stop.gross / ex.stop.n;
+  const grossBps = (gross / n / 100_000) * 10_000;
+  const costBps = (costs / n / 100_000) * 10_000;
+  const fullYears = annual.filter((r) => r.days > 200);
+  const posYears = fullYears.filter((r) => r.gross > 0).length;
+  const rate = s.neutrality_net;
 
   return (
     <>
@@ -69,173 +90,125 @@ export default function PairsTrading() {
         <Reveal>
           <header>
             <p className="eyebrow">Applied system</p>
-            <h1 className="mt-2 text-[34px] font-semibold leading-[1.1] tracking-tight text-ink sm:text-[44px]">
-              A market-neutral engine attached to an edge too small to pay for
-              itself
+            <h1 className="mt-2 text-[32px] font-semibold leading-[1.12] tracking-tight text-ink sm:text-[42px]">
+              Pairs trading on {m.traded.length} Indian banks, tested out of
+              sample
             </h1>
-            <p className="mt-5 text-[17.5px] leading-[1.7] text-ink-muted">
-              Statistical arbitrage on {m.traded.length} Indian banks:
-              cointegration picks the pairs, a formation window fixes every
-              parameter, and a walk-forward backtest charges all four legs of
-              every round trip.
+            <p className="mt-5 text-[17px] leading-[1.7] text-ink-muted">
+              Every six months, all {m.candidate_pairs} pairs of banks are tested
+              for cointegration on the previous {m.formation_months} months, and up
+              to {m.max_pairs} that pass are traded for the next{" "}
+              {m.trading_months} on a fixed z-score rule. Over{" "}
+              {s.net.days.toLocaleString("en-IN")} trading days from{" "}
+              {m.oos_start} to {m.oos_end}, it returned{" "}
+              <V>{signed(s.gross["ann_return_%"])} a year before costs</V> and{" "}
+              <V>{signed(s.net["ann_return_%"])} after them</V>. The pairs that
+              reverted made money, but more of them broke apart and were stopped
+              out, and those losses cancelled almost all of the gains.
             </p>
-
-            <div className="mt-7 rounded-xl border-l-2 border-accent bg-surface px-6 py-5">
-              <p className="eyebrow">What this is</p>
-              <p className="mt-3 text-[14.5px] leading-[1.8] text-ink-muted">
-                The companion to the two research studies on this site. Those ask
-                whether an effect exists; this one asks whether a working system
-                built on a real effect survives contact with the costs of running
-                it. Pairs are selected by Engle-Granger cointegration on a{" "}
-                {m.formation_months}-month formation window, traded on the
-                following disjoint {m.trading_months} months using parameters
-                fixed before that period began, and rolled forward{" "}
-                {m.n_windows} times from {m.oos_start} to {m.oos_end}.{" "}
-                <V>
-                  Gross of costs it compounds to {mult(s.gross["total_return_%"])}.
-                  Net of {m.bps_per_leg} bps per leg it compounds to{" "}
-                  {mult(s.net["total_return_%"])}.
-                </V>{" "}
-                The market exposure it was designed to remove is genuinely gone -
-                beta to the Nifty is {s.neutrality_net.beta_to_market.toFixed(3)} -
-                but the edge is roughly a tenth of the size needed to cover its
-                own trading.
-              </p>
-            </div>
           </header>
         </Reveal>
 
-        {/* ---------------- headline ---------------- */}
-        <div className="mt-7 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
           <StatCard
-            value={mult(s.gross["total_return_%"])}
-            label="Before costs"
-            detail={`${signed(s.gross["ann_return_%"])} a year across ${s.net.days.toLocaleString("en-IN")} out-of-sample days.`}
+            value={signed(s.gross["ann_return_%"])}
+            label="A year, before costs"
+            detail={`${mult(s.gross["total_return_%"])} over the whole period.`}
           />
           <StatCard
-            value={mult(s.net["total_return_%"])}
-            label="After costs"
-            detail={`${signed(s.net["ann_return_%"])} a year. The difference is ${totalTrades.toLocaleString("en-IN")} round trips.`}
+            value={signed(s.net["ann_return_%"])}
+            label="A year, after costs"
+            detail={`${mult(s.net["total_return_%"])}, at ${m.bps_per_leg} bps per leg.`}
           />
           <StatCard
-            value={be ? `${be.toFixed(1)} bps` : "n/a"}
-            label="Break-even cost per leg"
-            detail={`Against the ${m.bps_per_leg} bps assumed here. The edge is real and about a tenth of what it needs to be.`}
+            value={`${ex.stop.n} of ${n}`}
+            label="Trades stopped out"
+            detail={`Against ${ex.reverted.n} that reverted.`}
           />
           <StatCard
-            value={s.neutrality_net.beta_to_market.toFixed(3)}
+            value={rate.beta_to_market.toFixed(3)}
             label="Beta to the Nifty"
-            detail={`R² of ${s.neutrality_net.r_squared.toFixed(3)}. The long-short structure did exactly its job.`}
+            detail={`R² ${rate.r_squared.toFixed(3)}.`}
             tone="accent"
           />
         </div>
 
         {/* ---------------- 1. result ---------------- */}
-        <Section id="result" index={1} title="The two questions, answered plainly">
+        <Section id="result" index={1} title="Result">
           <p>
-            <V>Did it make money out of sample after costs?</V> No. The strategy
-            compounds to {mult(s.gross["total_return_%"])} before costs and{" "}
-            {mult(s.net["total_return_%"])} after them, over{" "}
-            {s.net.days.toLocaleString("en-IN")} days that were traded with
-            parameters fixed before each of them began. Buying the same eleven
-            banks and doing nothing returned{" "}
-            {mult(s.benchmark_universe["total_return_%"])}.
-          </p>
-          <p>
-            <V>Was it actually market-neutral?</V> Yes, and this is the part that
-            worked. Beta to the Nifty is{" "}
-            {s.neutrality_net.beta_to_market.toFixed(4)} with an R² of{" "}
-            {s.neutrality_net.r_squared.toFixed(4)}, so the market&apos;s
-            direction explains well under one percent of the strategy&apos;s
-            day-to-day movement. That is the long-short construction doing what it
-            is designed to do, and it is measured rather than asserted.
+            The strategy did not make money after costs, and before costs it
+            earned {signed(s.gross["ann_return_%"])} a year, well under the 6%
+            risk-free rate used across this site. That is why the Sharpe ratio is
+            negative in both columns. Buying the same {m.traded.length} banks and
+            holding them returned {signed(s.benchmark_universe["ann_return_%"])}{" "}
+            a year over the same days, with far more risk.
           </p>
 
           <Table
-            minWidth={640}
+            minWidth={560}
             head={
               <thead>
                 <tr className="border-b border-line">
                   <TH align="left">Measure</TH>
                   <TH>Before costs</TH>
                   <TH>After costs</TH>
-                  <TH>Buy and hold</TH>
+                  <TH>Hold the banks</TH>
+                  <TH>Nifty 50</TH>
                 </tr>
               </thead>
             }
-            caption={
-              <>
-                Costs are {m.bps_per_leg} bps per leg: brokerage and taxes, half
-                the bid-ask spread, and slippage. Two legs, charged on entry and
-                again on exit, so {m.bps_per_leg * 4} bps of the traded notional
-                per round trip. Sharpe is measured against a 6% rupee
-                risk-free rate, the same one the other projects on this site use,
-                which is why a small positive gross return still scores below zero.
-              </>
-            }
+            caption={`Costs are ${m.bps_per_leg} bps per leg, charged on both legs at entry and again at exit. Sharpe uses a 6% risk-free rate.`}
           >
             <tbody className="tnum">
               {[
-                ["Total return", mult(s.gross["total_return_%"]), mult(s.net["total_return_%"]), mult(s.benchmark_universe["total_return_%"])],
-                ["Annualised", signed(s.gross["ann_return_%"]), signed(s.net["ann_return_%"]), signed(s.benchmark_universe["ann_return_%"])],
-                ["Volatility", pct(s.gross["ann_vol_%"]), pct(s.net["ann_vol_%"]), pct(s.benchmark_universe["ann_vol_%"])],
-                ["Sharpe", s.gross.sharpe.toFixed(2), s.net.sharpe.toFixed(2), s.benchmark_universe.sharpe.toFixed(2)],
-                ["Max drawdown", pct(s.gross["max_drawdown_%"]), pct(s.net["max_drawdown_%"]), pct(s.benchmark_universe["max_drawdown_%"])],
-              ].map(([k, a, b, c]) => (
+                ["Growth of 1", mult(s.gross["total_return_%"]), mult(s.net["total_return_%"]), mult(s.benchmark_universe["total_return_%"]), mult(s.benchmark_nifty["total_return_%"])],
+                ["Annualised", signed(s.gross["ann_return_%"]), signed(s.net["ann_return_%"]), signed(s.benchmark_universe["ann_return_%"]), signed(s.benchmark_nifty["ann_return_%"])],
+                ["Volatility", pct(s.gross["ann_vol_%"]), pct(s.net["ann_vol_%"]), pct(s.benchmark_universe["ann_vol_%"]), pct(s.benchmark_nifty["ann_vol_%"])],
+                ["Sharpe", s.gross.sharpe.toFixed(2), s.net.sharpe.toFixed(2), s.benchmark_universe.sharpe.toFixed(2), s.benchmark_nifty.sharpe.toFixed(2)],
+                ["Max drawdown", pct(s.gross["max_drawdown_%"]), pct(s.net["max_drawdown_%"]), pct(s.benchmark_universe["max_drawdown_%"]), pct(s.benchmark_nifty["max_drawdown_%"])],
+              ].map(([k, a, b, c, d]) => (
                 <tr key={k} className="border-b border-line/70 text-right">
                   <th scope="row" className="py-2.5 text-left text-[13px] font-medium text-ink-muted">
                     {k}
                   </th>
                   <td className="px-2 py-2.5 text-ink">{a}</td>
-                  <td className="px-2 py-2.5 font-semibold text-[#b45309]">{b}</td>
+                  <td className="px-2 py-2.5 font-semibold text-ink">{b}</td>
                   <td className="px-2 py-2.5 text-ink-dim">{c}</td>
+                  <td className="px-2 py-2.5 text-ink-dim">{d}</td>
                 </tr>
               ))}
             </tbody>
           </Table>
         </Section>
 
-        {/* ---------------- 2. cointegration ---------------- */}
-        <Section id="gate" index={2} title="Cointegration, not correlation">
+        {/* ---------------- 2. selection ---------------- */}
+        <Section id="selection" index={2} title="Pair selection">
           <p>
-            The gate that decides which pairs are tradable is the single most
-            important design choice in this system, and the tempting wrong answer
-            is correlation.
+            The timeline is cut into {m.n_windows} windows. Each one has a{" "}
+            {m.formation_months}-month formation period, where pairs are chosen
+            and every parameter is fitted, followed by a {m.trading_months}-month
+            trading period that uses those parameters unchanged. Windows step
+            forward {m.trading_months} months at a time, so the trading periods
+            never overlap.
           </p>
           <p>
-            Correlation asks whether two series move together day to day. Two
-            stocks can be highly correlated and still drift apart forever: if both
-            rise but one rises faster, every daily move agrees in direction while
-            the gap between them grows without limit. A spread built on that pair
-            has no mean to come back to, so a z-score measures distance from a
-            number that has stopped meaning anything.
+            Pairs are chosen by the Engle-Granger test: regress one price on the
+            other, then test whether the residual is stationary. A pair passes
+            at p ≤ {m.pvalue_threshold}, and at most {m.max_pairs} pass per
+            window, lowest p-value first. Correlation would be the wrong filter.
+            Two stocks can have daily returns that are 0.99 correlated and still
+            drift apart forever if one grows slightly faster, and the test suite
+            checks that Engle-Granger rejects exactly that case.
           </p>
           <p>
-            Cointegration asks the stricter question: is there a fixed combination
-            of the two whose value is stationary, wandering around a constant mean
-            with finite variance rather than drifting? If <C>y - βx</C> is
-            stationary, then when it is far from its mean there is a statistical
-            reason to expect it back. Correlation says the two walk in step;
-            cointegration says they are tied together by a rope of fixed length.
-          </p>
-          <Note>
-            The test suite encodes this distinction directly. One case builds two
-            series from identical shocks plus a small extra drift on one: their
-            daily changes correlate above 0.99 and Engle-Granger still refuses
-            them, because the levels separate without bound. That pair would pass
-            a correlation filter and lose money indefinitely.
-          </Note>
-          <p>
-            Engle-Granger runs in two stages: regress one leg on the other, then
-            test the residual for a unit root. The null hypothesis is no
-            cointegration, so a small p-value is evidence the residual is
-            stationary. All {m.candidate_pairs} candidate pairs are tested on each
-            formation window and at most {m.max_pairs} survive, ranked by p-value,
-            with a threshold of {m.pvalue_threshold}.
+            Across all windows, {s.selection.pair_windows} pair-windows were
+            selected from {s.selection.unique_pairs} distinct pairs, with a median
+            p-value of {s.selection.median_pvalue?.toFixed(3)} and a median
+            half-life of {s.selection.median_half_life_days?.toFixed(1)} days.
           </p>
 
           <Table
-            minWidth={560}
+            minWidth={480}
             head={
               <thead>
                 <tr className="border-b border-line">
@@ -246,51 +219,62 @@ export default function PairsTrading() {
                 </tr>
               </thead>
             }
-            caption={
-              <>
-                The pairs chosen most often across {m.n_windows} formation
-                windows. Half-life is how long a deviation takes to decay halfway
-                back, from an AR(1) fit on the formation spread; a pair whose
-                half-life exceeded the {m.trading_months}-month trading window
-                could not revert inside it. The median across all selections is{" "}
-                {s.selection.median_half_life_days?.toFixed(1)} days.
-              </>
-            }
+            caption="The pairs selected most often. Half-life is the number of days a deviation takes to halve, from an AR(1) fit on the formation spread."
           >
             <tbody className="tnum">
               {top.slice(0, 6).map((p) => (
                 <tr key={p.pair} className="border-b border-line/70 text-right">
                   <th scope="row" className="py-2.5 text-left text-[13px] font-medium text-ink-muted">
-                    {p.pair.replace(/\.NS/g, "")}
+                    {p.pair.replace(/\.NS/g, "").replace("~", " / ")}
                   </th>
                   <td className="px-2 py-2.5 text-ink">{p.times_selected}</td>
-                  <td className="px-2 py-2.5 text-ink-muted">{p.median_pvalue.toFixed(4)}</td>
-                  <td className="px-2 py-2.5 text-ink-muted">{p.median_half_life.toFixed(1)}d</td>
+                  <td className="px-2 py-2.5 text-ink-muted">{p.median_pvalue.toFixed(3)}</td>
+                  <td className="px-2 py-2.5 text-ink-muted">{p.median_half_life.toFixed(1)} days</td>
                 </tr>
               ))}
             </tbody>
           </Table>
         </Section>
 
-        {/* ---------------- 3. mechanism ---------------- */}
-        <Section id="mechanism" index={3} title="What the strategy actually does">
+        {/* ---------------- 3. rules ---------------- */}
+        <Section id="rules" index={3} title="Trading rules">
           <p>
-            Both banks in a pair move with the sector. Buying one and shorting the
-            hedge-ratio multiple of the other cancels most of that shared
-            direction, because whatever the sector does enters both legs and nets
-            out. What is left is the difference between the two, which is the only
-            thing the strategy has an opinion about. That is why the position is
-            long one and short the other rather than a bet on either name, and why
-            the beta reported above should be near zero.
+            In the trading period the spread is <C>y - βx</C>, and the z-score is
+            its distance from the formation mean in formation standard
+            deviations. Each position has ₹1 lakh of gross notional across its two
+            legs.
           </p>
-          <p>
-            When the standardised spread stretches past {m.entry_z}, the strategy
-            shorts the over-performer and buys the under-performer. It closes when
-            the spread comes back inside {m.exit_z}. If instead the spread keeps
-            widening past {m.stop_z}, the trade is abandoned: that is the case
-            where the relationship has broken rather than stretched, and it is the
-            one that ruins pairs traders who assume reversion is guaranteed.
-          </p>
+
+          <Table
+            minWidth={420}
+            head={
+              <thead>
+                <tr className="border-b border-line">
+                  <TH align="left">Condition</TH>
+                  <TH align="left">Action</TH>
+                </tr>
+              </thead>
+            }
+          >
+            <tbody>
+              {[
+                [`z above +${m.entry_z}`, "Short the spread: sell y, buy β units of x"],
+                [`z below -${m.entry_z}`, "Long the spread: buy y, sell β units of x"],
+                [`|z| back inside ${m.exit_z}`, "Close, reverted"],
+                [`|z| beyond ${m.stop_z}`, "Close, stopped out"],
+                [`Open ${m.max_holding_days} trading days`, "Close, timed out"],
+                ["Trading period ends", "Close at the last bar"],
+                [`Flat and |z| already beyond ${m.stop_z}`, "Do not enter"],
+              ].map(([c, a]) => (
+                <tr key={c} className="border-b border-line/70">
+                  <th scope="row" className="tnum py-2.5 text-left text-[13px] font-medium text-ink">
+                    {c}
+                  </th>
+                  <td className="px-3 py-2.5 text-[13px] text-ink-muted">{a}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
 
           {example && (
             <PairMechanism
@@ -301,187 +285,277 @@ export default function PairsTrading() {
             />
           )}
 
+          <Sub>Keeping the future out</Sub>
+          <p>
+            Three mechanisms stop trading-period data from reaching a decision,
+            and each has a test that fails when it is removed. The hedge ratio,
+            mean and standard deviation come from one function that only sees the
+            formation period. The z-score function takes that mean and standard
+            deviation as arguments, so it cannot standardise a spread against its
+            own statistics. And fills are booked at the close after the signal,
+            not the close that produced it.
+          </p>
+        </Section>
+
+        {/* ---------------- 4. P&L ---------------- */}
+        <Section id="pnl" index={4} title="Where the P&L came from">
+          <p>
+            Splitting every trade by how it ended shows the result. The{" "}
+            {ex.reverted.n} trades that reverted earned {inr(ex.reverted.gross)}{" "}
+            before costs. The {ex.stop.n} that were stopped out lost{" "}
+            {inr(ex.stop.gross)}. What was left, {inr(gross)}, was less than half
+            of the {inr(costs)} paid in costs.
+          </p>
+
+          <ExitWaterfall exits={exits} />
+
           <Table
-            minWidth={520}
+            minWidth={620}
             head={
               <thead>
                 <tr className="border-b border-line">
-                  <TH align="left">How the trade ended</TH>
-                  <TH>Count</TH>
-                  <TH>Share</TH>
+                  <TH align="left">How it ended</TH>
+                  <TH>Trades</TH>
+                  <TH>Gross P&amp;L</TH>
+                  <TH>Costs</TH>
+                  <TH>Net P&amp;L</TH>
+                  <TH>Median days</TH>
                 </tr>
               </thead>
             }
-            caption={
-              <>
-                A position still open when a trading window ends is closed at the
-                last bar rather than dropped. Dropping it would quietly discard
-                exactly the trades that went worst, which is the losing half of a
-                survivorship bias.
-              </>
-            }
           >
             <tbody className="tnum">
-              {reasonOrder.filter((r) => reasons[r]).map((r) => (
-                <tr key={r} className="border-b border-line/70 text-right">
+              {exits.map((e) => (
+                <tr key={e.reason} className="border-b border-line/70 text-right">
                   <th scope="row" className="py-2.5 text-left text-[13px] font-medium text-ink-muted">
-                    {reasonLabel[r]}
+                    {REASON_LABEL[e.reason]}
                   </th>
-                  <td className="px-2 py-2.5 text-ink">{reasons[r]}</td>
-                  <td className="px-2 py-2.5 text-ink-muted">
-                    {((reasons[r] / totalTrades) * 100).toFixed(1)}%
-                  </td>
+                  <td className="px-2 py-2.5 text-ink">{e.n}</td>
+                  <td className="px-2 py-2.5 text-ink">{inr(e.gross)}</td>
+                  <td className="px-2 py-2.5 text-ink-dim">{inr(e.cost)}</td>
+                  <td className="px-2 py-2.5 font-semibold text-ink">{inr(e.net)}</td>
+                  <td className="px-2 py-2.5 text-ink-dim">{e.median_hold}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+
+          <p>
+            A reverted trade earned {inr(avgRev)} on average and a stopped trade
+            lost {inr(-avgStop)}, about half as much. At those
+            payoffs, reversions need to be roughly a third of reversions plus
+            stops just to break even before costs. They were{" "}
+            {((ex.reverted.n / (ex.reverted.n + ex.stop.n)) * 100).toFixed(0)}%.
+          </p>
+        </Section>
+
+        {/* ---------------- 5. formation ---------------- */}
+        <Section id="formation" index={5} title="What the formation window got right, and what it did not">
+          <Sub>The speed of reversion held up</Sub>
+          <p>
+            For the {rev.n} trades that reverted, the median holding period was{" "}
+            {rev.median_hold} days against a median formation half-life of{" "}
+            {rev.median_half_life.toFixed(1)} days, a ratio of{" "}
+            {rev.median_hold_over_half_life.toFixed(2)}. Going from the median
+            entry at |z| = {rev.median_entry_abs_z.toFixed(2)} to the exit at{" "}
+            {m.exit_z} means the deviation has to shrink by a factor of{" "}
+            {(rev.median_entry_abs_z / m.exit_z).toFixed(1)}, which takes{" "}
+            {Math.log2(rev.median_entry_abs_z / m.exit_z).toFixed(1)} half-lives.
+            When a pair reverted, it did so at about the speed the formation
+            window predicted.
+          </p>
+
+          <Sub>Whether it would revert at all did not</Sub>
+          <p>
+            {((ex.stop.n / n) * 100).toFixed(0)}% of trades were stopped out. If
+            the cointegration test measured how dependable a pair would be,
+            pairs with smaller p-values should have been stopped out less often.
+            They were not.
+          </p>
+
+          <Table
+            minWidth={480}
+            head={
+              <thead>
+                <tr className="border-b border-line">
+                  <TH align="left">Formation p-value</TH>
+                  <TH>Trades</TH>
+                  <TH>Stopped out</TH>
+                  <TH>Reverted</TH>
+                  <TH>Avg gross P&amp;L</TH>
+                </tr>
+              </thead>
+            }
+            caption="With 60 to 93 trades per row, the differences between rows are within noise. The p-value carried no information about the next six months."
+          >
+            <tbody className="tnum">
+              {byP.map((r) => (
+                <tr key={r.lo} className="border-b border-line/70 text-right">
+                  <th scope="row" className="py-2.5 text-left text-[13px] font-medium text-ink-muted">
+                    {r.lo} to {r.hi}
+                  </th>
+                  <td className="px-2 py-2.5 text-ink">{r.n}</td>
+                  <td className="px-2 py-2.5 text-ink">{(r.stop_rate * 100).toFixed(1)}%</td>
+                  <td className="px-2 py-2.5 text-ink-muted">{(r.reverted_rate * 100).toFixed(1)}%</td>
+                  <td className="px-2 py-2.5 text-ink-muted">{inr(r.avg_gross)}</td>
                 </tr>
               ))}
             </tbody>
           </Table>
         </Section>
 
-        {/* ---------------- 4. lookahead ---------------- */}
-        <Section id="lookahead" index={4} title="How lookahead is prevented, and tested">
+        {/* ---------------- 6. equity ---------------- */}
+        <Section id="equity" index={6} title="Over time">
+          <EquityChart gross={eq.gross} net={eq.net} drawdown={eq.drawdown_net} />
           <p>
-            A backtest that sees the future is worthless, and the failure is
-            silent: it produces better numbers, not an error. Three separate
-            mechanisms keep it out here, and each is checked by a test that fails
-            if the mechanism is removed.
+            Before costs the strategy made money in {posYears} of{" "}
+            {fullYears.length} full calendar years. Most of the loss sits in two
+            episodes.
+          </p>
+          <AnnualChart rows={annual} />
+          <p>
+            <V>2020.</V> The COVID crash moved bank stocks by very different
+            amounts. Axis Bank against Federal Bank was stopped out six times
+            that year, and IndusInd Bank against IDFC First Bank lost on seven
+            trades.
           </p>
           <p>
-            <V>Parameters are estimated in exactly one function</V>, and it only
-            ever receives a formation slice. The hedge ratio, the spread mean and
-            the spread standard deviation are all fixed before the trading window
-            begins. The test corrupts every trading-window price with noise and
-            asserts the fitted parameters do not move by so much as a rounding
-            error.
-          </p>
-          <p>
-            <V>The z-score cannot re-centre itself.</V> The function takes the
-            mean and standard deviation as arguments rather than computing them
-            from its input, so standardising a trading spread against its own
-            statistics is not something a caller can do by accident. The test
-            works off a signature: a z-score computed on its own window is centred
-            at zero by construction, and one computed against fixed formation
-            parameters is not.
-          </p>
-          <p>
-            <V>Execution lags the signal by one bar.</V> The decision uses the
-            close of a day and the fill is booked at the next close, because
-            acting on a close requires having seen it. Same-bar fills are a small
-            but real lookahead and they flatter this strategy specifically, since
-            entries cluster on large moves.
+            <V>January to June 2025.</V> The 2024 formation year selected five
+            pairs, and four of them had Kotak Mahindra Bank as a leg. On 21
+            January 2025, three of them entered on the same day, each short
+            Kotak against a public-sector bank, and all three were stopped out on
+            24 March for about ₹12,000 each. That was one view on Kotak taken
+            three times, and the window lost ₹43,737 before costs, nearly the
+            strategy&apos;s whole gross profit over nine and a half years.
           </p>
           <Note>
-            These guards were verified by mutation rather than by reading them.
-            Making the z-score recompute its own mean and standard deviation
-            fails three tests; removing the one-bar execution lag fails one. All
-            29 tests pass with the guards in place.
+            Nothing in the selection rule stops one bank from appearing in
+            several of the five pairs. In 7 of the {m.n_windows} windows, a single
+            bank was a leg of three or more selected pairs.
           </Note>
         </Section>
 
-        {/* ---------------- 5. equity ---------------- */}
-        <Section id="equity" index={5} title="What it returned out of sample">
-          <EquityChart
-            gross={eq.gross}
-            net={eq.net}
-            benchmark={eq.benchmark}
-            drawdown={eq.drawdown_net}
-          />
+        {/* ---------------- 7. costs ---------------- */}
+        <Section id="costs" index={7} title="Costs">
           <p>
-            The blue line is the edge: cointegration selection genuinely produces
-            a positive gross return, and it does so with almost no market
-            exposure. The amber line is the same strategy after it pays to trade.
-            The distance between them is {totalTrades.toLocaleString("en-IN")}{" "}
-            round trips at an average holding period of{" "}
-            {s.trades.avg_holding_days.toFixed(1)} days.
+            The signal never uses costs, so the same trades can be re-priced at
+            any cost level. Cost is linear in the rate, so every point on the
+            curve is exact, and the point at {m.bps_per_leg} bps matches the
+            backtest&apos;s own net figure.
           </p>
+          <CostChart rows={cost} assumed={m.bps_per_leg} breakEven={be} />
           <p>
-            The win rate is {pct(s.trades["win_rate_%"], 1)}, which is lower than
-            it first appears to need to be. Mean reversion strategies of this kind
-            take many small wins against fewer larger losses, so a win rate below
-            half is survivable in principle. It is not survivable at this cost
-            level.
+            The break-even follows from two numbers. The average trade earned{" "}
+            {grossBps.toFixed(0)} bps of notional before costs and paid{" "}
+            {costBps.toFixed(0)} bps, since a round trip charges both legs twice.
+            Break-even is {be ? `${be.toFixed(1)} bps` : "below the grid"} per
+            leg, about half the cost assumed. Even at zero cost the strategy
+            would return {signed(s.gross["ann_return_%"])} a year, so cheaper
+            execution alone would not make it worth running.
           </p>
         </Section>
 
-        {/* ---------------- 6. costs ---------------- */}
-        <Section id="costs" index={6} title="Where it breaks">
-          <p>
-            A single verdict at one cost assumption is a weak statement, so the
-            same trades are re-priced across a grid. The signal never saw costs,
-            which is what makes this legitimate: the strategy is held fixed and
-            only the charge varies.
-          </p>
-          <CostChart
-            rows={cost}
-            assumed={m.bps_per_leg}
-            breakEven={be}
-          />
-          <p>
-            Break-even is {be ? `${be.toFixed(1)} bps per leg` : "below the tested grid"}.
-            That is the finding, and it is more useful than the headline loss: the
-            edge is real, positive and market-neutral, and it is roughly one tenth
-            the size required to cover realistic retail transaction costs. No
-            amount of parameter tuning closes a gap of that order. Reaching it
-            would require either institutional execution or a slower version of
-            the strategy that trades far less often.
-          </p>
-        </Section>
-
-        {/* ---------------- 7. neutrality ---------------- */}
-        <Section id="neutral" index={7} title="Proving the market exposure is gone">
+        {/* ---------------- 8. neutrality ---------------- */}
+        <Section id="neutral" index={8} title="Market neutrality">
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <StatCard
-              value={s.neutrality_net.beta_to_market.toFixed(4)}
+              value={rate.beta_to_market.toFixed(3)}
               label="Beta to the Nifty"
-              detail="OLS slope of daily strategy returns on daily market returns."
+              detail="Slope of daily strategy returns on daily Nifty returns."
               tone="accent"
             />
             <StatCard
-              value={s.neutrality_net.corr_to_market.toFixed(4)}
+              value={rate.corr_to_market.toFixed(3)}
               label="Correlation"
               detail="Over the full out-of-sample period."
             />
             <StatCard
-              value={s.neutrality_net.r_squared.toFixed(4)}
-              label="R² to the market"
-              detail="Share of the strategy's variance the market explains."
+              value={rate.r_squared.toFixed(3)}
+              label="R²"
+              detail="Share of daily variance the Nifty explains."
             />
             <StatCard
-              value={pct(s.benchmark_nifty["ann_return_%"], 1)}
-              label="What the Nifty did"
-              detail="Annualised, over the same days. The strategy ignored all of it."
+              value={signed(s.benchmark_nifty["ann_return_%"], 1)}
+              label="Nifty, a year"
+              detail="Over the same days."
             />
           </div>
           <p className="mt-6">
-            This is the claim the long-short structure exists to deliver, so it is
-            measured rather than assumed. A beta of{" "}
-            {s.neutrality_net.beta_to_market.toFixed(4)} means that if the market
-            moves one percent, the expected contribution to the strategy is
-            {" "}{(s.neutrality_net.beta_to_market * 100).toFixed(2)} basis points.
-            The strategy made and lost money on the relationship between two
-            banks, which is what it was built to do.
+            A 1% move in the Nifty moved the strategy by about{" "}
+            {Math.abs(rate.beta_to_market * 100).toFixed(1)} bps on average. The
+            long-short structure removed market exposure as designed, so every
+            rupee of P&amp;L came from relative moves between banks.
           </p>
         </Section>
 
-        {/* ---------------- 8. limits ---------------- */}
-        <Section id="limits" index={8} title="Limitations">
-          <ul className="space-y-3">
-            {[
-              ["One sector, one market.", `All ${m.traded.length} names are Indian banks. That is the right place to look for cointegration, and it also means the result says nothing about pairs trading in general.`],
-              ["Cointegration is tested, not guaranteed to persist.", "A pair that passed on the formation window can break in the trading window, which is exactly what the stop-loss exists for. Passing a test on past data is evidence, not a promise."],
-              ["Costs are a flat assumption.", `${m.bps_per_leg} bps per leg is a reasonable retail figure for liquid NSE names, but it does not vary with trade size, volatility or liquidity, and it ignores market impact and short-borrow costs entirely. Short availability in particular is assumed, which is generous.`],
-              ["Daily closes only.", "The strategy trades once a day at a close it could not have transacted at in size. Intraday execution would change both the entry prices and the costs, in directions that do not obviously cancel."],
-              ["No position limits or risk overlay.", "Each selected pair gets equal capital and there is no cap on sector concentration, no volatility targeting and no drawdown control. A production system would have all three."],
-              ["The parameter grid was chosen, not searched.", `Entry at ${m.entry_z}, exit at ${m.exit_z}, stop at ${m.stop_z}, ${m.formation_months}-month formation. These are conventional values picked in advance. Searching them for the best result would reintroduce lookahead one level up, and the honest fix is a third holdout period this project does not have.`],
-            ].map(([t, b]) => (
-              <li key={t} className="flex gap-3 text-[14.5px] leading-relaxed">
-                <span aria-hidden className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-accent" />
-                <span>
-                  <strong className="font-semibold text-ink">{t}</strong>{" "}
-                  <span className="text-ink-muted">{b}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
+        {/* ---------------- 9. bug ---------------- */}
+        <Section id="bug" index={9} title="The re-entry bug">
+          <p>
+            The first complete run reported 1,008 trades, -9.82% a year after
+            costs and a break-even of 1.9 bps per leg. Breaking those trades down
+            by exit reason showed 892 stops with a median holding period of one
+            day.
+          </p>
+          <p>
+            The entry rule did not check the stop. A flat book entered whenever
+            |z| reached {m.entry_z}, even when |z| was already past {m.stop_z}, so
+            a broken pair was entered, stopped out the next day and entered again
+            for as long as the spread stayed wide. Each loop paid four legs of
+            cost. The fix is the last row of the rules table, and two tests cover
+            it.
+          </p>
+          <Table
+            minWidth={440}
+            head={
+              <thead>
+                <tr className="border-b border-line">
+                  <TH align="left">Measure</TH>
+                  <TH>First run</TH>
+                  <TH>After the fix</TH>
+                </tr>
+              </thead>
+            }
+            caption="First-run figures are from the run before the fix and are stated here rather than recomputed."
+          >
+            <tbody className="tnum">
+              {[
+                ["Trades", "1,008", n.toLocaleString("en-IN")],
+                ["Entered with |z| already past the stop", "816", "0"],
+                ["Stopped out", "892", `${ex.stop.n}`],
+                ["Annualised, before costs", "+1.04%", signed(s.gross["ann_return_%"])],
+                ["Annualised, after costs", "-9.82%", signed(s.net["ann_return_%"])],
+                ["Break-even cost per leg", "1.9 bps", be ? `${be.toFixed(1)} bps` : "n/a"],
+              ].map(([k, a, b]) => (
+                <tr key={k} className="border-b border-line/70 text-right">
+                  <th scope="row" className="py-2.5 text-left text-[13px] font-medium text-ink-muted">
+                    {k}
+                  </th>
+                  <td className="px-2 py-2.5 text-ink-dim">{a}</td>
+                  <td className="px-2 py-2.5 font-semibold text-ink">{b}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          <p>
+            Because the damage showed up almost entirely as cost, the first run
+            looked like a real edge that costs destroyed. The exit-reason
+            breakdown is what showed it was a bug.
+          </p>
+        </Section>
+
+        {/* ---------------- 10. limits ---------------- */}
+        <Section id="limits" index={10} title="Limitations">
+          <Bullets
+            items={[
+              <><strong className="font-semibold text-ink">One sector, one market.</strong> <span className="text-ink-muted">All {m.traded.length} stocks are Indian banks.</span></>,
+              <><strong className="font-semibold text-ink">No interest on collateral.</strong> <span className="text-ink-muted">A real long-short book earns interest on the margin it posts. Crediting it would make the Sharpe ratio less negative but would not change the trade-level result.</span></>,
+              <><strong className="font-semibold text-ink">Short selling is assumed free.</strong> <span className="text-ink-muted">Holding a short in India beyond a day needs stock lending or single-stock futures. Futures exist for all {m.traded.length} banks, but their basis and roll costs are not modelled.</span></>,
+              <><strong className="font-semibold text-ink">Flat costs.</strong> <span className="text-ink-muted">{m.bps_per_leg} bps per leg does not rise on volatile days, which are the days the stops fire.</span></>,
+              <><strong className="font-semibold text-ink">Daily closes.</strong> <span className="text-ink-muted">Every fill is at a closing price nobody can trade in size.</span></>,
+              <><strong className="font-semibold text-ink">Thresholds chosen in advance, not tested.</strong> <span className="text-ink-muted">Testing alternatives properly needs a third holdout period this sample does not have.</span></>,
+              <><strong className="font-semibold text-ink">Survivorship.</strong> <span className="text-ink-muted">Banks merged away during the sample, such as those in the 2020 public-sector mergers, were never candidates.</span></>,
+            ]}
+          />
         </Section>
 
         <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-line pt-6 text-[13px]">
@@ -494,7 +568,7 @@ export default function PairsTrading() {
             rel="noopener noreferrer"
             className="text-ink-muted transition-colors duration-200 hover:text-ink"
           >
-            Source, tests and pipeline on GitHub
+            Source, tests and full report on GitHub
           </a>
         </nav>
       </main>

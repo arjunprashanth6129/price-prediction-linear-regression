@@ -109,6 +109,36 @@ export interface Example {
   trades: ExampleTrade[];
 }
 
+export interface ExitRow {
+  reason: "reverted" | "stop" | "timeout" | "window_end";
+  n: number;
+  gross: number;
+  cost: number;
+  net: number;
+  median_hold: number;
+}
+export interface AnnualRow {
+  year: number;
+  days: number;
+  gross: number;
+  net: number;
+}
+export interface PvalueRow {
+  lo: number;
+  hi: number;
+  n: number;
+  stop_rate: number;
+  reverted_rate: number;
+  avg_gross: number;
+}
+export interface Reversion {
+  n: number;
+  median_hold: number;
+  median_half_life: number;
+  median_hold_over_half_life: number;
+  median_entry_abs_z: number;
+}
+
 interface Payload {
   meta: Meta;
   summary: Summary;
@@ -122,6 +152,11 @@ interface Payload {
   trades_by_reason: Record<string, number>;
   top_pairs: TopPair[];
   example: Example | null;
+  exits: ExitRow[];
+  annual: AnnualRow[];
+  by_pvalue: PvalueRow[];
+  reversion: Reversion;
+  capital_per_pair: number;
 }
 
 const d = payload as unknown as Payload;
@@ -133,6 +168,10 @@ export const getCostSensitivity = () => d.cost_sensitivity;
 export const getTradesByReason = () => d.trades_by_reason;
 export const getTopPairs = () => d.top_pairs;
 export const getExamplePair = () => d.example;
+export const getExits = () => d.exits;
+export const getAnnual = () => d.annual;
+export const getByPvalue = () => d.by_pvalue;
+export const getReversion = () => d.reversion;
 
 /**
  * Where the cost curve crosses zero, interpolated between the two grid points

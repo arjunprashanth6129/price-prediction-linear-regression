@@ -57,8 +57,8 @@ export default function Home() {
               whether the momentum signals retail traders watch can forecast
               tomorrow&apos;s return across the Indian market. The second builds
               a portfolio around the worst days rather than the average one. The
-              third takes a real statistical effect and asks whether a working
-              system built on it survives the cost of running it.
+              third trades pairs of Indian banks chosen by a cointegration test
+              and checks whether they keep reverting on data the test never saw.
             </p>
             <p className="mt-4 text-[15.5px] leading-[1.7] text-ink-dim">
               Each has its own repository, its own fixed dataset, and a pipeline

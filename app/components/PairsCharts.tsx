@@ -3,8 +3,12 @@
 import { useMemo } from "react";
 import {
   Area,
+  Bar,
+  BarChart,
   CartesianGrid,
+  Cell,
   ComposedChart,
+  LabelList,
   Line,
   ReferenceArea,
   ReferenceLine,
@@ -13,22 +17,21 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  ZAxis,
 } from "recharts";
 import { useMounted } from "./useMounted";
-import type { CostRow, Example, Point } from "@/lib/pairs";
+import type { AnnualRow, CostRow, Example, ExitRow, Point } from "@/lib/pairs";
 
-// Mirrors the design tokens in globals.css so the charts sit on the same
-// surface as the page rather than looking pasted onto it.
+// Mirrors the design tokens in globals.css. Blue and amber carry every
+// polarity (before and after costs, profit and loss); everything else is grey.
 const AXIS = "#64748b";
 const GRID = "#e2e8f0";
 const REF = "#cbd5e1";
 const INK = "#0f172a";
+const INK_MUTED = "#475569";
 const BLUE = "#2563eb";
 const AMBER = "#b45309";
-const TEAL = "#0f766e";
-const VIOLET = "#6d28d9";
 const SLATE = "#64748b";
+const SLATE_DARK = "#334155";
 
 const axisProps = {
   stroke: GRID,
@@ -36,24 +39,64 @@ const axisProps = {
   tickLine: false,
 } as const;
 
+const DAY = 86_400_000;
+const ts = (d: string) => new Date(`${d}T00:00:00Z`).getTime();
+const fmtDay = (t: number) =>
+  new Date(t).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+const fmtMonth = (t: number) =>
+  new Date(t).toLocaleDateString("en-GB", { month: "short", timeZone: "UTC" });
+const rupees = (v: number) =>
+  `${v < 0 ? "-" : v > 0 ? "+" : ""}₹${Math.abs(Math.round(v)).toLocaleString("en-IN")}`;
+
+/** Evenly spaced round ticks covering [lo, hi]. */
+function niceTicks(lo: number, hi: number, step: number) {
+  const out: number[] = [];
+  const start = Math.floor(lo / step) * step;
+  for (let v = start; v <= hi + step * 1e-9; v += step) out.push(+v.toFixed(6));
+  if (out[out.length - 1] < hi) out.push(+(out[out.length - 1] + step).toFixed(6));
+  return out;
+}
+
+/** First trading day of each year present in a date-sorted series. */
+function yearTicks(dates: number[]) {
+  const seen = new Set<number>();
+  const out: number[] = [];
+  for (const t of dates) {
+    const y = new Date(t).getUTCFullYear();
+    if (!seen.has(y)) {
+      seen.add(y);
+      out.push(Date.UTC(y, 0, 1));
+    }
+  }
+  return out.filter((t) => t >= dates[0]);
+}
+
 function Frame({
   title,
   height,
+  legend,
   children,
   caption,
 }: {
   title: string;
   height: number;
+  legend?: React.ReactNode;
   children: React.ReactNode;
   caption?: React.ReactNode;
 }) {
   const mounted = useMounted();
   return (
     <figure className="my-7 rounded-xl border border-line bg-paper p-4 sm:p-5">
-      <figcaption className="mb-4 text-[13px] font-semibold text-ink">
+      <figcaption className="text-[13.5px] font-semibold leading-snug text-ink">
         {title}
       </figcaption>
-      <div style={{ height }} className="w-full">
+      {legend && <div className="mt-3">{legend}</div>}
+      <div style={{ height }} className="mt-4 w-full">
         {mounted ? (
           children
         ) : (
@@ -61,9 +104,7 @@ function Frame({
         )}
       </div>
       {caption && (
-        <p className="mt-4 text-[12.5px] leading-relaxed text-ink-dim">
-          {caption}
-        </p>
+        <p className="mt-3 text-[12.5px] leading-relaxed text-ink-dim">{caption}</p>
       )}
     </figure>
   );
@@ -77,312 +118,61 @@ function Tip({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Key({ items }: { items: { label: string; colour: string; dash?: boolean }[] }) {
+type Swatch = "line" | "dash" | "dot" | "block" | "ring" | "fill";
+
+function Key({ items }: { items: { label: string; colour: string; kind?: Swatch }[] }) {
   return (
-    <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-1.5">
-      {items.map((i) => (
-        <span
-          key={i.label}
-          className="flex items-center gap-1.5 text-[11.5px] text-ink-muted"
-        >
-          <i
-            aria-hidden
-            className="h-0.5 w-4 shrink-0 rounded"
-            style={{
-              background: i.dash
-                ? `repeating-linear-gradient(90deg, ${i.colour} 0 3px, transparent 3px 6px)`
-                : i.colour,
-            }}
-          />
-          {i.label}
-        </span>
-      ))}
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+      {items.map((i) => {
+        const kind = i.kind ?? "line";
+        let swatch: React.ReactNode;
+        if (kind === "block" || kind === "fill") {
+          swatch = (
+            <i
+              aria-hidden
+              className="h-2.5 w-3.5 shrink-0 rounded-[3px]"
+              style={{ background: i.colour, opacity: kind === "fill" ? 0.3 : 1 }}
+            />
+          );
+        } else if (kind === "ring" || kind === "dot") {
+          swatch = (
+            <i
+              aria-hidden
+              className="h-2.5 w-2.5 shrink-0 rounded-full"
+              style={
+                kind === "ring"
+                  ? { border: `1.6px solid ${i.colour}`, background: "#fff" }
+                  : { background: i.colour }
+              }
+            />
+          );
+        } else {
+          swatch = (
+            <i
+              aria-hidden
+              className="h-0.5 w-4 shrink-0 rounded"
+              style={{
+                background:
+                  kind === "dash"
+                    ? `repeating-linear-gradient(90deg, ${i.colour} 0 3px, transparent 3px 6px)`
+                    : i.colour,
+              }}
+            />
+          );
+        }
+        return (
+          <span key={i.label} className="flex items-center gap-1.5 text-[11.5px] text-ink-muted">
+            {swatch}
+            {i.label}
+          </span>
+        );
+      })}
     </div>
   );
 }
 
-const fmtDate = (d: string) =>
-  new Date(d).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
-
 /* ------------------------------------------------------------------ */
-/* 1. Equity, before and after costs                                   */
-/* ------------------------------------------------------------------ */
-export function EquityChart({
-  gross,
-  net,
-  benchmark,
-  drawdown,
-}: {
-  gross: Point[];
-  net: Point[];
-  benchmark: Point[];
-  drawdown: Point[];
-}) {
-  const data = useMemo(() => {
-    const m = new Map<string, Record<string, number | string>>();
-    const put = (arr: Point[], k: string) =>
-      arr.forEach((p) => {
-        const row = m.get(p.d) ?? { d: p.d };
-        row[k] = p.v;
-        m.set(p.d, row);
-      });
-    put(gross, "gross");
-    put(net, "net");
-    put(benchmark, "bench");
-    return [...m.values()].sort((a, b) =>
-      String(a.d).localeCompare(String(b.d)),
-    );
-  }, [gross, net, benchmark]);
-
-  const ddData = useMemo(
-    () => drawdown.map((p) => ({ d: p.d, dd: p.v * 100 })),
-    [drawdown],
-  );
-
-  const ticks = useMemo(() => {
-    const seen = new Set<string>();
-    const out: string[] = [];
-    for (const r of data) {
-      const y = String(r.d).slice(0, 4);
-      if (!seen.has(y)) {
-        seen.add(y);
-        out.push(String(r.d));
-      }
-    }
-    return out;
-  }, [data]);
-
-  return (
-    <>
-      <Frame
-        title="Out-of-sample equity, before and after costs"
-        height={360}
-        caption={
-          <>
-            Every day here was traded with parameters fixed before it began. The
-            gap between the two strategy lines is transaction cost. Buy-and-hold
-            of the same eleven banks is shown for contrast, and it is not close.
-          </>
-        }
-      >
-        <>
-          <Key
-            items={[
-              { label: "Strategy, before costs", colour: BLUE },
-              { label: "Strategy, after costs", colour: AMBER },
-              { label: "Buy and hold the universe", colour: SLATE, dash: true },
-            ]}
-          />
-          <ResponsiveContainer width="100%" height={314}>
-            <ComposedChart data={data} margin={{ top: 6, right: 14, bottom: 18, left: 2 }}>
-              <CartesianGrid stroke={GRID} />
-              <XAxis
-                dataKey="d"
-                ticks={ticks}
-                tickFormatter={(d: string) => d.slice(0, 4)}
-                {...axisProps}
-              />
-              <YAxis
-                {...axisProps}
-                width={46}
-                tickFormatter={(v: number) => `${v.toFixed(1)}x`}
-              />
-              <ReferenceLine y={1} stroke={REF} />
-              <Tooltip
-                cursor={{ strokeDasharray: "3 3", stroke: REF }}
-                content={({ active, payload, label }) => {
-                  if (!active || !payload?.length) return null;
-                  return (
-                    <Tip>
-                      <div className="text-[11px] text-ink-dim">
-                        {fmtDate(String(label))}
-                      </div>
-                      <div className="mt-1 space-y-0.5">
-                        {payload.map((p) => (
-                          <div
-                            key={String(p.dataKey)}
-                            className="flex items-center gap-2 text-[11px]"
-                          >
-                            <i
-                              aria-hidden
-                              className="h-2 w-2 rounded-sm"
-                              style={{ background: p.color }}
-                            />
-                            <span className="text-ink-muted">
-                              {{ gross: "before costs", net: "after costs", bench: "buy and hold" }[
-                                String(p.dataKey)
-                              ]}
-                            </span>
-                            <span className="tnum ml-auto text-ink">
-                              {Number(p.value).toFixed(2)}x
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </Tip>
-                  );
-                }}
-              />
-              <Line type="monotone" dataKey="bench" stroke={SLATE} strokeWidth={1.4}
-                strokeDasharray="3 3" dot={false} isAnimationActive={false} />
-              <Line type="monotone" dataKey="gross" stroke={BLUE} strokeWidth={1.9}
-                dot={false} isAnimationActive={false} />
-              <Line type="monotone" dataKey="net" stroke={AMBER} strokeWidth={2.2}
-                dot={false} isAnimationActive={false} />
-            </ComposedChart>
-          </ResponsiveContainer>
-        </>
-      </Frame>
-
-      <Frame
-        title="Drawdown, after costs"
-        height={220}
-        caption="Depth below the running peak. The decline is not one bad episode; it is the steady arithmetic of paying four legs per round trip at a 4.7-day average holding period."
-      >
-        <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart data={ddData} margin={{ top: 6, right: 14, bottom: 18, left: 2 }}>
-            <CartesianGrid stroke={GRID} />
-            <XAxis
-              dataKey="d"
-              ticks={ticks}
-              tickFormatter={(d: string) => d.slice(0, 4)}
-              {...axisProps}
-            />
-            <YAxis
-              {...axisProps}
-              width={46}
-              tickFormatter={(v: number) => `${v.toFixed(0)}%`}
-            />
-            <ReferenceLine y={0} stroke={REF} />
-            <Tooltip
-              cursor={{ strokeDasharray: "3 3", stroke: REF }}
-              content={({ active, payload, label }) => {
-                if (!active || !payload?.length) return null;
-                return (
-                  <Tip>
-                    <div className="text-[11px] text-ink-dim">
-                      {fmtDate(String(label))}
-                    </div>
-                    <div className="tnum mt-0.5 text-[12px] text-ink">
-                      {Number(payload[0].value).toFixed(2)}%
-                    </div>
-                  </Tip>
-                );
-              }}
-            />
-            <Area type="monotone" dataKey="dd" stroke={AMBER} strokeWidth={1.3}
-              fill={AMBER} fillOpacity={0.14} isAnimationActive={false} />
-          </ComposedChart>
-        </ResponsiveContainer>
-      </Frame>
-    </>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* 2. Cost sensitivity                                                 */
-/* ------------------------------------------------------------------ */
-export function CostChart({
-  rows,
-  assumed,
-  breakEven,
-}: {
-  rows: CostRow[];
-  assumed: number;
-  breakEven: number | null;
-}) {
-  const data = rows.map((r) => ({ bps: r.bps_per_leg, ann: r["ann_return_%"] }));
-  return (
-    <Frame
-      title="How much cost the strategy can carry"
-      height={300}
-      caption={
-        <>
-          The same trades, re-priced across a grid of cost assumptions. The signal
-          never saw costs, so holding the strategy fixed and varying only the
-          charge is the honest way to locate the break-even. The shaded band is
-          the region where the strategy makes money.
-        </>
-      }
-    >
-      <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={data} margin={{ top: 8, right: 20, bottom: 26, left: 4 }}>
-          <CartesianGrid stroke={GRID} />
-          {breakEven != null && (
-            <ReferenceArea x1={0} x2={breakEven} fill={TEAL} fillOpacity={0.07} />
-          )}
-          <XAxis
-            type="number"
-            dataKey="bps"
-            {...axisProps}
-            domain={[0, "dataMax"]}
-            label={{
-              value: "Transaction cost, bps per leg",
-              position: "insideBottom",
-              offset: -14,
-              fill: AXIS,
-              fontSize: 11,
-            }}
-          />
-          <YAxis
-            {...axisProps}
-            width={46}
-            tickFormatter={(v: number) => `${v.toFixed(0)}%`}
-          />
-          <ReferenceLine y={0} stroke={INK} strokeWidth={1.2} />
-          <ReferenceLine
-            x={assumed}
-            stroke={AMBER}
-            strokeDasharray="4 4"
-            label={{
-              value: `assumed ${assumed} bps`,
-              position: "top",
-              fill: AMBER,
-              fontSize: 11,
-              fontWeight: 600,
-            }}
-          />
-          {breakEven != null && (
-            <ReferenceLine
-              x={breakEven}
-              stroke={TEAL}
-              label={{
-                value: `break-even ${breakEven.toFixed(1)}`,
-                position: "top",
-                fill: TEAL,
-                fontSize: 11,
-                fontWeight: 600,
-              }}
-            />
-          )}
-          <Tooltip
-            cursor={{ strokeDasharray: "3 3", stroke: REF }}
-            content={({ active, payload }) => {
-              if (!active || !payload?.length) return null;
-              const p = payload[0].payload as { bps: number; ann: number };
-              return (
-                <Tip>
-                  <div className="text-[11px] text-ink-dim">
-                    {p.bps} bps per leg
-                  </div>
-                  <div className="tnum mt-0.5 text-[12px] font-semibold text-ink">
-                    {p.ann >= 0 ? "+" : ""}
-                    {p.ann.toFixed(2)}% a year
-                  </div>
-                </Tip>
-              );
-            }}
-          />
-          <Line type="monotone" dataKey="ann" stroke={BLUE} strokeWidth={2.2}
-            dot={{ r: 3, fill: BLUE }} isAnimationActive={false} />
-        </ComposedChart>
-      </ResponsiveContainer>
-    </Frame>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* 3. The mechanism: one pair's spread and z-score                     */
+/* 1. The mechanism: one pair's z-score through one trading window     */
 /* ------------------------------------------------------------------ */
 export function PairMechanism({
   example,
@@ -395,113 +185,570 @@ export function PairMechanism({
   exitZ: number;
   stopZ: number;
 }) {
-  const data = example.series.map((p) => ({ d: p.d, z: p.z, spread: p.spread }));
-  const zAt = new Map(example.series.map((p) => [p.d, p.z]));
-  const entries = example.trades.map((t) => ({
-    d: t.entry, z: zAt.get(t.entry) ?? t.entry_z, side: t.side, reason: t.reason,
-    pnl: t.pnl_net,
-  }));
-  const exits = example.trades.map((t) => ({
-    d: t.exit, z: zAt.get(t.exit) ?? t.exit_z, reason: t.reason, pnl: t.pnl_net,
-  }));
+  const data = useMemo(
+    () => example.series.map((p) => ({ t: ts(p.d), z: p.z, spread: p.spread })),
+    [example],
+  );
+  const zAt = useMemo(() => new Map(data.map((r) => [r.t, r.z])), [data]);
+  const entries = example.trades.map((t) => ({ t: ts(t.entry), z: zAt.get(ts(t.entry)) }));
+  const exits = example.trades.map((t) => ({ t: ts(t.exit), z: zAt.get(ts(t.exit)) }));
 
-  const ticks = useMemo(() => {
-    const seen = new Set<string>();
-    const out: string[] = [];
-    for (const r of data) {
-      const k = r.d.slice(0, 7);
-      if (!seen.has(k)) {
-        seen.add(k);
-        out.push(r.d);
-      }
+  const lim = Math.ceil(Math.max(stopZ + 0.5, ...data.map((r) => Math.abs(r.z) + 0.3)));
+  const months = useMemo(() => {
+    const out: number[] = [];
+    const first = new Date(data[0].t);
+    for (let m = 0; m < 8; m++) {
+      const t = Date.UTC(first.getUTCFullYear(), first.getUTCMonth() + m, 1);
+      if (t >= data[0].t && t <= data[data.length - 1].t) out.push(t);
     }
     return out;
   }, [data]);
 
+  const nRev = example.trades.filter((t) => t.reason === "reverted").length;
+  const nStop = example.trades.filter((t) => t.reason === "stop").length;
+  const short = (s: string) => s.replace(".NS", "");
+  const bands: [number, string, string][] = [
+    [stopZ, SLATE_DARK, "0"],
+    [entryZ, SLATE, "5 4"],
+    [exitZ, SLATE, "2 3"],
+  ];
+
   return (
     <Frame
-      title={`The mechanism: ${example.y} against ${example.beta.toFixed(3)} x ${example.x}`}
-      height={380}
+      title={`${short(example.y)} against ${example.beta.toFixed(2)} x ${short(example.x)}: ${example.trades.length} trades, ${nRev} reverted, ${nStop} stopped out`}
+      height={330}
+      legend={
+        <Key
+          items={[
+            { label: "trade closed in profit", colour: BLUE, kind: "fill" },
+            { label: "trade closed at a loss", colour: AMBER, kind: "fill" },
+            { label: "entry", colour: INK, kind: "ring" },
+            { label: "exit", colour: INK, kind: "dot" },
+          ]}
+        />
+      }
       caption={
         <>
-          The hedge ratio, the mean and the standard deviation behind this
-          z-score were all fixed on the formation window before any of these days
-          happened (Engle-Granger p = {example.pvalue.toFixed(4)}, half-life{" "}
-          {example.half_life.toFixed(1)} days). Blue marks an entry, amber an
-          exit. Nothing on this chart is re-estimated as it goes.
+          The z-score is the spread&apos;s distance from its formation mean, in
+          formation standard deviations. The hedge ratio, mean and standard
+          deviation were fixed on the previous 12 months (Engle-Granger p ={" "}
+          {example.pvalue.toFixed(3)}, half-life {example.half_life.toFixed(1)}{" "}
+          days). Markers sit at the fill, one day after the signal.
         </>
       }
     >
-      <>
+      <ResponsiveContainer width="100%" height="100%">
+        <ComposedChart data={data} margin={{ top: 6, right: 56, bottom: 4, left: -8 }}>
+          {example.trades.map((t) => (
+            <ReferenceArea
+              key={t.entry}
+              x1={ts(t.entry)}
+              x2={ts(t.exit)}
+              fill={t.pnl_net > 0 ? BLUE : AMBER}
+              fillOpacity={t.pnl_net > 0 ? 0.09 : 0.12}
+              strokeWidth={0}
+              ifOverflow="hidden"
+            />
+          ))}
+          <XAxis
+            dataKey="t"
+            type="number"
+            scale="time"
+            domain={[data[0].t - 2 * DAY, data[data.length - 1].t + 2 * DAY]}
+            ticks={months}
+            tickFormatter={fmtMonth}
+            {...axisProps}
+          />
+          <YAxis
+            {...axisProps}
+            axisLine={false}
+            width={40}
+            domain={[-lim, lim]}
+            ticks={[-stopZ, -entryZ, 0, entryZ, stopZ]}
+            allowDataOverflow
+          />
+          <ReferenceLine y={0} stroke={REF} />
+          {bands.flatMap(([v, colour, dash]) =>
+            [v, -v].map((y) => (
+              <ReferenceLine
+                key={`b${y}`}
+                y={y}
+                stroke={colour}
+                strokeDasharray={dash}
+                label={{
+                  value: `${y === stopZ || y === -stopZ ? "stop" : y === entryZ || y === -entryZ ? "entry" : "exit"} ${y > 0 ? "+" : ""}${y}`,
+                  position: "right",
+                  fill: INK_MUTED,
+                  fontSize: 10.5,
+                }}
+              />
+            )),
+          )}
+          <Tooltip
+            cursor={{ stroke: REF }}
+            content={({ active, payload }) => {
+              if (!active || !payload?.length) return null;
+              const row = payload[0].payload as { t: number; z: number; spread?: number };
+              return (
+                <Tip>
+                  <div className="text-[11px] text-ink-dim">{fmtDay(row.t)}</div>
+                  <div className="tnum mt-0.5 text-[12px] text-ink">z = {row.z.toFixed(2)}</div>
+                </Tip>
+              );
+            }}
+          />
+          <Line
+            type="linear"
+            dataKey="z"
+            stroke={INK}
+            strokeWidth={1.5}
+            dot={false}
+            activeDot={{ r: 3.5, fill: INK, stroke: "#fff", strokeWidth: 2 }}
+            isAnimationActive={false}
+          />
+          <Scatter
+            data={entries}
+            dataKey="z"
+            isAnimationActive={false}
+            shape={(p: { cx?: number; cy?: number }) => (
+              <circle cx={p.cx} cy={p.cy} r={4.5} fill="#fff" stroke={INK} strokeWidth={1.8} />
+            )}
+          />
+          <Scatter
+            data={exits}
+            dataKey="z"
+            isAnimationActive={false}
+            shape={(p: { cx?: number; cy?: number }) => (
+              <circle cx={p.cx} cy={p.cy} r={4.5} fill={INK} stroke="#fff" strokeWidth={1.8} />
+            )}
+          />
+        </ComposedChart>
+      </ResponsiveContainer>
+    </Frame>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* 2. Where the money came from: gross P&L by exit, then costs          */
+/* ------------------------------------------------------------------ */
+const EXIT_LABEL: Record<ExitRow["reason"], string> = {
+  reverted: "Reverted",
+  stop: "Stopped",
+  timeout: "Timed out",
+  window_end: "Window end",
+};
+
+export function ExitWaterfall({ exits }: { exits: ExitRow[] }) {
+  const rows = useMemo(() => {
+    const out: {
+      name: string;
+      base: number;
+      size: number;
+      value: number;
+      colour: string;
+      note: string;
+    }[] = [];
+    let level = 0;
+    for (const e of exits) {
+      const v = e.gross / 1000;
+      out.push({
+        name: EXIT_LABEL[e.reason],
+        base: Math.min(level, level + v),
+        size: Math.abs(v),
+        value: v,
+        colour: v >= 0 ? BLUE : AMBER,
+        note: `${e.n} trades, median ${e.median_hold} days held`,
+      });
+      level += v;
+    }
+    const gross = level;
+    const cost = exits.reduce((a, e) => a + e.cost, 0) / 1000;
+    const n = exits.reduce((a, e) => a + e.n, 0);
+    out.push({ name: "Gross", base: Math.min(0, gross), size: Math.abs(gross), value: gross, colour: SLATE, note: "before costs" });
+    out.push({ name: "Costs", base: gross - cost, size: cost, value: -cost, colour: AMBER, note: `${n} round trips` });
+    const net = gross - cost;
+    out.push({ name: "Net", base: Math.min(0, net), size: Math.abs(net), value: net, colour: SLATE, note: "after costs" });
+    return out;
+  }, [exits]);
+
+  const lo = Math.min(...rows.map((r) => r.base));
+  const hi = Math.max(...rows.map((r) => r.base + r.size));
+  const ticks = niceTicks(lo, hi, 100);
+
+  return (
+    <Frame
+      title="Gross P&L by how each trade ended, then costs (₹ thousands)"
+      height={300}
+      legend={
         <Key
           items={[
-            { label: `entry at |z| = ${entryZ}`, colour: AMBER, dash: true },
-            { label: `exit at |z| = ${exitZ}`, colour: TEAL, dash: true },
-            { label: `stop at |z| = ${stopZ}`, colour: VIOLET, dash: true },
+            { label: "added", colour: BLUE, kind: "block" },
+            { label: "took away", colour: AMBER, kind: "block" },
+            { label: "running total", colour: SLATE, kind: "block" },
           ]}
         />
-        <ResponsiveContainer width="100%" height={334}>
-          <ComposedChart data={data} margin={{ top: 6, right: 14, bottom: 18, left: 2 }}>
-            <CartesianGrid stroke={GRID} />
+      }
+      caption="Read top to bottom: each bar starts where the one above it ended. All trades, on ₹1 lakh of gross notional per pair."
+    >
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart
+          data={rows}
+          layout="vertical"
+          margin={{ top: 0, right: 40, bottom: 4, left: 0 }}
+          barCategoryGap="24%"
+        >
+          <CartesianGrid stroke={GRID} horizontal={false} />
+          <XAxis
+            type="number"
+            {...axisProps}
+            domain={[ticks[0], ticks[ticks.length - 1]]}
+            ticks={ticks}
+          />
+          <YAxis
+            type="category"
+            dataKey="name"
+            {...axisProps}
+            axisLine={false}
+            width={78}
+            interval={0}
+            tick={{ fill: INK_MUTED, fontSize: 11.5 }}
+          />
+          <ReferenceLine x={0} stroke={SLATE} />
+          <Tooltip
+            cursor={{ fill: "#f1f5f9" }}
+            content={({ active, payload }) => {
+              if (!active || !payload?.length) return null;
+              const r = payload[0].payload as (typeof rows)[number];
+              return (
+                <Tip>
+                  <div className="text-[11px] font-medium text-ink">{r.name}</div>
+                  <div className="tnum mt-0.5 text-[12px] text-ink">{rupees(r.value * 1000)}</div>
+                  <div className="text-[11px] text-ink-dim">{r.note}</div>
+                </Tip>
+              );
+            }}
+          />
+          <Bar dataKey="base" stackId="w" fill="transparent" isAnimationActive={false} />
+          <Bar dataKey="size" stackId="w" radius={[3, 3, 3, 3]} isAnimationActive={false}>
+            {rows.map((r) => (
+              <Cell key={r.name} fill={r.colour} />
+            ))}
+            <LabelList
+              dataKey="value"
+              position="right"
+              formatter={(v: unknown) => `${Number(v) > 0 ? "+" : ""}${Math.round(Number(v))}`}
+              style={{ fill: INK, fontSize: 11, fontWeight: 600 }}
+            />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </Frame>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Equity, before and after costs, and the drawdown                 */
+/* ------------------------------------------------------------------ */
+export function EquityChart({
+  gross,
+  net,
+  drawdown,
+}: {
+  gross: Point[];
+  net: Point[];
+  drawdown: Point[];
+}) {
+  const data = useMemo(() => {
+    const n = new Map(net.map((p) => [p.d, p.v]));
+    return gross.map((p) => ({ t: ts(p.d), gross: p.v, net: n.get(p.d) ?? null }));
+  }, [gross, net]);
+  const dd = useMemo(() => drawdown.map((p) => ({ t: ts(p.d), dd: p.v * 100 })), [drawdown]);
+  const years = useMemo(() => yearTicks(data.map((r) => r.t)), [data]);
+  const vals = data.flatMap((r) => [r.gross, r.net ?? r.gross]);
+  const yTicks = niceTicks(Math.min(...vals), Math.max(...vals), 0.05);
+  const ddTicks = niceTicks(Math.min(...dd.map((r) => r.dd)), 0, 5);
+  const domain = [data[0].t, data[data.length - 1].t];
+  const last = data[data.length - 1];
+
+  return (
+    <>
+      <Frame
+        title={`Growth of ₹1, out of sample: ${last.gross.toFixed(2)}x before costs, ${(last.net ?? 0).toFixed(2)}x after`}
+        height={300}
+        legend={
+          <Key
+            items={[
+              { label: "before costs", colour: BLUE },
+              { label: "after costs", colour: AMBER },
+            ]}
+          />
+        }
+        caption="Every day was traded with parameters fixed before it began. The gap between the lines is the cumulative cost of every round trip."
+      >
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart data={data} margin={{ top: 6, right: 8, bottom: 4, left: -8 }}>
+            <CartesianGrid stroke={GRID} vertical={false} />
             <XAxis
-              dataKey="d"
-              ticks={ticks}
-              tickFormatter={(d: string) =>
-                new Date(d).toLocaleDateString("en-GB", { month: "short" })
-              }
+              dataKey="t"
+              type="number"
+              scale="time"
+              domain={domain}
+              ticks={years}
+              tickFormatter={(t: number) => `${new Date(t).getUTCFullYear()}`}
               {...axisProps}
             />
             <YAxis
               {...axisProps}
-              width={44}
-              domain={[-5, 5]}
-              ticks={[-4, -2, 0, 2, 4]}
-              tickFormatter={(v: number) => `${v}`}
-              label={{
-                value: "z-score",
-                angle: -90,
-                position: "insideLeft",
-                offset: 12,
-                fill: AXIS,
-                fontSize: 11,
-              }}
+              axisLine={false}
+              width={48}
+              domain={[yTicks[0], yTicks[yTicks.length - 1]]}
+              ticks={yTicks}
+              tickFormatter={(v: number) => `${v.toFixed(2)}x`}
             />
-            <ZAxis range={[52, 52]} />
-            <ReferenceLine y={0} stroke={REF} />
-            {[entryZ, -entryZ].map((v) => (
-              <ReferenceLine key={`e${v}`} y={v} stroke={AMBER} strokeDasharray="4 4" />
-            ))}
-            {[exitZ, -exitZ].map((v) => (
-              <ReferenceLine key={`x${v}`} y={v} stroke={TEAL} strokeDasharray="2 3" />
-            ))}
-            {[stopZ, -stopZ].map((v) => (
-              <ReferenceLine key={`s${v}`} y={v} stroke={VIOLET} strokeDasharray="4 4" />
-            ))}
+            <ReferenceLine y={1} stroke={SLATE} />
             <Tooltip
-              cursor={{ strokeDasharray: "3 3", stroke: REF }}
+              cursor={{ stroke: REF }}
               content={({ active, payload }) => {
                 if (!active || !payload?.length) return null;
-                const row = payload[0].payload as { d: string; z: number; spread: number };
+                const r = payload[0].payload as { t: number; gross: number; net: number };
                 return (
                   <Tip>
-                    <div className="text-[11px] text-ink-dim">{row.d}</div>
-                    <div className="tnum mt-0.5 text-[12px] text-ink">
-                      z {row.z.toFixed(2)}
+                    <div className="text-[11px] text-ink-dim">{fmtDay(r.t)}</div>
+                    <div className="tnum mt-1 flex items-center gap-2 text-[11.5px]">
+                      <i aria-hidden className="h-2 w-2 rounded-sm" style={{ background: BLUE }} />
+                      <span className="text-ink-muted">before costs</span>
+                      <span className="ml-auto text-ink">{r.gross.toFixed(3)}x</span>
                     </div>
-                    <div className="tnum text-[11px] text-ink-muted">
-                      spread {row.spread.toFixed(2)}
+                    <div className="tnum flex items-center gap-2 text-[11.5px]">
+                      <i aria-hidden className="h-2 w-2 rounded-sm" style={{ background: AMBER }} />
+                      <span className="text-ink-muted">after costs</span>
+                      <span className="ml-auto text-ink">{r.net.toFixed(3)}x</span>
                     </div>
                   </Tip>
                 );
               }}
             />
-            <Line type="monotone" dataKey="z" stroke={INK} strokeWidth={1.3}
-              dot={false} isAnimationActive={false} />
-            <Scatter data={entries} dataKey="z" fill={BLUE} shape="triangle" />
-            <Scatter data={exits} dataKey="z" fill={AMBER} shape="circle" />
+            <Line type="linear" dataKey="gross" stroke={BLUE} strokeWidth={2} dot={false} isAnimationActive={false} />
+            <Line type="linear" dataKey="net" stroke={AMBER} strokeWidth={2} dot={false} isAnimationActive={false} />
           </ComposedChart>
         </ResponsiveContainer>
-      </>
+      </Frame>
+
+      <Frame
+        title={`Drawdown after costs, worst ${Math.min(...dd.map((r) => r.dd)).toFixed(1)}%`}
+        height={190}
+        caption="Depth below the running peak of the after-cost line."
+      >
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart data={dd} margin={{ top: 6, right: 8, bottom: 4, left: -8 }}>
+            <CartesianGrid stroke={GRID} vertical={false} />
+            <XAxis
+              dataKey="t"
+              type="number"
+              scale="time"
+              domain={domain}
+              ticks={years}
+              tickFormatter={(t: number) => `${new Date(t).getUTCFullYear()}`}
+              {...axisProps}
+            />
+            <YAxis
+              {...axisProps}
+              axisLine={false}
+              width={48}
+              domain={[ddTicks[0], 0]}
+              ticks={ddTicks}
+              tickFormatter={(v: number) => `${v.toFixed(0)}%`}
+            />
+            <ReferenceLine y={0} stroke={SLATE} />
+            <Tooltip
+              cursor={{ stroke: REF }}
+              content={({ active, payload }) => {
+                if (!active || !payload?.length) return null;
+                const r = payload[0].payload as { t: number; dd: number };
+                return (
+                  <Tip>
+                    <div className="text-[11px] text-ink-dim">{fmtDay(r.t)}</div>
+                    <div className="tnum mt-0.5 text-[12px] text-ink">{r.dd.toFixed(2)}%</div>
+                  </Tip>
+                );
+              }}
+            />
+            <Area type="linear" dataKey="dd" stroke={AMBER} strokeWidth={1.4} fill={AMBER} fillOpacity={0.12} isAnimationActive={false} />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </Frame>
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* 4. Calendar-year return                                             */
+/* ------------------------------------------------------------------ */
+export function AnnualChart({ rows }: { rows: AnnualRow[] }) {
+  const data = rows.map((r) => ({
+    ...r,
+    label: `'${String(r.year).slice(2)}${r.days > 200 ? "" : "*"}`,
+  }));
+  const vals = data.flatMap((r) => [r.gross, r.net]);
+  const ticks = niceTicks(Math.min(...vals), Math.max(...vals), 5);
+  const partial = rows.find((r) => r.days <= 200);
+  return (
+    <Frame
+      title="Return in each calendar year"
+      height={260}
+      legend={
+        <Key
+          items={[
+            { label: "before costs", colour: BLUE, kind: "block" },
+            { label: "after costs", colour: AMBER, kind: "block" },
+          ]}
+        />
+      }
+      caption={partial ? `* ${partial.year} covers January to June only.` : undefined}
+    >
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} margin={{ top: 6, right: 4, bottom: 4, left: -8 }} barGap={2} barCategoryGap="22%">
+          <CartesianGrid stroke={GRID} vertical={false} />
+          <XAxis dataKey="label" {...axisProps} interval={0} tick={{ fill: AXIS, fontSize: 10.5 }} />
+          <YAxis
+            {...axisProps}
+            axisLine={false}
+            width={44}
+            domain={[ticks[0], ticks[ticks.length - 1]]}
+            ticks={ticks}
+            tickFormatter={(v: number) => `${v}%`}
+          />
+          <ReferenceLine y={0} stroke={SLATE} />
+          <Tooltip
+            cursor={{ fill: "#f1f5f9" }}
+            content={({ active, payload }) => {
+              if (!active || !payload?.length) return null;
+              const r = payload[0].payload as AnnualRow;
+              const f = (v: number) => `${v > 0 ? "+" : ""}${v.toFixed(2)}%`;
+              return (
+                <Tip>
+                  <div className="text-[11px] font-medium text-ink">
+                    {r.year}
+                    {r.days <= 200 ? ", Jan to Jun" : ""}
+                  </div>
+                  <div className="tnum mt-1 flex items-center gap-2 text-[11.5px]">
+                    <i aria-hidden className="h-2 w-2 rounded-sm" style={{ background: BLUE }} />
+                    <span className="text-ink-muted">before costs</span>
+                    <span className="ml-auto text-ink">{f(r.gross)}</span>
+                  </div>
+                  <div className="tnum flex items-center gap-2 text-[11.5px]">
+                    <i aria-hidden className="h-2 w-2 rounded-sm" style={{ background: AMBER }} />
+                    <span className="text-ink-muted">after costs</span>
+                    <span className="ml-auto text-ink">{f(r.net)}</span>
+                  </div>
+                </Tip>
+              );
+            }}
+          />
+          <Bar dataKey="gross" fill={BLUE} radius={[2, 2, 2, 2]} maxBarSize={18} isAnimationActive={false} />
+          <Bar dataKey="net" fill={AMBER} radius={[2, 2, 2, 2]} maxBarSize={18} isAnimationActive={false} />
+        </BarChart>
+      </ResponsiveContainer>
+    </Frame>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* 5. Cost sensitivity                                                 */
+/* ------------------------------------------------------------------ */
+export function CostChart({
+  rows,
+  assumed,
+  breakEven,
+}: {
+  rows: CostRow[];
+  assumed: number;
+  breakEven: number | null;
+}) {
+  const data = rows.map((r) => ({ bps: r.bps_per_leg, ann: r["ann_return_%"] }));
+  const vals = data.map((r) => r.ann);
+  const yTicks = niceTicks(Math.min(...vals), Math.max(...vals), 0.5);
+  const maxBps = Math.max(...data.map((r) => r.bps));
+  const atAssumed = data.find((r) => r.bps === assumed)?.ann;
+
+  return (
+    <Frame
+      title="Annualised return at each cost level"
+      height={260}
+      legend={
+        <Key
+          items={[
+            { label: "annualised return", colour: BLUE },
+            ...(breakEven != null
+              ? [{ label: `break-even, ${breakEven.toFixed(1)} bps`, colour: INK, kind: "dot" as const }]
+              : []),
+            {
+              label: `assumed, ${assumed} bps${atAssumed != null ? ` (${atAssumed.toFixed(2)}% a year)` : ""}`,
+              colour: SLATE_DARK,
+              kind: "dash",
+            },
+          ]}
+        />
+      }
+      caption="The same trades re-priced at each cost level. The trades do not change, because the signal never sees costs."
+    >
+      <ResponsiveContainer width="100%" height="100%">
+        <ComposedChart data={data} margin={{ top: 8, right: 10, bottom: 18, left: -8 }}>
+          <CartesianGrid stroke={GRID} />
+          <XAxis
+            type="number"
+            dataKey="bps"
+            {...axisProps}
+            domain={[0, maxBps]}
+            ticks={niceTicks(0, maxBps, 5)}
+            label={{ value: "Cost, bps per leg", position: "insideBottom", offset: -12, fill: AXIS, fontSize: 11 }}
+          />
+          <YAxis
+            {...axisProps}
+            axisLine={false}
+            width={48}
+            domain={[yTicks[0], yTicks[yTicks.length - 1]]}
+            ticks={yTicks}
+            tickFormatter={(v: number) => `${v > 0 ? "+" : ""}${v.toFixed(1)}%`}
+          />
+          <ReferenceLine y={0} stroke={SLATE} />
+          <ReferenceLine x={assumed} stroke={SLATE_DARK} strokeDasharray="4 4" />
+          <Tooltip
+            cursor={{ stroke: REF }}
+            content={({ active, payload }) => {
+              if (!active || !payload?.length) return null;
+              const p = payload[0].payload as { bps: number; ann: number };
+              return (
+                <Tip>
+                  <div className="text-[11px] text-ink-dim">{p.bps} bps per leg</div>
+                  <div className="tnum mt-0.5 text-[12px] font-semibold text-ink">
+                    {p.ann >= 0 ? "+" : ""}
+                    {p.ann.toFixed(2)}% a year
+                  </div>
+                </Tip>
+              );
+            }}
+          />
+          <Line
+            type="linear"
+            dataKey="ann"
+            stroke={BLUE}
+            strokeWidth={2}
+            dot={{ r: 3.5, fill: BLUE, stroke: "#fff", strokeWidth: 1.5 }}
+            isAnimationActive={false}
+          />
+          {breakEven != null && (
+            <Scatter
+              data={[{ bps: breakEven, ann: 0 }]}
+              dataKey="ann"
+              isAnimationActive={false}
+              shape={(p: { cx?: number; cy?: number }) => (
+                <circle cx={p.cx} cy={p.cy} r={5.5} fill={INK} stroke="#fff" strokeWidth={2} />
+              )}
+            />
+          )}
+        </ComposedChart>
+      </ResponsiveContainer>
     </Frame>
   );
 }
