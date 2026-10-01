@@ -24,10 +24,8 @@ chronological split and a benchmark chosen before any score was seen.
 
 ## The result in brief
 
-Four features built from price alone (`ma5`, `ma20`, `ret` and `ma_ratio`, which
-encodes the golden and death cross as one number) were used to predict the next
-day's return for each stock. The model did not beat the benchmark in any way that
-matters.
+Four features (`ma5`, `ma20`, `ret` and `ma_ratio`) were used to predict the next
+day's return for each stock. The model did not beat the benchmark. 
 
 | Metric | Value |
 |---|---|
@@ -113,9 +111,6 @@ site can't disagree. Every number in `results/full_analysis.txt` is computed, no
 typed in.
 
 ## How leakage is prevented
-
-A model that sees the future fails quietly: it posts better numbers, not an
-error. Four choices keep it out.
 
 **The split is chronological.** `train_test_split(shuffle=True)` is right for
 independent samples and wrong for a time series, for two reasons. It puts 2026
