@@ -39,14 +39,14 @@ const META = PROJECTS[1];
 export const metadata = { title: META.name, description: META.blurb };
 
 const SECTIONS = [
-  { id: "findings", label: "The result" },
-  { id: "why-cvar", label: "Why CVaR" },
-  { id: "tails", label: "How fat the tails are" },
+  { id: "findings", label: "Main result" },
+  { id: "why-cvar", label: "Risk measures" },
+  { id: "tails", label: "Tail risk by asset" },
   { id: "universe", label: "Universe and currency" },
-  { id: "scoreboard", label: "Scoreboard" },
+  { id: "scoreboard", label: "Results" },
   { id: "frontier", label: "Efficient frontier" },
   { id: "walkforward", label: "Walk-forward test" },
-  { id: "allocations", label: "Allocations" },
+  { id: "allocations", label: "Composition" },
   { id: "crisis", label: "Crisis replay" },
   { id: "limits", label: "Limitations" },
 ];
@@ -182,35 +182,36 @@ export default function CvarStudy() {
           <header>
             <p className="eyebrow">Research</p>
             <h1 className="mt-2 text-[34px] font-semibold leading-[1.1] tracking-tight text-ink sm:text-[44px]">
-              Building a portfolio around the worst days, not the average one
+              Minimum-CVaR portfolio construction for a rupee-based investor
             </h1>
             <p className="mt-5 text-[17.5px] leading-[1.7] text-ink-muted">
-              A Conditional Value-at-Risk optimiser across twelve assets in
-              rupees, and the equally weighted portfolio that beat it.
+              Five allocation rules on twelve assets measured in rupees,
+              evaluated in sample, out of sample, on simulated scenarios and in
+              historical crises.
             </p>
 
             <div className="mt-7 rounded-xl border-l-2 border-accent bg-surface px-6 py-5">
               <p className="eyebrow">Abstract</p>
               <p className="mt-3 text-[14.5px] leading-[1.8] text-ink-muted">
-                Twelve assets across Indian equity, global equity, gold, bonds
-                and crypto, with every dollar-quoted price converted to rupees at
-                that day&apos;s spot rate, over{" "}
+                This study compares equal weighting, minimum variance, maximum
+                Sharpe ratio, risk parity and minimum Conditional Value-at-Risk
+                (CVaR) on twelve assets across Indian equity, global equity,
+                gold, bonds and Bitcoin, with dollar prices converted to rupees at
+                the daily spot rate, over{" "}
                 {port.meta.n_days.toLocaleString("en-IN")} trading days from{" "}
-                {port.meta.start} to {port.meta.end}. Five allocation strategies
-                were each solved as a convex program, stress-tested against{" "}
-                {sc.meta.n_scenarios.toLocaleString("en-IN")} simulated scenarios
-                with deliberately fattened tails, run through a walk-forward
-                backtest of {bt.meta.n_rebalances} quarterly rebalances that never
-                sees the future, and replayed through the 2008 credit crisis. Min
-                CVaR is solved as a linear program using the Rockafellar-Uryasev
-                reformulation, which recovers the Value-at-Risk for free.{" "}
-                <V>The simplest strategy won.</V> An equally weighted portfolio,
-                which makes no forecast at all, achieved the best out-of-sample
-                Sharpe at <V>{num(head.bestSharpe.value, 3)}</V>. Min CVaR still
-                did the one job it was built for: the shallowest drawdown of
-                any strategy at <V>{pct(head.shallowestDrawdown.value)}</V> and a
-                gain of <V>{signed(head.gfc)}</V> through Lehman while equal
-                weight lost {pct(Math.abs(head.gfcEqualWeight))}.
+                {port.meta.start} to {port.meta.end}. Minimum CVaR is solved as a
+                linear program using the Rockafellar-Uryasev formulation. Each rule
+                is evaluated in a walk-forward backtest of {bt.meta.n_rebalances}{" "}
+                quarterly rebalances net of costs, on{" "}
+                {sc.meta.n_scenarios.toLocaleString("en-IN")} simulated scenarios,
+                and in a replay of the 2008 crisis. Equal weighting has the highest
+                out-of-sample Sharpe ratio, <V>{num(head.bestSharpe.value, 3)}</V>,
+                although its differences from the optimised rules are not
+                statistically significant. Minimum CVaR has the smallest maximum
+                drawdown, <V>{pct(head.shallowestDrawdown.value)}</V>, and gains{" "}
+                <V>{signed(head.gfc)}</V> in the 2008 replay while equal weighting
+                loses {pct(Math.abs(head.gfcEqualWeight))}, mainly because the
+                rupee depreciation raised the value of its dollar bond holdings.
               </p>
             </div>
           </header>
@@ -220,186 +221,169 @@ export default function CvarStudy() {
           <div className="mt-7 grid grid-cols-2 gap-3 lg:grid-cols-4">
             <StatCard
               value={<CountUp value={head.bestSharpe.value} decimals={3} />}
-              label="Best out-of-sample Sharpe"
-              detail={`${STRATEGY_LABEL[head.bestSharpe.key]}, which makes no forecast and beat every optimiser on data they had not seen.`}
+              label="Highest out-of-sample Sharpe"
+              detail={`${STRATEGY_LABEL[head.bestSharpe.key]}. Differences from the optimised rules are not significant at 5%.`}
               tone="accent"
             />
             <StatCard
               value={<CountUp value={head.shallowestDrawdown.value} decimals={2} suffix="%" />}
-              label="Shallowest drawdown"
-              detail={`Min CVaR, against ${pct(bt.metrics_net.equal_weight["max_drawdown_%"])} for equal weight, measured out of sample.`}
+              label="Smallest maximum drawdown"
+              detail={`Minimum CVaR, against ${pct(bt.metrics_net.equal_weight["max_drawdown_%"])} for equal weighting, out of sample.`}
             />
             <StatCard
               value={<CountUp value={head.gfc} decimals={2} prefix="+" suffix="%" />}
-              label="Min CVaR through Lehman"
-              detail={`It gained during the 2008 crash while equal weight lost ${pct(Math.abs(head.gfcEqualWeight))}. Most of that is the rupee.`}
+              label="Minimum CVaR in the 2008 replay"
+              detail={`Equal weighting lost ${pct(Math.abs(head.gfcEqualWeight))}. Most of the difference is the rupee depreciation.`}
             />
             <StatCard
               value={<CountUp value={head.worstShift.value} decimals={3} />}
-              label="Max Sharpe decay"
-              detail="The only strategy that got worse out of sample, and the only one that relies on forecasting returns."
+              label="Maximum Sharpe, change in Sharpe"
+              detail="The only rule whose Sharpe ratio fell out of sample, and the only one that estimates expected returns."
             />
           </div>
         </Reveal>
 
         {/* ---------------- 01 findings ---------------- */}
-        <Section id="findings" index={1} title="The result I did not want">
+        <Section id="findings" index={1} title="Main result">
           <p>
-            I built an optimiser to cut the average loss on the worst 5% of days,
-            and most of the project went into testing whether it actually did
-            that. It did, but it still wasn&apos;t the best strategy. Once every
-            strategy was scored on data it hadn&apos;t seen, the best
-            risk-adjusted return came from an equally weighted portfolio: no
-            covariance matrix, no return forecasts, no optimisation at all.
+            The minimum-CVaR rule was designed to reduce the expected loss on the
+            worst 5% of days, and out of sample it did. It did not produce the
+            highest risk-adjusted return. Evaluated on data not used for
+            estimation, the equally weighted portfolio, which requires no
+            covariance matrix, no return forecasts and no optimisation, had the
+            highest Sharpe ratio.
           </p>
           <p>
-            The mechanism is <V>error maximisation</V>. Every optimiser needs
-            estimates, estimates contain error, and optimisers do not treat error
-            carefully. They search for whatever looks best, and what looks best is
-            frequently just whatever carries the most favourable estimation error.
-            An asset whose mean return happens to be overstated by a quarter of a
-            point in the sample isn&apos;t a promising holding, it&apos;s a
-            measurement error, and the optimiser can&apos;t tell the difference. DeMiguel,
-            Garlappi and Uppal found the same across many datasets, which is why
-            1/N is a serious benchmark rather than a straw man.
+            This is consistent with the effect Michaud (1989) called{" "}
+            <V>error maximisation</V>. An optimiser assigns the largest weights
+            to the assets whose expected returns or risks are most favourably
+            misestimated in the sample, because it cannot distinguish
+            misestimation from genuine attractiveness. DeMiguel, Garlappi and
+            Uppal (2009) found that equal weighting is difficult to beat out of
+            sample for this reason.
           </p>
 
           <SharpeShift data={shiftData} />
 
           <p>
-            Compare the two bars in each pair rather than across strategies. Four
-            strategies improved out of sample, which is unusual, and it means their
-            in-sample scores weren&apos;t inflated by fitting. Max Sharpe fell from{" "}
-            {num(port.portfolios.max_sharpe.stats.sharpe, 3)} to{" "}
-            {num(bt.metrics_net.max_sharpe.sharpe, 3)}, and it is the only one of
-            the five that uses expected returns, the hardest quantity in
-            finance to estimate. Min CVaR improved by the largest margin of the
-            five, {head.shifts.min_cvar >= 0 ? "+" : ""}
-            {num(head.shifts.min_cvar, 3)} on Sharpe, which is the strongest
-            evidence in the project that it was not overfitted.
+            Each pair of bars compares a rule&apos;s in-sample and out-of-sample
+            Sharpe ratio. Four rules improved out of sample. Maximum Sharpe fell
+            from {num(port.portfolios.max_sharpe.stats.sharpe, 3)} to{" "}
+            {num(bt.metrics_net.max_sharpe.sharpe, 3)}; it is the only rule that
+            uses estimated expected returns, which are measured far less
+            precisely than variances. Minimum CVaR improved by{" "}
+            {head.shifts.min_cvar >= 0 ? "+" : ""}
+            {num(head.shifts.min_cvar, 3)}, the largest increase of the five.
+          </p>
+          <p>
+            The Sharpe differences are not statistically significant. A
+            Jobson-Korkie test with Memmel&apos;s correction, on daily excess
+            returns over the 8.9-year out-of-sample period, gives p-values
+            between 0.08 and 0.26 for equal weighting against each optimised
+            rule. The data are consistent with equal weighting performing at
+            least as well as the optimised rules, but do not establish that it
+            performs better.
           </p>
           <Note>
             <strong className="font-semibold text-ink">
-              What min CVaR actually bought.
+              What the minimum-CVaR rule achieved.
             </strong>{" "}
-            The shallowest drawdown of any strategy,{" "}
+            The smallest maximum drawdown,{" "}
             {pct(bt.metrics_net.min_cvar["max_drawdown_%"])} against{" "}
-            {pct(bt.metrics_net.equal_weight["max_drawdown_%"])} for equal weight,
-            and a risk forecast that held up on unseen data: CVaR went
-            from {pct(port.portfolios.min_cvar.stats["CVaR95_%"], 3)} to{" "}
-            {pct(bt.metrics_net.min_cvar["CVaR95_%"], 3)}, a degradation of{" "}
-            {cvarDecay}%. It finished second-to-last on return, because minimising
-            tail risk means holding safe, low-returning assets. Someone who ran it
-            for the full out-of-sample period ended with{" "}
-            {num(1 + bt.metrics_net.min_cvar["total_return_%"] / 100)}x their money
-            against {num(1 + bt.metrics_net.equal_weight["total_return_%"] / 100)}x
-            for equal weight. That is the trade-off.
+            {pct(bt.metrics_net.equal_weight["max_drawdown_%"])} for equal
+            weighting, and a realised CVaR of{" "}
+            {pct(bt.metrics_net.min_cvar["CVaR95_%"], 3)} against an in-sample
+            estimate of {pct(port.portfolios.min_cvar.stats["CVaR95_%"], 3)}, an
+            increase of {cvarDecay}%. Its return was the second lowest: one unit
+            invested grew to{" "}
+            {num(1 + bt.metrics_net.min_cvar["total_return_%"] / 100)} over the
+            out-of-sample period, against{" "}
+            {num(1 + bt.metrics_net.equal_weight["total_return_%"] / 100)} for
+            equal weighting.
           </Note>
           <p>
-            That doesn&apos;t make the optimiser pointless, just specialised. If
-            the goal is the highest Sharpe, the evidence here says don&apos;t
-            optimise, because the estimation error costs more than the
-            optimisation gains. If the goal is to lose less on the worst days, the
-            optimiser delivered that out of sample, and again in 2008, a crisis
-            that was never in its data.
+            The two results describe different objectives. For the highest Sharpe
+            ratio, the evidence here favours not optimising, because estimation
+            error offsets the gain. For smaller losses on the worst days, the
+            optimiser delivered out of sample and again in 2008, a period outside
+            its estimation data.
           </p>
         </Section>
 
         {/* ---------------- 02 why cvar ---------------- */}
-        <Section id="why-cvar" index={2} title="Why CVaR rather than variance">
+        <Section id="why-cvar" index={2} title="Variance, VaR and CVaR">
           <p>
-            Standard portfolio theory minimises variance. Variance has two
-            problems I could not talk myself out of.
+            Mean-variance optimisation measures risk by variance, which has two
+            limitations. It penalises gains and losses symmetrically, because
+            deviations are squared, so a 5% rise contributes as much as a 5% fall.
+            And it is a complete description of risk only for normally
+            distributed returns. These returns are not normal: excess kurtosis is{" "}
+            {num(risk.normality.SPY.excess_kurt, 1)} for the S&amp;P 500 ETF and{" "}
+            {num(risk.normality["NIFTYBEES.NS"].excess_kurt, 1)} for the Nifty
+            ETF. A normal distribution with the S&amp;P 500 ETF&apos;s mean and
+            variance implies a worst day near -5% in this sample; the realised
+            worst day was {pct(risk.normality.SPY["worst_day_%"])}.
           </p>
           <p>
-            It treats gains and losses identically, because the deviations get
-            squared: a day the portfolio rises 5% and a day it falls 5% contribute
-            exactly the same amount to the objective. Nobody has ever complained
-            about a portfolio going up, so half of what variance penalises is not
-            risk at all. More seriously, variance is only a complete description
-            of risk if returns follow a bell curve, and mine do not. Every asset
-            here has excess kurtosis far above zero, the S&amp;P 500 at{" "}
-            {num(risk.normality.SPY.excess_kurt, 1)} and the Nifty at{" "}
-            {num(risk.normality["NIFTYBEES.NS"].excess_kurt, 1)}. Under a normal
-            distribution the S&amp;P&apos;s worst day in this sample should have
-            been around -5%. It was {pct(risk.normality.SPY["worst_day_%"])}.
+            Value-at-Risk (VaR) at 95% is the loss exceeded on 5% of days. It
+            measures only losses, but it ignores how large losses are beyond the
+            threshold, and it is not subadditive: the VaR of a combined portfolio
+            can exceed the sum of the VaRs of its parts, so it can penalise
+            diversification.
           </p>
           <p>
-            Value-at-Risk fixes the direction, since it only looks at losses, but
-            it has a worse flaw: it is blind to everything past its own threshold.
-            VaR 95% says &ldquo;on the worst 5% of days you lose at least
-            X&rdquo;, and says nothing about how far past X you go. A
-            strategy that makes small gains most of the time and occasionally
-            loses catastrophically has excellent VaR, right up until the
-            catastrophe. VaR is also not subadditive: merging two books can report
-            more VaR than the two separately, so it can penalise diversification,
-            which is an odd property for a risk measure to have.
-          </p>
-          <p>
-            CVaR is the average loss across all the days beyond that threshold, so
-            it responds to the shape of the tail rather than only its edge, and it
-            is coherent in the technical sense, meaning combining positions never
-            increases measured risk. The two measures disagree here about which
-            asset is riskier, which is the clearest argument for CVaR. Indian gold has a <em>lower</em> VaR than the Nifty,{" "}
+            CVaR, also called expected shortfall, is the expected loss on the days
+            beyond the VaR threshold. It reflects the shape of the tail and is a
+            coherent risk measure in the sense of Artzner et al. (1999), so it is
+            subadditive. The two measures can rank assets differently. Indian gold
+            has a lower VaR than the Nifty ETF,{" "}
             {pct(risk.per_asset["GOLDBEES.NS"]["VaR95_%"], 3)} against{" "}
-            {pct(risk.per_asset["NIFTYBEES.NS"]["VaR95_%"], 3)}, so by the
-            threshold it looks safer. Its CVaR/VaR ratio is{" "}
-            {num(risk.per_asset["GOLDBEES.NS"]["CVaR/VaR"])}, the highest in the
-            book: it drifts quietly and then lurches. By what actually happens
-            past the threshold it is not safer at all.
+            {pct(risk.per_asset["NIFTYBEES.NS"]["VaR95_%"], 3)}, but its CVaR/VaR
+            ratio is {num(risk.per_asset["GOLDBEES.NS"]["CVaR/VaR"])}, the highest
+            of the twelve assets, so its losses beyond the threshold are large
+            relative to the threshold.
           </p>
 
-          <Sub>How a moving target becomes a linear program</Sub>
+          <Sub>Minimum CVaR as a linear program</Sub>
           <p>
-            CVaR looks non-convex when you first write it down, because which days
-            count as the tail depends on the weights you choose. Change a weight
-            and a different set of days becomes the worst 5%, so you are
-            optimising a quantity whose definition keeps moving. Optimising by sorting and averaging the worst 5% directly gives a
-            discontinuous objective that a solver cannot work with.
-          </p>
-          <p>
-            Rockafellar and Uryasev&apos;s result is that you can introduce the
-            threshold as a free variable and minimise
+            Which days form the 5% tail depends on the weights, so CVaR cannot be
+            minimised by sorting losses for a fixed portfolio; the resulting
+            objective is not smooth. Rockafellar and Uryasev (2000) show that CVaR
+            is the minimum over a threshold variable z of
           </p>
           <div className="overflow-x-auto rounded-lg border border-line bg-surface-2 px-4 py-3 font-mono text-[12.5px] text-ink-muted">
             F(w, z) = z + 1/((1-a)N) * sum_j max(loss_j - z, 0)
           </div>
           <p>
-            Two things fall out. Minimising F over z gives exactly the CVaR, so
-            the threshold never has to be known in advance, and z at the optimum
-            lands exactly on the VaR for free. Convexity is rescued because{" "}
-            <C>max(loss - z, 0)</C> is convex and <C>loss_j = -r_j&apos;w</C> is
-            linear in the weights, so F is jointly convex in w and z. The kink
-            then goes away: replace each max with a helper variable and
-            two linear inequalities, <C>u_j &gt;= loss_j - z</C> and{" "}
-            <C>u_j &gt;= 0</C>. What is left is a linear program, with a global
-            optimum guaranteed and the same answer on every run. Both claims are
-            checked numerically on each run rather than cited.
+            and that the minimising z is the VaR. Because each{" "}
+            <C>loss_j = -r_j&apos;w</C> is linear in the weights and the positive
+            part of a linear function is convex, F is jointly convex in w and z.
+            Replacing each positive part with an auxiliary variable u_j and the
+            constraints <C>u_j &gt;= loss_j - z</C> and <C>u_j &gt;= 0</C> gives
+            a linear program, which is solved to its global optimum. Both
+            properties are verified numerically on every run.
           </p>
         </Section>
 
         {/* ---------------- 03 tails ---------------- */}
-        <Section id="tails" index={3} title="How fat the tails actually are">
+        <Section id="tails" index={3} title="Tail risk by asset">
           <p>
-            Before optimising anything, I measured how badly the normal assumption
-            fails on each asset, since that gap is what CVaR is meant to capture. The figure below plots both measures
-            for every asset on one logarithmic axis: the hollow mark is VaR 95%,
-            the threshold, and the filled mark is CVaR 95%, the average loss once
-            you are past it. The gap between them is the fat-tail ratio.
+            The figure below plots VaR 95% (hollow marker) and CVaR 95% (filled
+            marker) for each asset on a logarithmic axis. The gap between them is
+            the CVaR/VaR ratio, a measure of how heavy the tail is beyond the
+            threshold.
           </p>
 
           <TailProfile data={tailRows} />
 
           <p>
-            {fattest.label} carries the widest gap in the book at{" "}
-            {num(fattest.ratio)}x and {thinnest.label} the narrowest at{" "}
-            {num(thinnest.ratio)}x, and neither ranking follows volatility. An asset
-            can have a mild threshold and a severe tail. The right-hand panel shows
-            that every asset here has a realised tail worse than a normal
-            distribution predicts, by between{" "}
-            {num(Math.min(...tailRows.map((t) => t.vsNormal)))}x and{" "}
-            {num(Math.max(...tailRows.map((t) => t.vsNormal)))}x. None of the twelve
-            is close to normal in the tail.
+            {fattest.label} has the largest ratio at {num(fattest.ratio)} and{" "}
+            {thinnest.label} the smallest at {num(thinnest.ratio)}; neither
+            ordering follows volatility. The right panel divides each
+            asset&apos;s realised CVaR by the CVaR of a normal distribution with
+            the same mean and variance. The ratio exceeds 1 for every asset,
+            ranging from {num(Math.min(...tailRows.map((t) => t.vsNormal)))} to{" "}
+            {num(Math.max(...tailRows.map((t) => t.vsNormal)))}.
           </p>
 
           <Table
@@ -420,15 +404,13 @@ export default function CvarStudy() {
             }
             caption={
               <>
-                Sorted by CVaR, mildest tail first. CVaR/VaR is the fat-tail
-                ratio: how much worse the average bad day is than the threshold
-                defining it. The last column is how many times worse the realised
-                tail is than a normal distribution predicts, and it is above 1.00
-                for every asset in the book. US long treasuries are a good
-                example: a well-behaved daily tail attached to a{" "}
-                {pct(risk.per_asset.TLT["max_drawdown_%"])} drawdown, because
-                drawdown depends on the order in which returns arrive and CVaR
-                does not.
+                Sorted by CVaR, smallest first. The last column is realised CVaR
+                divided by the CVaR of a normal distribution with the same mean
+                and variance. Daily tail measures and drawdown can differ
+                substantially: US long-term Treasuries have a moderate daily tail
+                but a {pct(risk.per_asset.TLT["max_drawdown_%"])} maximum
+                drawdown, because drawdown depends on the sequence of returns and
+                CVaR does not.
               </>
             }
           >
@@ -457,57 +439,52 @@ export default function CvarStudy() {
         </Section>
 
         {/* ---------------- 04 universe ---------------- */}
-        <Section id="universe" index={4} title="The universe, and the currency problem">
+        <Section id="universe" index={4} title="Universe and currency conversion">
           <p>
-            Twelve assets across five classes, picked so that their bad days do
-            not all land on the same dates. Seven are quoted in dollars, five in
-            rupees. If I am an Indian investor holding the S&amp;P 500, I make
-            money two ways: the index rises, and the dollar strengthens against
-            the rupee. Both land in my account, and both are part of the risk I
-            carry. Download the dollar price and I am measuring half my return.
+            The twelve assets span five classes chosen so that their large losses
+            tend not to coincide. Seven are quoted in dollars and five in rupees.
+            For a rupee-based investor, the return on a dollar asset combines the
+            asset&apos;s dollar return and the change in the USD/INR rate, and
+            both are part of the investor&apos;s risk.
           </p>
           <p>
-            So every dollar-quoted price is converted to rupees at that day&apos;s
-            spot rate <em>before</em> returns are computed, on prices rather than
-            by adding two return series together, which makes the compounding
-            exact rather than a first-order approximation. Over a few thousand
-            days the difference adds up.
+            Dollar prices are therefore multiplied by the daily spot rate before
+            returns are computed. Converting prices, rather than adding the asset
+            return and the currency return, compounds the two components exactly
+            rather than to first order.
           </p>
           <p>
-            To check the conversion rather than trust it, gold is in the universe
-            twice: GOLDBEES, an Indian ETF already quoted in rupees, and GLD, an
-            American one quoted in dollars. Same metal, two wrappers, so if the
-            conversion is correct they have to end up in materially the same
-            place. They do, to within an expense-ratio drag and a July 2024
-            import-duty cut that moved the Indian wrapper and not the American
-            one. A currency bug would have shown up here as a persistent divergence
-            between two claims on the same underlying asset.
+            The conversion is checked by including gold twice: GOLDBEES, an Indian
+            ETF priced in rupees, and GLD, a US ETF priced in dollars. If the
+            conversion is correct, the two should finish close together, and they
+            do, apart from an expense-ratio difference and a fall in domestic gold
+            prices when India cut its import duty in July 2024. An error in the
+            conversion would appear as a persistent divergence between the two.
           </p>
           <Note>
             <strong className="font-semibold text-ink">
-              The currency work turned out to matter far more than bookkeeping.
+              The conversion determines the 2008 result.
             </strong>{" "}
-            I thought it was routine until I replayed 2008. During Lehman the
-            rupee fell {num(lehman?.["rupee_move_%"] ?? 0, 1)}%, which lifted every
-            unhedged dollar holding measured in rupees at exactly the moment Indian
-            equity was collapsing. Average pairwise correlation across the book was{" "}
-            {num(lehman?.avg_corr_INR ?? 0, 3)} in rupee terms against{" "}
-            {num(lehman?.avg_corr_USD ?? 0, 3)} in dollars, and India against
-            global was {num(lehman?.india_vs_global_corr_INR ?? 0, 3)} in rupees
-            against {num(lehman?.india_vs_global_corr_USD ?? 0, 3)} in dollars. If I had
-            mixed currencies, or just worked in dollars, the 2008 result would
-            have been wrong.
+            During the 2008 crisis window the rupee depreciated by{" "}
+            {num(lehman?.["rupee_move_%"] ?? 0, 1)}%, raising the rupee value of
+            every unhedged dollar asset while Indian equity prices fell. Average
+            pairwise correlation was {num(lehman?.avg_corr_INR ?? 0, 3)} in rupee
+            terms and {num(lehman?.avg_corr_USD ?? 0, 3)} in dollar terms, and the
+            correlation between Indian and global assets was{" "}
+            {num(lehman?.india_vs_global_corr_INR ?? 0, 3)} in rupees against{" "}
+            {num(lehman?.india_vs_global_corr_USD ?? 0, 3)} in dollars. An
+            analysis in dollars would have reached a different conclusion about
+            the portfolio&apos;s crisis behaviour.
           </Note>
         </Section>
 
         {/* ---------------- 05 scoreboard ---------------- */}
-        <Section id="scoreboard" index={5} title="Five strategies, fitted and then tested out of sample">
+        <Section id="scoreboard" index={5} title="In-sample and out-of-sample results">
           <p>
-            The five strategies span the range from &ldquo;forecast everything&rdquo;
-            to &ldquo;forecast nothing&rdquo;, which is the axis the whole
-            scoreboard turns out to sort along. Each was solved on the full window
-            first, then run again through a walk-forward test that only ever sees
-            the past.
+            The five rules range from estimating expected returns and covariances
+            (maximum Sharpe) to estimating nothing (equal weighting). Each was
+            estimated on the full sample and then re-run in a walk-forward test
+            that uses only past data.
           </p>
           <Table
             minWidth={760}
@@ -538,17 +515,16 @@ export default function CvarStudy() {
             }
             caption={
               <>
-                In-sample figures are fitted and scored on the same{" "}
-                {port.meta.n_days.toLocaleString("en-IN")} days, so they are an
-                upper bound rather than a forecast. Out-of-sample figures come
-                from {bt.meta.n_rebalances} quarterly rebalances on a rolling{" "}
-                {bt.meta.train_window}-day window, net of{" "}
-                {bt.meta.cost_bps_per_traded_notional} bps per unit of traded
-                notional. Turnover is one-way per rebalance. Max Sharpe pays
-                roughly 0.53 points a year in costs against about 0.10 for the
-                others, because it turns over{" "}
-                {pct(bt.metrics_net.max_sharpe["avg_turnover_%"], 1)} of the book
-                every quarter.
+                In-sample figures are estimated and evaluated on the same{" "}
+                {port.meta.n_days.toLocaleString("en-IN")} days and are an upper
+                bound. Out-of-sample figures come from {bt.meta.n_rebalances}{" "}
+                quarterly rebalances on a trailing {bt.meta.train_window}-day
+                window, net of {bt.meta.cost_bps_per_traded_notional} bps per unit
+                of traded notional. Sharpe is the geometric annual return less 6%,
+                divided by annualised volatility. Maximum Sharpe turns over{" "}
+                {pct(bt.metrics_net.max_sharpe["avg_turnover_%"], 1)} of the
+                portfolio per quarter and pays about 0.53 percentage points a year
+                in costs, against about 0.10 for the other rules.
               </>
             }
           >
@@ -605,16 +581,15 @@ export default function CvarStudy() {
           </Table>
 
           <p>
-            One benchmark needs a note, because at first glance it seems to beat
-            everything. Equal weight
-            bought once and never rebalanced returns{" "}
-            {pct(bt.metrics_net.BH_equal_weight["ann_return_%"])} a year, but it
-            ends the period heavily concentrated in Bitcoin, carries{" "}
-            {pct(bt.metrics_net.BH_equal_weight["ann_vol_%"])} volatility and a{" "}
-            {pct(bt.metrics_net.BH_equal_weight["max_drawdown_%"])} drawdown, for a
-            Sharpe of {num(bt.metrics_net.BH_equal_weight.sharpe, 3)}. Never
-            rebalancing is a momentum bet that happened to pay, not a passive
-            baseline.
+            The never-rebalanced equal-weight portfolio returns{" "}
+            {pct(bt.metrics_net.BH_equal_weight["ann_return_%"])} a year, the
+            highest of any row, but by the end of the sample it is concentrated in
+            Bitcoin, with {pct(bt.metrics_net.BH_equal_weight["ann_vol_%"])}{" "}
+            volatility, a {pct(bt.metrics_net.BH_equal_weight["max_drawdown_%"])}{" "}
+            drawdown and a Sharpe ratio of{" "}
+            {num(bt.metrics_net.BH_equal_weight.sharpe, 3)}. Without rebalancing,
+            an equal-weight portfolio becomes a concentrated position in the asset
+            with the highest past return, so it is not a neutral benchmark.
           </p>
 
           <Table
@@ -623,22 +598,19 @@ export default function CvarStudy() {
               <thead className="bg-surface-2">
                 <tr className="border-b border-line">
                   <TH align="left">Strategy</TH>
-                  <TH align="left">Optimises</TH>
-                  <TH align="left">Inputs it needs</TH>
+                  <TH align="left">Objective</TH>
+                  <TH align="left">Inputs required</TH>
                 </tr>
               </thead>
             }
             caption={
               <>
-                The pattern across the scoreboard is that the less a strategy
-                tried to forecast, the better it held up. Max Sharpe is not
-                concave as written, so it is solved through the Charnes-Cooper
-                transformation; risk parity stated directly is non-convex, so it
-                uses the Spinu and Maillard log-barrier form, which also makes a
-                zero weight infinitely expensive and so structurally cannot drop
-                an asset. The risk-free rate is{" "}
-                {pct(port.meta.risk_free_annual * 100, 0)} because the book is in
-                rupees.
+                Maximum Sharpe is not concave as stated and is solved through the
+                Charnes-Cooper transformation. Risk parity is solved in the
+                log-barrier form of Spinu (2013), whose solution has equal risk
+                contributions; the barrier makes a zero weight infeasible, so every
+                asset is held. The risk-free rate is{" "}
+                {pct(port.meta.risk_free_annual * 100, 0)}, a rupee rate.
               </>
             }
           >
@@ -661,15 +633,14 @@ export default function CvarStudy() {
         </Section>
 
         {/* ---------------- 06 frontier ---------------- */}
-        <Section id="frontier" index={6} title="The efficient frontier">
+        <Section id="frontier" index={6} title="The CVaR efficient frontier">
           <p>
-            Each point on the curve solves the same question with a different
-            constraint: given a floor on expected return, what is the lowest
-            achievable CVaR? No portfolio of these twelve assets can sit above or
-            to the left of the curve. Anything below or to the right of it, like
-            equal weight and risk parity, carries more tail risk than its return
-            requires. Hover a point to see its numbers, or click it to see what it
-            holds.
+            Each point on the curve is the minimum CVaR attainable subject to a
+            lower bound on expected return. No long-only portfolio of the twelve
+            assets lies above or to the left of it; portfolios below or to the
+            right, such as equal weighting and risk parity, carry more tail risk
+            than their expected return requires. Each point can be selected to
+            show its holdings.
           </p>
 
           <Frontier
@@ -681,45 +652,38 @@ export default function CvarStudy() {
           />
 
           <p>
-            The slope changes along the curve. Going from 9% to 18% expected return
-            costs about 0.4 points of CVaR, which is close to free, so stopping at
-            the low end of that stretch gives up return for very little reduction
-            in tail risk.
-            The last stretch costs several times that per point of return, and the
-            far right end is a single asset, with no diversification at all and a
-            drawdown of{" "}
-            {pct(Math.max(...curve.map((c) => c.dd)))}.
+            The marginal cost of expected return in CVaR rises along the curve.
+            Raising expected return from 9% to 18% increases CVaR by about 0.4
+            percentage points; the final segment costs several times as much per
+            point of return. The highest-return point holds a single asset and
+            has a maximum drawdown of {pct(Math.max(...curve.map((c) => c.dd)))}.
           </p>
           <p>
-            The named strategies are plotted as diamonds against that curve. Min
-            variance and min CVaR land essentially on top of each other, which is
-            itself a finding: with this covariance structure the portfolio that
-            minimises symmetric variance and the portfolio that minimises the
-            average worst-5% loss are almost the same book. The tail-aware
-            objective earns its keep in the crisis replay rather than in the
-            fitted weights.
+            Minimum variance and minimum CVaR lie almost on top of each other. With
+            this covariance structure, the portfolio that minimises variance and
+            the one that minimises the expected worst-5% loss are nearly the same.
+            The difference between the two objectives appears in the crisis
+            replay rather than in the fitted weights.
           </p>
         </Section>
 
         {/* ---------------- 07 walk-forward ---------------- */}
-        <Section id="walkforward" index={7} title="The walk-forward test">
+        <Section id="walkforward" index={7} title="Walk-forward backtest">
           <p>
-            Every in-sample number was fitted and scored on the same data. The optimiser already knew Bitcoin would rise and that US
-            aggregate bonds would cushion COVID, and choosing a portfolio with
-            that knowledge isn&apos;t skill. So I simulated actually running each
-            strategy: at every quarter-end,
-            re-optimise on the trailing {bt.meta.train_window} days only, then hold
-            those weights until the next rebalance, paying{" "}
-            {bt.meta.cost_bps_per_traded_notional} bps per unit of traded notional,
-            which is {bt.meta.cost_bps_per_traded_notional * 2} bps for a full
-            round trip.
+            In-sample statistics use the same data for estimation and evaluation:
+            the optimiser already observes, for example, Bitcoin&apos;s rise and
+            the behaviour of US bonds during COVID-19. The walk-forward test
+            removes that advantage. At each quarter-end every rule is re-estimated
+            on the trailing {bt.meta.train_window} days only and held until the
+            next rebalance, paying {bt.meta.cost_bps_per_traded_notional} bps per
+            unit of traded notional ({bt.meta.cost_bps_per_traded_notional * 2}{" "}
+            bps for a complete replacement of the portfolio).
           </p>
           <p>
-            That is {bt.meta.n_rebalances} separate re-optimisations, each one
-            blind to everything that came after it, spanning {bt.meta.oos_start} to{" "}
-            {bt.meta.oos_end}. The lower panel is the drawdown from each
-            series&apos; own running peak, which is where the strategies actually
-            separate: the equity curves look similar and the drawdowns do not.
+            There are {bt.meta.n_rebalances} rebalances from {bt.meta.oos_start} to{" "}
+            {bt.meta.oos_end}, each using only data available at the time. The
+            lower panel shows each series&apos; drawdown from its own running
+            peak, which separates the rules more clearly than the growth curves.
           </p>
 
           <EquityCurves
@@ -731,9 +695,9 @@ export default function CvarStudy() {
         </Section>
 
         {/* ---------------- 08 allocations ---------------- */}
-        <Section id="allocations" index={8} title="What each strategy holds, and how little the scenarios change it">
+        <Section id="allocations" index={8} title="Portfolio composition and scenario sensitivity">
           <Allocations
-            title="Fitted on the full window"
+            title="Weights estimated on the full sample"
             rows={allocRows}
             assets={assets}
             assetShort={ASSET_SHORT}
@@ -741,47 +705,45 @@ export default function CvarStudy() {
             height={300}
             caption={
               <>
-                The weights say a lot about each objective. Min variance and min
-                CVaR both concentrate into four positions, roughly two thirds US
-                aggregate bonds. Only Max Sharpe takes a real Bitcoin position,
-                and it can afford to: Bitcoin&apos;s correlation with Indian
-                equity is low enough that in small size it buys return without
-                adding much portfolio risk. Risk parity holds a fraction of that
-                instead, because Bitcoin is about five times more volatile than
-                the average asset here and equalising risk contribution means
-                holding roughly five times less of it. Its weights are unequal so
-                that the risk contributions come out equal.
+                Minimum variance and minimum CVaR each hold four assets, with
+                roughly two thirds in US aggregate bonds. Maximum Sharpe is the
+                only rule with a material Bitcoin allocation; Bitcoin&apos;s low
+                correlation with Indian equity lets a small position add expected
+                return with little effect on variance. Risk parity holds less,
+                because Bitcoin&apos;s volatility is about five times the average
+                of the other assets and equal risk contribution requires a
+                correspondingly smaller weight.
               </>
             }
           />
 
           <p>
-            Historical returns are one path that happened to occur. Optimising
-            CVaR on them alone fits the tail to a few hundred specific days, so I
-            generated {sc.meta.n_scenarios.toLocaleString("en-IN")} scenarios two
-            different ways. A block bootstrap resamples contiguous{" "}
-            {sc.meta.block_len}-day blocks, which preserves the volatility
-            clustering that single-day resampling destroys, since calm days follow
-            calm days and crashes arrive in runs. A multivariate Student-t is
-            fitted by expectation-maximisation with a profile likelihood over the
-            degrees of freedom, and lands on <V>df {num(tFit.df, 2)}</V>, beating a
-            Gaussian by{" "}
+            A CVaR estimated from history depends on the few hundred days that form
+            its tail. To test sensitivity to that sample, the minimum-CVaR
+            portfolio is re-estimated on{" "}
+            {sc.meta.n_scenarios.toLocaleString("en-IN")} scenarios from two
+            generators. A block bootstrap resamples contiguous{" "}
+            {sc.meta.block_len}-day blocks of history, which preserves the
+            clustering of volatility that single-day resampling destroys. A
+            multivariate Student-t distribution is fitted by the EM algorithm with
+            a profile likelihood over the degrees of freedom; the estimate is{" "}
+            <V>{num(tFit.df, 2)}</V> degrees of freedom, with a log-likelihood{" "}
             {Math.round(tFit.loglik_t - tFit.loglik_normal).toLocaleString("en-IN")}{" "}
-            log-likelihood points.
+            above that of a multivariate normal.
           </p>
           <p>
-            One correction was needed along the way. Sampling the raw fit produced
-            tails <em>milder</em> than history, which defeats the point of a
-            stress test. Maximum-likelihood t-fitting explains outliers
-            through the fat tail rather than through variance, so the fitted
-            scatter reproduced only {pct(tFit.fitted_vol_vs_sample_vol * 100, 1)} of
-            realised volatility. The sampler is therefore variance-matched to the
-            sample covariance so that only tail shape varies, with a df=
-            {num(tFit.stress_df, 0)} set added as a real stress case.
+            Sampling directly from the fitted t produced tails thinner than the
+            historical data. Maximum-likelihood estimation of a t distribution
+            attributes extreme observations to the heavy tail rather than to the
+            scale matrix, and the fitted scale implied only{" "}
+            {pct(tFit.fitted_vol_vs_sample_vol * 100, 1)} of the sample
+            volatility. The sampler is therefore rescaled to the sample
+            covariance so that only the tail shape differs, and a set with{" "}
+            {num(tFit.stress_df, 0)} degrees of freedom is added as a stress case.
           </p>
 
           <Allocations
-            title="Min CVaR re-optimised on each scenario set"
+            title="Minimum CVaR re-estimated on each scenario set"
             rows={scenarioRows}
             assets={assets}
             assetShort={ASSET_SHORT}
@@ -789,123 +751,118 @@ export default function CvarStudy() {
             height={270}
             caption={
               <>
-                Turnover against the historical optimum is{" "}
+                Turnover relative to the historical solution is{" "}
                 {pct(sc.min_cvar_reoptimised["turnover_vs_historical_%"].block_boot, 2)}{" "}
                 for the block bootstrap,{" "}
                 {pct(sc.min_cvar_reoptimised["turnover_vs_historical_%"].student_t, 2)}{" "}
                 for the fitted Student-t and{" "}
                 {pct(sc.min_cvar_reoptimised["turnover_vs_historical_%"].student_t_df3, 2)}{" "}
-                under deliberately fatter df=3 tails. All four sets produce almost
-                the same portfolio.
+                for the stress set with 3 degrees of freedom.
               </>
             }
           />
           <p>
-            The answer barely moves, which suggests it comes from the structure of
-            the assets rather than from the particular days that happened to
-            occur. That matters, because most portfolio optimisers are very
-            sensitive to their inputs: a small change to an expected return can
-            swing a weight by twenty points. This one isn&apos;t.
+            The solution changes little across scenario sets, which indicates that
+            it is determined mainly by the structure of the assets rather than by
+            the particular days in the sample. Mean-variance solutions, by
+            contrast, are known to be highly sensitive to small changes in
+            expected returns.
           </p>
 
           <Note>
             <strong className="font-semibold text-ink">
-              What neither method can do.
+              Limitations of both generators.
             </strong>{" "}
-            The bootstrap cannot invent events absent from history, so its worst
-            possible day is the worst day that actually happened,{" "}
-            {pct(sc.scenario_set_properties.historical["worst_single_obs_%"])},
-            identical across the historical and bootstrap sets. And the Student-t
-            badly understates crisis correlation. An elliptical distribution
-            generates tail events by scaling every asset with one shared factor,
-            which makes moves bigger but not more aligned in direction, so they
-            partly cancel inside a portfolio. It produces a world where
-            diversification keeps working during a crash. In most real crises
-            correlations rise instead, which is why the next section replays real
-            ones.
+            The bootstrap cannot produce a loss larger than the largest historical
+            loss; the worst single-asset daily return is{" "}
+            {pct(sc.scenario_set_properties.historical["worst_single_obs_%"])} in
+            both the historical and bootstrap sets. The Student-t understates the
+            rise in correlation during crises. An elliptical distribution
+            generates extreme observations by scaling all assets by a common
+            factor, which increases their magnitude without aligning their signs,
+            so diversification continues to work in its tails. Longin and Solnik
+            (2001) find that correlations between equity markets rise in bear
+            markets. The next section therefore uses historical crises directly.
           </Note>
         </Section>
 
         {/* ---------------- 09 crisis ---------------- */}
-        <Section id="crisis" index={9} title="The 2008 replay, and what it corrected">
+        <Section id="crisis" index={9} title="Crisis replay and the currency effect">
           <p>
-            The walk-forward window contains COVID and a rate-hiking cycle but no
-            credit crisis, and the Student-t can&apos;t produce contagion. So
-            I replayed real episodes back to 2007 through the fitted portfolios,
-            holding the weights fixed and feeding them the returns that actually
-            occurred.
+            The out-of-sample period contains COVID-19 and a tightening cycle but
+            no credit crisis, and the Student-t generator cannot reproduce crisis
+            correlation. The full-sample weights were therefore applied, unchanged,
+            to the realised returns of historical episodes back to 2007.
           </p>
 
           <CrisisReplay data={crisisRows} />
 
           <p>
-            The 2008 window runs from {gfc.start}, just before Lehman failed, to
-            the market bottom on {gfc.end}. Three series
-            didn&apos;t exist yet. The Nifty ETF is proxied by the Nifty 50 index,
-            and GOLDBEES by GLD converted to rupees. There is no sensible proxy for
-            Bitcoin, so two bounds are reported instead of one invented number. Min CVaR and min variance hold no Bitcoin at all, so
-            switching between the two bounds does not move them by a basis point,
-            while it moves Max Sharpe by around twelve percentage points. The
-            toggle above the chart switches between them.
+            The 2008 window runs from {gfc.start}, shortly before the failure of
+            Lehman Brothers, to the market low on {gfc.end}. Three series did not
+            exist for the whole window. The Nifty ETF is replaced by the Nifty 50
+            index and GOLDBEES by GLD converted to rupees. Bitcoin did not exist,
+            and no proxy is defensible, so two bounds are shown: Bitcoin removed,
+            and Bitcoin returning three times the S&amp;P 500. Minimum CVaR and
+            minimum variance hold no Bitcoin and are unaffected; the assumption
+            changes the maximum-Sharpe result by about 12 percentage points. The
+            control above the chart switches between the bounds.
           </p>
 
           <Note>
-            <strong className="font-semibold text-ink">The correction.</strong> I
-            expected 2008 to show correlations spiking toward 1, the way the
-            textbook says. Measured in rupees they went the other way:{" "}
-            {num(gfc.contagion_corr, 3)}, against a normal level of about 0.22
-            for the same assets. The decomposition explains it. Contagion did
-            spike in 2008 in dollar terms, to {num(lehman?.avg_corr_USD ?? 0, 3)}.
-            But the rupee fell {num(lehman?.["rupee_move_%"] ?? 0, 1)}% at the
-            same time, which lifted every unhedged foreign holding measured in
-            rupees just as Indian equity fell. COVID is the control, since the rupee
-            moved too little to hedge anything, and correlation duly rose to{" "}
-            {num(covid.contagion_corr, 3)}, with rupee and dollar terms nearly
-            identical.
+            <strong className="font-semibold text-ink">
+              Correlation in 2008, in rupees and in dollars.
+            </strong>{" "}
+            Average pairwise correlation in rupee terms during the 2008 window was{" "}
+            {num(gfc.contagion_corr, 3)}, below its normal level of about 0.22 for
+            the same assets rather than above it. A separate decomposition of the
+            same window gives {num(lehman?.avg_corr_INR ?? 0, 3)} in rupees and{" "}
+            {num(lehman?.avg_corr_USD ?? 0, 3)} in dollars. The rupee depreciated by{" "}
+            {num(lehman?.["rupee_move_%"] ?? 0, 1)}% over the same period, raising
+            the rupee value of unhedged foreign holdings as Indian equity fell.
+            COVID-19 provides a comparison: the rupee moved too little to offset
+            asset returns, and correlation rose to {num(covid.contagion_corr, 3)},
+            with similar values in both currencies.
           </Note>
           <p>
-            So the rule I would actually use is not &ldquo;correlations go to 1 in
-            a crisis&rdquo;. It is that{" "}
+            These episodes suggest a qualified rule for a rupee-based portfolio
+            with unhedged foreign assets:{" "}
             <V>
-              for a rupee book holding unhedged foreign assets, contagion is muted
-              in global crises that crash the rupee, and undiluted in crises that
-              do not.
+              correlations are dampened in global crises accompanied by a large
+              rupee depreciation, and are not dampened otherwise.
             </V>{" "}
-            The currency isn&apos;t just a reporting convention. It behaves like a
-            position, and in 2008 it happened to be a hedge. Without doing the
-            conversion properly I would have misjudged how much protection the
-            portfolio really had.
+            The exchange rate acts as a position in the portfolio, and in 2008 it
+            acted as a hedge.
           </p>
         </Section>
 
         {/* ---------------- 10 limits ---------------- */}
-        <Section id="limits" index={10} title="Limitations, and what comes next">
+        <Section id="limits" index={10} title="Limitations and further work">
           <Bullets
             items={[
-              <><V>No credit crisis inside the fit window.</V> Neither of the two shocks it does contain is a 2008-style event, where the correlations underpinning every one of these strategies stop working at once. More history buys tail sample size, not a new category of risk.</>,
-              <><V>Regime blending.</V> The window mixes a zero-rate era, a pandemic crash and a hiking cycle into one covariance matrix and one tail sample, which assumes a single stable regime that never existed. Bitcoin&apos;s 2015 behaviour and its 2025 behaviour are barely the same asset.</>,
-              <><V>The tail sample is small.</V> CVaR 95% averages the worst 5% of days, so every tail claim rests on about {Math.round(port.meta.n_days * 0.05)} observations. That is far noisier than the volatility estimate, and CVaR 99% would rest on roughly {Math.round(port.meta.n_days * 0.01)} days, which I would not trust.</>,
-              <><V>Survivorship.</V> All twelve assets still exist. Picking them today is a selection made with hindsight.</>,
-              <><V>The Bitcoin proxy for 2008 is invented.</V> The 3x S&amp;P assumption is mine. The two bounds differ by about twelve percentage points for Max Sharpe, so it materially changes that row.</>,
-              <><V>Min CVaR&apos;s 2008 win leans on the rupee.</V> A crisis that left the currency alone would look materially worse, and I have not tested one.</>,
-              <><V>Cross-market correlations are a lower bound.</V> The NSE closes 15:30 IST and the NYSE closes 01:30 IST the following morning, so a US close stamped Monday happened ten hours after the Indian close stamped Monday. Same-day cross-market correlations are biased downward, which means the optimiser sees slightly more diversification than really exists.</>,
-              <><V>Lookback length and rebalance frequency were chosen, not validated.</V> {bt.meta.train_window} days and quarterly are conventional and defensible, but I picked them knowing how this data behaves. Searching them for the best result would reintroduce look-ahead bias one level up, and the proper fix is a third holdout period this project doesn&apos;t have.</>,
-              <><V>Costs are idealised.</V> {bt.meta.cost_bps_per_traded_notional} bps ignores market impact on large orders, Indian capital gains tax, and the fact that nobody actually gets filled at the closing prices this trades at.</>,
+              <><V>No credit crisis in the estimation window.</V> Neither shock in the window is comparable to 2008. A longer sample adds tail observations but not a different kind of event.</>,
+              <><V>Regime mixing.</V> Near-zero rates, a pandemic and a tightening cycle are combined in one covariance matrix and tail sample. Bitcoin&apos;s return distribution in 2015 and in 2025 differs substantially.</>,
+              <><V>Small tail sample.</V> CVaR at 95% averages about {Math.round(port.meta.n_days * 0.05)} observations, which makes it much noisier than a volatility estimate. CVaR at 99% would average about {Math.round(port.meta.n_days * 0.01)}.</>,
+              <><V>Survivorship.</V> All twelve assets exist today and were selected with that knowledge.</>,
+              <><V>Bitcoin in 2008.</V> The three-times-S&amp;P assumption is arbitrary, and the two bounds differ by about 12 percentage points for maximum Sharpe.</>,
+              <><V>Exchange-rate dependence.</V> Minimum CVaR&apos;s 2008 result depends on the rupee depreciation. A crisis without one would produce a worse outcome and has not been tested.</>,
+              <><V>Asynchronous closes.</V> The NSE closes at 15:30 IST and the NYSE at 01:30 IST the next day, so same-date closes are about ten hours apart and cross-market correlations are biased towards zero.</>,
+              <><V>Parameters chosen, not validated.</V> The {bt.meta.train_window}-day window and quarterly rebalancing are conventional choices made with knowledge of the data. Selecting them by backtest performance would require a further holdout period.</>,
+              <><V>Costs.</V> {bt.meta.cost_bps_per_traded_notional} bps per unit traded excludes the market impact of large orders and Indian capital gains tax, and assumes execution at closing prices.</>,
             ]}
           />
-          <Sub>What I would add next</Sub>
+          <Sub>Further work</Sub>
           <p>
-            Copula models with explicit tail dependence, to fix the gap both
-            scenario methods share: a copula can make assets move together in the
-            tail independently of how they move the rest of the time.
-            Regime-switching, so the covariance matrix isn&apos;t an average of
-            incompatible periods. A rupee-neutral crisis scenario, since min
-            CVaR&apos;s best result currently depends on a currency move going its
-            way. And CVaR at several confidence levels rather than only 95%, to
-            see how much of the answer depends on that one cut-off.
+            Copula models with explicit tail dependence, which can raise
+            correlation in the tails independently of the marginal distributions.
+            Regime-switching models, so that covariance and tail estimates
+            condition on the market state. A currency-neutral crisis scenario, to
+            measure the minimum-CVaR portfolio&apos;s crisis performance without a
+            rupee depreciation. And CVaR at several confidence levels, to test
+            how far the results depend on the 95% level.
           </p>
           <p className="text-[13px] text-ink-dim">
-            Built with Python, yfinance, pandas, NumPy, SciPy and CVXPY on the
+            Built with Python, yfinance, pandas, NumPy, SciPy and CVXPY with the
             CLARABEL solver. Prices from Yahoo Finance, adjusted for splits and
             dividends. This is a student project and not investment advice.
           </p>
@@ -914,6 +871,14 @@ export default function CvarStudy() {
         <nav className="-mx-2 flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-line pt-4 text-[13px]">
           <a href="#top" className="inline-flex min-h-11 cursor-pointer items-center rounded-lg px-2 text-ink-muted transition-colors duration-200 hover:bg-surface-2 hover:text-ink">
             Back to the top
+          </a>
+          <a
+            href={`${META.repo}/blob/master/docs/REPORT.md`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-11 cursor-pointer items-center rounded-lg px-2 text-ink-muted transition-colors duration-200 hover:bg-surface-2 hover:text-ink"
+          >
+            Full report
           </a>
           <a
             href={META.repo}

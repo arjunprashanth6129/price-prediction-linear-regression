@@ -215,7 +215,7 @@ export function PairMechanism({
 
   return (
     <Frame
-      title={`${short(example.y)} against ${example.beta.toFixed(2)} x ${short(example.x)}: ${example.trades.length} trades, ${nRev} reverted, ${nStop} stopped out`}
+      title={`${short(example.y)} against ${example.beta.toFixed(2)} x ${short(example.x)}: ${example.trades.length} trades, ${nRev} converged, ${nStop} stopped out`}
       height={330}
       legend={
         <Key
@@ -332,7 +332,7 @@ export function PairMechanism({
 /* 2. Where the money came from: gross P&L by exit, then costs          */
 /* ------------------------------------------------------------------ */
 const EXIT_LABEL: Record<ExitRow["reason"], string> = {
-  reverted: "Reverted",
+  reverted: "Converged",
   stop: "Stopped",
   timeout: "Timed out",
   window_end: "Window end",
@@ -377,18 +377,18 @@ export function ExitWaterfall({ exits }: { exits: ExitRow[] }) {
 
   return (
     <Frame
-      title="Gross P&L by how each trade ended, then costs (₹ thousands)"
+      title="Gross P&L by exit type, then costs (₹ thousands)"
       height={300}
       legend={
         <Key
           items={[
-            { label: "added", colour: BLUE, kind: "block" },
-            { label: "took away", colour: AMBER, kind: "block" },
+            { label: "positive contribution", colour: BLUE, kind: "block" },
+            { label: "negative contribution", colour: AMBER, kind: "block" },
             { label: "running total", colour: SLATE, kind: "block" },
           ]}
         />
       }
-      caption="Read top to bottom: each bar starts where the one above it ended. All trades, on ₹1 lakh of gross notional per pair."
+      caption="Each bar begins where the bar above it ends. All trades, on ₹1 lakh of gross notional per position."
     >
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
@@ -483,7 +483,7 @@ export function EquityChart({
             ]}
           />
         }
-        caption="Every day was traded with parameters fixed before it began. The gap between the lines is the cumulative cost of every round trip."
+        caption="All parameters were fixed before each trading period began. The vertical gap between the two series is the cumulative transaction cost."
       >
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={data} margin={{ top: 6, right: 8, bottom: 4, left: -8 }}>
@@ -537,7 +537,7 @@ export function EquityChart({
       <Frame
         title={`Drawdown after costs, worst ${Math.min(...dd.map((r) => r.dd)).toFixed(1)}%`}
         height={190}
-        caption="Depth below the running peak of the after-cost line."
+        caption="Percentage decline of the after-cost series from its running maximum."
       >
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={dd} margin={{ top: 6, right: 8, bottom: 4, left: -8 }}>
@@ -690,7 +690,7 @@ export function CostChart({
           ]}
         />
       }
-      caption="The same trades re-priced at each cost level. The trades do not change, because the signal never sees costs."
+      caption="The same trades repriced at each cost level. The trades are unchanged because the signal does not depend on costs."
     >
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={data} margin={{ top: 8, right: 10, bottom: 18, left: -8 }}>

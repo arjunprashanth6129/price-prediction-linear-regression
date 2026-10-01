@@ -53,18 +53,18 @@ export default function Home() {
               Quant Research Desk
             </h1>
             <p className="mt-6 text-[17.5px] leading-[1.7] text-ink-muted">
-              Two research studies and one applied system. The first asks
-              whether the momentum signals retail traders watch can forecast
-              tomorrow&apos;s return across the Indian market. The second builds
-              a portfolio around the worst days rather than the average one. The
-              third trades pairs of Indian banks chosen by a cointegration test
-              and checks whether they keep reverting on data the test never saw.
+              Two research studies and one applied system on Indian and global
+              markets. The first tests whether moving-average features predict
+              next-day returns for 98 NSE stocks. The second compares five
+              portfolio construction rules, including minimum CVaR, in and out of
+              sample. The third evaluates a cointegration-based pairs-trading
+              strategy on Indian bank stocks in a walk-forward backtest.
             </p>
             <p className="mt-4 text-[15.5px] leading-[1.7] text-ink-dim">
-              Each has its own repository, its own fixed dataset, and a pipeline
-              that reproduces every figure shown here. The benchmark and the
-              metric were chosen before the score in every case, which is the
-              only reason the results are worth reading.
+              Each project has its own repository, a fixed dataset and a pipeline
+              that reproduces every figure shown here. In each case the
+              benchmarks and evaluation metrics were fixed before any model was
+              estimated.
             </p>
           </header>
         </Reveal>
@@ -145,17 +145,17 @@ export default function Home() {
             </h2>
             <div className="mt-4 space-y-4 text-[15px] leading-[1.75] text-ink-muted">
               <p>
-                They approach the same problem from opposite ends. The first
-                tries to forecast a return and fails, which is the expected
-                outcome and the reason the second one does not try. The CVaR
-                optimiser makes no directional forecast at all: it takes the
-                distribution of what has already happened and asks only how to
-                arrange twelve assets so the worst days hurt less.
+                The first two studies approach portfolio decisions from opposite
+                directions. The regression study attempts a return forecast and
+                finds no predictive ability, which is consistent with weak-form
+                market efficiency. The CVaR study makes no return forecast: it
+                uses the historical distribution of returns to choose weights that
+                reduce the expected loss on the worst days.
               </p>
               <p>
-                That turns out to be a more answerable question, though not a
-                free one. Min CVaR delivered the shallowest drawdown of any
-                strategy on data it had never seen,{" "}
+                That objective proved achievable out of sample. Minimum CVaR had
+                the smallest maximum drawdown of the five rules in the
+                walk-forward test,{" "}
                 <span className="tnum font-semibold text-ink">
                   <CountUp
                     value={cv.shallowestDrawdown.value}
@@ -171,13 +171,16 @@ export default function Home() {
                     suffix="%"
                   />
                 </span>{" "}
-                for an equally weighted book, and it made money through the 2008
-                crash. It also finished second-to-last on return, because
-                minimising tail risk means holding safe, low-returning assets.
+                for the equally weighted portfolio, and a positive return in the
+                2008 replay. Its return was the second lowest of the five, because
+                minimising tail risk concentrates the portfolio in low-volatility,
+                low-return assets.
               </p>
               <p>
-                Both studies end in the same place. The honest answer is smaller
-                than the one you hoped for, and worth more.
+                The pairs-trading system tests a third approach, relative-value
+                trading, and finds that its gross return is not distinguishable
+                from zero once its pairs are evaluated on data not used to select
+                them.
               </p>
             </div>
           </section>

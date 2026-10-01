@@ -177,8 +177,9 @@ export default function Hyperplane3D({ data, weights }: Props) {
   if (failed) {
     return (
       <div className="grid h-[350px] w-full place-items-center rounded-lg border border-dashed border-line-strong bg-ink-900 px-6 text-center text-[13px] text-fg-dim sm:h-[500px]">
-        The 3D view could not load. The same finding is in the coefficient
-        charts below - the plane is flat because the weights are near zero.
+        The 3D view could not load. The coefficient charts below show the same
+        result: the plane is close to flat because the coefficients are close
+        to zero.
       </div>
     );
   }

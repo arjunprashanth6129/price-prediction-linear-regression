@@ -50,7 +50,7 @@ export const STRATEGY_SPEC: Record<Strategy, { optimises: string; inputs: string
     inputs: "covariance and expected returns",
   },
   risk_parity: { optimises: "equal risk contribution", inputs: "covariance" },
-  min_cvar: { optimises: "CVaR 95% of daily loss", inputs: "the raw return sample" },
+  min_cvar: { optimises: "CVaR 95% of daily loss", inputs: "the historical return sample" },
 };
 
 export const ASSET_SHORT: Record<string, string> = {

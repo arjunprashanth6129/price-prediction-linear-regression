@@ -428,10 +428,10 @@ export function Frontier({
           height={300}
           caption={
             <>
-              The {curve.length} rings are the frontier portfolios, each one a
-              separate optimisation. No portfolio of these assets can sit above or
-              left of the curve. All five named strategies are in the bottom-left
-              corner, magnified on the right.
+              Each of the {curve.length} rings is a separately optimised frontier
+              portfolio. No long-only portfolio of these assets lies above or to
+              the left of the curve. The five rules lie in the lower-left region,
+              magnified on the right.
             </>
           }
         >
@@ -443,9 +443,9 @@ export function Frontier({
           height={300}
           caption={
             <>
-              Min variance and min CVaR land 0.006 points apart on CVaR, so their
-              diamonds nearly overlap; min variance is drawn larger so it stays
-              visible. Hover any mark for its numbers, or click it to load its
+              Minimum variance and minimum CVaR are 0.006 percentage points apart
+              in CVaR, so their markers nearly coincide; minimum variance is drawn
+              larger so that both are visible. Select a marker to show its
               weights below.
             </>
           }
@@ -730,11 +730,10 @@ export function EquityCurves({
         height={314}
         caption={
           <>
-            Weights are re-optimised every quarter on the trailing 500 days only,
-            then held; between rebalances they drift with the market. The dotted
-            line is the Nifty bought and held, for contrast. Min CVaR is the
-            lowest line here and the flattest below, which is the trade-off it
-            was built for.
+            Weights are re-estimated each quarter on the trailing 500 days and
+            held until the next rebalance, drifting with returns in between. The
+            dotted line is the Nifty ETF held throughout. Minimum CVaR has the
+            lowest growth and the shallowest drawdown.
           </>
         }
         lead={<SeriesLegend keys={keys} labels={labels} />}
@@ -815,8 +814,9 @@ export function EquityCurves({
         height={280}
         caption={
           <>
-            Max Sharpe&apos;s 2022 trough reaches 34.36%, deeper than the Nifty it
-            was meant to improve on. Min CVaR never exceeds 12.19%.
+            Maximum Sharpe&apos;s deepest drawdown, in 2022, is 34.36%, close to
+            the Nifty ETF&apos;s 36.34%. Minimum CVaR&apos;s does not exceed
+            12.19%.
           </>
         }
       >
@@ -927,10 +927,10 @@ export function SharpeShift({
       }
       caption={
         <>
-          The upper bar in each pair is the fitted score, the lower coloured one is
-          what the strategy actually earned on data it had never seen. Four
-          strategies improve. Max Sharpe is the only one that falls, and the only
-          one of the five that needs expected returns as an input.
+          The upper bar in each pair is the in-sample Sharpe ratio and the lower
+          bar the out-of-sample ratio, net of costs. Four rules improve out of
+          sample. Maximum Sharpe, the only rule that estimates expected returns,
+          is the only one that falls.
         </>
       }
     >
@@ -1050,15 +1050,15 @@ export function TailProfile({ data }: { data: TailRow[] }) {
   return (
     <div className="my-6 grid gap-4 lg:grid-cols-2">
       <Figure
-        title="VaR stops where CVaR starts looking"
+        title="VaR 95% and CVaR 95% by asset"
         height={360}
         caption={
           <>
-            The hollow mark is VaR 95%, the threshold. The filled mark is CVaR
-            95%, the average loss beyond it. Sorted by CVaR, mildest tail first.
-            The axis is logarithmic, so the length of each segment is that
-            asset&apos;s CVaR/VaR ratio: gold in rupees at 1.71x draws visibly
-            longer than US long treasuries at 1.38x.
+            The hollow marker is VaR 95% and the filled marker CVaR 95%, the
+            expected loss beyond it, sorted by CVaR. On the logarithmic axis each
+            segment&apos;s length is proportional to the logarithm of the
+            CVaR/VaR ratio, so Indian gold (1.71) is longer than US long-term
+            Treasuries (1.38).
           </>
         }
       >
@@ -1160,14 +1160,14 @@ export function TailProfile({ data }: { data: TailRow[] }) {
       </Figure>
 
       <Figure
-        title="A bell curve understates every tail here"
+        title="Realised CVaR relative to a normal distribution"
         height={360}
         caption={
           <>
-            Realised CVaR divided by the CVaR a normal distribution predicts.
-            Every one of the twelve sits to the right of 1.00, so the bell curve
-            under-predicts the tail in every case, by 1.18x for the Nifty and
-            1.16x for Bitcoin. Variance can&apos;t see any of this.
+            Realised CVaR divided by the CVaR of a normal distribution with the
+            same mean and variance. All twelve ratios exceed 1, so a normal
+            distribution understates the loss tail of every asset; the largest
+            ratio is 1.18, for the Nifty ETF.
           </>
         }
       >
@@ -1308,7 +1308,7 @@ export function CrisisReplay({ data }: { data: CrisisRow[] }) {
 
   return (
     <Figure
-      title="Crisis replay, real episodes through the fitted portfolios"
+      title="Crisis replay: full-sample weights applied to historical episodes"
       height={286}
       lead={
         <div
@@ -1335,11 +1335,12 @@ export function CrisisReplay({ data }: { data: CrisisRow[] }) {
       }
       caption={
         <>
-          Bitcoin did not exist in 2008 and there is no sensible proxy, so two
-          bounds are reported: dropped and renormalised, or assumed to move at
-          three times the S&amp;P. Min CVaR and min variance hold no Bitcoin, so
-          switching between the first two measures does not move them at all.
-          Those two share an axis, so the difference you see is the assumption.
+          Bitcoin did not exist in 2008 and no proxy is defensible, so two bounds
+          are shown: Bitcoin removed with the other weights renormalised, and
+          Bitcoin returning three times the S&amp;P 500. Minimum CVaR and minimum
+          variance hold no Bitcoin and are identical under both. The first two
+          measures share an axis, so any difference between them is due to the
+          assumption.
         </>
       }
     >

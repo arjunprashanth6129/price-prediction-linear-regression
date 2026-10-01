@@ -136,8 +136,9 @@ export function R2Histogram({
           <strong className="font-semibold text-ink">
             {aboveZero} of {total}
           </strong>{" "}
-          stocks achieved R² above zero. Everything left of the marked line
-          predicted next-day returns worse than simply guessing the average.
+          stocks have an out-of-sample R² above zero. Values left of the marked
+          line indicate a larger squared error than a constant forecast equal to
+          the test-period mean.
         </>
       }
     >
@@ -252,9 +253,10 @@ export function AccuracyScatter({
           <>
             <span className="text-accent">{above} stocks above baseline</span>
             {" · "}
-            <span className="text-[#b45309]">{below} stocks below baseline</span>. Any
-            dot under the diagonal is a stock where always guessing “up” beat the
-            model. Click a dot for that stock&apos;s full metrics.
+            <span className="text-[#b45309]">{below} stocks below baseline</span>.
+            Points below the diagonal are stocks for which the always-up rule was
+            more accurate than the model. Select a point for that stock&apos;s
+            full results.
           </>
         }
       >
@@ -459,11 +461,11 @@ export function MaRatioSigns({
       height={280}
       caption={
         <>
-          {share}% of fits lean one way, with golden cross territory nudging the
-          prediction {leaning}, and the rest lean the other. A signal with real
-          information would point the same way for most stocks and earn a
-          meaningful weight. This one splits, and its average weight is near
-          zero.
+          In {share}% of fits the golden-cross state moves the forecast{" "}
+          {leaning}; in the rest it moves it the other way. A feature with common
+          directional information would have the same sign for most stocks and a
+          coefficient large enough to change the forecast. The mean coefficient
+          here is close to zero.
         </>
       }
     >
@@ -565,10 +567,10 @@ export function PriceFit({ data, span }: { data: FitPoint[]; span: string }) {
       height={320}
       caption={
         <>
-          This chart looks like success. The prediction tracks the real price so
-          closely that the two lines are hard to separate, but it tells you
-          little, because the model is mostly handing yesterday&apos;s price back
-          to you. The table above is what settles it.
+          The forecast tracks the realised close because it is close to the
+          previous close, and prices change little from day to day. The table
+          above shows that the random-walk forecast is more accurate on every
+          measure.
         </>
       }
     >
@@ -675,11 +677,10 @@ export function ReturnFit({
       height={320}
       caption={
         <>
-          The orange line predicts almost exactly zero, every day. The model
-          isn&apos;t broken, it just has nothing to work with. When the features
-          carry no reliable signal, the best a linear fit can do is return the
-          average of what it was trained on, and the average daily move of a
-          stock is approximately nothing.
+          The forecast (orange) is close to zero on every day. When the
+          regressors are uninformative, least squares estimates coefficients
+          near zero and the forecast converges to the training mean of the
+          target, which for a daily return is close to zero.
         </>
       }
     >
@@ -889,12 +890,11 @@ export function ResidualPlot({
       height={290}
       caption={
         <>
-          A residual is what the model missed by: actual minus predicted. A
-          model with real signal leaves small residuals scattered evenly around
-          zero with no shape to them. These span the entire range of daily
-          moves, because the prediction was near zero every day, so the errors
-          are essentially the returns themselves. Lay this over the raw return
-          series and you would struggle to tell them apart.
+          A residual is the realised value minus the forecast. Because the
+          forecast is close to zero on every day, the residuals are
+          approximately the realised returns and span their full range. A model
+          with predictive ability would leave residuals smaller than the
+          returns.
         </>
       }
     >
@@ -1088,10 +1088,11 @@ export function EdgeRanked({
           <strong className="font-semibold text-ink">
             {negative} of {total}
           </strong>{" "}
-          stocks showed negative edge. Most of the positive bars don&apos;t survive
-          significance testing at this sample size: with about {avgTestDays} test
-          days per stock, anything inside roughly {noiseBand.toFixed(1)} points
-          either way is within what chance produces.
+          stocks have a zero or negative edge. The shaded band is two standard
+          errors of a single stock&apos;s accuracy (about {avgTestDays} test days,
+          ±{noiseBand.toFixed(1)} points). The edges are centred above zero because
+          the benchmark was weak in the test window, so the band understates how
+          many positive edges chance alone produces.
         </>
       }
     >
@@ -1192,11 +1193,10 @@ export function CapBreakdown({ data }: { data: CapRow[] }) {
       height={300}
       caption={
         <>
-          The hollow mark is the always-up baseline, the filled mark is the
-          model, and the segment between them is the edge. Small caps show the
-          largest edge, which is the direction the momentum literature predicts,
-          but their model accuracy is the same as the large caps. The whole
-          difference comes from a weaker small-cap baseline.
+          The hollow mark is the always-up benchmark, the filled mark is the
+          model and the segment between them is the edge. Small caps have the
+          largest edge but the same accuracy as large caps; the difference comes
+          from a lower small-cap benchmark.
         </>
       }
     >

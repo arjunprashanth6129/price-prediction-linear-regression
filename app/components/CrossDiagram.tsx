@@ -120,11 +120,9 @@ export default function CrossDiagram() {
         </g>
       </svg>
       <figcaption className="mt-3 text-[12px] leading-relaxed text-fg-dim">
-        Britannia, July-December 2019 - real closes, not an illustration. When
-        the fast average climbs above the slow one traders call it a golden
-        cross and read it as bullish; the reverse is a death cross. It is one of
-        the most cited signals in retail trading, which is exactly why it is
-        worth checking.
+        Britannia, July to December 2019, from daily closes. The 5-day average
+        crosses above the 20-day average (golden cross, read as a buy signal)
+        and later back below it (death cross, read as a sell signal).
       </figcaption>
     </figure>
   );
