@@ -10,11 +10,15 @@ export function Section({
   id,
   index,
   title,
+  summary,
   children,
 }: {
   id: string;
   index: number;
   title: string;
+  /** One or two sentences under the heading that state what the section
+   *  finds, so a reader skimming headings gets the argument. */
+  summary?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
@@ -28,6 +32,9 @@ export function Section({
             {title}
           </h2>
         </div>
+        {summary && (
+          <p className="mt-3 text-[17px] leading-[1.6] text-ink">{summary}</p>
+        )}
       </Reveal>
       <div className="mt-5 space-y-4 text-[15.5px] leading-[1.78] text-ink-muted">
         {children}

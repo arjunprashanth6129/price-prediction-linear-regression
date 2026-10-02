@@ -430,7 +430,7 @@ export default function PairsTrading() {
             over seven trades.
           </p>
           <p>
-            <V>January to June 2025.</V> Four of the five pairs selected on the
+            <V>January to June 2025.</V>{" "}Four of the five pairs selected on the
             2024 formation period had Kotak Mahindra Bank as a leg. On 21 January
             2025 three of them entered on the same day, each short Kotak against a
             public-sector bank, and all three were stopped out on 24 March for
@@ -450,7 +450,7 @@ export default function PairsTrading() {
           <p>
             The signal does not depend on costs, so the same trades can be
             repriced at any cost level. Costs are linear in the rate, so each
-            point on the curve is exact, and the value at {m.bps_per_leg} bps
+            point on the curve is exact, and the value at {m.bps_per_leg}{" "}bps
             equals the backtest&apos;s net result.
           </p>
           <CostChart rows={cost} assumed={m.bps_per_leg} breakEven={be} />
@@ -509,7 +509,7 @@ export default function PairsTrading() {
             holding period of one day.
           </p>
           <p>
-            The entry rule opened a position whenever |z| reached {m.entry_z}
+            The entry rule opened a position whenever |z| reached {m.entry_z}{" "}
             without checking whether it also exceeded the stop level of{" "}
             {m.stop_z}. When a spread moved beyond the stop, the strategy entered,
             was stopped out the next day and re-entered, for as long as the spread

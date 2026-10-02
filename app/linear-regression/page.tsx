@@ -191,8 +191,9 @@ export default function LinearRegressionStudy() {
               Do moving-average features predict next-day returns?
             </h1>
             <p className="mt-5 text-[17.5px] leading-[1.7] text-ink-muted">
-              A linear regression for each of {s.total} NSE stocks, evaluated
-              out of sample against benchmarks that use no model.
+              A linear regression was fitted to each of {s.total} NSE stocks and
+              tested on the final 16 months of data. It did no better than simple
+              benchmarks that use no model.
             </p>
 
             <div className="mt-7 rounded-xl border-l-2 border-accent bg-surface px-6 py-5">
@@ -248,7 +249,12 @@ export default function LinearRegressionStudy() {
         </Reveal>
 
         {/* ---------------- 01 question ---------------- */}
-        <Section id="question" index={1} title="Research question">
+        <Section
+          id="question"
+          index={1}
+          title="Research question"
+          summary="Does a linear model using four moving-average features predict the next day's return of an NSE stock better than benchmarks that use no model?"
+        >
           <p>
             Technical analysis assumes that the recent path of a price contains
             information about its next move, and moving-average rules are its
@@ -268,11 +274,9 @@ export default function LinearRegressionStudy() {
                 cross, is read as a sell signal.
               </p>
               <p>
-                The question is whether a linear model given only four standard
-                technical features predicts the sign and size of the next
-                day&apos;s return more accurately than benchmarks that use no
-                model. The null hypothesis is that the features carry no
-                information about that return.
+                The null hypothesis is that the four features carry no
+                information about the sign or size of the next day&apos;s
+                return.
               </p>
               <p>
                 The test covers {s.total} NSE stocks over seven years, with a
@@ -289,7 +293,12 @@ export default function LinearRegressionStudy() {
         </Section>
 
         {/* ---------------- 02 method ---------------- */}
-        <Section id="method" index={2} title="Data and method">
+        <Section
+          id="method"
+          index={2}
+          title="Data and method"
+          summary="One regression per stock on four price features, trained on the first 80% of each series and tested on the last 20%, with the benchmarks fixed in advance."
+        >
           <p>
             One ordinary least squares regression is estimated for each stock
             with scikit-learn. A linear specification has five parameters per
@@ -347,7 +356,7 @@ export default function LinearRegressionStudy() {
             The target is the next day&apos;s return, not its price. Daily prices
             are highly autocorrelated, so any forecast close to the previous close
             attains a high R² against the sample mean. On Reliance, a price model
-            scores <V>{ex.priceModel.r2.toFixed(2)}</V> and the random-walk
+            scores <V>{ex.priceModel.r2.toFixed(2)}</V>{" "}and the random-walk
             forecast (tomorrow&apos;s close equals today&apos;s) scores{" "}
             <V>{ex.naiveModel.r2.toFixed(2)}</V> with no estimation. A return
             target removes that component. Section 5 works through the example.
@@ -372,22 +381,23 @@ export default function LinearRegressionStudy() {
             accuracy.
           </p>
           <p>
-            <C>StandardScaler</C> is estimated on the training rows only and then
+            <C>StandardScaler</C>{" "}is estimated on the training rows only and then
             applied to both samples. Estimating it on the full series would pass
             the test sample&apos;s mean and variance into the training data.
           </p>
 
           <Sub>Evaluation</Sub>
+          <p>Each test sample is scored on three statistics.</p>
+          <Bullets
+            items={[
+              <><V>R².</V> Compares the model with a constant forecast equal to the test-sample mean (scikit-learn&apos;s r2_score). A negative value means the model&apos;s squared error is larger.</>,
+              <><V>Directional accuracy.</V> The share of days on which the predicted and realised returns have the same sign.</>,
+              <><V>Edge.</V> Directional accuracy minus the share of up days, which is the accuracy of a rule that always predicts a rise.</>,
+            ]}
+          />
           <p>
-            Three statistics are computed on each test sample. R² uses
-            scikit-learn&apos;s <C>r2_score</C>, which compares the model with a
-            constant forecast equal to the test-sample mean; a negative value
-            means the model&apos;s squared error is larger. Directional accuracy
-            is the share of days on which the predicted and realised returns have
-            the same sign. The edge is directional accuracy minus the share of up
-            days, which is the accuracy of a rule that always predicts a rise.
-            Each stock&apos;s accuracy is also tested against 50% with a two-sided
-            binomial test.
+            Each stock&apos;s accuracy is also tested against 50% with a
+            two-sided binomial test.
           </p>
 
           <Sub>The fitted surface</Sub>
@@ -421,7 +431,18 @@ export default function LinearRegressionStudy() {
         </Section>
 
         {/* ---------------- 03 findings ---------------- */}
-        <Section id="findings" index={3} title="Results">
+        <Section
+          id="findings"
+          index={3}
+          title="Results"
+          summary={
+            <>
+              Out of sample the mean R² is {s.avgR2.toFixed(4)} and directional
+              accuracy is {pctf(s.avgDirAccuracy)}. No stock is significantly
+              more accurate than 50%.
+            </>
+          }
+        >
           <Sub>Explained variance</Sub>
           <p>
             The mean out-of-sample R² across {s.total} stocks is{" "}
@@ -457,7 +478,7 @@ export default function LinearRegressionStudy() {
 
           <Sub>Statistical significance</Sub>
           <p>
-            With about {Math.round(s.avgTestDays)} test days per stock, the
+            With about {Math.round(s.avgTestDays)}{" "}test days per stock, the
             standard error of a single stock&apos;s accuracy under the null of 50%
             is about {pctf(se)}. In a two-sided binomial test at the 5% level,{" "}
             <V>{sigAbove}</V> stocks are significantly above 50% and {sigBelow}{" "}
@@ -516,7 +537,12 @@ export default function LinearRegressionStudy() {
         </Section>
 
         {/* ---------------- 04 size ---------------- */}
-        <Section id="size" index={4} title="Results by market capitalisation">
+        <Section
+          id="size"
+          index={4}
+          title="Results by market capitalisation"
+          summary="Small caps show the largest edge, but only because their benchmark was lower. Accuracy is similar in every band."
+        >
           <p>
             Momentum effects are documented to be stronger among smaller and less
             widely followed stocks. The {s.total} stocks were therefore divided
@@ -538,7 +564,19 @@ export default function LinearRegressionStudy() {
         </Section>
 
         {/* ---------------- 05 worked ---------------- */}
-        <Section id="worked" index={5} title="Level forecasts and the coefficient of determination">
+        <Section
+          id="worked"
+          index={5}
+          title="Level forecasts and the coefficient of determination"
+          summary={
+            <>
+              On Reliance, a model that predicts the price scores an R² of{" "}
+              {ex.priceModel.r2.toFixed(2)}{" "}yet loses to the forecast that
+              tomorrow&apos;s close equals today&apos;s. This is why the target
+              is a return.
+            </>
+          }
+        >
           <p>
             This section uses Reliance Industries to show why the target is a
             return. The model was estimated on{" "}
@@ -719,7 +757,12 @@ export default function LinearRegressionStudy() {
         </Section>
 
         {/* ---------------- 06 emh ---------------- */}
-        <Section id="emh" index={6} title="Discussion">
+        <Section
+          id="emh"
+          index={6}
+          title="Discussion"
+          summary="The result is consistent with weak-form market efficiency and does not contradict momentum research at longer horizons."
+        >
           <p>
             The results are consistent with the weak form of the efficient market
             hypothesis (Fama, 1970), under which current prices reflect the
@@ -744,7 +787,12 @@ export default function LinearRegressionStudy() {
         </Section>
 
         {/* ---------------- 07 meaning ---------------- */}
-        <Section id="meaning" index={7} title="Scope of the conclusion">
+        <Section
+          id="meaning"
+          index={7}
+          title="Scope of the conclusion"
+          summary="The finding applies to daily moving-average signals on these stocks in this period, and says nothing about investing on fundamentals."
+        >
           <p>
             The study rules out a one-day forecast built from these four
             price-history features with a linear model, on this universe and in
@@ -761,7 +809,12 @@ export default function LinearRegressionStudy() {
         </Section>
 
         {/* ---------------- 08 why ---------------- */}
-        <Section id="why" index={8} title="Motivation">
+        <Section
+          id="why"
+          index={8}
+          title="Motivation"
+          summary="Why I tested a technical trading signal against data, and what the project was meant to teach me about evaluating a model."
+        >
           <div className="space-y-4 rounded-xl border border-line bg-surface px-6 py-6 text-[15.5px] leading-[1.8]">
             <p>
               I started studying markets through an equity research programme at
@@ -780,7 +833,12 @@ export default function LinearRegressionStudy() {
         </Section>
 
         {/* ---------------- 09 limits ---------------- */}
-        <Section id="limits" index={9} title="Limitations and further work">
+        <Section
+          id="limits"
+          index={9}
+          title="Limitations and further work"
+          summary="What this study cannot rule out, and the tests that would extend it."
+        >
           <Sub>Limitations</Sub>
           <Bullets
             items={[

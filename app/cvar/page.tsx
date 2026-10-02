@@ -182,12 +182,14 @@ export default function CvarStudy() {
           <header>
             <p className="eyebrow">Research</p>
             <h1 className="mt-2 text-[34px] font-semibold leading-[1.1] tracking-tight text-ink sm:text-[44px]">
-              Minimum-CVaR portfolio construction for a rupee-based investor
+              Minimum CVaR had the smallest losses but not the best risk-adjusted
+              return
             </h1>
             <p className="mt-5 text-[17.5px] leading-[1.7] text-ink-muted">
-              Five allocation rules on twelve assets measured in rupees,
-              evaluated in sample, out of sample, on simulated scenarios and in
-              historical crises.
+              Five allocation rules on twelve assets measured in rupees, tested
+              out of sample, on simulated scenarios and in the 2008 crisis. Equal
+              weighting had the highest Sharpe ratio; minimum CVaR had the
+              smallest drawdown.
             </p>
 
             <div className="mt-7 rounded-xl border-l-2 border-accent bg-surface px-6 py-5">
@@ -244,7 +246,19 @@ export default function CvarStudy() {
         </Reveal>
 
         {/* ---------------- 01 findings ---------------- */}
-        <Section id="findings" index={1} title="Main result">
+        <Section
+          id="findings"
+          index={1}
+          title="Main result"
+          summary={
+            <>
+              Out of sample, equal weighting had the highest Sharpe ratio (
+              {num(head.bestSharpe.value, 3)}) and minimum CVaR the smallest
+              drawdown ({pct(head.shallowestDrawdown.value)}). The Sharpe
+              differences are not statistically significant.
+            </>
+          }
+        >
           <p>
             The minimum-CVaR rule was designed to reduce the expected loss on the
             worst 5% of days, and out of sample it did. It did not produce the
@@ -311,7 +325,12 @@ export default function CvarStudy() {
         </Section>
 
         {/* ---------------- 02 why cvar ---------------- */}
-        <Section id="why-cvar" index={2} title="Variance, VaR and CVaR">
+        <Section
+          id="why-cvar"
+          index={2}
+          title="Variance, VaR and CVaR"
+          summary="Why the study minimises CVaR, the expected loss on the worst 5% of days, rather than variance or VaR, and how that is solved as a linear program."
+        >
           <p>
             Mean-variance optimisation measures risk by variance, which has two
             limitations. It penalises gains and losses symmetrically, because
@@ -319,7 +338,7 @@ export default function CvarStudy() {
             And it is a complete description of risk only for normally
             distributed returns. These returns are not normal: excess kurtosis is{" "}
             {num(risk.normality.SPY.excess_kurt, 1)} for the S&amp;P 500 ETF and{" "}
-            {num(risk.normality["NIFTYBEES.NS"].excess_kurt, 1)} for the Nifty
+            {num(risk.normality["NIFTYBEES.NS"].excess_kurt, 1)}{" "}for the Nifty
             ETF. A normal distribution with the S&amp;P 500 ETF&apos;s mean and
             variance implies a worst day near -5% in this sample; the realised
             worst day was {pct(risk.normality.SPY["worst_day_%"])}.
@@ -366,7 +385,12 @@ export default function CvarStudy() {
         </Section>
 
         {/* ---------------- 03 tails ---------------- */}
-        <Section id="tails" index={3} title="Tail risk by asset">
+        <Section
+          id="tails"
+          index={3}
+          title="Tail risk by asset"
+          summary="Every asset loses more on its worst days than a normal distribution predicts, and the ranking by tail risk does not follow volatility."
+        >
           <p>
             The figure below plots VaR 95% (hollow marker) and CVaR 95% (filled
             marker) for each asset on a logarithmic axis. The gap between them is
@@ -439,7 +463,12 @@ export default function CvarStudy() {
         </Section>
 
         {/* ---------------- 04 universe ---------------- */}
-        <Section id="universe" index={4} title="Universe and currency conversion">
+        <Section
+          id="universe"
+          index={4}
+          title="Universe and currency conversion"
+          summary="Twelve assets across five classes, with dollar prices converted to rupees each day. The conversion turns out to decide the 2008 result."
+        >
           <p>
             The twelve assets span five classes chosen so that their large losses
             tend not to coincide. Seven are quoted in dollars and five in rupees.
@@ -472,14 +501,19 @@ export default function CvarStudy() {
             terms and {num(lehman?.avg_corr_USD ?? 0, 3)} in dollar terms, and the
             correlation between Indian and global assets was{" "}
             {num(lehman?.india_vs_global_corr_INR ?? 0, 3)} in rupees against{" "}
-            {num(lehman?.india_vs_global_corr_USD ?? 0, 3)} in dollars. An
+            {num(lehman?.india_vs_global_corr_USD ?? 0, 3)}{" "}in dollars. An
             analysis in dollars would have reached a different conclusion about
             the portfolio&apos;s crisis behaviour.
           </Note>
         </Section>
 
         {/* ---------------- 05 scoreboard ---------------- */}
-        <Section id="scoreboard" index={5} title="In-sample and out-of-sample results">
+        <Section
+          id="scoreboard"
+          index={5}
+          title="In-sample and out-of-sample results"
+          summary="Every rule except maximum Sharpe improved on unseen data. Equal weighting finished first, and maximum Sharpe had the deepest drawdown."
+        >
           <p>
             The five rules range from estimating expected returns and covariances
             (maximum Sharpe) to estimating nothing (equal weighting). Each was
@@ -633,7 +667,12 @@ export default function CvarStudy() {
         </Section>
 
         {/* ---------------- 06 frontier ---------------- */}
-        <Section id="frontier" index={6} title="The CVaR efficient frontier">
+        <Section
+          id="frontier"
+          index={6}
+          title="The CVaR efficient frontier"
+          summary="The lowest CVaR available at each level of expected return. Extra return is cheap at first and expensive near the top."
+        >
           <p>
             Each point on the curve is the minimum CVaR attainable subject to a
             lower bound on expected return. No long-only portfolio of the twelve
@@ -668,7 +707,18 @@ export default function CvarStudy() {
         </Section>
 
         {/* ---------------- 07 walk-forward ---------------- */}
-        <Section id="walkforward" index={7} title="Walk-forward backtest">
+        <Section
+          id="walkforward"
+          index={7}
+          title="Walk-forward backtest"
+          summary={
+            <>
+              Each rule is re-estimated every quarter on the trailing{" "}
+              {bt.meta.train_window} days only and charged trading costs, over{" "}
+              {bt.meta.n_rebalances} rebalances.
+            </>
+          }
+        >
           <p>
             In-sample statistics use the same data for estimation and evaluation:
             the optimiser already observes, for example, Bitcoin&apos;s rise and
@@ -695,7 +745,18 @@ export default function CvarStudy() {
         </Section>
 
         {/* ---------------- 08 allocations ---------------- */}
-        <Section id="allocations" index={8} title="Portfolio composition and scenario sensitivity">
+        <Section
+          id="allocations"
+          index={8}
+          title="Portfolio composition and scenario sensitivity"
+          summary={
+            <>
+              Minimum variance and minimum CVaR hold mostly US bonds, and the
+              minimum-CVaR weights change little across{" "}
+              {sc.meta.n_scenarios.toLocaleString("en-IN")} simulated scenarios.
+            </>
+          }
+        >
           <Allocations
             title="Weights estimated on the full sample"
             rows={allocRows}
@@ -732,8 +793,9 @@ export default function CvarStudy() {
             above that of a multivariate normal.
           </p>
           <p>
-            Sampling directly from the fitted t produced tails thinner than the
-            historical data. Maximum-likelihood estimation of a t distribution
+            Sampling directly from the fitted Student-t model produced tails
+            thinner than the historical data. Maximum-likelihood estimation of a
+            Student-t distribution
             attributes extreme observations to the heavy tail rather than to the
             scale matrix, and the fitted scale implied only{" "}
             {pct(tFit.fitted_vol_vs_sample_vol * 100, 1)} of the sample
@@ -787,7 +849,18 @@ export default function CvarStudy() {
         </Section>
 
         {/* ---------------- 09 crisis ---------------- */}
-        <Section id="crisis" index={9} title="Crisis replay and the currency effect">
+        <Section
+          id="crisis"
+          index={9}
+          title="Crisis replay and the currency effect"
+          summary={
+            <>
+              In the 2008 replay minimum CVaR gained {signed(head.gfc)} while
+              equal weighting lost {pct(Math.abs(head.gfcEqualWeight))}, mainly
+              because the falling rupee raised the value of its dollar bonds.
+            </>
+          }
+        >
           <p>
             The out-of-sample period contains COVID-19 and a tightening cycle but
             no credit crisis, and the Student-t generator cannot reproduce crisis
@@ -837,7 +910,13 @@ export default function CvarStudy() {
         </Section>
 
         {/* ---------------- 10 limits ---------------- */}
-        <Section id="limits" index={10} title="Limitations and further work">
+        <Section
+          id="limits"
+          index={10}
+          title="Limitations and further work"
+          summary="What this study cannot rule out, and the extensions that would test it further."
+        >
+          <Sub>Limitations</Sub>
           <Bullets
             items={[
               <><V>No credit crisis in the estimation window.</V> Neither shock in the window is comparable to 2008. A longer sample adds tail observations but not a different kind of event.</>,
@@ -852,15 +931,14 @@ export default function CvarStudy() {
             ]}
           />
           <Sub>Further work</Sub>
-          <p>
-            Copula models with explicit tail dependence, which can raise
-            correlation in the tails independently of the marginal distributions.
-            Regime-switching models, so that covariance and tail estimates
-            condition on the market state. A currency-neutral crisis scenario, to
-            measure the minimum-CVaR portfolio&apos;s crisis performance without a
-            rupee depreciation. And CVaR at several confidence levels, to test
-            how far the results depend on the 95% level.
-          </p>
+          <Bullets
+            items={[
+              <><V>Copula models.</V> Explicit tail dependence can raise correlation in the tails independently of the marginal distributions.</>,
+              <><V>Regime-switching models.</V> Covariance and tail estimates would condition on the market state.</>,
+              <><V>A currency-neutral crisis scenario.</V> Measures the minimum-CVaR portfolio&apos;s crisis performance without a rupee depreciation.</>,
+              <><V>Several confidence levels.</V> CVaR at levels other than 95%, to test how far the results depend on that choice.</>,
+            ]}
+          />
           <p className="text-[13px] text-ink-dim">
             Built with Python, yfinance, pandas, NumPy, SciPy and CVXPY with the
             CLARABEL solver. Prices from Yahoo Finance, adjusted for splits and
