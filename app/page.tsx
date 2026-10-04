@@ -120,13 +120,11 @@ export default function Home() {
               A backtest is a simulation of how a strategy would have performed in
               the past, and its result depends on whether the strategy was
               designed on the same data it is scored on. Performance measured on
-              the design data, in sample, is easy to inflate. Bailey, Borwein,
-              López de Prado and Zhu (2014) show that trying a modest number of
-              variations of a strategy is enough to produce an impressive backtest
-              by chance, and Harvey, Liu and Zhu (2016) argue that, for related
-              reasons, most claimed findings in empirical finance are likely to be
-              false. Only performance on data the strategy has not seen says
-              anything useful about the future.
+              the design data, in sample, is easy to inflate. A strategy can be
+              adjusted until it fits the particular history it was built on, and
+              the more variations are tried, the more likely it becomes that one
+              of them looks impressive by chance alone. Only performance on data
+              the strategy has not seen says anything useful about the future.
             </p>
             <p className="mt-4 text-[16px] leading-[1.75] text-ink-muted">
               Each project on this site takes a common idea in quantitative
@@ -234,10 +232,10 @@ export default function Home() {
               <p>
                 The one method that estimated only risk did what it was designed
                 to do. The minimum-CVaR portfolio limited its worst drawdown out of
-                sample and through 2008, at the cost of a lower return. DeMiguel,
-                Garlappi and Uppal (2009) reach a similar conclusion across many
-                datasets: expected returns are estimated so imprecisely that the
-                error usually outweighs the benefit of optimising on them.
+                sample and through 2008, at the cost of a lower return. The likely
+                reason is that expected returns are estimated far less precisely
+                than risk, so the error in a return forecast usually outweighs the
+                benefit of optimising on it.
               </p>
             </div>
           </section>
