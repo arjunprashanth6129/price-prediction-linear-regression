@@ -182,8 +182,8 @@ export default function Sidebar({ sections = [] }: { sections?: Section[] }) {
       )}
 
       <div className="mt-auto border-t border-line px-5 py-4 text-[11.5px] leading-relaxed text-ink-dim">
-        Two studies, each with its own repository, fixed dataset and reproducible
-        pipeline.
+        Three projects, each with its own repository, fixed dataset and
+        reproducible pipeline.
       </div>
     </div>
   );
