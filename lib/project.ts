@@ -25,6 +25,8 @@ export interface ProjectMeta {
   blurb: string;
   /** The repository that owns the analysis. */
   repo: string;
+  /** The paper, served by this site so it opens without a GitHub account. */
+  paper: string;
 }
 
 export const PROJECTS: ProjectMeta[] = [
@@ -35,6 +37,7 @@ export const PROJECTS: ProjectMeta[] = [
     blurb:
       "A test of whether moving-average features predict next-day returns, using one linear regression per stock for 98 NSE stocks, evaluated out of sample.",
     repo: "https://github.com/arjunprashanth6129/price-prediction-linear-regression",
+    paper: "/papers/moving-average-signals.pdf",
   },
   {
     href: "/cvar",
@@ -43,6 +46,7 @@ export const PROJECTS: ProjectMeta[] = [
     blurb:
       "Five portfolio construction rules, including minimum CVaR, on twelve assets measured in rupees, evaluated in sample, out of sample and in historical crises.",
     repo: "https://github.com/arjunprashanth6129/cvar-portfolio-optimizer",
+    paper: "/papers/min-cvar-portfolios.pdf",
   },
   {
     href: "/pairs-trading",
@@ -51,6 +55,7 @@ export const PROJECTS: ProjectMeta[] = [
     blurb:
       "A walk-forward evaluation of cointegration-based pairs trading in eleven Indian bank stocks, with parameters fixed on rolling formation periods and costs charged on every leg.",
     repo: "https://github.com/arjunprashanth6129/pairs-trading-backtester",
+    paper: "/papers/pairs-trading-indian-banks.pdf",
   },
 ];
 

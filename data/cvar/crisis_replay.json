@@ -1,1 +1,612 @@
-{"episodes":{"GFC_full_2007_09":{"label":"GFC peak-to-trough","start":"2007-10-10","end":"2009-03-09","n_days":280,"contagion_corr":0.14187550613286606,"proxies_used":{"NIFTYBEES.NS":"proxy:^NSEI","RELIANCE.NS":"actual","HDFCBANK.NS":"actual","INFY.NS":"actual","GOLDBEES.NS":"proxy:GLD_INR","GLD":"actual","SPY":"actual","VT":"proxy:SPY","EEM":"actual","TLT":"actual","AGG":"actual","BTC-USD":"missing:drop"},"portfolios":{"equal_weight":{"episode_return_%":-20.1477574745,"ret_beta3_%":-30.134205924,"max_drawdown_%":29.6592387583,"dd_beta3_%":35.9506574112,"worst_day_%":-5.128912189,"BTC_wt_%":8.3333,"n_days":280.0},"risk_parity":{"episode_return_%":-6.1376336714,"ret_beta3_%":-10.3129320123,"max_drawdown_%":19.4741950901,"dd_beta3_%":21.8661126229,"worst_day_%":-3.7070944316,"BTC_wt_%":2.7067,"n_days":280.0},"max_sharpe":{"episode_return_%":1.3050583087,"ret_beta3_%":-19.0942220252,"max_drawdown_%":22.5493255255,"dd_beta3_%":30.3237346506,"worst_day_%":-5.8193483641,"BTC_wt_%":12.4891,"n_days":280.0},"min_variance":{"episode_return_%":11.5491453239,"ret_beta3_%":11.5491453239,"max_drawdown_%":8.8046710488,"dd_beta3_%":8.8046710488,"worst_day_%":-2.5511629196,"BTC_wt_%":0.0,"n_days":280.0},"min_cvar":{"episode_return_%":14.6800349713,"ret_beta3_%":14.6800349713,"max_drawdown_%":7.4285697765,"dd_beta3_%":7.4285697765,"worst_day_%":-2.2352232073,"BTC_wt_%":0.0,"n_days":280.0}}},"GFC_lehman_2008":{"label":"Lehman -> bottom","start":"2008-09-05","end":"2009-03-09","n_days":104,"contagion_corr":0.15850510835696363,"proxies_used":{"NIFTYBEES.NS":"proxy:^NSEI","RELIANCE.NS":"actual","HDFCBANK.NS":"actual","INFY.NS":"actual","GOLDBEES.NS":"proxy:GLD_INR","GLD":"actual","SPY":"actual","VT":"actual","EEM":"actual","TLT":"actual","AGG":"actual","BTC-USD":"missing:drop"},"portfolios":{"equal_weight":{"episode_return_%":-18.4521738544,"ret_beta3_%":-25.33157098,"max_drawdown_%":24.7656028448,"dd_beta3_%":30.4071081589,"worst_day_%":-4.7331011805,"BTC_wt_%":8.3333,"n_days":104.0},"risk_parity":{"episode_return_%":-9.0647166107,"ret_beta3_%":-11.7283303426,"max_drawdown_%":16.474550313,"dd_beta3_%":18.4830232575,"worst_day_%":-3.6083133194,"BTC_wt_%":2.7067,"n_days":104.0},"max_sharpe":{"episode_return_%":-8.2362753837,"ret_beta3_%":-20.4106757271,"max_drawdown_%":22.5493255255,"dd_beta3_%":30.3129526474,"worst_day_%":-5.8193483641,"BTC_wt_%":12.4891,"n_days":104.0},"min_variance":{"episode_return_%":2.9620378525,"ret_beta3_%":2.9620378525,"max_drawdown_%":8.1869013747,"dd_beta3_%":8.1869013747,"worst_day_%":-2.5511629196,"BTC_wt_%":0.0,"n_days":104.0},"min_cvar":{"episode_return_%":5.130821504,"ret_beta3_%":5.130821504,"max_drawdown_%":7.4285697765,"dd_beta3_%":7.4285697765,"worst_day_%":-2.2352232073,"BTC_wt_%":0.0,"n_days":104.0}}},"GFC_worstmonth":{"label":"worst month of 2008","start":"2008-09-30","end":"2008-10-27","n_days":16,"contagion_corr":0.17189387464562744,"proxies_used":{"NIFTYBEES.NS":"proxy:^NSEI","RELIANCE.NS":"actual","HDFCBANK.NS":"actual","INFY.NS":"actual","GOLDBEES.NS":"proxy:GLD_INR","GLD":"actual","SPY":"actual","VT":"actual","EEM":"actual","TLT":"actual","AGG":"actual","BTC-USD":"missing:drop"},"portfolios":{"max_sharpe":{"episode_return_%":-11.5847366847,"ret_beta3_%":-12.818544239,"max_drawdown_%":14.8449730604,"dd_beta3_%":17.5530294347,"worst_day_%":-5.0299291952,"BTC_wt_%":12.4891,"n_days":16.0},"equal_weight":{"episode_return_%":-11.4559483854,"ret_beta3_%":-12.4751979991,"max_drawdown_%":14.8064214042,"dd_beta3_%":16.7604112465,"worst_day_%":-4.7331011805,"BTC_wt_%":8.3333,"n_days":16.0},"risk_parity":{"episode_return_%":-8.0910095094,"ret_beta3_%":-8.4631348421,"max_drawdown_%":11.1153488495,"dd_beta3_%":11.7957529212,"worst_day_%":-3.4417644083,"BTC_wt_%":2.7067,"n_days":16.0},"min_variance":{"episode_return_%":-2.8061433396,"ret_beta3_%":-2.8061433396,"max_drawdown_%":6.1934844741,"dd_beta3_%":6.1934844741,"worst_day_%":-2.5511629196,"BTC_wt_%":0.0,"n_days":16.0},"min_cvar":{"episode_return_%":-1.7039517515,"ret_beta3_%":-1.7039517515,"max_drawdown_%":5.3598404354,"dd_beta3_%":5.3598404354,"worst_day_%":-2.2352232073,"BTC_wt_%":0.0,"n_days":16.0}}},"euro_crisis_2011":{"label":"US downgrade / euro","start":"2011-07-25","end":"2011-10-03","n_days":44,"contagion_corr":0.14298944826310023,"proxies_used":{"NIFTYBEES.NS":"actual","RELIANCE.NS":"actual","HDFCBANK.NS":"actual","INFY.NS":"actual","GOLDBEES.NS":"actual","GLD":"actual","SPY":"actual","VT":"actual","EEM":"actual","TLT":"actual","AGG":"actual","BTC-USD":"missing:drop"},"portfolios":{"equal_weight":{"episode_return_%":-1.7957506903,"ret_beta3_%":-3.2710829289,"max_drawdown_%":5.8314499708,"dd_beta3_%":9.2067336233,"worst_day_%":-2.464888608,"BTC_wt_%":8.3333,"n_days":44.0},"max_sharpe":{"episode_return_%":1.0004086841,"ret_beta3_%":-1.5376641211,"max_drawdown_%":6.3208167851,"dd_beta3_%":7.8693905461,"worst_day_%":-2.4699797805,"BTC_wt_%":12.4891,"n_days":44.0},"risk_parity":{"episode_return_%":3.0223117058,"ret_beta3_%":2.4296401392,"max_drawdown_%":2.4995995293,"dd_beta3_%":3.7256091583,"worst_day_%":-1.495103496,"BTC_wt_%":2.7067,"n_days":44.0},"min_variance":{"episode_return_%":6.1926230674,"ret_beta3_%":6.1926230674,"max_drawdown_%":1.6970768961,"dd_beta3_%":1.6970768961,"worst_day_%":-1.3736212686,"BTC_wt_%":0.0,"n_days":44.0},"min_cvar":{"episode_return_%":7.0958806031,"ret_beta3_%":7.0958806031,"max_drawdown_%":1.8286680906,"dd_beta3_%":1.8286680906,"worst_day_%":-1.3434995355,"BTC_wt_%":0.0,"n_days":44.0}}},"taper_tantrum_2013":{"label":"taper tantrum (INR)","start":"2013-05-23","end":"2013-08-30","n_days":64,"contagion_corr":0.36530312777253854,"proxies_used":{"NIFTYBEES.NS":"actual","RELIANCE.NS":"actual","HDFCBANK.NS":"actual","INFY.NS":"actual","GOLDBEES.NS":"actual","GLD":"actual","SPY":"actual","VT":"actual","EEM":"actual","TLT":"actual","AGG":"actual","BTC-USD":"missing:drop"},"portfolios":{"equal_weight":{"episode_return_%":12.0186672195,"ret_beta3_%":16.49649681,"max_drawdown_%":3.5259712935,"dd_beta3_%":3.9387570513,"worst_day_%":-3.2475132949,"BTC_wt_%":8.3333,"n_days":64.0},"min_variance":{"episode_return_%":12.7332663131,"ret_beta3_%":12.7332663131,"max_drawdown_%":1.9425183442,"dd_beta3_%":1.9425183442,"worst_day_%":-1.5931940214,"BTC_wt_%":0.0,"n_days":64.0},"max_sharpe":{"episode_return_%":12.8796779611,"ret_beta3_%":19.6173252315,"max_drawdown_%":5.0425712165,"dd_beta3_%":4.4824276788,"worst_day_%":-3.5349929056,"BTC_wt_%":12.4891,"n_days":64.0},"risk_parity":{"episode_return_%":13.006159169,"ret_beta3_%":14.4353335822,"max_drawdown_%":3.2029654652,"dd_beta3_%":3.3344484511,"worst_day_%":-2.8830000328,"BTC_wt_%":2.7067,"n_days":64.0},"min_cvar":{"episode_return_%":13.6535613332,"ret_beta3_%":13.6535613332,"max_drawdown_%":1.8463621206,"dd_beta3_%":1.8463621206,"worst_day_%":-1.5212953099,"BTC_wt_%":0.0,"n_days":64.0}}},"covid_2020":{"label":"COVID crash [in-sample]","start":"2020-02-20","end":"2020-03-20","n_days":15,"contagion_corr":0.36401773997286735,"proxies_used":{"NIFTYBEES.NS":"actual","RELIANCE.NS":"actual","HDFCBANK.NS":"actual","INFY.NS":"actual","GOLDBEES.NS":"actual","GLD":"actual","SPY":"actual","VT":"actual","EEM":"actual","TLT":"actual","AGG":"actual","BTC-USD":"actual"},"portfolios":{"equal_weight":{"episode_return_%":-7.437201467,"ret_beta3_%":-7.437201467,"max_drawdown_%":11.2964077333,"dd_beta3_%":11.2964077333,"worst_day_%":-8.4883225524,"BTC_wt_%":8.3333,"n_days":15.0},"max_sharpe":{"episode_return_%":-6.7282320453,"ret_beta3_%":-6.7282320453,"max_drawdown_%":11.77075457,"dd_beta3_%":11.77075457,"worst_day_%":-8.5813711368,"BTC_wt_%":12.4891,"n_days":15.0},"risk_parity":{"episode_return_%":-4.8193900085,"ret_beta3_%":-4.8193900085,"max_drawdown_%":8.5240303183,"dd_beta3_%":8.5240303183,"worst_day_%":-5.5676300686,"BTC_wt_%":2.7067,"n_days":15.0},"min_variance":{"episode_return_%":-2.5767377154,"ret_beta3_%":-2.5767377154,"max_drawdown_%":7.4547615709,"dd_beta3_%":7.4547615709,"worst_day_%":-3.8101451354,"BTC_wt_%":0.0,"n_days":15.0},"min_cvar":{"episode_return_%":-1.8734471588,"ret_beta3_%":-1.8734471588,"max_drawdown_%":7.3510406582,"dd_beta3_%":7.3510406582,"worst_day_%":-3.8694125132,"BTC_wt_%":0.0,"n_days":15.0}}},"rates_2022":{"label":"rate shock [in-sample]","start":"2022-01-04","end":"2022-10-14","n_days":142,"contagion_corr":0.19446351843531715,"proxies_used":{"NIFTYBEES.NS":"actual","RELIANCE.NS":"actual","HDFCBANK.NS":"actual","INFY.NS":"actual","GOLDBEES.NS":"actual","GLD":"actual","SPY":"actual","VT":"actual","EEM":"actual","TLT":"actual","AGG":"actual","BTC-USD":"actual"},"portfolios":{"max_sharpe":{"episode_return_%":-4.5535819267,"ret_beta3_%":-4.5535819267,"max_drawdown_%":9.1662761548,"dd_beta3_%":9.1662761548,"worst_day_%":-2.1331398109,"BTC_wt_%":12.4891,"n_days":142.0},"equal_weight":{"episode_return_%":-4.5518676195,"ret_beta3_%":-4.5518676195,"max_drawdown_%":10.3472812331,"dd_beta3_%":10.3472812331,"worst_day_%":-2.0654505414,"BTC_wt_%":8.3333,"n_days":142.0},"risk_parity":{"episode_return_%":-0.3154608169,"ret_beta3_%":-0.3154608169,"max_drawdown_%":6.6411630678,"dd_beta3_%":6.6411630678,"worst_day_%":-1.5751818516,"BTC_wt_%":2.7067,"n_days":142.0},"min_cvar":{"episode_return_%":3.6445061538,"ret_beta3_%":3.6445061538,"max_drawdown_%":3.7724075318,"dd_beta3_%":3.7724075318,"worst_day_%":-1.1619623115,"BTC_wt_%":0.0,"n_days":142.0},"min_variance":{"episode_return_%":3.8758576468,"ret_beta3_%":3.8758576468,"max_drawdown_%":3.6878228513,"dd_beta3_%":3.6878228513,"worst_day_%":-1.1131335897,"BTC_wt_%":0.0,"n_days":142.0}}}},"proxies":{},"meta":{"btc_modes":["drop","beta3"],"proxy_validation":{"^NSEI~NIFTYBEES_daily_corr":0.9711,"GLDxUSDINR~GOLDBEES_daily_corr":0.2945}},"headline":{"equal_weight":{"GFC_drop_%":-18.4521738544,"GFC_beta3_%":-25.33157098,"COVID_%":-7.437201467,"OOS_maxDD_%":-21.7199940276},"risk_parity":{"GFC_drop_%":-9.0647166107,"GFC_beta3_%":-11.7283303426,"COVID_%":-4.8193900085,"OOS_maxDD_%":-17.2773962679},"max_sharpe":{"GFC_drop_%":-8.2362753837,"GFC_beta3_%":-20.4106757271,"COVID_%":-6.7282320453,"OOS_maxDD_%":-34.3615923724},"min_variance":{"GFC_drop_%":2.9620378525,"GFC_beta3_%":2.9620378525,"COVID_%":-2.5767377154,"OOS_maxDD_%":-12.7219835159},"min_cvar":{"GFC_drop_%":5.130821504,"GFC_beta3_%":5.130821504,"COVID_%":-1.8734471588,"OOS_maxDD_%":-12.1933337791}},"currency_effect_lehman":{"usdinr_start":43.97,"usdinr_end":51.79,"rupee_move_%":17.8,"avg_corr_INR":0.178,"avg_corr_USD":0.254,"india_vs_global_corr_INR":0.082,"india_vs_global_corr_USD":0.214,"note":"rupee depreciation hedged the INR book during the GFC"}}
+{
+  "episodes": {
+    "GFC_full_2007_09": {
+      "label": "GFC peak-to-trough",
+      "start": "2007-10-10",
+      "end": "2009-03-09",
+      "n_days": 280,
+      "contagion_corr": 0.14187550613286606,
+      "currency": {
+        "usdinr_start": 39.15,
+        "usdinr_end": 51.79,
+        "rupee_move_%": 32.3,
+        "avg_corr_INR": 0.142,
+        "avg_corr_USD": 0.213,
+        "india_vs_global_corr_INR": 0.038,
+        "india_vs_global_corr_USD": 0.179,
+        "n_assets": 11
+      },
+      "proxies_used": {
+        "NIFTYBEES.NS": "proxy:^NSEI",
+        "RELIANCE.NS": "actual",
+        "HDFCBANK.NS": "actual",
+        "INFY.NS": "actual",
+        "GOLDBEES.NS": "proxy:GLD_INR",
+        "GLD": "actual",
+        "SPY": "actual",
+        "VT": "proxy:SPY",
+        "EEM": "actual",
+        "TLT": "actual",
+        "AGG": "actual",
+        "BTC-USD": "missing:drop"
+      },
+      "portfolios": {
+        "equal_weight": {
+          "episode_return_%": -20.1477574745,
+          "ret_beta3_%": -30.134205924,
+          "max_drawdown_%": 29.6592387583,
+          "dd_beta3_%": 35.9506574112,
+          "worst_day_%": -5.128912189,
+          "BTC_wt_%": 8.3333,
+          "n_days": 280.0
+        },
+        "risk_parity": {
+          "episode_return_%": -6.1376336714,
+          "ret_beta3_%": -10.3129320123,
+          "max_drawdown_%": 19.4741950901,
+          "dd_beta3_%": 21.8661126229,
+          "worst_day_%": -3.7070944316,
+          "BTC_wt_%": 2.7067,
+          "n_days": 280.0
+        },
+        "max_sharpe": {
+          "episode_return_%": 1.3050583087,
+          "ret_beta3_%": -19.0942220252,
+          "max_drawdown_%": 22.5493255255,
+          "dd_beta3_%": 30.3237346506,
+          "worst_day_%": -5.8193483641,
+          "BTC_wt_%": 12.4891,
+          "n_days": 280.0
+        },
+        "min_variance": {
+          "episode_return_%": 11.5491453239,
+          "ret_beta3_%": 11.5491453239,
+          "max_drawdown_%": 8.8046710488,
+          "dd_beta3_%": 8.8046710488,
+          "worst_day_%": -2.5511629196,
+          "BTC_wt_%": 0.0,
+          "n_days": 280.0
+        },
+        "min_cvar": {
+          "episode_return_%": 14.6800349713,
+          "ret_beta3_%": 14.6800349713,
+          "max_drawdown_%": 7.4285697765,
+          "dd_beta3_%": 7.4285697765,
+          "worst_day_%": -2.2352232073,
+          "BTC_wt_%": 0.0,
+          "n_days": 280.0
+        }
+      }
+    },
+    "GFC_lehman_2008": {
+      "label": "Lehman -> bottom",
+      "start": "2008-09-05",
+      "end": "2009-03-09",
+      "n_days": 104,
+      "contagion_corr": 0.15850510835696363,
+      "currency": {
+        "usdinr_start": 44.39,
+        "usdinr_end": 51.79,
+        "rupee_move_%": 16.7,
+        "avg_corr_INR": 0.159,
+        "avg_corr_USD": 0.254,
+        "india_vs_global_corr_INR": 0.082,
+        "india_vs_global_corr_USD": 0.24,
+        "n_assets": 11
+      },
+      "proxies_used": {
+        "NIFTYBEES.NS": "proxy:^NSEI",
+        "RELIANCE.NS": "actual",
+        "HDFCBANK.NS": "actual",
+        "INFY.NS": "actual",
+        "GOLDBEES.NS": "proxy:GLD_INR",
+        "GLD": "actual",
+        "SPY": "actual",
+        "VT": "actual",
+        "EEM": "actual",
+        "TLT": "actual",
+        "AGG": "actual",
+        "BTC-USD": "missing:drop"
+      },
+      "portfolios": {
+        "equal_weight": {
+          "episode_return_%": -18.4521738544,
+          "ret_beta3_%": -25.33157098,
+          "max_drawdown_%": 24.7656028448,
+          "dd_beta3_%": 30.4071081589,
+          "worst_day_%": -4.7331011805,
+          "BTC_wt_%": 8.3333,
+          "n_days": 104.0
+        },
+        "risk_parity": {
+          "episode_return_%": -9.0647166107,
+          "ret_beta3_%": -11.7283303426,
+          "max_drawdown_%": 16.474550313,
+          "dd_beta3_%": 18.4830232575,
+          "worst_day_%": -3.6083133194,
+          "BTC_wt_%": 2.7067,
+          "n_days": 104.0
+        },
+        "max_sharpe": {
+          "episode_return_%": -8.2362753837,
+          "ret_beta3_%": -20.4106757271,
+          "max_drawdown_%": 22.5493255255,
+          "dd_beta3_%": 30.3129526474,
+          "worst_day_%": -5.8193483641,
+          "BTC_wt_%": 12.4891,
+          "n_days": 104.0
+        },
+        "min_variance": {
+          "episode_return_%": 2.9620378525,
+          "ret_beta3_%": 2.9620378525,
+          "max_drawdown_%": 8.1869013747,
+          "dd_beta3_%": 8.1869013747,
+          "worst_day_%": -2.5511629196,
+          "BTC_wt_%": 0.0,
+          "n_days": 104.0
+        },
+        "min_cvar": {
+          "episode_return_%": 5.130821504,
+          "ret_beta3_%": 5.130821504,
+          "max_drawdown_%": 7.4285697765,
+          "dd_beta3_%": 7.4285697765,
+          "worst_day_%": -2.2352232073,
+          "BTC_wt_%": 0.0,
+          "n_days": 104.0
+        }
+      }
+    },
+    "GFC_worstmonth": {
+      "label": "worst month of 2008",
+      "start": "2008-09-30",
+      "end": "2008-10-27",
+      "n_days": 16,
+      "contagion_corr": 0.17189387464562744,
+      "currency": {
+        "usdinr_start": 46.49,
+        "usdinr_end": 49.72,
+        "rupee_move_%": 6.9,
+        "avg_corr_INR": 0.172,
+        "avg_corr_USD": 0.249,
+        "india_vs_global_corr_INR": 0.221,
+        "india_vs_global_corr_USD": 0.316,
+        "n_assets": 11
+      },
+      "proxies_used": {
+        "NIFTYBEES.NS": "proxy:^NSEI",
+        "RELIANCE.NS": "actual",
+        "HDFCBANK.NS": "actual",
+        "INFY.NS": "actual",
+        "GOLDBEES.NS": "proxy:GLD_INR",
+        "GLD": "actual",
+        "SPY": "actual",
+        "VT": "actual",
+        "EEM": "actual",
+        "TLT": "actual",
+        "AGG": "actual",
+        "BTC-USD": "missing:drop"
+      },
+      "portfolios": {
+        "max_sharpe": {
+          "episode_return_%": -11.5847366847,
+          "ret_beta3_%": -12.818544239,
+          "max_drawdown_%": 14.8449730604,
+          "dd_beta3_%": 17.5530294347,
+          "worst_day_%": -5.0299291952,
+          "BTC_wt_%": 12.4891,
+          "n_days": 16.0
+        },
+        "equal_weight": {
+          "episode_return_%": -11.4559483854,
+          "ret_beta3_%": -12.4751979991,
+          "max_drawdown_%": 14.8064214042,
+          "dd_beta3_%": 16.7604112465,
+          "worst_day_%": -4.7331011805,
+          "BTC_wt_%": 8.3333,
+          "n_days": 16.0
+        },
+        "risk_parity": {
+          "episode_return_%": -8.0910095094,
+          "ret_beta3_%": -8.4631348421,
+          "max_drawdown_%": 11.1153488495,
+          "dd_beta3_%": 11.7957529212,
+          "worst_day_%": -3.4417644083,
+          "BTC_wt_%": 2.7067,
+          "n_days": 16.0
+        },
+        "min_variance": {
+          "episode_return_%": -2.8061433396,
+          "ret_beta3_%": -2.8061433396,
+          "max_drawdown_%": 6.1934844741,
+          "dd_beta3_%": 6.1934844741,
+          "worst_day_%": -2.5511629196,
+          "BTC_wt_%": 0.0,
+          "n_days": 16.0
+        },
+        "min_cvar": {
+          "episode_return_%": -1.7039517515,
+          "ret_beta3_%": -1.7039517515,
+          "max_drawdown_%": 5.3598404354,
+          "dd_beta3_%": 5.3598404354,
+          "worst_day_%": -2.2352232073,
+          "BTC_wt_%": 0.0,
+          "n_days": 16.0
+        }
+      }
+    },
+    "euro_crisis_2011": {
+      "label": "US downgrade / euro",
+      "start": "2011-07-25",
+      "end": "2011-10-03",
+      "n_days": 44,
+      "contagion_corr": 0.14298944826310023,
+      "currency": {
+        "usdinr_start": 44.3,
+        "usdinr_end": 49.05,
+        "rupee_move_%": 10.7,
+        "avg_corr_INR": 0.143,
+        "avg_corr_USD": 0.15,
+        "india_vs_global_corr_INR": 0.079,
+        "india_vs_global_corr_USD": 0.131,
+        "n_assets": 11
+      },
+      "proxies_used": {
+        "NIFTYBEES.NS": "actual",
+        "RELIANCE.NS": "actual",
+        "HDFCBANK.NS": "actual",
+        "INFY.NS": "actual",
+        "GOLDBEES.NS": "actual",
+        "GLD": "actual",
+        "SPY": "actual",
+        "VT": "actual",
+        "EEM": "actual",
+        "TLT": "actual",
+        "AGG": "actual",
+        "BTC-USD": "missing:drop"
+      },
+      "portfolios": {
+        "equal_weight": {
+          "episode_return_%": -1.7957506903,
+          "ret_beta3_%": -3.2710829289,
+          "max_drawdown_%": 5.8314499708,
+          "dd_beta3_%": 9.2067336233,
+          "worst_day_%": -2.464888608,
+          "BTC_wt_%": 8.3333,
+          "n_days": 44.0
+        },
+        "max_sharpe": {
+          "episode_return_%": 1.0004086841,
+          "ret_beta3_%": -1.5376641211,
+          "max_drawdown_%": 6.3208167851,
+          "dd_beta3_%": 7.8693905461,
+          "worst_day_%": -2.4699797805,
+          "BTC_wt_%": 12.4891,
+          "n_days": 44.0
+        },
+        "risk_parity": {
+          "episode_return_%": 3.0223117058,
+          "ret_beta3_%": 2.4296401392,
+          "max_drawdown_%": 2.4995995293,
+          "dd_beta3_%": 3.7256091583,
+          "worst_day_%": -1.495103496,
+          "BTC_wt_%": 2.7067,
+          "n_days": 44.0
+        },
+        "min_variance": {
+          "episode_return_%": 6.1926230674,
+          "ret_beta3_%": 6.1926230674,
+          "max_drawdown_%": 1.6970768961,
+          "dd_beta3_%": 1.6970768961,
+          "worst_day_%": -1.3736212686,
+          "BTC_wt_%": 0.0,
+          "n_days": 44.0
+        },
+        "min_cvar": {
+          "episode_return_%": 7.0958806031,
+          "ret_beta3_%": 7.0958806031,
+          "max_drawdown_%": 1.8286680906,
+          "dd_beta3_%": 1.8286680906,
+          "worst_day_%": -1.3434995355,
+          "BTC_wt_%": 0.0,
+          "n_days": 44.0
+        }
+      }
+    },
+    "taper_tantrum_2013": {
+      "label": "taper tantrum (INR)",
+      "start": "2013-05-23",
+      "end": "2013-08-30",
+      "n_days": 64,
+      "contagion_corr": 0.36530312777253854,
+      "currency": {
+        "usdinr_start": 55.41,
+        "usdinr_end": 67.39,
+        "rupee_move_%": 21.6,
+        "avg_corr_INR": 0.365,
+        "avg_corr_USD": 0.279,
+        "india_vs_global_corr_INR": 0.236,
+        "india_vs_global_corr_USD": 0.193,
+        "n_assets": 11
+      },
+      "proxies_used": {
+        "NIFTYBEES.NS": "actual",
+        "RELIANCE.NS": "actual",
+        "HDFCBANK.NS": "actual",
+        "INFY.NS": "actual",
+        "GOLDBEES.NS": "actual",
+        "GLD": "actual",
+        "SPY": "actual",
+        "VT": "actual",
+        "EEM": "actual",
+        "TLT": "actual",
+        "AGG": "actual",
+        "BTC-USD": "missing:drop"
+      },
+      "portfolios": {
+        "equal_weight": {
+          "episode_return_%": 12.0186672195,
+          "ret_beta3_%": 16.49649681,
+          "max_drawdown_%": 3.5259712935,
+          "dd_beta3_%": 3.9387570513,
+          "worst_day_%": -3.2475132949,
+          "BTC_wt_%": 8.3333,
+          "n_days": 64.0
+        },
+        "min_variance": {
+          "episode_return_%": 12.7332663131,
+          "ret_beta3_%": 12.7332663131,
+          "max_drawdown_%": 1.9425183442,
+          "dd_beta3_%": 1.9425183442,
+          "worst_day_%": -1.5931940214,
+          "BTC_wt_%": 0.0,
+          "n_days": 64.0
+        },
+        "max_sharpe": {
+          "episode_return_%": 12.8796779611,
+          "ret_beta3_%": 19.6173252315,
+          "max_drawdown_%": 5.0425712165,
+          "dd_beta3_%": 4.4824276788,
+          "worst_day_%": -3.5349929056,
+          "BTC_wt_%": 12.4891,
+          "n_days": 64.0
+        },
+        "risk_parity": {
+          "episode_return_%": 13.006159169,
+          "ret_beta3_%": 14.4353335822,
+          "max_drawdown_%": 3.2029654652,
+          "dd_beta3_%": 3.3344484511,
+          "worst_day_%": -2.8830000328,
+          "BTC_wt_%": 2.7067,
+          "n_days": 64.0
+        },
+        "min_cvar": {
+          "episode_return_%": 13.6535613332,
+          "ret_beta3_%": 13.6535613332,
+          "max_drawdown_%": 1.8463621206,
+          "dd_beta3_%": 1.8463621206,
+          "worst_day_%": -1.5212953099,
+          "BTC_wt_%": 0.0,
+          "n_days": 64.0
+        }
+      }
+    },
+    "covid_2020": {
+      "label": "COVID crash [in-sample]",
+      "start": "2020-02-20",
+      "end": "2020-03-20",
+      "n_days": 15,
+      "contagion_corr": 0.36401773997286735,
+      "currency": {
+        "usdinr_start": 71.57,
+        "usdinr_end": 75.16,
+        "rupee_move_%": 5.0,
+        "avg_corr_INR": 0.364,
+        "avg_corr_USD": 0.325,
+        "india_vs_global_corr_INR": 0.426,
+        "india_vs_global_corr_USD": 0.387,
+        "n_assets": 12
+      },
+      "proxies_used": {
+        "NIFTYBEES.NS": "actual",
+        "RELIANCE.NS": "actual",
+        "HDFCBANK.NS": "actual",
+        "INFY.NS": "actual",
+        "GOLDBEES.NS": "actual",
+        "GLD": "actual",
+        "SPY": "actual",
+        "VT": "actual",
+        "EEM": "actual",
+        "TLT": "actual",
+        "AGG": "actual",
+        "BTC-USD": "actual"
+      },
+      "portfolios": {
+        "equal_weight": {
+          "episode_return_%": -7.437201467,
+          "ret_beta3_%": -7.437201467,
+          "max_drawdown_%": 11.2964077333,
+          "dd_beta3_%": 11.2964077333,
+          "worst_day_%": -8.4883225524,
+          "BTC_wt_%": 8.3333,
+          "n_days": 15.0
+        },
+        "max_sharpe": {
+          "episode_return_%": -6.7282320453,
+          "ret_beta3_%": -6.7282320453,
+          "max_drawdown_%": 11.77075457,
+          "dd_beta3_%": 11.77075457,
+          "worst_day_%": -8.5813711368,
+          "BTC_wt_%": 12.4891,
+          "n_days": 15.0
+        },
+        "risk_parity": {
+          "episode_return_%": -4.8193900085,
+          "ret_beta3_%": -4.8193900085,
+          "max_drawdown_%": 8.5240303183,
+          "dd_beta3_%": 8.5240303183,
+          "worst_day_%": -5.5676300686,
+          "BTC_wt_%": 2.7067,
+          "n_days": 15.0
+        },
+        "min_variance": {
+          "episode_return_%": -2.5767377154,
+          "ret_beta3_%": -2.5767377154,
+          "max_drawdown_%": 7.4547615709,
+          "dd_beta3_%": 7.4547615709,
+          "worst_day_%": -3.8101451354,
+          "BTC_wt_%": 0.0,
+          "n_days": 15.0
+        },
+        "min_cvar": {
+          "episode_return_%": -1.8734471588,
+          "ret_beta3_%": -1.8734471588,
+          "max_drawdown_%": 7.3510406582,
+          "dd_beta3_%": 7.3510406582,
+          "worst_day_%": -3.8694125132,
+          "BTC_wt_%": 0.0,
+          "n_days": 15.0
+        }
+      }
+    },
+    "rates_2022": {
+      "label": "rate shock [in-sample]",
+      "start": "2022-01-04",
+      "end": "2022-10-14",
+      "n_days": 142,
+      "contagion_corr": 0.19446351843531715,
+      "currency": {
+        "usdinr_start": 74.51,
+        "usdinr_end": 82.19,
+        "rupee_move_%": 10.3,
+        "avg_corr_INR": 0.194,
+        "avg_corr_USD": 0.201,
+        "india_vs_global_corr_INR": 0.045,
+        "india_vs_global_corr_USD": 0.074,
+        "n_assets": 12
+      },
+      "proxies_used": {
+        "NIFTYBEES.NS": "actual",
+        "RELIANCE.NS": "actual",
+        "HDFCBANK.NS": "actual",
+        "INFY.NS": "actual",
+        "GOLDBEES.NS": "actual",
+        "GLD": "actual",
+        "SPY": "actual",
+        "VT": "actual",
+        "EEM": "actual",
+        "TLT": "actual",
+        "AGG": "actual",
+        "BTC-USD": "actual"
+      },
+      "portfolios": {
+        "max_sharpe": {
+          "episode_return_%": -4.5535819267,
+          "ret_beta3_%": -4.5535819267,
+          "max_drawdown_%": 9.1662761548,
+          "dd_beta3_%": 9.1662761548,
+          "worst_day_%": -2.1331398109,
+          "BTC_wt_%": 12.4891,
+          "n_days": 142.0
+        },
+        "equal_weight": {
+          "episode_return_%": -4.5518676195,
+          "ret_beta3_%": -4.5518676195,
+          "max_drawdown_%": 10.3472812331,
+          "dd_beta3_%": 10.3472812331,
+          "worst_day_%": -2.0654505414,
+          "BTC_wt_%": 8.3333,
+          "n_days": 142.0
+        },
+        "risk_parity": {
+          "episode_return_%": -0.3154608169,
+          "ret_beta3_%": -0.3154608169,
+          "max_drawdown_%": 6.6411630678,
+          "dd_beta3_%": 6.6411630678,
+          "worst_day_%": -1.5751818516,
+          "BTC_wt_%": 2.7067,
+          "n_days": 142.0
+        },
+        "min_cvar": {
+          "episode_return_%": 3.6445061538,
+          "ret_beta3_%": 3.6445061538,
+          "max_drawdown_%": 3.7724075318,
+          "dd_beta3_%": 3.7724075318,
+          "worst_day_%": -1.1619623115,
+          "BTC_wt_%": 0.0,
+          "n_days": 142.0
+        },
+        "min_variance": {
+          "episode_return_%": 3.8758576468,
+          "ret_beta3_%": 3.8758576468,
+          "max_drawdown_%": 3.6878228513,
+          "dd_beta3_%": 3.6878228513,
+          "worst_day_%": -1.1131335897,
+          "BTC_wt_%": 0.0,
+          "n_days": 142.0
+        }
+      }
+    }
+  },
+  "proxies": {},
+  "meta": {
+    "btc_modes": [
+      "drop",
+      "beta3"
+    ],
+    "proxy_validation": {
+      "^NSEI~NIFTYBEES_daily_corr": 0.9711,
+      "GLDxUSDINR~GOLDBEES_daily_corr": 0.2945
+    }
+  },
+  "headline": {
+    "equal_weight": {
+      "GFC_drop_%": -18.4521738544,
+      "GFC_beta3_%": -25.33157098,
+      "COVID_%": -7.437201467,
+      "OOS_maxDD_%": -21.7199940276
+    },
+    "risk_parity": {
+      "GFC_drop_%": -9.0647166107,
+      "GFC_beta3_%": -11.7283303426,
+      "COVID_%": -4.8193900085,
+      "OOS_maxDD_%": -17.2773962679
+    },
+    "max_sharpe": {
+      "GFC_drop_%": -8.2362753837,
+      "GFC_beta3_%": -20.4106757271,
+      "COVID_%": -6.7282320453,
+      "OOS_maxDD_%": -34.3615923724
+    },
+    "min_variance": {
+      "GFC_drop_%": 2.9620378525,
+      "GFC_beta3_%": 2.9620378525,
+      "COVID_%": -2.5767377154,
+      "OOS_maxDD_%": -12.7219835159
+    },
+    "min_cvar": {
+      "GFC_drop_%": 5.130821504,
+      "GFC_beta3_%": 5.130821504,
+      "COVID_%": -1.8734471588,
+      "OOS_maxDD_%": -12.1933337791
+    }
+  },
+  "currency_effect_lehman": {
+    "usdinr_start": 44.39,
+    "usdinr_end": 51.79,
+    "rupee_move_%": 16.7,
+    "avg_corr_INR": 0.159,
+    "avg_corr_USD": 0.254,
+    "india_vs_global_corr_INR": 0.082,
+    "india_vs_global_corr_USD": 0.24,
+    "n_assets": 11,
+    "note": "rupee depreciation hedged the INR book during the GFC"
+  },
+  "contagion_baseline": {
+    "window": [
+      "2015-01-05",
+      "2026-08-14"
+    ],
+    "avg_corr_ex_btc": 0.199,
+    "avg_corr_all": 0.186
+  }
+}

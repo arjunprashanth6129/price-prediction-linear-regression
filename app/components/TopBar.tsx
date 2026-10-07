@@ -1,5 +1,5 @@
 import Sidebar, { type Section } from "./Sidebar";
-import { IconGitHub, IconExternal } from "./Icons";
+import { IconGitHub, IconExternal, IconPaper } from "./Icons";
 import { SITE } from "@/lib/project";
 
 /**
@@ -13,12 +13,15 @@ export default function TopBar({
   sections,
   repo,
   repoLabel = "Repository",
+  paper,
 }: {
   eyebrow?: string;
   title?: string;
   sections?: Section[];
   repo?: string;
   repoLabel?: string;
+  /** Path to the study's paper, shown as a button before the repository link. */
+  paper?: string;
 }) {
   /*
     The strip is solid rather than translucent over a backdrop blur.
@@ -44,11 +47,24 @@ export default function TopBar({
           )}
         </div>
 
+        {paper && (
+          <a
+            href={paper}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-auto flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-accent-line bg-accent-soft px-3 py-2 text-[12.5px] font-medium text-accent-strong transition-colors duration-200 hover:border-accent"
+          >
+            <IconPaper className="h-4 w-4" />
+            <span>
+              Paper<span className="hidden sm:inline"> (PDF)</span>
+            </span>
+          </a>
+        )}
         <a
           href={repo ?? SITE.github}
           target="_blank"
           rel="noopener noreferrer"
-          className="ml-auto flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-line bg-paper px-3 py-2 text-[12.5px] font-medium text-ink-muted transition-colors duration-200 hover:border-line-strong hover:bg-surface hover:text-ink"
+          className={`${paper ? "" : "ml-auto "}flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-line bg-paper px-3 py-2 text-[12.5px] font-medium text-ink-muted transition-colors duration-200 hover:border-line-strong hover:bg-surface hover:text-ink`}
         >
           <IconGitHub className="h-4 w-4" />
           <span className="hidden sm:inline">{repoLabel}</span>

@@ -5,9 +5,8 @@ NSE-listed stocks. One ordinary least squares regression is estimated per stock
 on daily closes from June 2019 to June 2026, with a chronological 80/20 split and
 benchmarks fixed before estimation.
 
-**Live report:** https://arjun-quant-projects.vercel.app/linear-regression
-&nbsp;·&nbsp;
-**Full write-up:** [the report](docs/REPORT.md)
+**Paper (PDF):** [Do Moving-Average Signals Predict Next-Day Returns?](https://arjun-quant-projects.vercel.app/papers/moving-average-signals.pdf)
+&nbsp;·&nbsp; **Interactive version:** https://arjun-quant-projects.vercel.app/linear-regression
 
 ---
 
@@ -37,8 +36,9 @@ next day's return.
 | Mean directional accuracy | 49.6% |
 | Mean always-up benchmark | 47.8% |
 | Mean edge over the benchmark | +1.85 pts |
-| Expected edge of a random forecast over the same benchmark | +2.2 pts |
+| Expected edge of a random forecast over the same benchmark | +2.22 pts |
 | Stocks with accuracy significantly above 50% (binomial test, 5%) | 0 |
+| Stocks with significant directional ability (Pesaran-Timmermann, 5%) | 5 of 97; 0 after a Benjamini-Hochberg correction |
 | Stocks for which `ma_ratio` has the largest coefficient | 0 |
 
 The positive edge over the always-up rule is a property of the test window, in
@@ -110,8 +110,10 @@ data/universe.json                 100 NSE tickers
   [6] 06_figures.py                every figure, from that JSON
 ```
 
-The site reads the JSON written by stages 4 and 5, so the report, the figures and
-the site use the same values.
+The site reads the JSON written by stages 4 and 5, and `paper/make_assets.py`
+re-estimates every model, checks the result against that JSON and generates every
+number, table and figure in the paper, so the paper, the figures and the site use
+the same values.
 
 ## Leakage controls
 
@@ -136,7 +138,7 @@ The choice of target matters for the same reason. A model of the next day's pric
 reaches an $R^2$ of 0.94 on Reliance, but the random-walk forecast
 $\hat P_{t+1} = P_t$ reaches 0.96 without estimation, because daily prices are
 highly autocorrelated. Predicting returns removes that component. Section 5 of the
-[report](docs/REPORT.md#5-level-forecasts-and-the-coefficient-of-determination)
+[paper](https://arjun-quant-projects.vercel.app/papers/moving-average-signals.pdf)
 works through the example.
 
 ## Selected figures
@@ -151,8 +153,8 @@ the return model's forecasts do not vary with the outcome.
 
 ![Parity plots for the price model and the return model](https://arjun-quant-projects.vercel.app/figures/parity-price-vs-return.png)
 
-The remaining figures are in [`docs/figures/`](docs/figures/) and in the
-[report](docs/REPORT.md).
+The remaining figures are in [`docs/figures/`](docs/figures/), and the paper
+redraws the main ones as vector figures.
 
 ## Outputs
 
@@ -192,8 +194,10 @@ data/
   cvar/, pairs/               exported results of the other two projects
 results/                      RESULTS.md, per-stock.csv, full_analysis.txt
 docs/figures/                 every figure
-docs/REPORT.md                the full write-up
+paper/                        the paper: LaTeX source, PDF, and make_assets.py,
+                              which generates its numbers, tables and figures
 public/figures/               copies of the figures served by the site
+public/papers/                PDFs of the three papers, served by the site
 app/                          Next.js App Router site
   linear-regression/          this study's page
   cvar/, pairs-trading/       the other two projects' pages
@@ -206,14 +210,15 @@ lib/
 
 ## Limitations
 
-The full list is in [section 7 of the report](docs/REPORT.md#7-limitations). The
-most important are:
+The full list is in section 7 of the
+[paper](https://arjun-quant-projects.vercel.app/papers/moving-average-signals.pdf).
+The most important are:
 
 - **Statistical power.** About 345 test days per stock gives a standard error of
   2.7 percentage points on a single stock's accuracy, too large to detect an
   effect of one point.
-- **One test window.** All stocks are evaluated on the same 16 months, so their
-  results are correlated.
+- **One test window.** All stocks are evaluated within the same 17 months
+  (February 2025 to June 2026), so their results are correlated.
 - **Linear specification.** Threshold or interaction effects would not be
   detected.
 - **Multicollinearity.** `ma_ratio` is a function of `ma5` and `ma20`, so its
@@ -229,7 +234,6 @@ most important are:
 - Non-price predictors such as earnings revisions.
 - Tree ensembles with walk-forward cross-validation.
 - A discrete crossing indicator in place of `ma_ratio`.
-- A Pesaran-Timmermann test of directional accuracy.
 
 ## Scope
 

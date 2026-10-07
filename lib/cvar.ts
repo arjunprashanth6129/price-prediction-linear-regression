@@ -249,6 +249,8 @@ interface CrisisFile {
       end: string;
       n_days: number;
       contagion_corr: number;
+      /** The same window measured in rupees and in dollars. */
+      currency: Record<string, number>;
       portfolios: Record<string, Record<string, number>>;
     }
   >;
@@ -262,6 +264,8 @@ interface CrisisFile {
     }
   >;
   currency_effect_lehman?: Record<string, number>;
+  /** Normal correlation level, measured the same way over the study period. */
+  contagion_baseline: { window: [string, string]; avg_corr_ex_btc: number; avg_corr_all: number };
 }
 
 const portfolios = portfoliosJson as unknown as PortfoliosFile;

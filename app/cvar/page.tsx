@@ -174,6 +174,7 @@ export default function CvarStudy() {
         title="CVaR portfolio optimiser"
         sections={SECTIONS}
         repo={META.repo}
+        paper={META.paper}
       />
 
       <main id="top" className="mx-auto w-full max-w-4xl px-5 py-12 sm:px-8">
@@ -293,7 +294,7 @@ export default function CvarStudy() {
             The Sharpe differences are not statistically significant. A
             Jobson-Korkie test with Memmel&apos;s correction, on daily excess
             returns over the 8.9-year out-of-sample period, gives p-values
-            between 0.08 and 0.26 for equal weighting against each optimised
+            between 0.09 and 0.27 for equal weighting against each optimised
             rule. The data are consistent with equal weighting performing at
             least as well as the optimised rules, but do not establish that it
             performs better.
@@ -340,7 +341,7 @@ export default function CvarStudy() {
             {num(risk.normality.SPY.excess_kurt, 1)} for the S&amp;P 500 ETF and{" "}
             {num(risk.normality["NIFTYBEES.NS"].excess_kurt, 1)}{" "}for the Nifty
             ETF. A normal distribution with the S&amp;P 500 ETF&apos;s mean and
-            variance implies a worst day near -5% in this sample; the realised
+            variance implies a worst day of about -4.1% in a sample of this length; the realised
             worst day was {pct(risk.normality.SPY["worst_day_%"])}.
           </p>
           <p>
@@ -494,12 +495,12 @@ export default function CvarStudy() {
             <strong className="font-semibold text-ink">
               The conversion determines the 2008 result.
             </strong>{" "}
-            During the 2008 crisis window the rupee depreciated by{" "}
-            {num(lehman?.["rupee_move_%"] ?? 0, 1)}%, raising the rupee value of
+            During the 2008 crisis window the dollar rose{" "}
+            {num(lehman?.["rupee_move_%"] ?? 0, 1)}% against the rupee, raising the rupee value of
             every unhedged dollar asset while Indian equity prices fell. Average
             pairwise correlation was {num(lehman?.avg_corr_INR ?? 0, 3)} in rupee
             terms and {num(lehman?.avg_corr_USD ?? 0, 3)} in dollar terms, and the
-            correlation between Indian and global assets was{" "}
+            correlation between Indian equity and the US-listed assets was{" "}
             {num(lehman?.india_vs_global_corr_INR ?? 0, 3)} in rupees against{" "}
             {num(lehman?.india_vs_global_corr_USD ?? 0, 3)}{" "}in dollars. An
             analysis in dollars would have reached a different conclusion about
@@ -558,7 +559,7 @@ export default function CvarStudy() {
                 divided by annualised volatility. Maximum Sharpe turns over{" "}
                 {pct(bt.metrics_net.max_sharpe["avg_turnover_%"], 1)} of the
                 portfolio per quarter and pays about 0.53 percentage points a year
-                in costs, against about 0.10 for the other rules.
+                in costs, against 0.10 to 0.16 for the other rules.
               </>
             }
           >
@@ -692,7 +693,7 @@ export default function CvarStudy() {
 
           <p>
             The marginal cost of expected return in CVaR rises along the curve.
-            Raising expected return from 9% to 18% increases CVaR by about 0.4
+            Raising expected return from 9% to 18% increases CVaR by about 0.45
             percentage points; the final segment costs several times as much per
             point of return. The highest-return point holds a single asset and
             has a maximum drawdown of {pct(Math.max(...curve.map((c) => c.dd)))}.
@@ -771,7 +772,7 @@ export default function CvarStudy() {
                 only rule with a material Bitcoin allocation; Bitcoin&apos;s low
                 correlation with Indian equity lets a small position add expected
                 return with little effect on variance. Risk parity holds less,
-                because Bitcoin&apos;s volatility is about five times the average
+                because Bitcoin&apos;s volatility is about 3.6 times the average
                 of the other assets and equal risk contribution requires a
                 correspondingly smaller weight.
               </>
@@ -887,15 +888,17 @@ export default function CvarStudy() {
               Correlation in 2008, in rupees and in dollars.
             </strong>{" "}
             Average pairwise correlation in rupee terms during the 2008 window was{" "}
-            {num(gfc.contagion_corr, 3)}, below its normal level of about 0.22 for
-            the same assets rather than above it. A separate decomposition of the
-            same window gives {num(lehman?.avg_corr_INR ?? 0, 3)} in rupees and{" "}
-            {num(lehman?.avg_corr_USD ?? 0, 3)} in dollars. The rupee depreciated by{" "}
-            {num(lehman?.["rupee_move_%"] ?? 0, 1)}% over the same period, raising
-            the rupee value of unhedged foreign holdings as Indian equity fell.
-            COVID-19 provides a comparison: the rupee moved too little to offset
-            asset returns, and correlation rose to {num(covid.contagion_corr, 3)},
-            with similar values in both currencies.
+            {num(gfc.contagion_corr, 3)}, below its normal level of{" "}
+            {num(crisis.contagion_baseline.avg_corr_ex_btc, 3)} for the same assets,
+            measured the same way over the study period, rather than above it.
+            Measured in dollars, the same window&apos;s average correlation was{" "}
+            {num(lehman?.avg_corr_USD ?? 0, 3)}. The dollar rose{" "}
+            {num(lehman?.["rupee_move_%"] ?? 0, 1)}% against the rupee over the
+            window, raising the rupee value of unhedged foreign holdings as Indian
+            equity fell. COVID-19 provides a comparison: the dollar rose only{" "}
+            {num(covid.currency["rupee_move_%"], 1)}%, too little to offset asset
+            returns, and correlation rose to {num(covid.contagion_corr, 3)} in
+            rupees and {num(covid.currency.avg_corr_USD, 3)} in dollars.
           </Note>
           <p>
             These episodes suggest a qualified rule for a rupee-based portfolio
@@ -951,12 +954,12 @@ export default function CvarStudy() {
             Back to the top
           </a>
           <a
-            href={`${META.repo}/blob/master/docs/REPORT.md`}
+            href={META.paper}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex min-h-11 cursor-pointer items-center rounded-lg px-2 text-ink-muted transition-colors duration-200 hover:bg-surface-2 hover:text-ink"
           >
-            Full report
+            Paper (PDF)
           </a>
           <a
             href={META.repo}

@@ -84,6 +84,7 @@ export default function PairsTrading() {
         title="Pairs-trading backtester"
         sections={SECTIONS}
         repo={META.repo}
+        paper={META.paper}
       />
 
       <main id="top" className="mx-auto w-full max-w-4xl px-5 py-12 sm:px-8">
@@ -426,17 +427,19 @@ export default function PairsTrading() {
           <p>
             <V>2020.</V> During the COVID-19 sell-off, bank stocks fell by very
             different amounts. Axis Bank against Federal Bank was stopped out six
-            times during the year, and IndusInd Bank against IDFC First Bank lost
-            over seven trades.
+            times during the year for a gross loss of ₹20,810, and IndusInd Bank
+            against IDFC First Bank lost ₹20,500 over seven trades.
           </p>
           <p>
             <V>January to June 2025.</V>{" "}Four of the five pairs selected on the
-            2024 formation period had Kotak Mahindra Bank as a leg. On 21 January
-            2025 three of them entered on the same day, each short Kotak against a
-            public-sector bank, and all three were stopped out on 24 March for
-            about ₹12,000 each. The three positions amounted to a single exposure
-            to Kotak. The window lost ₹43,737 before costs, approximately the
-            strategy&apos;s entire gross profit over nine and a half years.
+            2024 formation period had Kotak Mahindra Bank as a leg, and on 21
+            January 2025 all four were entered on the same day, each short Kotak.
+            The three against public-sector banks (Bank of Baroda, Canara Bank and
+            Punjab National Bank) were stopped out together on 24 March for about
+            ₹12,500 each, and the one against Federal Bank on 20 March for ₹7,236.
+            Together the four lost ₹44,660 before costs, about as much as the
+            strategy&apos;s entire gross profit of ₹46,368 over nine and a half
+            years. In effect they were a single exposure to Kotak.
           </p>
           <Note>
             The selection rule does not limit how many selected pairs share a
@@ -583,7 +586,15 @@ export default function PairsTrading() {
             rel="noopener noreferrer"
             className="text-ink-muted transition-colors duration-200 hover:text-ink"
           >
-            Full report, source and tests on GitHub
+            Source and tests on GitHub
+          </a>
+          <a
+            href={META.paper}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-ink-muted transition-colors duration-200 hover:text-ink"
+          >
+            Paper (PDF)
           </a>
         </nav>
       </main>

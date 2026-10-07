@@ -1,7 +1,7 @@
 import Link from "next/link";
 import TopBar from "./components/TopBar";
 import { Reveal } from "./components/Motion";
-import { IconArrowRight, IconGitHub } from "./components/Icons";
+import { IconArrowRight, IconGitHub, IconPaper } from "./components/Icons";
 import { SITE, PROJECTS } from "@/lib/project";
 import { getAllMlSignals, getMlSummary } from "@/lib/ml";
 import { getBacktest, getCvarHeadline, getPortfolios, getScenarios } from "@/lib/cvar";
@@ -60,7 +60,7 @@ export default function Home() {
       <>
         Do moving averages predict tomorrow&apos;s return? I estimated one
         linear regression per stock for {ml.total}{" "}NSE companies on five and a
-        half years of daily prices, then tested each on the sixteen months that
+        half years of daily prices, then tested each on the seventeen months that
         followed. The forecasts called the direction of the next day&apos;s move{" "}
         {pct(ml.avgDirAccuracy * 100, 1)} of the time, and{" "}
         {sigAbove === 0
@@ -193,6 +193,15 @@ export default function Home() {
                     Read the study
                   </Link>
                   <a
+                    href={p.paper}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-lg px-2 text-ink-muted transition-colors duration-200 hover:bg-surface-2 hover:text-ink"
+                  >
+                    <IconPaper className="h-3.5 w-3.5" />
+                    Paper (PDF)
+                  </a>
+                  <a
                     href={p.repo}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -245,8 +254,8 @@ export default function Home() {
       <footer className="border-t border-line px-5 py-8 sm:px-8">
         <div className="mx-auto flex max-w-4xl flex-col gap-3 text-[12.5px] text-ink-dim sm:flex-row sm:items-center sm:justify-between">
           <p>
-            Each study has a full report covering its data, method, limitations
-            and references. Student research, not investment advice.
+            Each study has a paper covering its data, method, results,
+            limitations and references. Student research, not investment advice.
           </p>
           <a
             href={SITE.github}

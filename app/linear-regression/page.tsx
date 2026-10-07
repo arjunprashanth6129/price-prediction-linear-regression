@@ -180,6 +180,7 @@ export default function LinearRegressionStudy() {
         title="Price prediction with a linear regression model"
         sections={SECTIONS}
         repo={META.repo}
+        paper={META.paper}
       />
 
       <main id="top" className="mx-auto w-full max-w-4xl px-5 py-12 sm:px-8">
@@ -192,7 +193,7 @@ export default function LinearRegressionStudy() {
             </h1>
             <p className="mt-5 text-[17.5px] leading-[1.7] text-ink-muted">
               A linear regression was fitted to each of {s.total} NSE stocks and
-              tested on the final 16 months of data. It did no better than simple
+              tested on the final 17 months of data. It did no better than simple
               benchmarks that use no model.
             </p>
 
@@ -485,6 +486,15 @@ export default function LinearRegressionStudy() {
             are significantly below. About 2.5 would be expected in each tail by
             chance, and none of the {sigBelow} remains significant after a
             Benjamini-Hochberg correction for {s.total} tests.
+          </p>
+          <p>
+            The binomial test ignores the share of up days. The Pesaran-Timmermann
+            (1992) test allows for it, by comparing accuracy with what forecasts
+            independent of the outcome would achieve. It is defined for 97 stocks,
+            because one model forecast a fall on every day, and is significant at
+            the 5% level for 5 of them, close to the number expected by chance, and
+            for none after the same correction. The paper computes the test from
+            the daily forecasts.
           </p>
           <EdgeRanked
             data={edgeData}
@@ -843,7 +853,7 @@ export default function LinearRegressionStudy() {
           <Bullets
             items={[
               <><V>Statistical power.</V> About {Math.round(s.avgTestDays)} test days per stock gives a standard error of {pctf(se)} on a single stock&apos;s accuracy, too large to detect an effect of one percentage point. Studies that report technical-rule effects typically use several decades of data.</>,
-              <><V>One test window.</V> All stocks are evaluated on the same 16 months, so their results are correlated, and a window with different market conditions could produce a different benchmark and edge.</>,
+              <><V>One test window.</V> All stocks are evaluated within the same 17 months, February 2025 to June 2026, so their results are correlated, and a window with different market conditions could produce a different benchmark and edge.</>,
               <><V>Linear specification.</V> A relationship that operates through thresholds or interactions, such as a crossing that predicts returns only in low-volatility periods, would not be detected.</>,
               <><V>Corporate actions.</V> Price adjustment does not correct demergers. Raymond (May 2025) and Tata Motors (October 2025) each show a one-day fall caused by a demerger inside the test period; both stocks are retained and flagged.</>,
               <><V>Price returns and no costs.</V> Dividends are excluded, and no transaction costs are deducted. A small positive edge before costs would not imply a profitable strategy.</>,
@@ -857,7 +867,6 @@ export default function LinearRegressionStudy() {
               <><V>A larger small-cap sample.</V> {small?.n ?? 26} small-cap stocks are too few to test whether predictability is concentrated in less liquid names.</>,
               <><V>Non-price predictors.</V> Earnings revisions and analyst recommendation changes do not depend on the price history used here.</>,
               <><V>Non-linear models.</V> Tree ensembles can represent thresholds and interactions, but require walk-forward cross-validation to avoid overfitting on samples of this size.</>,
-              <><V>A formal directional test.</V> A Pesaran-Timmermann test accounts for the base rate of up days and would replace the comparison with a fixed 50%.</>,
             ]}
           />
         </Section>
@@ -867,12 +876,12 @@ export default function LinearRegressionStudy() {
             Back to the top
           </a>
           <a
-            href={`${META.repo}/blob/main/docs/REPORT.md`}
+            href={META.paper}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex min-h-11 cursor-pointer items-center rounded-lg px-2 text-ink-muted transition-colors duration-200 hover:bg-surface-2 hover:text-ink"
           >
-            Full report
+            Paper (PDF)
           </a>
           <a
             href={`${META.repo}/blob/main/results/RESULTS.md`}
