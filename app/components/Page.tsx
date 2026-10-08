@@ -5,6 +5,7 @@
  */
 
 import { Reveal } from "./Motion";
+import { IconGitHub, IconPaper } from "./Icons";
 
 export function Section({
   id,
@@ -167,5 +168,66 @@ export function Bullets({ items }: { items: React.ReactNode[] }) {
         </li>
       ))}
     </ul>
+  );
+}
+
+/**
+ * The close of a study page. The page is a summary built around the charts;
+ * the paper is the complete account, so every page ends by pointing to it.
+ */
+export function PaperCTA({
+  paper,
+  repo,
+  children,
+}: {
+  paper: string;
+  repo: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Reveal>
+      <div className="rounded-xl border border-accent-line bg-accent-soft px-6 py-5">
+        <p className="text-[15px] leading-relaxed text-ink">{children}</p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <a
+            href={paper}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg bg-accent px-4 text-[13.5px] font-medium text-paper transition-colors duration-200 hover:bg-accent-strong"
+          >
+            <IconPaper className="h-4 w-4" />
+            Read the paper (PDF)
+          </a>
+          <a
+            href={repo}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg border border-line bg-paper px-4 text-[13.5px] font-medium text-ink transition-colors duration-200 hover:border-line-strong"
+          >
+            <IconGitHub className="h-4 w-4" />
+            Code and data
+          </a>
+        </div>
+      </div>
+    </Reveal>
+  );
+}
+
+/** One line under the hero that says what the page is and where the rest is. */
+export function SummaryNote({ paper }: { paper: string }) {
+  return (
+    <p className="mt-4 text-[13.5px] leading-relaxed text-ink-dim">
+      This page summarises the study around its interactive charts. The paper
+      sets out the full method, every statistical test and the limitations:{" "}
+      <a
+        href={paper}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="cursor-pointer font-medium text-accent underline-offset-2 hover:underline"
+      >
+        read the paper (PDF)
+      </a>
+      .
+    </p>
   );
 }

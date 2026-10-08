@@ -8,9 +8,9 @@
 \shorttitle{Moving-average signals and next-day returns}
 \author{Arjun Prashanth\thanks{Email: \href{mailto:arjunprashanth6129@gmail.com}{arjunprashanth6129@gmail.com}.
   Code, data and the script that generates every number, table and figure in this
-  paper are at \url{https://github.com/arjunprashanth6129/price-prediction-linear-regression}.
-  An interactive version of the results is at
-  \url{https://arjun-quant-projects.vercel.app/linear-regression}.}}
+  paper are at \weburl{https://github.com/arjunprashanth6129/}{price-prediction-linear-regression}.
+  An interactive summary of the results is at
+  \weburl{https://arjun-quant-projects.vercel.app/}{linear-regression}.}}
 \date{October 2026}
 \keywords{technical analysis; moving averages; return predictability; out-of-sample
   evaluation; directional accuracy; market efficiency; India}
@@ -38,12 +38,26 @@ results are consistent with weak-form efficiency at the daily horizon.
 % ======================================================================
 \section{Introduction}
 
-Technical analysis rests on the premise that the recent path of a price contains
-information about its next move. Moving-average rules are its most common form.
-In the best-known version, the \emph{golden cross}, a short moving average rising
-above a long one is read as a signal to buy, and the reverse crossing, the
-\emph{death cross}, as a signal to sell. These rules are computed by almost every
-charting platform and are widely followed by retail investors.
+Technical analysis rests on the premise that the recent path of a price says
+something about its next move, and moving-average rules are its most common form.
+In the best-known version, a short moving average that rises above a long one, a
+\emph{golden cross}, is read as a signal to buy, and the reverse crossing, a
+\emph{death cross}, as a signal to sell. Figure~\ref{fig:cross} shows both in
+Britannia Industries' share price in 2019: the 5-day average rose above the
+20-day average on \CrossGolden{} and fell back below it on \CrossDeath. Almost
+every charting platform draws these averages, and many retail investors trade on
+them.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.66\textwidth]{figures/cross.pdf}
+\caption{A golden cross and a death cross in Britannia Industries, August to
+November 2019. The golden cross is the day the 5-day moving average of the close
+rises above the 20-day average; the death cross is the day it falls back below.
+The ratio of the two averages, one of the four features in this study, is above
+one between the two crossings and below one outside them.}
+\label{fig:cross}
+\end{figure}
 
 The academic evidence on them is mixed and has weakened over time.
 \citet{lo2000} put the visual patterns of technical analysis on a statistical
@@ -90,7 +104,14 @@ capitalisation bands. It shows how a weak always-up benchmark in a flat market c
 manufacture an apparent edge, and that the appropriate comparison is the expected
 edge of an uninformative forecast, which can be computed stock by stock. And it
 documents, with a worked example, why a high $R^2$ on price levels says nothing
-about forecasting ability. Section~\ref{sec:data} describes the data,
+about forecasting ability.
+
+I came to this question through an equity research programme at BugleRock
+Capital, where the contrast between fundamental analysis and technical trading came
+up repeatedly. Testing the most popular technical signal on data it had not seen
+seemed the most direct way to find out how much the evidence supports it.
+
+Section~\ref{sec:data} describes the data,
 Section~\ref{sec:method} the method and Section~\ref{sec:results} the results.
 Section~\ref{sec:levels} presents the worked example, Section~\ref{sec:discussion}
 discusses the findings and Section~\ref{sec:limits} their limitations.
@@ -106,6 +127,24 @@ is assigned to a capitalisation band as of June 2021. Daily closing prices from
 splits and bonus issues, which would otherwise appear as large one-day losses. The
 sample period is fixed rather than trailing, so the dataset can be reproduced
 exactly; the price file is committed with the code.
+
+Figure~\ref{fig:universe} shows the sample. Over the estimation period the median
+stock with a full history rose by a factor of \MedianFullGrowth, but over the
+evaluation period the median stock ended almost where it began, with a change of
+\MedianTestChange. That flat evaluation window matters later, because it leaves up
+days in the minority for most stocks (Panel B) and so weakens the simplest
+benchmark.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/universe.pdf}
+\caption{The sample. Panel A shows each stock's adjusted close relative to its first
+close, on a logarithmic scale, with the median of the stocks that have a full
+history in blue; the shaded area is the evaluation period. Panel B shows, for each
+stock, the share of evaluation days with a positive return. The black line marks
+50\% and the dashed line the mean.}
+\label{fig:universe}
+\end{figure}
 
 Two stocks returned no usable history over the period and are excluded, leaving
 \NStocks{} stocks. Of these, \NFull{} traded on every session in the period. The
@@ -167,7 +206,7 @@ standardisation parameters are computed from the estimation sample alone and the
 applied to both samples, so the mean and variance of the evaluation period do not
 enter the transform. Nothing is re-estimated during the evaluation sample.
 
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
 \begin{tikzpicture}[node distance=0.45cm]
   \tikzset{box/.style={stage=2.68cm, inner sep=3pt, minimum height=1.32cm}}
@@ -256,7 +295,7 @@ sign on every day.
 
 Table~\ref{tab:summary} summarises the evaluation across the \NStocks{} stocks.
 
-\begin{table}[t]
+\begin{table}[tbp]
 \centering
 \caption{Out-of-sample performance across \NStocks{} stocks}
 \label{tab:summary}
@@ -284,7 +323,7 @@ evaluation-period mean. This is the outcome expected when the regressors carry n
 information: the coefficients are fitted to noise in the estimation sample, and the
 noise does not recur.
 
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
 \includegraphics[width=\textwidth]{figures/fit_and_direction.pdf}
 \caption{Explained variance and directional accuracy. Panel A shows the
@@ -316,7 +355,7 @@ stock by stock. The model's edge tracks the edge an uninformative forecast would
 have earned, with a correlation of \EdgeBenchCorr{} across stocks, and the points
 scatter around the 45-degree line rather than above it.
 
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
 \includegraphics[width=0.66\textwidth]{figures/edge_vs_random.pdf}
 \caption{The model's edge against the edge of an uninformative forecast. Each point
@@ -328,7 +367,7 @@ accuracy around zero.}
 \label{fig:edge}
 \end{figure}
 
-\subsection{Per-stock inference}
+\subsection{Per-stock inference}\label{sec:perstock}
 
 With a mean of \MeanTestDays{} evaluation days, the standard error of a single
 stock's accuracy under the null of 50\% is about \SEAcc{} percentage points. In the
@@ -341,13 +380,23 @@ significant at 5\% for \NPTSigPos{} stocks, all positive, which is close to the
 number expected by chance among \NPTDefined{} tests, and for none after the same
 correction.
 
-Counting large edges suggests otherwise: \NOutsideBand{} stocks have an edge outside
-a band of two standard errors around zero, \NAboveBand{} above and \NBelowBand{}
-below. That count is misleading, because the band is centred on zero
-while the edges are centred on \EdgeMean{} points for the reason given above. The
-largest edges also tend to coincide with weak benchmarks rather than with good fits:
-four of the five largest occur with a negative $R^2_{OS}$
-(Appendix~Table~\ref{tab:extremes}).
+A count of large edges seems to point the other way: \NOutsideBand{} stocks have an
+edge outside a band of two standard errors around zero, \NAboveBand{} above and
+\NBelowBand{} below (Figure~\ref{fig:ranked}). That count is misleading, because the
+band is centred on zero while the edges are centred on \EdgeMean{} points for the
+reason given above. The largest edges also tend to coincide with weak benchmarks
+rather than with good fits: four of the five largest occur with a negative
+$R^2_{OS}$ (Appendix~Table~\ref{tab:extremes}).
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/edge_ranked.pdf}
+\caption{Each stock's edge over the always-up rule, ranked from lowest to highest,
+in percentage points. Blue bars are positive and orange bars negative. The shaded
+band is two standard errors of a single stock's accuracy around zero, and the
+dashed line is the mean edge.}
+\label{fig:ranked}
+\end{figure}
 
 \subsection{The moving-average ratio}
 
@@ -359,9 +408,25 @@ forecast daily return by about \RatioAbsMeanPP{} percentage points. The sign is
 positive for \NRatioPos{} stocks and negative for \NRatioNeg. A sign test against
 an even split gives $p = \SignTestP$, so the positive majority is unlikely to be
 chance alone, but it has no forecasting value: the coefficients are small, and the
-accuracy results above show no benefit.
+accuracy results above show no benefit. Figure~\ref{fig:ratio} shows the
+coefficient for every stock in Panel A and compares the four features in Panel B.
+The mean absolute coefficients on \textit{ma5} and \textit{ma20}, \MeanAbsMaFive{}
+and \MeanAbsMaTwenty{} basis points per standard deviation, are about eight times
+the \MeanAbsRatioBp{} on the ratio, but they are large mainly because they offset
+each other.
 
-The individual coefficients should in any case be read with care. The ratio is a
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/ratio_coefficients.pdf}
+\caption{The standardised coefficients, in basis points of daily return per
+standard deviation of the feature. Panel A shows the coefficient on the
+moving-average ratio for each stock, ranked, with positive values in blue. Panel B
+shows the mean absolute coefficient of each feature across stocks and the number of
+stocks for which that feature has the largest coefficient.}
+\label{fig:ratio}
+\end{figure}
+
+The individual coefficients should be read with care. The ratio is a
 deterministic function of \textit{ma5} and \textit{ma20}, which are themselves
 highly correlated. Under this degree of multicollinearity, least squares can assign
 large offsetting coefficients to correlated regressors with little change in the
@@ -371,15 +436,16 @@ fitted values are divided among the regressors.
 
 \subsection{Results by capitalisation}
 
-Momentum effects are documented to be stronger among smaller and less widely
-followed stocks, so Table~\ref{tab:bycap} reports the results by capitalisation
-band. Small capitalisation stocks have the largest mean edge, but their mean
-accuracy is the same as that of large capitalisation stocks. The difference in
-edge comes entirely from a lower share of up days among small caps, not from more
-accurate forecasts, and the dispersion within each band is larger than the
+\citet{hong2000} find that momentum is stronger among smaller stocks and those
+followed by fewer analysts, so Table~\ref{tab:bycap} and Figure~\ref{fig:bycap}
+report the results by capitalisation band. Small capitalisation stocks have the
+largest mean edge, but their mean accuracy is the same as that of large
+capitalisation stocks. The difference in edge comes entirely from a lower share of
+up days among small caps, not from more accurate forecasts. Mean $R^2_{OS}$ is
+negative in all three bands, and the dispersion within each band is larger than the
 differences between bands.
 
-\begin{table}[t]
+\begin{table}[tbp]
 \centering
 \caption{Results by capitalisation band}
 \label{tab:bycap}
@@ -393,18 +459,28 @@ percentage points.
 \end{tablenote}
 \end{table}
 
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/by_cap.pdf}
+\caption{Results by capitalisation band. Panel A shows each band's mean always-up
+benchmark (hollow) and mean directional accuracy (filled); the dotted line marks
+50\%. Panel B shows each stock's edge, with the band mean as a vertical bar.}
+\label{fig:bycap}
+\end{figure}
+
+\floatsmayfollow
 % ======================================================================
 \section{Why the target is a return: a worked example}\label{sec:levels}
 
 A natural alternative design forecasts the next day's \emph{price} rather than its
 return. This section shows, for Reliance Industries, why that design produces a high
-$R^2$ that is consistent with no forecasting ability. The model was estimated on
-\RelTrainStart{} to \RelTrainEnd{} and evaluated on the \RelTestDays{} trading days
-from \RelTestStart{} to \RelTestEnd. Two regressions with the same features and
-split were fitted, one to the next day's close and one to its return. A third
+$R^2$ that is consistent with no forecasting ability. Two regressions with the same
+features were fitted, one to the next day's close and one to its return, both
+estimated on data from \RelTrainStart{} to \RelTrainEnd{} and evaluated on the
+\RelTestDays{} trading days from \RelTestStart{} to \RelTestEnd. A third
 forecast, the random walk $\hat P_{t+1} = P_t$, requires no estimation.
 
-\begin{table}[t]
+\begin{table}[tbp]
 \centering
 \caption{Reliance Industries: level and return forecasts over the evaluation sample}
 \label{tab:reliance}
@@ -413,7 +489,8 @@ forecast, the random walk $\hat P_{t+1} = P_t$, requires no estimation.
 \begin{tablenote}
 The price model and the return model use the same four features, the same split
 and the same estimator; only the target differs. The random walk forecasts
-tomorrow's close as today's close. MAE and RMSE for the first two columns are in
+tomorrow's close as today's close; because it never forecasts a rise, its
+directional accuracy is the share of days on which the price did not rise. MAE and RMSE for the first two columns are in
 rupees and comparable with each other; the return model's errors are fractions of
 the price. $R^2$ is computed against the evaluation-sample mean, as in
 equation~\eqref{eq:r2}.
@@ -423,16 +500,45 @@ equation~\eqref{eq:r2}.
 The price model attains an $R^2$ of \RelPriceRsq, the kind of figure that suggests a
 strong model (Table~\ref{tab:reliance}). The random walk attains \RelNaiveRsq, with
 a mean absolute error \RelMAEcut{} lower, and it beats the price model on every
-measure in the table. The reason is in the denominator of $R^2$. For a price level,
-the variance over the evaluation sample is large relative to a single day's change:
-the mean close was about \rupee\RelMeanClose{} while the mean absolute daily move was
-about \rupee\RelMeanAbsMove. Any forecast close to the previous close therefore
-explains most of the variance of the level, whether or not it anticipates the
-change. The price model's largest coefficient is on \textit{ma5}, the feature
-closest to the current price; it forecasts tomorrow's price mainly by reproducing
-today's.
+measure in the table. The reason is in the denominator of $R^2$, which compares the
+squared forecast errors with the variance of the outcome around its mean. For a price
+level that variance is large relative to a single day's change. Over the evaluation
+sample the close had a standard deviation of \rupee\RelCloseSD, while the random
+walk's root mean squared error, the typical size of a daily move, was
+\rupee\RelRWRMSE. The random walk therefore scores
+$R^2 = 1 - (\RelRWRMSE/\RelCloseSD)^2 = \RelNaiveRsq$ without forecasting anything,
+and any forecast close to the previous close explains most of the variance of the
+level, whether or not it anticipates the change.
 
-\begin{figure}[t]
+The last row of Table~\ref{tab:reliance} scores direction, and there the high $R^2$
+counts for nothing. The price model calls the next day's move correctly on
+\RelPriceDir{} of days, worse than a coin. The random walk never forecasts a rise,
+so its \RelNaiveDir{} is simply the share of days on which the price did not rise.
+The return model is right on \RelReturnDir{} of days against \RelUpShare{} for the
+always-up rule, an edge of \RelEdge{} points, well inside the band of
+$\pm$\TwoSE{} points within which an uninformative forecast falls
+(Section~\ref{sec:perstock}).
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/reliance_series.pdf}
+\caption{Reliance Industries over the evaluation period. Panel A shows the realised
+close and the price model's forecast, Panel B the realised daily return and the
+return model's forecast, and Panel C the return model's residuals, realised minus
+forecast.}
+\label{fig:relseries}
+\end{figure}
+
+Figure~\ref{fig:relseries} shows the two forecasts over the evaluation period. In
+Panel A the forecast close follows the realised close so closely that the two lines
+are hard to separate, because it is in effect yesterday's close. Forecasting the
+return removes the level, and the apparent fit goes with it. In Panel B the return
+forecast barely leaves zero while the realised return swings between \RelActLo{}
+and \RelActHi. Because the forecasts are close to zero, the residuals in Panel C
+are close to the realised returns themselves, and they show no structure that the
+model has removed.
+
+\begin{figure}[tbp]
 \centering
 \includegraphics[width=\textwidth]{figures/reliance_parity.pdf}
 \caption{Forecast against realised values for Reliance Industries over the same
@@ -444,14 +550,51 @@ outcome.}
 \label{fig:parity}
 \end{figure}
 
-Forecasting the return removes the level. Figure~\ref{fig:parity} shows the
-consequence. Realised returns range from \RelActLo{} to \RelActHi, while the return
-model's forecasts stay within \RelPredBand{} of zero. A near-constant forecast is
-what least squares produces when the regressors are uninformative: the estimated
-coefficients are close to zero and the fitted value converges to the
-estimation-sample mean, which for a large stock's daily return is itself close to
-zero. The general point is that $R^2$ measures variance explained relative to a
-chosen reference forecast. For an autocorrelated series such as a price level, the
+Figure~\ref{fig:parity} plots each forecast against the outcome. The level
+forecasts lie along the diagonal, while the return forecasts form a narrow vertical
+band within \RelPredBand{} of zero. A near-constant forecast is what least squares
+produces when the regressors are uninformative: the estimated coefficients are
+close to zero, and the fitted value converges to the estimation-sample mean, which
+for a large stock's daily return is itself close to zero.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/reliance_coefficients.pdf}
+\caption{The standardised coefficients of the two Reliance models: rupees of
+forecast close per standard deviation of each feature for the price model, and
+basis points of forecast return per standard deviation for the return model.}
+\label{fig:relcoef}
+\end{figure}
+
+The coefficients show how each model reaches its forecast
+(Figure~\ref{fig:relcoef}). The price model puts almost all its weight on
+\textit{ma5}, the feature closest to today's price, so it forecasts tomorrow's
+price mainly by reproducing today's. In the return model the two largest
+coefficients, on \textit{ma5} and \textit{ma20}, are nearly equal and opposite.
+Because the two averages move together, their effects cancel on a typical day,
+which is how correlated regressors behave when they are fitted to noise.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.62\textwidth]{figures/fitted_plane.pdf}
+\caption{A two-feature slice of the fitted Reliance return model, with the one-day
+return and the moving-average ratio held at their means. The plane is drawn only
+over the range of combinations that occur in the data. The points are the realised
+returns of the evaluation days.}
+\label{fig:plane}
+\end{figure}
+
+Figure~\ref{fig:plane} draws the return model as a surface. With the one-day
+return and the ratio held at their means, the forecast is a plane in \textit{ma5}
+and \textit{ma20}, and the vertical distance from each day to the plane is the
+error that least squares minimises. The observations lie along a narrow diagonal
+band, because the two averages rarely move apart, and along that band the plane is
+almost flat while the realised returns scatter far above and below it. A model with
+real predictive power would show a plane tilted along the band, with the days
+close to it.
+
+The general point is that $R^2$ measures variance explained relative to a chosen
+reference forecast. For an autocorrelated series such as a price level, the
 appropriate reference is the random walk, not the sample mean.
 
 % ======================================================================
@@ -482,6 +625,13 @@ outperform those with low returns over the following months. That effect is
 measured across stocks and over monthly horizons. This paper measures the
 relationship between short moving averages and the next day's return for each stock
 separately, which is a different hypothesis.
+
+The conclusion is also narrow in what it covers. It rules out a one-day forecast
+built from these four features with a linear model, on this universe and in this
+period, which is the horizon on which short-term technical trading operates. It
+says nothing about investing on fundamentals. Profitability, reinvestment,
+leverage, cash flow and valuation are not inputs to the model, so the results
+neither support nor contradict their use.
 
 % ======================================================================
 \section{Limitations}\label{sec:limits}
@@ -531,28 +681,24 @@ used.
 % ======================================================================
 \section*{Use of AI tools}
 
-I used Claude Code, Anthropic's AI coding assistant, throughout this project, and
-mainly as a tutor. Before building each stage I used it to work through the
-reasoning behind the design: why a shuffled split overstates accuracy when
-neighbouring rows share most of their inputs, why a scaler fitted to the full series
-leaks information from the evaluation sample, and why an $R^2$ near one on a price
-level says nothing about forecasting ability. I tested each explanation against the
-data before relying on it; the worked example in Section~\ref{sec:levels} is one of
-those tests. The project also taught me how to work with an AI coding assistant well: to specify an experiment
-precisely, to ask for the reasoning behind a suggestion and not only the code, and
-to verify every output independently.
-
-Claude Code also wrote parts of the implementation at my direction, including
-plotting code and the script that generates this paper's numbers, tables and
-figures, and it helped me draft and edit this paper. The research question, the choice of
-benchmarks and tests, and the interpretation of the results are my own. I reviewed
-the code, every number in the paper is generated from the committed results, and I
-take full responsibility for the content.
+The research question, the design of the study, the choice of benchmarks and
+tests, and the interpretation of the results are my own. I used Claude Code,
+Anthropic's AI coding assistant, in two supporting roles. The first was as a tutor.
+When the work reached an idea I had not used before, such as why a shuffled split
+overstates accuracy when neighbouring rows share most of their inputs, I asked it
+to explain the idea and then checked the explanation against the data before
+relying on it. The second was implementation: at my direction it wrote parts of the code,
+including the plotting code and the script that generates this paper's numbers,
+tables and figures, and it helped me draft and edit the text. Working this way also
+taught me how to use an AI assistant well, by specifying a task precisely, asking
+for the reasoning behind a suggestion and not only the code, and verifying every
+output. I reviewed everything it produced and take full responsibility for the
+content.
 
 \section*{Data and code availability}
 
 Prices, code and results are available in the project repository,
-\url{https://github.com/arjunprashanth6129/price-prediction-linear-regression}.
+\weburl{https://github.com/arjunprashanth6129/}{price-prediction-linear-regression}.
 Running \code{python paper/make\_assets.py} re-estimates every model, checks the
 results against the committed output, and regenerates all numbers, tables and
 figures in this paper.
@@ -561,6 +707,7 @@ figures in this paper.
 \bibliography{references}
 
 % ======================================================================
+\clearpage
 \appendix
 \section{Largest and smallest edges}
 

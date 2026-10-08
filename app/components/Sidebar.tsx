@@ -45,8 +45,16 @@ export default function Sidebar({ sections = [] }: { sections?: Section[] }) {
       .filter((n): n is HTMLElement => n !== null);
     if (!nodes.length) return;
 
+    // A short last section never reaches the band near the top of the
+    // viewport, so at the foot of the page it is marked active directly.
+    const atBottom = () =>
+      window.innerHeight + window.scrollY >=
+      document.documentElement.scrollHeight - 4;
+    const last = nodes[nodes.length - 1].id;
+
     const observer = new IntersectionObserver(
       (entries) => {
+        if (atBottom()) return setActive(last);
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
@@ -55,7 +63,14 @@ export default function Sidebar({ sections = [] }: { sections?: Section[] }) {
       { rootMargin: "-88px 0px -68% 0px", threshold: 0 },
     );
     nodes.forEach((n) => observer.observe(n));
-    return () => observer.disconnect();
+    const onScroll = () => {
+      if (atBottom()) setActive(last);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+    };
   }, [sections]);
 
   // Slide the marker to the active item.

@@ -84,6 +84,11 @@ def thousands(n: int) -> str:
     return f"{n:,}".replace(",", "{,}")
 
 
+def longdate(s: str) -> str:
+    """2019-07-01 -> 1~July~2019, for dates in running text."""
+    return pd.Timestamp(s).strftime("%-d %B %Y").replace(" ", "~")
+
+
 # ----------------------------------------------------------------------
 # Re-run the models
 # ----------------------------------------------------------------------
@@ -238,10 +243,10 @@ macro("RatioAbsMeanPP", num(100 * df["w_ratio"].abs().mean(), 2))
 
 # Reliance worked example
 pm, nm, rm = detail["priceModel"], detail["naiveModel"], detail["returnModel"]
-macro("RelTrainStart", detail["trainDateRange"]["start"])
-macro("RelTrainEnd", detail["trainDateRange"]["end"])
-macro("RelTestStart", detail["testDateRange"]["start"])
-macro("RelTestEnd", detail["testDateRange"]["end"])
+macro("RelTrainStart", longdate(detail["trainDateRange"]["start"]))
+macro("RelTrainEnd", longdate(detail["trainDateRange"]["end"]))
+macro("RelTestStart", longdate(detail["testDateRange"]["start"]))
+macro("RelTestEnd", longdate(detail["testDateRange"]["end"]))
 macro("RelTestDays", detail["metrics"]["testDays"])
 macro("RelPriceRsq", num(pm["r2"], 3))
 macro("RelNaiveRsq", num(nm["r2"], 3))
@@ -252,9 +257,18 @@ prd = np.array([r["predictedReturn"] for r in ret_rows])
 macro("RelActLo", pct(act.min(), 1))
 macro("RelActHi", pct(act.max(), 1, signed=True))
 macro("RelPredBand", pct(np.abs(prd).max(), 2))
-macro("RelMeanClose", thousands(round(pm["meanTestClose"])))
-macro("RelMeanAbsMove",
-      f"{round(pm['meanTestClose'] * np.abs(act).mean())}")
+# The random walk's R^2 is 1 - (RMSE / SD of the close)^2, with the SD taken
+# around the evaluation-sample mean as in r2_score.
+close_sd = np.array([r["actual"] for r in pm["testPeriodData"]]).std()
+assert abs(1 - (nm["rmse"] / close_sd) ** 2 - nm["r2"]) < 1e-4
+macro("RelCloseSD", num(close_sd, 1))
+macro("RelRWRMSE", num(nm["rmse"], 1))
+macro("RelPriceDir", pct(pm["dirAccuracy"], 1))
+macro("RelNaiveDir", pct(nm["dirAccuracy"], 1))
+macro("RelReturnDir", pct(rm["dirAccuracy"], 1))
+macro("RelUpShare", pct(rm["naiveDirAccuracy"], 1))
+macro("RelEdge", num(100 * (rm["dirAccuracy"] - rm["naiveDirAccuracy"]), 1, signed=True))
+assert abs(nm["dirAccuracy"] + rm["naiveDirAccuracy"] - 1) < 1e-6  # down days + up days
 
 # ----------------------------------------------------------------------
 # Tables
@@ -366,7 +380,7 @@ h2 = a.hist(df.r2[df.r2 > 0], bins=bins, color=BLUE, edgecolor="white", linewidt
 top_ = max(h1.max(), h2.max())
 a.axvline(0, color=INK, lw=0.8)
 a.axvline(df.r2.mean(), color=INK, lw=0.8, ls=(0, (2, 2)))
-a.annotate(f"mean {df.r2.mean():.4f}", xy=(df.r2.mean(), top_ * 0.92),
+a.annotate(f"mean {df.r2.mean():.4f}".replace("-", "\u2212"), xy=(df.r2.mean(), top_ * 0.92),
            xytext=(-0.085, top_ * 0.92), ha="center", va="center", fontsize=7.5,
            arrowprops=dict(arrowstyle="-", lw=0.5, color=INK))
 a.set_xlabel(r"Out-of-sample $R^2$")
@@ -442,6 +456,232 @@ b.set_ylabel("Realised return (%)")
 panel(b, f"Panel B. Return model ($R^2 = {rm['r2']:.3f}$)")
 fig.savefig(FIG / "reliance_parity.pdf")
 plt.close(fig)
+
+import matplotlib.dates as mdates  # noqa: E402
+
+# Figure 1: the golden and death cross, from Britannia's closes in 2019
+br = prices["BRITANNIA"].dropna()
+ma5_b, ma20_b = br.rolling(5).mean(), br.rolling(20).mean()
+win = slice("2019-08-01", "2019-11-30")
+c_, f5, f20 = br.loc[win], ma5_b.loc[win], ma20_b.loc[win]
+fig, ax = plt.subplots(figsize=(WIDTH * 0.62, 2.35))
+ax.plot(c_.index, c_, color="#c9c9c9", lw=0.8, label="Daily close")
+ax.plot(f5.index, f5, color=BLUE, lw=1.2, label="5-day average")
+ax.plot(f20.index, f20, color=INK, lw=1.2, label="20-day average")
+sign = np.sign(f5 - f20)
+golden = [d for d in sign.index[1:][(sign.diff().iloc[1:] > 0).to_numpy()]]
+death = [d for d in sign.index[1:][(sign.diff().iloc[1:] < 0).to_numpy()]]
+assert len(golden) == 1 and len(death) == 1, (golden, death)
+for d, lab, col, off in [(golden[0], "golden cross", BLUE, (22, -26)), (death[0], "death cross", ORANGE, (16, -30))]:
+    ax.scatter([d], [f5.loc[d]], s=30, zorder=4, color=col, edgecolor="white", lw=0.6)
+    ax.annotate(lab, (d, f5.loc[d]), xytext=off, textcoords="offset points", ha="left",
+                fontsize=7.5, color=col, arrowprops=dict(arrowstyle="-", lw=0.6, color=col,
+                shrinkA=0, shrinkB=4))
+macro("CrossGolden", golden[0].strftime("%-d %B %Y").replace(" ", "~"))
+macro("CrossDeath", death[0].strftime("%-d %B %Y").replace(" ", "~"))
+ax.set_ylabel("Price (INR)")
+ax.xaxis.set_major_locator(mdates.MonthLocator())
+ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
+ax.legend(loc="upper left", ncol=3, handlelength=1.4, columnspacing=1.0)
+ax.set_ylim(c_.min() * 0.95, c_.max() * 1.1)
+fig.savefig(FIG / "cross.pdf")
+plt.close(fig)
+
+# Figure: the universe over the sample, and the share of up days per stock
+full = [t for t in df.loc[df["full"], "ticker"]]
+norm = pd.DataFrame({t: prices[t].dropna() / prices[t].dropna().iloc[0] for t in df["ticker"]})
+eval_start = pd.Timestamp(detail["testDateRange"]["start"])
+fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 2.6),
+                           gridspec_kw={"width_ratios": [1.45, 1], "wspace": 0.3})
+for t in norm.columns:
+    a.plot(norm.index, norm[t], color="#bdbdbd", lw=0.35, alpha=0.7)
+med = norm[full].median(axis=1)
+a.plot(med.index, med, color=BLUE, lw=1.4, label="Median stock")
+a.axvspan(eval_start, norm.index[-1], color=ORANGE, alpha=0.12, lw=0)
+a.text(eval_start + pd.Timedelta(days=15), 1.015, "evaluation", fontsize=7, color="#8a4a17",
+       transform=a.get_xaxis_transform(), va="bottom")
+a.set_yscale("log")
+a.set_yticks([0.25, 0.5, 1, 2, 4, 8, 16])
+a.set_yticklabels(["0.25", "0.5", "1", "2", "4", "8", "16"])
+a.minorticks_off()
+a.set_ylabel("Price relative to first close")
+a.legend(loc="upper left")
+a.xaxis.set_major_locator(mdates.YearLocator(2))
+a.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+panel(a, "Panel A. Price paths of the 98 stocks")
+b.hist(100 * df["up"], bins=np.arange(36, 58, 1.5), color=BLUE, edgecolor="white", lw=0.4)
+b.axvline(50, color=INK, lw=0.8)
+b.axvline(100 * df["up"].mean(), color=ORANGE, lw=1.0, ls=(0, (3, 2)))
+b.text(36.3, b.get_ylim()[1] * 0.93, f"mean {100*df['up'].mean():.1f}%",
+       ha="left", fontsize=7, color="#8a4a17")
+b.set_xlabel("Share of up days in evaluation (%)")
+b.set_ylabel("Number of stocks")
+b.grid(axis="x", visible=False)
+panel(b, "Panel B. Share of up days")
+fig.savefig(FIG / "universe.pdf")
+plt.close(fig)
+macro("MedianFullGrowth", num(med.loc[:eval_start].iloc[-1], 2))
+
+# Figure: per-stock edge, ranked, against the noise band
+r_ = df.sort_values("edge").reset_index(drop=True)
+fig, ax = plt.subplots(figsize=(WIDTH, 2.4))
+ax.axhspan(-200 * se, 200 * se, color="#efefef", lw=0, zorder=0)
+ax.bar(np.arange(N), 100 * r_["edge"], width=0.82,
+       color=[BLUE if e > 0 else ORANGE for e in r_["edge"]], lw=0)
+ax.axhline(0, color=INK, lw=0.6)
+ax.axhline(100 * df["edge"].mean(), color=INK, lw=0.7, ls=(0, (3, 2)))
+ax.text(1, 200 * se + 0.4, r"$\pm 2$ standard errors", fontsize=7, color="#555555")
+ax.text(27, 100 * df["edge"].mean() + 0.45, f"mean {100*df['edge'].mean():+.2f}",
+        fontsize=7, ha="left")
+ax.set_xlim(-1, N)
+ax.set_xticks([0, 24, 49, 74, 97], ["1", "25", "50", "75", "98"])
+ax.set_xlabel("Stocks ranked by edge")
+ax.set_ylabel("Edge over always-up (pp)")
+ax.grid(axis="x", visible=False)
+fig.savefig(FIG / "edge_ranked.pdf")
+plt.close(fig)
+
+# Figure: the moving-average ratio's coefficient, and all four features compared
+W = pd.DataFrame({t: signals[t]["weights"] for t in df["ticker"]}).T[FEATURES]
+fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 2.45),
+                           gridspec_kw={"width_ratios": [1.5, 1], "wspace": 0.32})
+wr = (1e4 * W["ma_ratio"]).sort_values().to_numpy()
+a.bar(np.arange(N), wr, width=0.82, color=[BLUE if v > 0 else ORANGE for v in wr], lw=0)
+a.axhline(0, color=INK, lw=0.6)
+a.set_xlim(-1, N)
+a.set_xticks([])
+a.set_xlabel("Stocks ranked by coefficient")
+a.set_ylabel("Coefficient (bp per SD)")
+a.grid(axis="x", visible=False)
+panel(a, r"Panel A. Coefficient on $\mathit{ratio}$, by stock")
+mabs = 1e4 * W.abs().mean()
+labels_ = [r"$\mathit{ma5}$", r"$\mathit{ma20}$", r"$r_t$", r"$\mathit{ratio}$"]
+b.bar(range(4), mabs.to_numpy(), color=[GREY, GREY, GREY, BLUE], width=0.6)
+for i, f_ in enumerate(FEATURES):
+    b.text(i, mabs[f_] + mabs.max() * 0.03, f"largest for\n{int(counts.get(f_, 0))}",
+           ha="center", va="bottom", fontsize=6.5)
+b.set_xticks(range(4), labels_)
+b.set_ylim(0, mabs.max() * 1.35)
+b.set_ylabel("Mean |coefficient| (bp per SD)")
+b.grid(axis="x", visible=False)
+panel(b, "Panel B. All four features")
+fig.savefig(FIG / "ratio_coefficients.pdf")
+plt.close(fig)
+macro("MeanAbsMaFive", num(mabs["ma5"], 1))
+macro("MeanAbsMaTwenty", num(mabs["ma20"], 1))
+macro("MeanAbsRatioBp", num(mabs["ma_ratio"], 1))
+
+# Figure: results by capitalisation band
+bands = ["Large", "Mid", "Small"]
+fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 2.3),
+                           gridspec_kw={"width_ratios": [1, 1.1], "wspace": 0.35})
+for i, band_ in enumerate(bands):
+    g_ = df[df["cap"] == band_]
+    acc_, up_ = 100 * g_["acc"].mean(), 100 * g_["up"].mean()
+    a.plot([up_, acc_], [i, i], color=GREY, lw=1.2, zorder=1)
+    a.scatter([up_], [i], s=34, facecolor="white", edgecolor=INK, lw=0.9, zorder=2,
+              label="Always-up benchmark" if i == 0 else None)
+    a.scatter([acc_], [i], s=34, color=BLUE, zorder=3, label="Model accuracy" if i == 0 else None)
+    b.scatter(100 * g_["edge"], np.full(len(g_), i) + np.random.default_rng(i).uniform(-0.18, 0.18, len(g_)),
+              s=8, color=BLUE, alpha=0.65, lw=0)
+    b.plot([100 * g_["edge"].mean()] * 2, [i - 0.3, i + 0.3], color=INK, lw=1.4)
+a.axvline(50, color=INK, lw=0.6, ls=(0, (1, 1.5)))
+a.set_yticks(range(3), [f"{b_} ({int((df['cap'] == b_).sum())})" for b_ in bands])
+a.set_ylim(-0.45, 3.0)
+a.invert_yaxis()
+a.set_xlabel("Directional accuracy (%)")
+a.legend(loc="lower left", fontsize=6.8, handletextpad=0.2, borderaxespad=0.3,
+         labelspacing=0.3)
+panel(a, "Panel A. Band means")
+b.axvline(0, color=INK, lw=0.6)
+b.set_yticks(range(3), bands)
+b.set_ylim(-0.45, 3.0)
+b.invert_yaxis()
+b.set_xlabel("Edge over always-up (pp)")
+panel(b, "Panel B. Individual stocks")
+fig.savefig(FIG / "by_cap.pdf")
+plt.close(fig)
+
+# Figure: Reliance over the evaluation period, levels, returns and residuals
+pdts = pd.to_datetime([r["date"] for r in pp])
+rdts = pd.to_datetime([r["date"] for r in ret_rows])
+resid = np.array([r["residual"] for r in ret_rows])
+fig, (a, b, c3) = plt.subplots(3, 1, figsize=(WIDTH, 4.4), sharex=True,
+                               gridspec_kw={"height_ratios": [1.15, 1, 0.85], "hspace": 0.28})
+a.plot(pdts, pa, color=INK, lw=0.9, label="Realised close")
+a.plot(pdts, pf, color=BLUE, lw=0.9, label="Price-model forecast")
+a.set_ylabel("Close (INR)")
+a.legend(loc="upper left", ncol=2, frameon=True, framealpha=0.92, edgecolor="none")
+panel(a, "Panel A. Price model: the forecast tracks the level")
+b.plot(rdts, 100 * act, color="#9a9a9a", lw=0.6, label="Realised return")
+b.plot(rdts, 100 * prd, color=ORANGE, lw=1.1, label="Return-model forecast")
+b.axhline(0, color=INK, lw=0.5)
+b.set_ylabel("Daily return (%)")
+b.legend(loc="upper left", ncol=2, frameon=True, framealpha=0.92, edgecolor="none")
+panel(b, "Panel B. Return model: the forecast stays near zero")
+c3.scatter(rdts, 100 * resid, s=4, color=BLUE, alpha=0.7, lw=0)
+c3.axhline(0, color=INK, lw=0.5)
+c3.set_ylabel("Residual (pp)")
+c3.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
+panel(c3, "Panel C. Return-model residuals")
+fig.savefig(FIG / "reliance_series.pdf")
+plt.close(fig)
+
+# Figure: the coefficients of both Reliance models
+fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 2.2), gridspec_kw={"wspace": 0.45})
+pw = [pm["featureWeights"][f_] for f_ in FEATURES]
+rw = [1e4 * rm["featureWeights"][f_] for f_ in FEATURES]
+for ax_, vals_, unit, ttl in [(a, pw, "INR per SD", "Panel A. Price model"),
+                              (b, rw, "bp of return per SD", "Panel B. Return model")]:
+    y_ = np.arange(4)[::-1]
+    ax_.barh(y_, vals_, color=[BLUE if v > 0 else ORANGE for v in vals_], height=0.55)
+    ax_.axvline(0, color=INK, lw=0.6)
+    span_ = max(abs(v) for v in vals_)
+    for yi, v in zip(y_, vals_):
+        ax_.text(v + (0.04 * span_ if v >= 0 else -0.04 * span_), yi,
+                 (f"{v:+.1f}" if abs(v) >= 1 else f"{v:+.2f}").replace("-", "\u2212"),
+                 va="center", ha="left" if v >= 0 else "right", fontsize=7)
+    ax_.set_yticks(y_, labels_)
+    ax_.set_xlim(-span_ * 1.45, span_ * 1.45)
+    ax_.set_xlabel(f"Coefficient ({unit})")
+    ax_.grid(axis="y", visible=False)
+    panel(ax_, ttl)
+fig.savefig(FIG / "reliance_coefficients.pdf")
+plt.close(fig)
+
+# Figure: a two-feature slice of the fitted return model
+from mpl_toolkits.mplot3d import Axes3D  # noqa: E402,F401
+x5 = np.array([r["ma5Scaled"] for r in ret_rows])
+x20 = np.array([r["ma20Scaled"] for r in ret_rows])
+gx, gy = np.meshgrid(np.linspace(x5.min(), x5.max(), 20), np.linspace(x20.min(), x20.max(), 20))
+wts = rm["featureWeights"]
+gz = 100 * (wts["bias"] + wts["ma5"] * gx + wts["ma20"] * gy)
+# Draw the plane only over the band the observations occupy. The two averages
+# move together, so the data lie along a narrow diagonal, and the plane far from
+# it describes combinations of the features that never occur.
+gap = x5 - x20
+gz = np.where(((gx - gy) >= gap.min() - 0.05) & ((gx - gy) <= gap.max() + 0.05), gz, np.nan)
+fig = plt.figure(figsize=(WIDTH * 0.62, 2.7))
+ax = fig.add_subplot(111, projection="3d")
+fig.subplots_adjust(left=0, right=1, bottom=0, top=1)
+ax.plot_surface(gx, gy, gz, color=BLUE, alpha=0.28, lw=0)
+ax.scatter(x5, x20, 100 * act, s=3, color=INK, alpha=0.55, depthshade=False)
+ax.set_xlabel(r"$\mathit{ma5}$ (standardised)", labelpad=-2)
+ax.set_ylabel(r"$\mathit{ma20}$ (standardised)", labelpad=-2)
+ax.set_zlabel("Return (%)", labelpad=-4)
+ax.tick_params(pad=-2, labelsize=6.5)
+ax.xaxis.set_major_locator(plt.MaxNLocator(4))
+ax.yaxis.set_major_locator(plt.MaxNLocator(4))
+ax.zaxis.set_major_locator(plt.MaxNLocator(5))
+ax.view_init(elev=16, azim=-58)
+ax.set_box_aspect((1.3, 1, 0.72), zoom=0.95)
+ax.grid(False)
+for pane in (ax.xaxis.pane, ax.yaxis.pane, ax.zaxis.pane):
+    pane.set_facecolor("white")
+    pane.set_edgecolor("#dddddd")
+fig.savefig(FIG / "fitted_plane.pdf")
+plt.close(fig)
+
 
 # ----------------------------------------------------------------------
 lines = ["% Generated by paper/make_assets.py. Do not edit by hand."]

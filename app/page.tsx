@@ -127,13 +127,24 @@ export default function Home() {
               the strategy has not seen says anything useful about the future.
             </p>
             <p className="mt-4 text-[16px] leading-[1.75] text-ink-muted">
-              Each project on this site takes a common idea in quantitative
-              finance and tests it that way. The model is estimated on one period
-              and judged on a later one, the benchmark is chosen before the first
-              estimate, and the data and code are published so that every number
-              can be reproduced. The name reflects the common result: where a
-              method depended on estimating future returns, its apparent
-              advantage did not survive out of sample.
+              Each project takes one widely used idea and tests it on data the
+              method has not seen. The first asks whether moving averages, the
+              most common technical indicator, predict the next day&apos;s return
+              of Indian stocks. The second asks whether a portfolio built to
+              limit its losses on the worst days actually loses less, and what
+              that protection costs in return. The third asks whether pairs of
+              bank stocks that moved together over the past year keep moving
+              together. In every case the model is estimated on one period and
+              judged on a later one, the benchmark it has to beat is fixed before
+              the first estimate, and the data and code are published so that
+              every number can be reproduced. The name reflects what the three
+              tests found: wherever a method relied on forecasting future
+              returns, its apparent advantage did not survive out of sample.
+            </p>
+            <p className="mt-4 text-[16px] leading-[1.75] text-ink-muted">
+              Each project has a paper, which is the complete account of its
+              method and results, and a summary page built around interactive
+              charts.
             </p>
           </header>
         </Reveal>
@@ -190,7 +201,7 @@ export default function Home() {
                     href={p.href}
                     className="inline-flex min-h-11 cursor-pointer items-center rounded-lg px-2 font-medium text-accent transition-colors duration-200 hover:bg-accent-soft hover:text-accent-strong"
                   >
-                    Read the study
+                    Read the summary
                   </Link>
                   <a
                     href={p.paper}
