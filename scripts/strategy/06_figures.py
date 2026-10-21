@@ -110,9 +110,9 @@ def quintiles() -> None:
     axes[0][0].set_ylabel("Mean return over the next month, %")
     fig.suptitle("Next-month return by score quintile", x=0.01, ha="left",
                  fontweight="bold", fontsize=13)
-    fig.text(0.01, 0.905, "Equal weight within each quintile, before costs.",
+    fig.text(0.01, 0.9, "Equal weight within each quintile, before costs.",
              color=INK_MUTED, fontsize=9.5)
-    fig.tight_layout(rect=(0, 0, 1, 0.9))
+    fig.tight_layout(rect=(0, 0, 1, 0.89))
     fs.save(fig, OUT / "strategy-quintiles.png")
 
 
@@ -202,9 +202,9 @@ def random_portfolios() -> None:
     axes[0][0].set_ylabel("Random portfolios")
     fig.suptitle(f"The strategy against {C.N_RANDOM:,} random portfolios", x=0.01,
                  ha="left", fontweight="bold", fontsize=13)
-    fig.text(0.01, 0.9, "Same size, drawn from the same eligible stocks each month.",
+    fig.text(0.01, 0.885, "Same size, drawn from the same eligible stocks each month.",
              color=INK_MUTED, fontsize=9.5)
-    fig.tight_layout(rect=(0, 0, 1, 0.88))
+    fig.tight_layout(rect=(0, 0, 1, 0.87))
     fs.save(fig, OUT / "strategy-random-portfolios.png")
 
 
@@ -212,14 +212,14 @@ def by_year() -> None:
     yrs = RB["byYear"]
     years = list(yrs)
     x = np.arange(len(years))
-    fig, ax = plt.subplots(figsize=(9, 3.8))
+    fig, ax = plt.subplots(figsize=(10, 3.8))
     fs.style(ax, grid_axis="y")
     ax.bar(x - 0.2, [yrs[y]["primary"] for y in years], width=0.38, color=BLUE,
            label=LABEL[P])
     ax.bar(x + 0.2, [yrs[y]["EW"] for y in years], width=0.38, color=AXIS,
            label=LABEL["EW"])
     ax.axhline(0, color=INK_MUTED, lw=0.8)
-    ax.set_xticks(x, [y if y != years[0] else f"{y}*" for y in years], rotation=0)
+    ax.set_xticks(x, [f"\u2019{y[2:]}" + ("*" if y == years[0] else "") for y in years])
     ax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0, decimals=0))
     fs.title(ax, "Calendar-year returns, net of costs",
              f"* {years[0]} starts in {pd.Period(C.EVAL_START, 'M').strftime('%B')}"
