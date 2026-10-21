@@ -118,8 +118,9 @@
 \renewenvironment{abstract}{%
   \begin{center}\begin{minipage}{0.86\textwidth}\small
   \noindent{\bfseries Abstract.}\ }{%
-  \par\vspace{0.7em}\noindent{\itshape Keywords:} \house@keywords\par
-  \noindent{\itshape JEL classification:} \house@jel
+  \par\vspace{0.7em}%
+  \ifx\house@keywords\@empty\else\noindent{\itshape Keywords:} \house@keywords\par\fi
+  \ifx\house@jel\@empty\else\noindent{\itshape JEL classification:} \house@jel\fi
   \end{minipage}\end{center}\vspace{0.6em}}
 
 % ---------------------------------------------------------------- small helpers

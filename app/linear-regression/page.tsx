@@ -1,78 +1,55 @@
 import TopBar from "../components/TopBar";
 import { Reveal, CountUp } from "../components/Motion";
-import { Section, V, C, StatCard, PaperCTA, SummaryNote } from "../components/Page";
-import CrossDiagram from "../components/CrossDiagram";
-import Hyperplane3D from "../components/Hyperplane3D";
+import { Section, V, StatCard, PaperCTA, SummaryNote, Table, TH, Bullets } from "../components/Page";
+import { AccuracyScatter, type ScatterPoint } from "../components/Charts";
 import {
-  AccuracyScatter,
-  CapBreakdown,
-  EdgeRanked,
-  MaRatioSigns,
-  ParityScatter,
-  R2Histogram,
-  type CapRow,
-  type EdgeBar,
-  type R2Bucket,
-  type ScatterPoint,
-} from "../components/Charts";
+  EdgeBreakdown,
+  GrowthChart,
+  RandomHistogram,
+  SignalBars,
+  SurvivorshipBars,
+  YearBars,
+} from "../components/StrategyCharts";
 import { PROJECTS } from "@/lib/project";
 import { companyName } from "@/lib/universe";
-import {
-  getAllMlSignals,
-  getMlSummary,
-  getWorkedExample,
-  directionalStandardError,
-} from "@/lib/ml";
+import { getAllMlSignals, getMlSummary } from "@/lib/ml";
+import { getStrategy, pct } from "@/lib/strategy";
 
 const META = PROJECTS[0];
 
 export const metadata = { title: META.name, description: META.blurb };
 
 const SECTIONS = [
-  { id: "signal", label: "The signal and the test" },
-  { id: "fit", label: "Explained variance" },
-  { id: "direction", label: "Direction and the benchmark" },
-  { id: "significance", label: "Significance" },
-  { id: "ratio", label: "The moving-average ratio" },
-  { id: "size", label: "By market cap" },
-  { id: "worked", label: "Why the target is a return" },
-  { id: "surface", label: "The fitted surface" },
-  { id: "conclusion", label: "Conclusion" },
+  { id: "first", label: "The first attempt" },
+  { id: "redesign", label: "The redesign" },
+  { id: "result", label: "The result" },
+  { id: "survivorship", label: "Survivorship bias" },
+  { id: "luck", label: "Luck or skill?" },
+  { id: "what", label: "What it is" },
+  { id: "limits", label: "Where it breaks" },
+  { id: "verdict", label: "Verdict" },
 ];
 
-export default function LinearRegressionStudy() {
-  const s = getMlSummary();
-  const all = getAllMlSignals();
-  const ex = getWorkedExample();
-  const entries = Object.entries(all);
+const STEPS = [
+  { n: "1", title: "Score", text: "Four price signals: 12-month momentum, distance from the 52-week high, the 200-day trend, a volume surge." },
+  { n: "2", title: "Rank", text: "Every month-end, across the 400 most-traded NSE stocks at the time." },
+  { n: "3", title: "Buy", text: "The top fifth, equal weight, at the next day's close. Long only." },
+  { n: "4", title: "Pay", text: "STT, stamp duty, exchange fees and the spread, on every trade." },
+];
 
-  const pctf = (x: number, d = 1) => `${(x * 100).toFixed(d)}%`;
-  const signed = (x: number, d = 1) =>
-    `${x >= 0 ? "+" : ""}${(x * 100).toFixed(d)}`;
+export default function StrategyStudy() {
+  const ml = getMlSummary();
+  const all = Object.entries(getAllMlSignals());
+  const st = getStrategy();
+  const h = st.headline.pit.full;
+  const hold = st.headline.pit.holdout;
+  const dev = st.headline.pit.development;
+  const g = st.growth.pit;
+  const last = (xs: number[]) => xs[xs.length - 1];
+  const surv = st.headline.survivor.full;
+  const bias = ((surv.cagr - h.cagr) + (surv.ewCagr - h.ewCagr)) / 2;
 
-  // ---- R2 buckets. Tight boundaries, because the data is tight: every R2
-  // here falls between -0.13 and +0.05, so wider buckets leave three empty.
-  const BUCKETS = [
-    "Below -0.05",
-    "-0.05 to -0.02",
-    "-0.02 to -0.01",
-    "-0.01 to 0",
-    "Above 0",
-  ] as const;
-  const bucketOf = (r2: number) =>
-    r2 < -0.05 ? BUCKETS[0]
-      : r2 < -0.02 ? BUCKETS[1]
-        : r2 < -0.01 ? BUCKETS[2]
-          : r2 < 0 ? BUCKETS[3] : BUCKETS[4];
-  const r2Data: R2Bucket[] = BUCKETS.map((bucket) => ({
-    bucket,
-    count: entries.filter(([, r]) => bucketOf(r.r2Return) === bucket).length,
-    positive: bucket === "Above 0",
-  }));
-  const r2AboveZero = entries.filter(([, r]) => r.r2Return > 0).length;
-  const r2Negative = entries.filter(([, r]) => r.r2Return < 0).length;
-
-  const scatter: ScatterPoint[] = entries.map(([id, r]) => ({
+  const scatter: ScatterPoint[] = all.map(([id, r]) => ({
     ticker: id,
     name: companyName(id),
     naive: r.naiveBaseline * 100,
@@ -85,66 +62,19 @@ export default function LinearRegressionStudy() {
   }));
   const beats = scatter.filter((p) => p.beats).length;
 
-  const edgeData: EdgeBar[] = entries
-    .map(([id, r]) => ({ ticker: id, edge: r.mlEdge * 100 }))
-    .sort((a, b) => a.edge - b.edge)
-    .map((d, i) => ({ ...d, rank: i + 1 }));
-  const negativeEdge = edgeData.filter((d) => d.edge <= 0).length;
-  const se = directionalStandardError(s.avgTestDays);
-  const band = 2 * se * 100;
-
-  const capRows: CapRow[] = s.byCap.map((g) => ({
-    category: g.category,
-    n: g.n,
-    accuracy: g.avgDirAccuracy * 100,
-    baseline: (g.avgDirAccuracy - g.avgEdge) * 100,
-    edge: g.avgEdge * 100,
-  }));
-  const large = s.byCap.find((g) => g.category === "Large");
-  const small = s.byCap.find((g) => g.category === "Small");
-
-  // ---- worked example ----
-  const priceRows = ex.priceModel.testPeriodData;
-  const priceVals = priceRows.flatMap((r) => [r.actual, r.predicted]);
-  const priceLo = Math.floor(Math.min(...priceVals) / 25) * 25;
-  const priceHi = Math.ceil(Math.max(...priceVals) / 25) * 25;
-  const priceParity = priceRows.map((r) => ({
-    date: r.date, predicted: r.predicted, actual: r.actual,
-  }));
-  const returnRows = ex.returnModel.testPeriodData;
-  const returnVals = returnRows.flatMap((r) => [
-    r.actualReturn * 100, r.predictedReturn * 100,
-  ]);
-  const returnBound = Math.ceil(Math.max(...returnVals.map(Math.abs)));
-  const returnParity = returnRows.map((r) => ({
-    date: r.date,
-    predicted: r.predictedReturn * 100,
-    actual: r.actualReturn * 100,
-  }));
-  const predBand = Math.max(...returnRows.map((r) => Math.abs(r.predictedReturn * 100)));
-  const testDays = ex.metrics.testDays;
-
-  // A forecast with no information is right half the time whatever the
-  // benchmark, so its expected edge over the always-up rule is 0.5 minus it.
-  const randomEdge =
-    entries.reduce((a, [, r]) => a + (0.5 - r.naiveBaseline), 0) / entries.length;
-  const weakBenchmark = entries.filter(([, r]) => r.naiveBaseline < 0.5).length;
-  // Two-sided binomial test of accuracy against 50%, by the normal
-  // approximation with a continuity correction. On this data it gives the same
-  // counts as the exact test.
-  const sig = entries.map(([, r]) => {
-    const k = Math.round(r.dirAccuracy * r.testDays);
-    const z = (Math.abs(k - r.testDays / 2) - 0.5) / Math.sqrt(r.testDays / 4);
-    return { above: k > r.testDays / 2, significant: z > 1.959964 };
-  });
-  const sigAbove = sig.filter((x) => x.significant && x.above).length;
-  const sigBelow = sig.filter((x) => x.significant && !x.above).length;
+  const compare = [
+    { label: "Strategy", cagr: h.cagr, sharpe: h.sharpe, dd: h.maxDrawdown, strong: true },
+    { label: "Nifty500 Momentum 50", cagr: h.mom50Cagr ?? 0, sharpe: h.mom50Sharpe ?? 0, dd: h.mom50MaxDrawdown ?? null, strong: false },
+    { label: "Equal-weight benchmark", cagr: h.ewCagr, sharpe: h.ewSharpe, dd: h.ewMaxDrawdown, strong: false },
+    { label: "Nifty 500", cagr: h.nifty500Cagr, sharpe: h.nifty500Sharpe, dd: h.nifty500MaxDrawdown, strong: false },
+  ];
+  const td = "px-3 py-2.5 text-right tnum text-[13.5px]";
 
   return (
     <>
       <TopBar
         eyebrow="Study 01"
-        title="Price prediction with a linear regression model"
+        title={META.name}
         sections={SECTIONS}
         repo={META.repo}
         paper={META.paper}
@@ -155,14 +85,13 @@ export default function LinearRegressionStudy() {
         <Reveal>
           <header>
             <p className="eyebrow">Research summary</p>
-            <h1 className="mt-2 text-[34px] font-semibold leading-[1.1] tracking-tight text-ink sm:text-[44px]">
-              Do moving-average features predict next-day returns?
+            <h1 className="mt-2 text-[34px] font-semibold leading-[1.1] tracking-tight text-ink sm:text-[46px]">
+              Can price signals beat the Indian market?
             </h1>
-            <p className="mt-5 text-[17.5px] leading-[1.7] text-ink-muted">
-              A separate linear regression was fitted to each of {s.total} NSE
-              stocks, using four features built from recent closing prices, and
-              scored on the last 17 months of data, which the model never saw. It
-              did no better than simple rules that use no model at all.
+            <p className="mt-5 text-[18px] leading-[1.6] text-ink-muted">
+              Forecasting tomorrow failed. Ranking stocks once a month worked, after
+              costs, and it survived a test that put back every company that later
+              failed.
             </p>
             <SummaryNote paper={META.paper} />
           </header>
@@ -171,286 +100,255 @@ export default function LinearRegressionStudy() {
         <Reveal delay={60}>
           <div className="mt-7 grid grid-cols-2 gap-3 lg:grid-cols-4">
             <StatCard
-              value={<CountUp value={s.avgDirAccuracy * 100} decimals={1} suffix="%" />}
-              label="Directional accuracy"
-              detail={`Mean across ${s.total} stocks. ${sigAbove} are significantly above 50%.`}
-            />
-            <StatCard
-              value={<CountUp value={s.avgR2} decimals={4} />}
-              label="Out-of-sample R²"
-              detail={`Mean across stocks. ${r2Negative} of ${s.total} are below zero.`}
-            />
-            <StatCard
-              value={<CountUp value={s.avgEdge * 100} decimals={2} prefix="+" suffix="%" />}
-              label="Edge over always-up"
-              detail={`A forecast with no information would have scored ${signed(randomEdge, 1)}% against the same benchmark.`}
+              value={<CountUp value={h.cagr * 100} decimals={1} suffix="%" />}
+              label="A year, 2009 to 2026"
+              detail={`Net of costs, survivorship-free. Nifty 500: ${pct(h.nifty500Cagr)}.`}
               tone="accent"
             />
             <StatCard
-              value={`${s.maRatioTopFeature} of ${s.total}`}
-              label="Golden-cross ratio largest"
-              detail="Stocks for which ma_ratio had the largest coefficient."
+              value={<CountUp value={hold.activeReturn * 100} decimals={1} prefix="+" suffix="%" />}
+              label="A year over the benchmark"
+              detail={`In the 2019-2026 holdout, run once. t = ${hold.activeT.toFixed(2)}.`}
+            />
+            <StatCard
+              value={<CountUp value={bias * 100} decimals={0} prefix="~" suffix=" pts" />}
+              label="Survivorship bias removed"
+              detail="It inflated the strategy and its benchmark alike."
+            />
+            <StatCard
+              value={<CountUp value={ml.avgDirAccuracy * 100} decimals={1} suffix="%" />}
+              label="First attempt's accuracy"
+              detail="Next-day direction. A coin toss."
             />
           </div>
         </Reveal>
 
-        {/* ---------------- 01 signal ---------------- */}
+        {/* ---------------- 01 first attempt ---------------- */}
         <Section
-          id="signal"
+          id="first"
           index={1}
-          title="The signal and the test"
-          summary="The most common technical signal, turned into four features, one regression per stock, and an evaluation period the model never sees."
+          title="The first attempt: forecast tomorrow"
+          summary={
+            <>
+              One regression per stock on four moving-average features, {ml.total}{" "}
+              NSE stocks. Out of sample it called the next day right{" "}
+              {pct(ml.avgDirAccuracy)} of the time.
+            </>
+          }
         >
-          <div className="grid gap-6 md:grid-cols-2">
-            <Reveal><CrossDiagram /></Reveal>
-            <div className="space-y-4">
-              <p>
-                A golden cross, when a short moving average rises above a long
-                one, is read as a signal to buy; the reverse, a death cross, as a
-                signal to sell. The figure shows both in Britannia&apos;s price in
-                2019.
-              </p>
-              <p>
-                The study turns the rule into four features: the 5-day and 20-day
-                moving averages, the one-day return, and the ratio of the two
-                averages, <C>ma_ratio</C>, which is above 1 in the golden-cross
-                state.
-              </p>
-            </div>
-          </div>
+          <AccuracyScatter data={scatter} above={beats} below={ml.total - beats} />
           <p>
-            For each stock, a least squares regression is fitted on the first 80%
-            of its history, June 2019 to January 2025, and scored on the last
-            20%, February 2025 to June 2026. The split is in date order and the
-            features are standardised with training-period statistics only, so
-            nothing from the evaluation period reaches the model. The benchmarks
-            were fixed before any model was estimated.
+            Beating the always-up rule meant nothing: up days were scarce in the test
+            window, so a coin would have beaten it by more. No stock was significantly
+            better than 50%. Part I of the paper has the full test.
           </p>
         </Section>
 
-        {/* ---------------- 02 fit ---------------- */}
+        {/* ---------------- 02 redesign ---------------- */}
         <Section
-          id="fit"
+          id="redesign"
           index={2}
-          title="Explained variance"
-          summary={
-            <>
-              Mean out-of-sample R² is {s.avgR2.toFixed(4)}: for the typical stock
-              the model forecasts worse than a constant.
-            </>
-          }
+          title="The redesign: rank stocks, every month"
+          summary="Stop forecasting one stock. Compare all of them, buy the strongest, pay real costs."
         >
-          <R2Histogram data={r2Data} aboveZero={r2AboveZero} total={s.total} />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {STEPS.map((s, i) => (
+              <Reveal key={s.n} delay={i * 60}>
+                <div className="h-full rounded-xl border border-line bg-surface px-4 py-4">
+                  <span className="tnum text-[12px] font-semibold text-accent">{s.n}</span>
+                  <p className="mt-1 text-[16px] font-semibold text-ink">{s.title}</p>
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-ink-muted">{s.text}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <SignalBars signals={st.signals} />
           <p>
-            {r2Negative} of {s.total} stocks have a negative R², and the{" "}
-            {r2AboveZero} positive values are all small. This is what happens when
-            the features carry no information: the coefficients fit noise in the
-            training period, and the noise does not repeat.
+            Every rule was committed to git before the first backtest. The 2019-2026
+            holdout was opened once.
           </p>
         </Section>
 
-        {/* ---------------- 03 direction ---------------- */}
+        {/* ---------------- 03 result ---------------- */}
         <Section
-          id="direction"
+          id="result"
           index={3}
-          title="Direction and the benchmark"
-          summary="The model beats an always-up rule for most stocks, but only because up days were scarce in the test window."
-        >
-          <AccuracyScatter data={scatter} above={beats} below={s.total - beats} />
-          <p>
-            Mean directional accuracy is <V>{pctf(s.avgDirAccuracy)}</V>, and the
-            model beats the always-up rule for {s.positiveEdge} of {s.total}{" "}
-            stocks, by {signed(s.avgEdge, 2)} points on average. That says more
-            about the benchmark than the model. Up days were in the minority for{" "}
-            {weakBenchmark} stocks, so the always-up rule averaged only{" "}
-            {pctf(s.avgNaive)}. A forecast with no information is right half the
-            time, so it would have beaten the same rule by{" "}
-            <V>{signed(randomEdge, 1)}</V> points on average, more than the model
-            did.
-          </p>
-        </Section>
-
-        {/* ---------------- 04 significance ---------------- */}
-        <Section
-          id="significance"
-          index={4}
-          title="Significance"
-          summary="No stock is significantly more accurate than 50%, and none of the significant results survives a correction for testing 98 stocks."
-        >
-          <EdgeRanked
-            data={edgeData}
-            negative={negativeEdge}
-            total={s.total}
-            avgTestDays={Math.round(s.avgTestDays)}
-            noiseBand={band}
-          />
-          <p>
-            With about {Math.round(s.avgTestDays)}{" "}test days per stock, one
-            stock&apos;s accuracy has a standard error of about {pctf(se)}. In a
-            binomial test, <V>{sigAbove}</V> stocks are significantly above 50%
-            and {sigBelow} below, against about 2.5 per tail expected by chance in{" "}
-            {s.total} tests, and none of the {sigBelow} survives a
-            Benjamini-Hochberg correction. The Pesaran-Timmermann test, which
-            allows for the share of up days, is significant for 5 of 97 stocks at
-            5%, about what chance produces, and for none after the same
-            correction.
-          </p>
-        </Section>
-
-        {/* ---------------- 05 ratio ---------------- */}
-        <Section
-          id="ratio"
-          index={5}
-          title="The moving-average ratio"
-          summary="The feature that encodes the crossing rule is never the largest coefficient, and its effect is tiny."
-        >
-          <MaRatioSigns
-            positive={s.maRatioPositive}
-            negative={s.maRatioNegative}
-            total={s.total}
-          />
-          <p>
-            <C>ma_ratio</C> has the largest standardised coefficient for{" "}
-            <V>{s.maRatioTopFeature} of {s.total}</V> stocks. Its sign is positive
-            for {s.maRatioPositive} and negative for {s.maRatioNegative}, a
-            majority unlikely to be chance (sign test, p = 0.02), but a one
-            standard deviation change in the ratio moves the forecast daily return
-            by only about {(s.avgAbsMaRatioWeight * 100).toFixed(2)} percentage
-            points, and accuracy shows no benefit. The ratio is a function of the
-            two averages, which move together, so the individual coefficients are
-            poorly identified; the conclusion rests on out-of-sample accuracy
-            instead.
-          </p>
-        </Section>
-
-        {/* ---------------- 06 size ---------------- */}
-        <Section
-          id="size"
-          index={6}
-          title="By market capitalisation"
-          summary="Small caps show the largest edge only because their benchmark was lower. Accuracy is the same across bands."
-        >
-          <CapBreakdown data={capRows} />
-          {large && small && (
-            <p>
-              Momentum is often stronger in smaller, less followed stocks, so the
-              results were split by capitalisation band. Small caps ({small.n}{" "}
-              stocks) show the largest mean edge, {signed(small.avgEdge, 2)} points
-              against {signed(large.avgEdge, 2)} for large caps ({large.n}), only
-              because up days were rarer among them. The spread of results within
-              each band is wider than the differences between bands, so size does
-              not separate the stocks the model can forecast from those it
-              cannot.
-            </p>
-          )}
-        </Section>
-
-        {/* ---------------- 07 worked ---------------- */}
-        <Section
-          id="worked"
-          index={7}
-          title="Why the target is a return"
+          title="The result"
           summary={
             <>
-              On Reliance, a model that forecasts the price scores an R² of{" "}
-              {ex.priceModel.r2.toFixed(2)}{" "}and still loses to the forecast that
-              tomorrow&apos;s close equals today&apos;s.
+              ₹1 in March 2009 became <V>₹{last(g.strategy).toFixed(1)}</V>, against ₹
+              {last(g.nifty500).toFixed(1)} in the Nifty 500.
             </>
           }
         >
-          <p>
-            Forecasting tomorrow&apos;s price instead of its return looks far
-            better on paper. For Reliance Industries the price model&apos;s R² is{" "}
-            <V>{ex.priceModel.r2.toFixed(3)}</V>, but the random walk, which simply
-            repeats today&apos;s close, scores <V>{ex.naiveModel.r2.toFixed(3)}</V>{" "}
-            with no estimation and a mean absolute error of ₹
-            {ex.naiveModel.mae.toFixed(2)} against ₹{ex.priceModel.mae.toFixed(2)}.
-            Daily changes are small next to the spread of the price level, so any
-            forecast near yesterday&apos;s close explains most of the variance.
-          </p>
-          <div className="grid gap-4 md:grid-cols-2">
-            <ParityScatter
-              title="Price model"
-              data={priceParity}
-              domain={[priceLo, priceHi]}
-              unit="rupees"
-              caption={
-                <>
-                  Forecasts lie close to the diagonal because each one is close to
-                  the previous close, not because the model anticipates the move.
-                </>
-              }
+          <GrowthChart
+            months={st.growth.months}
+            pit={st.growth.pit}
+            survivor={st.growth.survivor}
+            holdoutStart="2019-01"
+          />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <StatCard
+              value={`${h.sharpe.toFixed(2)} vs ${h.ewSharpe.toFixed(2)}`}
+              label="Sharpe ratio"
+              detail="Strategy against the equal-weight benchmark."
             />
-            <ParityScatter
-              title="Return model"
-              data={returnParity}
-              domain={[-returnBound, returnBound]}
-              unit="percent"
-              caption={
-                <>
-                  Forecasts stay within about {predBand.toFixed(1)}% of zero while
-                  realised returns span the whole range.
-                </>
-              }
+            <StatCard
+              value={`${pct(h.maxDrawdown, 0)} vs ${pct(h.ewMaxDrawdown, 0)}`}
+              label="Worst drawdown"
+              detail="Shallower than the benchmark's."
+            />
+            <StatCard
+              value={`${pct(h.costDrag)} a year`}
+              label="Trading costs paid"
+              detail={`Survives up to ${h.breakEven.toFixed(1)}x the real cost schedule.`}
             />
           </div>
+        </Section>
+
+        {/* ---------------- 04 survivorship ---------------- */}
+        <Section
+          id="survivorship"
+          index={4}
+          title="Survivorship bias, measured"
+          summary="Today's Nifty 500 holds only survivors. Putting the failures back cut returns by about 8 points a year. The gap didn't move."
+        >
+          <SurvivorshipBars rows={st.survivorship} />
           <p>
-            Both plots use the same {testDays} days, features and estimator; only
-            the target differs. Once the level is removed, the forecasts barely
-            move with the outcome, which is what least squares produces when the
-            features carry no information.
+            The fix: every NSE daily price file since 2005, corporate actions from
+            NSE&apos;s own records, and a final return for each of the{" "}
+            {st.data.exitsInUniverse} stocks that stopped trading. Where both sources
+            exist, {pct(st.data.yahooWithin1pct)} of stock-months match Yahoo to within a
+            point.
           </p>
         </Section>
 
-        {/* ---------------- 08 surface ---------------- */}
+        {/* ---------------- 05 luck ---------------- */}
         <Section
-          id="surface"
+          id="luck"
+          index={5}
+          title="Luck, or skill?"
+          summary={`Better than all ${st.random.n.toLocaleString("en-IN")} random portfolios, in every period.`}
+        >
+          <RandomHistogram
+            edges={st.random.edges}
+            counts={st.random.counts}
+            strategy={st.random.strategy}
+            n={st.random.n}
+          />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <StatCard
+              value={`t = ${st.skill.full.icT.toFixed(2)}`}
+              label="Signal strength"
+              detail="Monthly rank correlation of the score with next month's return."
+            />
+            <StatCard
+              value={h.dsr.toFixed(2)}
+              label="Deflated Sharpe ratio"
+              detail="Probability of skill, allowing for 20 variants tried."
+            />
+            <StatCard
+              value="Passes"
+              label="Look-ahead test"
+              detail={`Cheating on purpose scores a Sharpe of ${st.skill.full.canary.toFixed(1)}. The real engine doesn't.`}
+            />
+          </div>
+        </Section>
+
+        {/* ---------------- 06 what ---------------- */}
+        <Section
+          id="what"
+          index={6}
+          title="What it is: momentum"
+          summary={
+            <>
+              Control for the momentum factor and the edge disappears (alpha{" "}
+              {pct(st.factors.activeAlpha, 1, true)}, t = {st.factors.activeAlphaT.toFixed(2)}).
+              NSE&apos;s own momentum index did about as well.
+            </>
+          }
+        >
+          <Table
+            minWidth={520}
+            head={
+              <thead className="border-b border-line bg-surface">
+                <tr>
+                  <TH align="left">March 2009 to June 2026</TH>
+                  <TH>A year</TH>
+                  <TH>Sharpe</TH>
+                  <TH>Worst drawdown</TH>
+                </tr>
+              </thead>
+            }
+            caption="Net of costs for the strategy and the benchmark. The indices are NSE Indices' total return series, which pay no costs; their history before 2024 was back-calculated by NSE."
+          >
+            <tbody>
+              {compare.map((r) => (
+                <tr key={r.label} className="border-b border-line last:border-0">
+                  <td className={`px-3 py-2.5 text-left text-[13.5px] ${r.strong ? "font-semibold text-ink" : "text-ink-muted"}`}>
+                    {r.label}
+                  </td>
+                  <td className={`${td} ${r.strong ? "font-semibold text-accent" : "text-ink"}`}>{pct(r.cagr)}</td>
+                  <td className={`${td} text-ink`}>{r.sharpe.toFixed(2)}</td>
+                  <td className={`${td} text-ink-muted`}>{r.dd === null ? "-" : pct(r.dd)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          <p>
+            Not a new anomaly. A known premium, held long only, after Indian costs, with
+            no survivorship bias.
+          </p>
+        </Section>
+
+        {/* ---------------- 07 limits ---------------- */}
+        <Section
+          id="limits"
+          index={7}
+          title="Where it breaks"
+          summary="The edge lives outside the largest stocks, and momentum crashes in sharp rebounds."
+        >
+          <EdgeBreakdown
+            groups={[
+              {
+                title: "Within liquidity thirds",
+                rows: st.terciles.map((t) => ({ label: t.label, value: t.active, t: t.activeT })),
+              },
+              {
+                title: "By size of universe",
+                rows: st.universeSize.map((u) => ({ label: `${u.label} stocks`, value: u.active, t: u.activeT })),
+              },
+            ]}
+          />
+          <YearBars rows={st.byYear} />
+          <Bullets
+            items={[
+              <>
+                <V>2009 to 2018 alone is weak:</V> {pct(dev.activeReturn, 1, true)} a year over
+                the benchmark, t = {dev.activeT.toFixed(2)}.
+              </>,
+              <>
+                <V>Not modelled:</V> 20% short-term capital gains tax and the price impact
+                of large orders.
+              </>,
+              <>
+                <V>A replication, not a new test:</V> the holdout had been seen before the
+                survivorship-free rerun.
+              </>,
+            ]}
+          />
+        </Section>
+
+        {/* ---------------- 08 verdict ---------------- */}
+        <Section
+          id="verdict"
           index={8}
-          title="The fitted surface"
-          summary="Holding two features fixed, the model is a plane, and for Reliance it is almost flat."
+          title="Verdict"
+          summary="Price signals don't predict tomorrow. Ranked monthly, they capture the momentum premium, after costs and without survivorship bias."
         >
-          <Reveal>
-            <div className="rounded-xl border border-line bg-surface p-3">
-              <Hyperplane3D
-                data={ex.returnModel.testPeriodData}
-                weights={{
-                  ma5: ex.returnModel.featureWeights?.ma5 ?? 0,
-                  ma20: ex.returnModel.featureWeights?.ma20 ?? 0,
-                  bias: ex.returnModel.featureWeights?.bias ?? 0,
-                }}
-              />
-            </div>
-          </Reveal>
-          <p>
-            The plane is a two-feature slice of Reliance&apos;s return model, with
-            the one-day return and the ratio held at their means, and the points
-            are the realised returns of the test days. Because the two averages
-            move together, the days lie along a narrow band, and along it the
-            plane is almost flat while the returns scatter far above and below. A
-            model with predictive power would tilt along the band, with the days
-            close to it. Drag the chart to rotate it.
-          </p>
-        </Section>
-
-        {/* ---------------- 09 conclusion ---------------- */}
-        <Section
-          id="conclusion"
-          index={9}
-          title="Conclusion"
-          summary="Daily moving-average signals carried no usable information about next-day returns in this sample."
-        >
-          <p>
-            The results are consistent with weak-form market efficiency: a rule
-            built from widely watched past prices is among the first to be traded
-            away. The conclusion is also narrow. It covers four features, a linear
-            model and a one-day horizon, on these stocks in this period, and says
-            nothing about momentum at monthly horizons or about investing on
-            fundamentals.
-          </p>
           <PaperCTA paper={META.paper} repo={META.repo}>
-            The paper has the full method, the Pesaran-Timmermann and
-            Benjamini-Hochberg tests, the worked example in detail, the
-            limitations and the results for every stock.
+            The paper has the full method, the daily regression in detail, every test,
+            the data rules and the limitations.
           </PaperCTA>
         </Section>
 

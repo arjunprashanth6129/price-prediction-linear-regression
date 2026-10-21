@@ -30,14 +30,14 @@ import { useMounted } from "./useMounted";
 // cannot tell the two bar colours apart. Blue against amber separates by about
 // 25 in the worst case, and polarity is additionally carried by position in
 // every one of these charts.
-const POS = "#2563eb";
-const NEG = "#b45309";
-const AXIS = "#64748b";
-const GRID = "#e2e8f0";
-const REF = "#cbd5e1";
+export const POS = "#2563eb";
+export const NEG = "#b45309";
+export const AXIS = "#64748b";
+export const GRID = "#e2e8f0";
+export const REF = "#cbd5e1";
 const SURFACE = "#ffffff";
 
-const axisProps = {
+export const axisProps = {
   stroke: GRID,
   tick: { fill: AXIS, fontSize: 11 },
   tickLine: false,
@@ -69,7 +69,7 @@ function BucketTick({
 }
 
 /** Reserve the final height so hydration never shifts the page. */
-function Frame({
+export function Frame({
   title,
   height,
   children,
@@ -100,7 +100,7 @@ function Frame({
   );
 }
 
-function TipBox({ children }: { children: React.ReactNode }) {
+export function TipBox({ children }: { children: React.ReactNode }) {
   return (
     <div className="rounded-lg border border-line-strong bg-paper px-3 py-2 shadow-lg shadow-ink/10">
       {children}

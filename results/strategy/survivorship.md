@@ -52,3 +52,7 @@ Monthly, 2009-03 to 2026-06. The universe portfolio is net of costs; the index i
 | top 1000 | development | +30.2% | 0.96 | +18.7% | +8.2% (1.57) | +12.1% (3.80) |
 | top 1000 | holdout | +27.0% | 0.90 | +18.4% | +6.7% (2.22) | +8.9% (2.98) |
 | top 1000 | full | +28.8% | 0.93 | +18.6% | +7.5% (2.33) | +10.8% (4.81) |
+
+## Exits that reached a portfolio
+
+Of 688 stocks that stopped trading after 2009-03, 53 were in the equal-weight benchmark at the month-end before (3 classed as distress) and 18 were held by the strategy (0 as distress). Failing companies leave the 500 most traded stocks before they stop trading, which is why the distress return barely moves the results.

@@ -1,0 +1,18 @@
+\begin{tabular}{@{}llrrlr@{}}
+\toprule
+ & & \multicolumn{3}{c}{Today's Nifty 500 (Yahoo)} & NSE, all stocks \\
+\cmidrule(lr){3-5}\cmidrule(l){6-6}
+Signal & Definition & Mean IC & $t$ & Selected & $t$ \\
+\midrule
+12-1 momentum & $P_{t-21}/P_{t-252} - 1$ & $+$0.044 & $+$2.55 & yes, $+$ & $+$3.37 \\
+Close / 52-week high & $P_t / \max_{252} P$ & $+$0.044 & $+$2.39 & yes, $+$ & $+$4.33 \\
+5-day trend & $\mathrm{MA}_5/P_t$ & $+$0.022 & $+$1.90 & no & $+$0.68 \\
+20-day trend & $\mathrm{MA}_{20}/P_t$ & $+$0.006 & $+$0.56 & no & $-$1.16 \\
+50-day trend & $\mathrm{MA}_{50}/P_t$ & $-$0.007 & $-$0.52 & no & $-$2.08 \\
+100-day trend & $\mathrm{MA}_{100}/P_t$ & $-$0.027 & $-$1.79 & no & $-$3.12 \\
+200-day trend & $\mathrm{MA}_{200}/P_t$ & $-$0.037 & $-$2.18 & yes, $-$ & $-$3.25 \\
+Low volatility & $-\sigma_{252}$ & $+$0.026 & $+$1.49 & no & $+$4.37 \\
+1-month reversal & $-(P_t/P_{t-21} - 1)$ & 0.000 & $-$0.02 & no & $-$1.54 \\
+Volume shock & $\log(\overline{V}_{20}/\overline{V}_{252})$ & $+$0.021 & $+$2.01 & yes, $+$ & $+$2.58 \\
+\bottomrule
+\end{tabular}

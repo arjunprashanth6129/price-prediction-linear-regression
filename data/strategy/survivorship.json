@@ -307,5 +307,12 @@
     "alphaT": 4.809509547837585
    }
   }
+ },
+ "exitCensus": {
+  "exits": 688,
+  "inEW": 53,
+  "inEWDistress": 3,
+  "inStrategy": 18,
+  "inStrategyDistress": 0
  }
 }

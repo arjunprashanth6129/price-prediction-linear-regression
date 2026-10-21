@@ -46,9 +46,17 @@ EQUITY_NOTE = ("equal-weight universe shares the strategy's survivorship bias; t
 HOLDOUT_SHADE = "#efeee9"
 
 
+RESULTS = data.outputs()[0]
+MONTHLY = pd.read_csv(RESULTS / "monthly_returns.csv", index_col="month")
+MONTHLY.index = pd.PeriodIndex(MONTHLY.index, freq="M").to_timestamp(how="end")
+NAMES = {"MOM_12_1": "12-1 momentum", "HIGH52": "Near 52-week high", "TREND_5": "5-day trend",
+         "TREND_20": "20-day trend", "TREND_50": "50-day trend", "TREND_100": "100-day trend",
+         "TREND_200": "200-day trend", "LOWVOL": "Low volatility", "REV_1M": "1-month reversal",
+         "VOLSHOCK": "Volume surge"}
+
+
 def monthly(name: str) -> pd.Series:
-    idx = pd.PeriodIndex(BT["months"], freq="M").to_timestamp(how="end")
-    return pd.Series(BT["monthly"][name], idx)
+    return MONTHLY[name]
 
 
 def shade_holdout(ax) -> None:
@@ -66,12 +74,19 @@ def equity() -> None:
     shade_holdout(ax)
     styles = {P: (BLUE, 2.0, "-"), "EW": (INK_SECONDARY, 1.4, "-"),
               "NIFTY500": (INK_MUTED, 1.4, (0, (4, 3)))}
+    if "NIFTY500_MOM50" in MONTHLY:
+        styles["NIFTY500_MOM50"] = (ORANGE, 1.3, (0, (1, 1.5)))
+        LABEL["NIFTY500_MOM50"] = data.INDEX_LABELS["NIFTY500_MOM50"]
+    ends = []
     for name, (color, lw, ls) in styles.items():
         nav = (1 + monthly(name)).cumprod()
         ax.plot(nav.index, nav, color=color, lw=lw, ls=ls, label=LABEL[name])
-        ax.annotate(f"{nav.iloc[-1]:.1f}x", (nav.index[-1], nav.iloc[-1]),
-                    xytext=(4, 0), textcoords="offset points", va="center",
-                    color=INK_SECONDARY, fontsize=8.5)
+        ends.append((nav.iloc[-1], nav.index[-1]))
+    # Spread the end labels so close finishes do not print on top of each other.
+    ends.sort()
+    for i, (v, d) in enumerate(ends):
+        ax.annotate(f"{v:.1f}x", (d, v), xytext=(5, (i - (len(ends) - 1) / 2) * 3),
+                    textcoords="offset points", va="center", color=INK_SECONDARY, fontsize=8.5)
     ax.set_yscale("log")
     ax.yaxis.set_major_formatter(mtick.FuncFormatter(lambda v, _: f"{v:g}x"))
     ax.set_ylabel("Growth of one rupee, net of costs (log scale)")
@@ -98,27 +113,21 @@ def drawdowns() -> None:
 
 
 def quintiles() -> None:
-    periods = [k for k in ("development", "holdout") if k in RB["quintiles"]]
-    fig, axes = plt.subplots(1, len(periods), figsize=(4.6 * len(periods), 3.8),
-                             sharey=True, squeeze=False)
-    for ax, k in zip(axes[0], periods):
-        fs.style(ax, grid_axis="y")
-        vals = np.array(RB["quintiles"][k]) * 100
-        x = np.arange(1, len(vals) + 1)
-        ax.bar(x, vals, width=0.62, color=[BLUE if v >= 0 else ORANGE for v in vals])
-        for xi, v in zip(x, vals):
-            ax.annotate(f"{v:.2f}%", (xi, v), xytext=(0, 3), textcoords="offset points",
-                        ha="center", color=INK_SECONDARY, fontsize=8.5)
-        ax.set_xticks(x, [f"Q{i}" for i in x])
-        ax.set_xlabel("Quintile of the composite score (Q5 highest)")
-        a, b = BT["periods"][k]
-        ax.set_title(f"{k.capitalize()}, {a} to {b}", loc="left", fontsize=10.5)
-    axes[0][0].set_ylabel("Mean return over the next month, %")
-    fig.suptitle("Next-month return by score quintile", x=0.01, ha="left",
-                 fontweight="bold", fontsize=13)
-    fig.text(0.01, 0.9, "Equal weight within each quintile, before costs.",
-             color=INK_MUTED, fontsize=9.5)
-    fig.tight_layout(rect=(0, 0, 1, 0.89))
+    k = "full" if "full" in RB["quintiles"] else "development"
+    fig, ax = plt.subplots(figsize=(7.2, 4))
+    fs.style(ax, grid_axis="y")
+    vals = np.array(RB["quintiles"][k]) * 100
+    x = np.arange(1, len(vals) + 1)
+    ax.bar(x, vals, width=0.62, color=[AXIS] * (len(vals) - 1) + [BLUE])
+    for xi, v in zip(x, vals):
+        ax.annotate(f"{v:.2f}%", (xi, v), xytext=(0, 4), textcoords="offset points",
+                    ha="center", color=INK_SECONDARY, fontsize=9.5)
+    ax.set_xticks(x, ["Q1\nlowest score", "Q2", "Q3", "Q4", "Q5\nheld by the strategy"])
+    ax.set_ylim(0, vals.max() * 1.18)
+    ax.set_ylabel("Mean return over the next month, %")
+    a, b = BT["periods"][k]
+    fs.title(ax, "Higher score, higher next-month return",
+             f"Equal weight within each quintile of the score, before costs, {a} to {b}.")
     fs.save(fig, OUT / f"{PREFIX}quintiles.png")
 
 
@@ -151,18 +160,23 @@ def selection() -> None:
         chosen = sig[names[j]]["selected"]
         color = (BLUE if t[j] >= 0 else ORANGE) if chosen else GRID
         ax.barh(i, t[j], height=0.62, color=color)
-        ax.annotate(f"{t[j]:+.2f}", (t[j], i), xytext=(4 if t[j] >= 0 else -4, 0),
-                    textcoords="offset points", va="center",
-                    ha="left" if t[j] >= 0 else "right", color=INK_SECONDARY, fontsize=8.5)
+        ax.annotate(f"{t[j]:+.2f}".replace("-", "−"), (t[j], i),
+                    xytext=(5 if t[j] >= 0 else -5, 0), textcoords="offset points",
+                    va="center", ha="left" if t[j] >= 0 else "right", zorder=4,
+                    color=INK_SECONDARY, fontsize=8.5,
+                    bbox=dict(boxstyle="square,pad=0.15", fc=SURFACE, ec="none"))
     for edge in (-C.IC_T_THRESHOLD, C.IC_T_THRESHOLD):
-        ax.axvline(edge, color=INK_MUTED, lw=1, ls=(0, (3, 3)))
+        ax.axvline(edge, color=INK_MUTED, lw=1, ls=(0, (3, 3)), zorder=1)
     ax.axvline(0, color=AXIS, lw=0.8)
-    ax.set_yticks(range(len(names)), [names[j] for j in order])
+    ax.set_yticks(range(len(names)), [NAMES[names[j]] for j in order])
     ax.set_xlabel("Newey-West t-statistic of the mean monthly rank IC")
-    ax.set_xlim(-3.6, 3.6)
+    lim = np.ceil(np.abs(t).max() + 0.9)
+    ax.set_xlim(-lim, lim)
+    note = ("" if data.SOURCE == "survivor" else
+            " Reported only: the strategy keeps the four signals chosen in the first study.")
     fs.title(ax, "Signal selection on the development period",
-             f"Signals beyond |t| = {C.IC_T_THRESHOLD:g} (dashed) were selected, coloured by "
-             "sign; grey bars were not. Signal dates Jan 2006 to Oct 2018.")
+             f"Signals beyond |t| = {C.IC_T_THRESHOLD:g} (dashed) are selected, coloured by "
+             "sign; grey bars are not. Signal dates Jan 2006 to Oct 2018." + note)
     fs.save(fig, OUT / f"{PREFIX}signal-selection.png")
 
 
@@ -191,27 +205,63 @@ def costs() -> None:
 
 
 def random_portfolios() -> None:
-    periods = [k for k in ("development", "holdout") if k in RB["random"]]
-    fig, axes = plt.subplots(1, len(periods), figsize=(4.6 * len(periods), 3.6), squeeze=False)
-    for ax, k in zip(axes[0], periods):
-        fs.style(ax, grid_axis="y")
-        r = RB["random"][k]
-        ax.hist(r["sharpes"], bins=40, color=AXIS, edgecolor=SURFACE, linewidth=0.6)
-        ax.axvline(r["strategyGrossSharpe"], color=BLUE, lw=2)
-        ax.annotate(f"strategy {r['strategyGrossSharpe']:.2f}\nbeats {r['percentile']:.0%}",
-                    (r["strategyGrossSharpe"], 1), xycoords=("data", "axes fraction"),
-                    xytext=(-4, -4), textcoords="offset points", ha="right", va="top",
-                    color=INK_SECONDARY, fontsize=8.5)
-        a, b = BT["periods"][k]
-        ax.set_title(f"{k.capitalize()}, {a} to {b}", loc="left", fontsize=10.5)
-        ax.set_xlabel("Sharpe ratio before costs")
-    axes[0][0].set_ylabel("Random portfolios")
-    fig.suptitle(f"The strategy against {C.N_RANDOM:,} random portfolios", x=0.01,
-                 ha="left", fontweight="bold", fontsize=13)
-    fig.text(0.01, 0.885, "Same size, drawn from the same eligible stocks each month.",
-             color=INK_MUTED, fontsize=9.5)
-    fig.tight_layout(rect=(0, 0, 1, 0.87))
+    k = "full" if "full" in RB["random"] else "development"
+    r = RB["random"][k]
+    fig, ax = plt.subplots(figsize=(7.2, 3.8))
+    fs.style(ax, grid_axis="y")
+    ax.hist(r["sharpes"], bins=30, color=AXIS, edgecolor=SURFACE, linewidth=0.6)
+    s = r["strategyGrossSharpe"]
+    ax.axvline(s, color=BLUE, lw=2.2)
+    ax.annotate(f"strategy\n{s:.2f}", (s, 1), xycoords=("data", "axes fraction"),
+                xytext=(-6, -4), textcoords="offset points", ha="right", va="top",
+                color=BLUE, fontsize=9.5)
+    ax.set_xlim(min(r["sharpes"]) - 0.05, s + 0.08)
+    ax.set_xlabel("Sharpe ratio before costs")
+    ax.set_ylabel("Random portfolios")
+    a, b = BT["periods"][k]
+    fs.title(ax, f"Better than all {C.N_RANDOM:,} random portfolios",
+             f"Same number of stocks, drawn at random from the same eligible stocks each "
+             f"month, {a} to {b}.")
     fs.save(fig, OUT / f"{PREFIX}random-portfolios.png")
+
+
+def survivorship() -> None:
+    """The same strategy on three universes (pit run only: it needs all three)."""
+    path = data.ROOT / "data" / "strategy" / "survivorship.json"
+    if data.SOURCE != "pit" or not path.exists():
+        return
+    import json as _json
+    runs = _json.loads(path.read_text())["runs"]
+    rows = [("Today's Nifty 500\nYahoo prices", runs["survivor"]),
+            ("Today's Nifty 500\nNSE prices", runs["pit-survivors"]),
+            ("Every stock trading\nat the time, NSE", runs["pit"])]
+    y = np.arange(len(rows))[::-1].astype(float)
+    fig, ax = plt.subplots(figsize=(8.2, 3.9))
+    fs.style(ax, grid_axis="x")
+    for yi, (lab, r) in zip(y, rows):
+        s, e = 100 * r["full"]["cagr"], 100 * r["full"]["ewCagr"]
+        ax.barh(yi + 0.19, s, height=0.36, color=BLUE)
+        ax.barh(yi - 0.19, e, height=0.36, color=AXIS)
+        ax.annotate(f"{s:.1f}%", (s, yi + 0.19), xytext=(4, 0), textcoords="offset points",
+                    va="center", fontsize=9, color=INK_SECONDARY)
+        ax.annotate(f"{e:.1f}%", (e, yi - 0.19), xytext=(4, 0), textcoords="offset points",
+                    va="center", fontsize=9, color=INK_SECONDARY)
+        ax.text(45, yi, f"+{s - e:.1f}", va="center", ha="right", fontsize=10.5,
+                color=BLUE, fontweight="bold")
+    ax.text(45, y[0] + 0.55, "gap", va="bottom", ha="right", fontsize=9, color=INK_MUTED)
+    ax.set_yticks(y, [lab for lab, _ in rows])
+    ax.set_xlim(0, 46)
+    ax.set_ylim(-0.6, y[0] + 0.85)
+    ax.xaxis.set_major_formatter(mtick.FuncFormatter(lambda v, _: f"{v:.0f}%"))
+    ax.set_xlabel("Compound annual return, March 2009 to June 2026, net of costs")
+    from matplotlib.patches import Patch
+    ax.legend(handles=[Patch(color=BLUE, label="Strategy"),
+                       Patch(color=AXIS, label="Equal-weight universe")],
+              loc="lower right", bbox_to_anchor=(0.9, 0.0), frameon=False, fontsize=9)
+    fs.title(ax, "Survivorship bias moved both bars, not the gap",
+             "The same strategy and its benchmark on three universes. Dropping the stocks "
+             "that later failed lowers both returns by about eight points a year.")
+    fs.save(fig, OUT / f"{PREFIX}survivorship.png")
 
 
 def by_year() -> None:
@@ -237,7 +287,7 @@ def by_year() -> None:
 def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     for fig in (equity, drawdowns, quintiles, ic_series, selection, costs,
-                random_portfolios, by_year):
+                random_portfolios, by_year, survivorship):
         fig()
     return 0
 

@@ -6,9 +6,9 @@
 
 export const SITE = {
   name: "Alpha & Error",
-  tagline: "Out-of-sample tests of return prediction, portfolio risk and pairs trading in Indian and global markets",
+  tagline: "Out-of-sample tests of price signals, portfolio risk and pairs trading in Indian and global markets",
   description:
-    "Quantitative finance research by Arjun Prashanth: out-of-sample tests of whether moving averages predict next-day returns for 98 NSE stocks, how minimum-CVaR portfolios compare with other allocation rules, and whether cointegrated pairs of Indian bank stocks keep converging.",
+    "Quantitative finance research by Arjun Prashanth: whether price signals beat the Indian market once costs and survivorship bias are accounted for, how minimum-CVaR portfolios compare with other allocation rules, and whether cointegrated pairs of Indian bank stocks keep converging.",
   live: "https://arjun-quant-projects.vercel.app",
   author: "Arjun",
   github: "https://github.com/arjunprashanth6129",
@@ -32,10 +32,10 @@ export interface ProjectMeta {
 export const PROJECTS: ProjectMeta[] = [
   {
     href: "/linear-regression",
-    name: "Price prediction with a linear regression model",
-    navName: "Linear regression model",
+    name: "Price signals on NSE stocks",
+    navName: "Price signals and momentum",
     blurb:
-      "A test of whether moving-average features predict next-day returns, using one linear regression per stock for 98 NSE stocks, evaluated out of sample.",
+      "A daily regression on 98 NSE stocks, then a monthly momentum strategy tested net of Indian costs, with a holdout run once and a survivorship-free rebuild from NSE's own records.",
     repo: "https://github.com/arjunprashanth6129/price-prediction-linear-regression",
     paper: "/papers/moving-average-signals.pdf",
   },

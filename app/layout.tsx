@@ -35,6 +35,8 @@ export const metadata: Metadata = {
     "quantitative finance",
     "linear regression",
     "momentum",
+    "survivorship bias",
+    "backtesting",
     "efficient market hypothesis",
     "conditional value at risk",
     "CVaR",

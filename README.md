@@ -1,244 +1,176 @@
-# Price prediction with a linear regression model
+# Price signals on NSE stocks
 
-A test of whether moving-average features predict next-day returns for 98
-NSE-listed stocks. One ordinary least squares regression is estimated per stock
-on daily closes from June 2019 to June 2026, with a chronological 80/20 split and
-benchmarks fixed before estimation.
+Do past prices predict Indian stock returns? This repository asks the question
+twice. First as a next-day forecast for 98 NSE stocks, which fails. Then as a
+monthly ranking of stocks traded net of Indian costs, which works. It then
+rebuilds the universe from NSE's own records, including every company that
+later failed, and shows how much of the result was survivorship bias.
 
-**Paper (PDF):** [Do Moving-Average Signals Predict Next-Day Returns?](https://arjun-quant-projects.vercel.app/papers/moving-average-signals.pdf)
+**Paper (PDF):** [Do Price Signals Predict Indian Stock Returns?](https://arjun-quant-projects.vercel.app/papers/moving-average-signals.pdf)
 &nbsp;·&nbsp; **Interactive version:** https://arjun-quant-projects.vercel.app/linear-regression
 
 ---
 
-## Contents
+## The result
 
-- [Summary of results](#summary-of-results)
-- [Quick start](#quick-start)
-- [Pipeline](#pipeline)
-- [Leakage controls](#leakage-controls)
-- [Selected figures](#selected-figures)
-- [Outputs](#outputs)
-- [Repository layout](#repository-layout)
-- [Limitations](#limitations)
-- [Further work](#further-work)
+A long-only strategy that holds the top fifth of NSE stocks, ranked each month
+on four price signals, net of securities transaction tax, stamp duty, exchange
+fees and the bid-ask spread. The universe is rebuilt each month from every stock
+trading at the time.
 
-## Summary of results
+| March 2009 to June 2026, net of costs | A year | Sharpe | Worst drawdown |
+|---|---:|---:|---:|
+| **Strategy** | **23.8%** | **0.80** | −37.0% |
+| Nifty500 Momentum 50 (total return) | 21.9% | 0.79 | −38.1% |
+| Equal-weight benchmark, same stocks | 16.8% | 0.48 | −58.1% |
+| Nifty 500 (total return) | 16.0% | 0.55 | −38.1% |
 
-The regressors are a 5-day moving average (`ma5`), a 20-day moving average
-(`ma20`), the one-day return (`ret`) and their ratio `ma_ratio = ma5 / ma20`, which
-represents the golden-cross condition as a continuous variable. The target is the
-next day's return.
+| Return over the equal-weight benchmark | Development 2009–2018 | Holdout 2019–2026 | Full |
+|---|---:|---:|---:|
+| Mean difference, a year (t) | +2.8% (0.48) | **+8.3% (2.39)** | +5.2% (1.43) |
+| Alpha, a year (t) | +6.9% (2.12) | **+9.6% (2.64)** | +8.4% (3.46) |
+| Deflated Sharpe ratio | 0.85 | 0.89 | 0.95 |
 
-| Statistic (test sample, 98 stocks) | Value |
+![Growth of one rupee: the strategy against its benchmarks](https://arjun-quant-projects.vercel.app/figures/strategy-pit-equity.png)
+
+**What it is.** The excess return is the momentum premium: on the Indian
+four-factor model of Agarwalla, Jacob and Varma, the strategy's return over its
+benchmark has a momentum loading of 0.52 and an alpha of +0.2% a year (t = 0.09).
+It captures the premium about as well as NSE's own momentum index, not better,
+and mostly outside the 200 largest stocks.
+
+## Survivorship bias, measured
+
+The first version of the strategy used today's Nifty 500, so every stock in it
+had survived to 2026. Running the same strategy on three universes separates the
+data source from the bias:
+
+| Universe | Strategy | Benchmark | Gap |
+|---|---:|---:|---:|
+| Today's Nifty 500, Yahoo prices | 32.0% | 25.0% | +6.9 |
+| Today's Nifty 500, NSE prices | 31.7% | 24.7% | +7.0 |
+| Every stock trading at the time, NSE | 23.8% | 16.8% | +7.1 |
+
+![The same strategy on three universes](https://arjun-quant-projects.vercel.app/figures/strategy-pit-survivorship.png)
+
+Survivorship added about eight points a year to both the strategy and its
+benchmark, and left the gap between them alone. The equal-weight portfolio of the
+corrected universe tracks NSE's Nifty500 Equal Weight index, which NSE computes
+on each date's actual constituents (monthly correlation 0.995).
+
+## The first attempt: a next-day forecast
+
+One least squares regression per stock, on a 5-day and a 20-day moving average,
+the one-day return and the ratio of the two averages, for 98 NSE stocks from 2019
+to 2026, with a chronological 80/20 split.
+
+| Out of sample, 98 stocks | Value |
 |---|---|
-| Mean out-of-sample $R^2$ | -0.0155 |
-| Stocks with $R^2 > 0$ | 17 |
+| Mean $R^2$ | −0.0155 |
 | Mean directional accuracy | 49.6% |
-| Mean always-up benchmark | 47.8% |
-| Mean edge over the benchmark | +1.85 pts |
-| Expected edge of a random forecast over the same benchmark | +2.22 pts |
-| Stocks with accuracy significantly above 50% (binomial test, 5%) | 0 |
-| Stocks with significant directional ability (Pesaran-Timmermann, 5%) | 5 of 97; 0 after a Benjamini-Hochberg correction |
-| Stocks for which `ma_ratio` has the largest coefficient | 0 |
+| Stocks significantly more accurate than 50% | 0 |
+| Expected edge of a random forecast over the always-up benchmark | +2.22 pts (the model: +1.85) |
 
-The positive edge over the always-up rule is a property of the test window, in
-which up days were less frequent than down days for 73 of the 98 stocks. A
-forecast with no information would have exceeded the same benchmark by more. The
-results are consistent with weak-form market efficiency for these four features,
-a linear model and a one-day horizon. They do not address longer horizons or other
-predictors.
+The daily forecast carried no usable information, which pointed to the redesign:
+compare stocks with each other, at a monthly horizon, as a portfolio with costs.
 
-## Quick start
+## How the test was kept honest
+
+- **Frozen before it was run.** Candidate signals, the selection rule, the
+  portfolio, the cost schedule and every reported variant were committed before
+  the first backtest (`46472c0`), with the price loader cut at December 2018.
+- **Holdout run once.** The primary model was changed once, on development data,
+  with the reason recorded in `config.py` (`3b4a728`). Only then was the
+  2019–2026 holdout unlocked (`b6ad107`) and run (`13ca9b7`).
+- **Data rules frozen before the rerun.** Every rule for the NSE data, including
+  corporate actions, delisting returns and the universe, was validated against
+  Yahoo, NSE's index and NSE's records, and committed before any strategy return
+  on that data (`8a29d77`). The strategy was then rerun once, unchanged
+  (`5300093`).
+- **Checks for luck and leakage.** 1,000 random portfolios, 500 placebo spreads,
+  a deflated Sharpe ratio for the 20 variants tried, a stationary bootstrap, and
+  a leak test that ranks on the future return on purpose (Sharpe 5.2) and on
+  one-month-stale scores (slightly worse than live). Unit tests change every
+  price after a date and confirm nothing before it moves.
+
+## Reproduce
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install yfinance pandas numpy scikit-learn matplotlib
+pip install -r requirements.txt
+pytest tests/                                   # 26 tests
 ```
 
-`scripts/ml/raw_prices.csv` is committed, so stages 2 to 6 run offline and
-reproduce every published number and figure:
+The monthly strategy (`scripts/strategy/`). The raw data is committed, so every
+stage after the first runs offline.
 
 ```bash
-python3 scripts/ml/02_features.py          # features for the worked example
-python3 scripts/ml/03_split.py             # chronological split and its figure
-python3 scripts/ml/04_model.py             # price model, return model and random walk
-python3 scripts/ml/05_generate_signals.py  # all 98 stocks; writes data/ and results/
-python3 scripts/ml/06_figures.py           # every figure in docs/figures/
+python3 scripts/strategy/01_fetch_data.py       # network: Yahoo prices, IIMA factors
+python3 scripts/strategy/01b_fetch_nse.py       # network: NSE daily files and index history
+python3 scripts/strategy/02_clean.py            # data quality, Yahoo panel
+python3 scripts/strategy/02b_validate_nse.py    # data checks, NSE panel (no strategy returns)
+
+# Each source: survivor (Yahoo, today's Nifty 500), pit (NSE, every stock), pit-survivors
+STRATEGY_SOURCE=pit python3 scripts/strategy/04_backtest.py
+STRATEGY_SOURCE=pit python3 scripts/strategy/05_robustness.py
+STRATEGY_SOURCE=pit python3 scripts/strategy/06_figures.py
+python3 scripts/strategy/07_survivorship.py     # the three universes side by side
+python3 scripts/strategy/08_site_data.py        # display fields for the site
 ```
 
-Stage 1 is the only stage that requires network access. It rebuilds the dataset
-from Yahoo Finance; skip it to reproduce the published results exactly.
+The daily regression (`scripts/ml/`) runs as before, from the committed
+`raw_prices.csv`:
 
 ```bash
-python3 scripts/ml/01_fetch_data.py        # -> scripts/ml/raw_prices.csv
+python3 scripts/ml/05_generate_signals.py && python3 scripts/ml/06_figures.py
 ```
 
-To run the site locally:
+The paper takes every number, table and figure from the committed results:
 
 ```bash
-npm install
-npm run dev     # http://localhost:3000/linear-regression
+python paper/make_assets.py && (cd paper && tectonic moving-average-signals.tex)
 ```
 
-The data is static and ships with the build. No API keys or environment
-variables are required.
+The site:
 
-## Pipeline
-
-```
-data/universe.json                 100 NSE tickers
-        |
-        v
-  [1] 01_fetch_data.py             yfinance, auto_adjust=True, 2019-06-01 to 2026-06-30
-        |                          -> raw_prices.csv (committed)
-        v
-  [2] 02_features.py               ma5, ma20, ret, ma_ratio
-        |                          target = next-day return
-        v
-  [3] 03_split.py                  first 80% of days train, last 20% test, in date order
-        |
-        v
-  [4] 04_model.py                  worked example on Reliance: price model,
-        |                          return model and the random-walk forecast
-        v
-  [5] 05_generate_signals.py       for each of the 98 stocks:
-        |                            scaler estimated on training rows only
-        |                            OLS on the next-day return
-        |                            evaluation against the always-up benchmark
-        |                          -> data/ml-signals.json, results/
-        v
-  [6] 06_figures.py                every figure, from that JSON
+```bash
+npm install && npm run dev                      # http://localhost:3000/linear-regression
 ```
 
-The site reads the JSON written by stages 4 and 5, and `paper/make_assets.py`
-re-estimates every model, checks the result against that JSON and generates every
-number, table and figure in the paper, so the paper, the figures and the site use
-the same values.
+## Where to find things
 
-## Leakage controls
-
-**Chronological split.** A shuffled split is valid for independent observations
-and invalid for a time series. It places later observations in the training
-sample, and because adjacent rows share most of their inputs (`ma20` on
-consecutive days shares 19 of 20 closes), it evaluates the model on near-copies
-of training rows.
-
-**Training-only standardisation.** `StandardScaler` is estimated on the training
-rows and then applied to both samples. Estimating it on the full series would pass
-the test sample's mean and variance into the training data.
-
-**Backward-looking features.** All four features use closes up to and including
-day $t$. Only the target uses day $t+1$.
-
-**Benchmarks fixed in advance.** Accuracy is reported against an always-up rule
-and against 50%, and $R^2$ against the test-sample mean. These were chosen before
-any model was estimated.
-
-The choice of target matters for the same reason. A model of the next day's price
-reaches an $R^2$ of 0.94 on Reliance, but the random-walk forecast
-$\hat P_{t+1} = P_t$ reaches 0.96 without estimation, because daily prices are
-highly autocorrelated. Predicting returns removes that component. Section 5 of the
-[paper](https://arjun-quant-projects.vercel.app/papers/moving-average-signals.pdf)
-works through the example.
-
-## Selected figures
-
-Out-of-sample $R^2$ across the 98 stocks:
-
-![Distribution of R² on next-day returns across 98 stocks](https://arjun-quant-projects.vercel.app/figures/r2-distribution.png)
-
-The same features and test days with two different targets. The price model's
-points lie on the diagonal because each forecast is close to the previous close;
-the return model's forecasts do not vary with the outcome.
-
-![Parity plots for the price model and the return model](https://arjun-quant-projects.vercel.app/figures/parity-price-vs-return.png)
-
-The remaining figures are in [`docs/figures/`](docs/figures/), and the paper
-redraws the main ones as vector figures.
-
-## Outputs
-
-Written by stage 5 to `results/` and `data/`:
-
-| File | Contents |
+| Path | Contents |
 |---|---|
-| [`results/per-stock.csv`](results/per-stock.csv) | one row per stock: capitalisation band, test days, directional accuracy, benchmark, edge, $R^2$, largest coefficient, `ma_ratio` coefficient |
-| [`results/full_analysis.txt`](results/full_analysis.txt) | the generated summary |
-| [`results/RESULTS.md`](results/RESULTS.md) | the results tables as a standalone document |
-| [`data/ml-signals.json`](data/ml-signals.json) | per-stock results as read by the site |
-| [`data/ml-missing.json`](data/ml-missing.json) | the two excluded stocks (`GUJGASLTD`, `JPASSOCIAT`) and the reason |
-| [`data/reliance-model-detail.json`](data/reliance-model-detail.json) | the worked example, including test-period predictions |
-
-Stage 6 writes 13 figures to [`docs/figures/`](docs/figures/) using the shared
-style in `figstyle.py`. Polarity is encoded in blue and orange, which remain
-distinguishable under deuteranopia, and is also shown by position.
-
-## Repository layout
-
-```
-scripts/ml/
-  01_fetch_data.py            daily closes for the universe        (network)
-  02_features.py              features for the worked example
-  03_split.py                 chronological split and figure
-  04_model.py                 price model, return model, random walk
-  05_generate_signals.py      all 98 stocks and the full analysis
-  06_figures.py               every findings figure
-  figstyle.py                 figure style shared by every stage that plots
-  raw_prices.csv              the dataset behind every number (committed)
-data/
-  universe.json               100 tickers and company names
-  market-caps.json            large, mid or small band per ticker
-  ml-signals.json             per-stock results
-  ml-missing.json             excluded stocks and the reason
-  reliance-model-detail.json  the worked example
-  cvar/, pairs/               exported results of the other two projects
-results/                      RESULTS.md, per-stock.csv, full_analysis.txt
-docs/figures/                 every figure
-paper/                        the paper: LaTeX source, PDF, and make_assets.py,
-                              which generates its numbers, tables and figures
-public/figures/               copies of the figures served by the site
-public/papers/                PDFs of the three papers, served by the site
-app/                          Next.js App Router site
-  linear-regression/          this study's page
-  cvar/, pairs-trading/       the other two projects' pages
-  components/                 chart and layout components
-lib/
-  ml.ts                       typed access to this study's results
-  universe.ts                 ticker to company name
-  project.ts                  site metadata and the project registry
-```
+| [`results/strategy/pit/RESULTS.md`](results/strategy/pit/RESULTS.md) | the survivorship-free results memo, every number including the weak ones |
+| [`results/strategy/survivorship.md`](results/strategy/survivorship.md) | the three universes side by side, with the pre-registered sensitivity runs |
+| [`results/strategy/pit/data_quality.md`](results/strategy/pit/data_quality.md) | every corporate action, repair, exit and data check on the NSE panel |
+| [`results/strategy/RESULTS.md`](results/strategy/RESULTS.md) | the first, survivor-universe results memo |
+| `scripts/strategy/config.py` | the frozen specification, with every deviation recorded |
+| `scripts/strategy/nse.py` | how NSE's prices are adjusted and how exits are treated |
+| `scripts/strategy/raw/` | Yahoo prices, IIMA factors and NSE's daily files (`nse/`), with sources |
+| `scripts/ml/` | the daily regression |
+| `paper/` | LaTeX source, PDF and `make_assets.py` |
+| `app/`, `lib/` | the Next.js site; `lib/strategy.ts` reads `data/strategy/site.json` |
+| `tests/` | look-ahead, engine, metrics and NSE data tests |
 
 ## Limitations
 
-The full list is in section 7 of the
-[paper](https://arjun-quant-projects.vercel.app/papers/moving-average-signals.pdf).
-The most important are:
-
-- **Statistical power.** About 345 test days per stock gives a standard error of
-  2.7 percentage points on a single stock's accuracy, too large to detect an
-  effect of one point.
-- **One test window.** All stocks are evaluated within the same 17 months
-  (February 2025 to June 2026), so their results are correlated.
-- **Linear specification.** Threshold or interaction effects would not be
-  detected.
-- **Multicollinearity.** `ma_ratio` is a function of `ma5` and `ma20`, so its
-  coefficient is poorly identified. The conclusion rests on out-of-sample
-  accuracy, which is unaffected.
-- **No transaction costs; price returns only.** Two demergers (Raymond, Tata
-  Motors) in the test period are retained and flagged.
-
-## Further work
-
-- Cross-sectional momentum at 3 to 12 month horizons, net of costs.
-- A larger small-capitalisation sample.
-- Non-price predictors such as earnings revisions.
-- Tree ensembles with walk-forward cross-validation.
-- A discrete crossing indicator in place of `ma_ratio`.
+- The survivorship-free rerun used a holdout that had already been seen, so it is
+  a replication on corrected data, not a second out-of-sample test.
+- The signals come from a literature that documents momentum, including Indian
+  evidence covering part of the holdout.
+- The edge is small among the largest stocks (+1.6% a year over the benchmark in
+  the 200 most traded, t = 0.46), and short-term capital gains tax and market
+  impact are not modelled.
+- Momentum crashes in sharp rebounds: from March to December 2009 the strategy
+  trailed its benchmark by about 90 points.
+- NSE's corporate action files start in 2010; earlier dividends are missing for
+  every stock alike, and a few early splits in then-illiquid stocks are
+  unadjusted. The full list is in the paper and the data-quality report.
 
 ## Scope
 
-This is a student project and not investment advice. It tests whether a set of
-signals carries information; it does not propose a trading strategy.
+Student research, not investment advice.
 
 ## License
 

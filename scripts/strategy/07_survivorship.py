@@ -119,6 +119,30 @@ def main() -> int:
                        industry=panel.industry, universe={**panel.universe, "top_n": n})
         out["sensitivity"][f"top {n}"] = strategy_and_ew(p, rf)
 
+    # ---- which exits reached a portfolio ----
+    # An exit return can only matter if the stock was held when it stopped
+    # trading: in EW if it was eligible at the month-end before, in the
+    # strategy if it was also in the top quintile.
+    dates, z, elig, _, _ = bt.build(panel)
+    held = E.quantile_weights(models.composite(z, C.SELECTED)) > 0
+    exits = pd.DataFrame(panel.report["exits"], columns=["symbol", "last", "kind", "ret"])
+    exits = exits[exits["last"] >= pd.Period(C.EVAL_START, "M").start_time]
+    census = {"exits": 0, "inEW": 0, "inEWDistress": 0, "inStrategy": 0, "inStrategyDistress": 0}
+    for e in exits.itertuples():
+        before = dates[dates <= e.last]
+        if not len(before) or e.symbol not in elig.columns:
+            continue
+        s = before[-1]
+        census["exits"] += 1
+        distress = e.kind.startswith("distress")
+        if elig.loc[s, e.symbol]:
+            census["inEW"] += 1
+            census["inEWDistress"] += int(distress)
+        if held.loc[s, e.symbol]:
+            census["inStrategy"] += 1
+            census["inStrategyDistress"] += int(distress)
+    out["exitCensus"] = census
+
     JSON_OUT.write_text(json.dumps(out, indent=1) + "\n")
 
     L = ["# Survivorship: the same strategy on three universes", "",
@@ -154,6 +178,13 @@ def main() -> int:
         for period, v in block.items():
             L.append(f"| {name} | {period} | {v['cagr']:+.1%} | {v['sharpe']:.2f} | {v['ewCagr']:+.1%} | "
                      f"{v['activeReturn']:+.1%} ({v['activeT']:.2f}) | {v['alpha']:+.1%} ({v['alphaT']:.2f}) |")
+    c = out["exitCensus"]
+    L += ["", "## Exits that reached a portfolio", "",
+          f"Of {c['exits']} stocks that stopped trading after {C.EVAL_START}, {c['inEW']} were in the "
+          f"equal-weight benchmark at the month-end before ({c['inEWDistress']} classed as distress) "
+          f"and {c['inStrategy']} were held by the strategy ({c['inStrategyDistress']} as distress). "
+          "Failing companies leave the 500 most traded stocks before they stop trading, which is "
+          "why the distress return barely moves the results."]
     REPORT.write_text("\n".join(L) + "\n")
     print("\n".join(L))
     return 0

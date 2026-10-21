@@ -683,6 +683,555 @@ fig.savefig(FIG / "fitted_plane.pdf")
 plt.close(fig)
 
 
+# ======================================================================
+# Parts II and III: the monthly strategy and its survivorship-free rerun
+# ======================================================================
+# These numbers are read from the outputs the strategy pipeline committed
+# (scripts/strategy/03 to 07), not recomputed here: the backtests take minutes,
+# and the protocol depends on the holdout having been run once. Each figure and
+# table below is a view of those files.
+import sys  # noqa: E402
+
+sys.path.insert(0, str(ROOT / "scripts" / "strategy"))
+import config as SC  # noqa: E402
+
+SD = ROOT / "data" / "strategy"
+SR = ROOT / "results" / "strategy"
+
+
+def jload(p: Path) -> dict:
+    return json.loads(p.read_text())
+
+
+RUN = {k: {"bt": jload(SD / d / "backtest.json"), "rb": jload(SD / d / "robustness.json"),
+           "m": pd.read_csv(SR / d / "monthly_returns.csv", index_col="month")}
+       for k, d in [("Surv", ""), ("Pit", "pit"), ("PitSurv", "pit-survivors")]}
+SV = jload(SD / "survivorship.json")
+DEV = jload(SD / "signals-dev.json")
+DEVN = jload(SD / "pit" / "signals-dev.json")
+DQ = jload(SD / "pit" / "data_quality.json")
+P_ = SC.PRIMARY
+PER = {"Dev": "development", "Hold": "holdout", "Full": "full"}
+
+# The site and the paper must quote the same figures as the results memo.
+assert RUN["Pit"]["bt"]["primary"] == P_ and RUN["Surv"]["bt"]["holdoutUnlocked"]
+
+
+def row(run: str, period: str, name: str = P_) -> dict:
+    return RUN[run]["bt"]["stats"][PER[period]]["rows"][name]
+
+
+def tstat(x: float) -> str:
+    return num(x, 2)
+
+
+for run in RUN:
+    for per in PER:
+        s, ew, nf = row(run, per), row(run, per, "EW"), row(run, per, "NIFTY500")
+        macro(f"{run}Cagr{per}", pct(s["cagr"]))
+        macro(f"{run}EwCagr{per}", pct(ew["cagr"]))
+        macro(f"{run}NiftyCagr{per}", pct(nf["cagr"]))
+        macro(f"{run}Sharpe{per}", num(s["sharpe"], 2))
+        macro(f"{run}EwSharpe{per}", num(ew["sharpe"], 2))
+        macro(f"{run}NiftySharpe{per}", num(nf["sharpe"], 2))
+        macro(f"{run}MaxDD{per}", pct(s["maxDrawdown"]))
+        macro(f"{run}EwMaxDD{per}", pct(ew["maxDrawdown"]))
+        macro(f"{run}Active{per}", pct(s["activeReturn"], 1, signed=True))
+        macro(f"{run}ActiveT{per}", tstat(s["activeT"]))
+        macro(f"{run}Alpha{per}", pct(s["alpha"], 1, signed=True))
+        macro(f"{run}AlphaT{per}", tstat(s["alphaT"]))
+        macro(f"{run}Dsr{per}", num(s["dsr"], 2))
+        macro(f"{run}Cost{per}", pct(s["costDrag"], 1))
+        macro(f"{run}Turnover{per}", f"{100 * s['turnover']:.0f}\\%")
+        macro(f"{run}BreakEven{per}", num(s["breakEvenCostMultiple"], 1))
+        macro(f"{run}Names{per}", f"{s['names']:.0f}")
+        lo_, hi_ = s["sharpeCI"]
+        macro(f"{run}SharpeLo{per}", num(lo_, 2))
+        macro(f"{run}SharpeHi{per}", num(hi_, 2))
+        if "NIFTY500_MOM50" in RUN[run]["bt"]["stats"][PER[per]]["rows"]:
+            mo = row(run, per, "NIFTY500_MOM50")
+            macro(f"{run}MomCagr{per}", pct(mo["cagr"]))
+            macro(f"{run}MomSharpe{per}", num(mo["sharpe"], 2))
+            macro(f"{run}MomMaxDD{per}", pct(mo["maxDrawdown"]))
+
+# Survivorship: how much the universe moved the strategy and the benchmark.
+bias_s = row("Surv", "Full")["cagr"] - row("Pit", "Full")["cagr"]
+bias_e = row("Surv", "Full", "EW")["cagr"] - row("Pit", "Full", "EW")["cagr"]
+macro("BiasStrategy", num(100 * bias_s, 1))
+macro("BiasEw", num(100 * bias_e, 1))
+macro("BiasSource", num(100 * (row("Surv", "Full")["cagr"] - row("PitSurv", "Full")["cagr"]), 1))
+macro("BiasRounded", f"{round(100 * (bias_s + bias_e) / 2):.0f}")
+for k, name in [("survivor", "Surv"), ("pit-survivors", "PitSurv"), ("pit", "Pit")]:
+    g = SV["runs"][k]["ewAgainstNifty500EW"]
+    macro(f"{name}EwGap", pct(g["ewCagr"] - g["indexCagr"], 1, signed=True))
+    macro(f"{name}EwCorr", num(g["corr"], 3))
+    macro(f"{name}FactorAlpha", pct(SV["runs"][k]["full"]["factorAlphaActive"], 1, signed=True))
+    macro(f"{name}FactorAlphaT", tstat(SV["runs"][k]["full"]["factorAlphaActiveT"]))
+    macro(f"{name}Wml", num(SV["runs"][k]["full"]["wmlActive"], 2))
+macro("IndexEwCagr", pct(SV["runs"]["pit"]["ewAgainstNifty500EW"]["indexCagr"]))
+cen = SV["exitCensus"]
+macro("NExitsEval", cen["exits"])
+macro("NExitsInEw", cen["inEW"])
+macro("NExitsInEwDistress", cen["inEWDistress"])
+macro("NExitsInStrategy", cen["inStrategy"])
+macro("NExitsInStrategyDistress", cen["inStrategyDistress"])
+sens = SV["sensitivity"]
+for k, name in [("distress +0%", "DistressZero"), ("distress -100%", "DistressAll"),
+                ("top 200", "TopTwoHundred"), ("top 1000", "TopThousand")]:
+    for per, pk in [("Full", "full"), ("Hold", "holdout"), ("Dev", "development")]:
+        macro(f"{name}Active{per}", pct(sens[k][pk]["activeReturn"], 1, signed=True))
+        macro(f"{name}ActiveT{per}", tstat(sens[k][pk]["activeT"]))
+        macro(f"{name}Cagr{per}", pct(sens[k][pk]["cagr"]))
+
+# Design and protocol, from the frozen configuration.
+macro("NCandidates", len(SC.CANDIDATES))
+macro("NSelected", len(SC.SELECTED))
+macro("TThreshold", num(SC.IC_T_THRESHOLD, 0))
+macro("NWLags", SC.NW_LAGS)
+macro("NTrials", RUN["Pit"]["bt"]["stats"]["full"]["trials"])
+macro("NRandom", thousands(SC.N_RANDOM))
+macro("NPlacebo", SC.N_PLACEBO)
+macro("NBoot", thousands(SC.N_BOOT))
+macro("BootBlock", SC.BOOT_BLOCK)
+macro("CostSTT", f"{100 * SC.STT:.1f}\\%")
+macro("CostStamp", f"{100 * SC.STAMP_BUY:.3f}\\%")
+macro("SpreadLow", SC.SPREAD_BPS[0])
+macro("SpreadMid", SC.SPREAD_BPS[1])
+macro("SpreadHigh", SC.SPREAD_BPS[2])
+macro("PitTopN", SC.PIT_TOP_N)
+macro("PitUniverse", int(SC.PIT_TOP_N * (1 - SC.LIQ_DROP_FRAC)))
+macro("DistressReturn", f"{100 * SC.PIT_EXIT_RETURNS['distress']:.0f}\\%".replace("-", "$-$"))
+macro("MinTradedPct", f"{100 * SC.MIN_TRADED_FRAC:.0f}\\%")
+macro("LiqDropPct", f"{100 * SC.LIQ_DROP_FRAC:.0f}\\%")
+for k, name in [("MOM_12_1", "Mom"), ("HIGH52", "High"), ("TREND_200", "Trend"),
+                ("VOLSHOCK", "Vol")]:
+    macro(f"DevT{name}", num(DEV["signals"][k]["icT"], 2, signed=True))
+    macro(f"DevIc{name}", num(DEV["signals"][k]["meanIC"], 3, signed=True))
+nse_sel = [k for k, v in DEVN["signals"].items() if v["selected"]]
+macro("NSelectedNse", len(nse_sel))
+macro("NSurvivorUniverse", len(pd.read_csv(ROOT / "scripts" / "strategy" / "raw" / "adj_close.csv.gz",
+                                           nrows=0).columns) - 1)
+
+# Data checks on the NSE panel.
+cov = DQ["coverage"]
+macro("NSessionsNse", thousands(cov["sessions"][2]))
+macro("NStocksNse", thousands(cov["stocks"]))
+macro("NEverEligible", thousands(cov["everEligible"]))
+ya = DQ["againstYahoo"]
+macro("YahooAgree", pct(ya["2010-2026"]["within1pct"], 1))
+macro("YahooAgreeEarly", pct(ya["2005-2009 (NSE: price only)"]["within1pct"], 1))
+macro("YahooMonths", thousands(ya["2010-2026"]["stockMonths"]))
+cal = DQ["splitRuleCalibration"]
+rk = [k for k in cal if k.startswith("rule used: 1:2")][0]
+hk = [k for k in cal if k.startswith("rule used: any fall")][0]
+macro("SplitRuleHit", cal[rk]["recorded"])
+macro("SplitRuleN", cal[rk]["flagged"])
+macro("HugeRuleHit", cal[hk]["recorded"])
+macro("HugeRuleN", cal[hk]["flagged"])
+macro("NExitsEver", DQ["exits"]["everEligible"])
+gross = DQ["againstNifty500EW"]
+macro("PitEwGrossCagr", pct(gross["pit"]["cagr"]))
+macro("PitEwGrossCorr", num(gross["pit"]["corr"], 3))
+macro("NMissingSplits", sum(1 for line in (ROOT / "scripts" / "strategy" / "corporate_actions_missing.csv")
+                              .read_text().splitlines()[1:] if line and not line.startswith("#")) - 1)
+
+# Skill, attribution and weak points (survivorship-free run).
+rb = RUN["Pit"]["rb"]
+for per in PER:
+    pk = PER[per]
+    macro(f"PitIc{per}", num(rb["ic"][pk]["meanIC"], 3, signed=True))
+    macro(f"PitIcT{per}", tstat(rb["ic"][pk]["t"]))
+    macro(f"PitRandomPct{per}", f"{100 * rb['random'][pk]['percentile']:.0f}\\%")
+    macro(f"PitRandomTop{per}", num(rb["random"][pk]["randomSharpe95"], 2))
+    macro(f"PitGrossSharpe{per}", num(rb["random"][pk]["strategyGrossSharpe"], 2))
+    macro(f"PitPlaceboPct{per}", pct(rb["placebo"][pk]["percentile"], 1))
+    macro(f"PitCanary{per}", num(rb["canary"][pk]["forwardReturnSharpe"], 1))
+    macro(f"PitStale{per}", num(rb["canary"][pk]["oneMonthStaleSharpe"], 2))
+macro("PitWmlCorr", num(rb["wmlCheck"]["corr"], 3))
+macro("SurvWmlCorr", num(RUN["Surv"]["rb"]["wmlCheck"]["corr"], 3))
+att = rb["attribution"]["full"]
+macro("FactorEnd", pd.Period(att["end"], "M").strftime("%B %Y"))
+macro("PitPrimaryAlpha", pct(att["primary"]["alpha"], 1, signed=True))
+macro("PitPrimaryAlphaT", tstat(att["primary"]["alphaT"]))
+macro("PitPrimaryWml", num(att["primary"]["WML"], 2))
+for i, name in enumerate(["Liquid", "Middle", "Illiquid"]):
+    t_ = rb["byTercile"][str(i)]["full"]
+    macro(f"Tercile{name}Active", pct(t_["activeReturn"], 1, signed=True))
+    macro(f"Tercile{name}ActiveT", tstat(t_["activeT"]))
+    macro(f"Tercile{name}Alpha", pct(t_["alpha"], 1, signed=True))
+    macro(f"Tercile{name}AlphaT", tstat(t_["alphaT"]))
+yrs = rb["byYear"]
+for y, name in [("2009", "Nine"), ("2025", "TwentyFive"), ("2016", "Sixteen")]:
+    macro(f"Year{name}Strategy", pct(yrs[y]["primary"], 1, signed=True))
+    macro(f"Year{name}Ew", pct(yrs[y]["EW"], 1, signed=True))
+macro("YearsBehind", sum(1 for v in yrs.values() if v["primary"] < v["EW"]))
+macro("YearsTotal", len(yrs))
+for name in ("M2_buffer", "M3", "M2_LS"):
+    s_ = row("Pit", "Full", name)
+    tag = {"M2_buffer": "Buffer", "M3": "Fm", "M2_LS": "Spread"}[name]
+    macro(f"Pit{tag}Cagr", pct(s_["cagr"]))
+    macro(f"Pit{tag}Sharpe", num(s_["sharpe"], 2))
+    macro(f"Pit{tag}MaxDD", pct(s_["maxDrawdown"]))
+
+
+# ---------------------------------------------------------------- tables
+def cell(x: float, d: int = 1, signed: bool = False, percent: bool = True) -> str:
+    v = 100 * x if percent else x
+    if round(v, d) == 0:
+        return f"{0:.{d}f}"
+    s = f"{v:+.{d}f}" if signed else f"{v:.{d}f}"
+    return s.replace("-", "$-$").replace("+", "$+$") if signed or s.startswith("-") else s
+
+
+def with_t(x: float, t: float) -> str:
+    return f"{cell(x, 1, True)} ({cell(t, 2, False, False)})"
+
+
+LABEL = {"MOM_12_1": "12-1 momentum", "HIGH52": "Close / 52-week high",
+         "TREND_5": "5-day trend", "TREND_20": "20-day trend", "TREND_50": "50-day trend",
+         "TREND_100": "100-day trend", "TREND_200": "200-day trend", "LOWVOL": "Low volatility",
+         "REV_1M": "1-month reversal", "VOLSHOCK": "Volume shock"}
+DEFN = {"MOM_12_1": r"$P_{t-21}/P_{t-252} - 1$", "HIGH52": r"$P_t / \max_{252} P$",
+        "TREND_5": r"$\mathrm{MA}_5/P_t$", "TREND_20": r"$\mathrm{MA}_{20}/P_t$",
+        "TREND_50": r"$\mathrm{MA}_{50}/P_t$", "TREND_100": r"$\mathrm{MA}_{100}/P_t$",
+        "TREND_200": r"$\mathrm{MA}_{200}/P_t$", "LOWVOL": r"$-\sigma_{252}$",
+        "REV_1M": r"$-(P_t/P_{t-21} - 1)$", "VOLSHOCK": r"$\log(\overline{V}_{20}/\overline{V}_{252})$"}
+body = []
+for k in SC.CANDIDATES:
+    v, w = DEV["signals"][k], DEVN["signals"][k]
+    sel = (r"yes, $" + ("+" if v["sign"] > 0 else "-") + "$") if v["selected"] else "no"
+    body.append(rf"{LABEL[k]} & {DEFN[k]} & {cell(v['meanIC'], 3, True, False)} & "
+                rf"{cell(v['icT'], 2, True, False)} & {sel} & {cell(w['icT'], 2, True, False)} \\")
+write("signals.tex", r"""
+\begin{tabular}{@{}llrrlr@{}}
+\toprule
+ & & \multicolumn{3}{c}{Today's Nifty 500 (Yahoo)} & NSE, all stocks \\
+\cmidrule(lr){3-5}\cmidrule(l){6-6}
+Signal & Definition & Mean IC & $t$ & Selected & $t$ \\
+\midrule
+""" + "\n".join(body) + r"""
+\bottomrule
+\end{tabular}
+""")
+
+
+def headline_panel(run: str, index_label: str) -> str:
+    out = []
+    lines_ = [
+        ("Strategy CAGR", lambda p: cell(row(run, p)["cagr"])),
+        ("Equal-weight universe (EW) CAGR", lambda p: cell(row(run, p, "EW")["cagr"])),
+        (f"{index_label} CAGR", lambda p: cell(row(run, p, "NIFTY500")["cagr"])),
+    ]
+    if run == "Pit":
+        lines_.append(("Nifty500 Momentum 50 CAGR", lambda p: cell(row(run, p, "NIFTY500_MOM50")["cagr"])))
+    lines_ += [
+        ("Strategy Sharpe ratio", lambda p: cell(row(run, p)["sharpe"], 2, False, False)),
+        ("EW Sharpe ratio", lambda p: cell(row(run, p, "EW")["sharpe"], 2, False, False)),
+        ("Strategy maximum drawdown", lambda p: cell(row(run, p)["maxDrawdown"])),
+        ("Return over EW, a year ($t$)", lambda p: with_t(row(run, p)["activeReturn"], row(run, p)["activeT"])),
+        ("Alpha against EW, a year ($t$)", lambda p: with_t(row(run, p)["alpha"], row(run, p)["alphaT"])),
+        ("Deflated Sharpe ratio", lambda p: cell(row(run, p)["dsr"], 2, False, False)),
+        ("Cost drag, a year", lambda p: cell(row(run, p)["costDrag"], 1)),
+    ]
+    for lab, f in lines_:
+        out.append(rf"\quad {lab} & " + " & ".join(f(p) for p in PER) + r" \\")
+    return "\n".join(out)
+
+
+write("headline.tex", r"""
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+ & Development & Holdout & Full \\
+ & 2009--2018 & 2019--2026 & 2009--2026 \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Panel A. Today's Nifty 500 names, Yahoo prices}} \\
+""" + headline_panel("Surv", "Nifty 500 price index") + r"""
+\addlinespace
+\multicolumn{4}{@{}l}{\textit{Panel B. Every NSE stock trading at the time (survivorship-free)}} \\
+""" + headline_panel("Pit", "Nifty 500 total return") + r"""
+\bottomrule
+\end{tabular}
+""")
+
+dec_rows = []
+for k, lab in [("survivor", "Today's Nifty 500, Yahoo prices"),
+               ("pit-survivors", "Today's Nifty 500, NSE prices"),
+               ("pit", "Every stock trading at the time, NSE")]:
+    v = SV["runs"][k]["full"]
+    g = SV["runs"][k]["ewAgainstNifty500EW"]
+    dec_rows.append(rf"{lab} & {cell(v['cagr'])} & {cell(v['ewCagr'])} & "
+                    rf"{with_t(v['activeReturn'], v['activeT'])} & "
+                    rf"{with_t(v['factorAlphaActive'], v['factorAlphaActiveT'])} & "
+                    rf"{cell(g['ewCagr'] - g['indexCagr'], 1, True)} \\")
+write("decomposition.tex", r"""
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+ & \multicolumn{2}{c}{CAGR} & Return over & Four-factor alpha & EW minus \\
+\cmidrule(lr){2-3}
+Universe & Strategy & EW & EW ($t$) & over EW ($t$) & Nifty500 EW \\
+\midrule
+""" + "\n".join(dec_rows) + r"""
+\bottomrule
+\end{tabular}
+""")
+
+sk = []
+for lab, f in [
+    ("Mean monthly rank IC of the score ($t$)",
+     lambda p: f"{cell(rb['ic'][p]['meanIC'], 3, True, False)} ({cell(rb['ic'][p]['t'], 2, False, False)})"),
+    (f"Random portfolios beaten, of {SC.N_RANDOM:,}", lambda p: f"{100 * rb['random'][p]['percentile']:.0f}\\%"),
+    ("Strategy Sharpe ratio before costs", lambda p: cell(rb["random"][p]["strategyGrossSharpe"], 2, False, False)),
+    ("95th percentile of random Sharpe ratios", lambda p: cell(rb["random"][p]["randomSharpe95"], 2, False, False)),
+    (f"Placebo spreads beaten, of {SC.N_PLACEBO}", lambda p: cell(rb["placebo"][p]["percentile"], 1)),
+    ("Sharpe ratio ranking on the realised return", lambda p: cell(rb["canary"][p]["forwardReturnSharpe"], 1, False, False)),
+    ("Sharpe ratio with scores one month stale", lambda p: cell(rb["canary"][p]["oneMonthStaleSharpe"], 2, False, False)),
+]:
+    sk.append(rf"{lab} & " + " & ".join(f(PER[p]) for p in PER) + r" \\")
+write("skill.tex", r"""
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+ & Development & Holdout & Full \\
+\midrule
+""" + "\n".join(sk) + r"""
+\bottomrule
+\end{tabular}
+""")
+
+fr = []
+for name, lab in [("primary", "Strategy"), ("EW", "Equal-weight universe"), ("active", "Strategy minus EW")]:
+    a_ = att[name]
+    fr.append(rf"{lab} & {with_t(a_['alpha'], a_['alphaT'])} & {cell(a_['MF'], 2, True, False)} & "
+              rf"{cell(a_['SMB'], 2, True, False)} & {cell(a_['HML'], 2, True, False)} & "
+              rf"{cell(a_['WML'], 2, True, False)} ({cell(a_['WMLT'], 1, False, False)}) & "
+              rf"{cell(a_['r2'], 2, False, False)} \\")
+write("factors.tex", r"""
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+ & Alpha, a year ($t$) & Market & Size & Value & Momentum ($t$) & $R^2$ \\
+\midrule
+""" + "\n".join(fr) + r"""
+\bottomrule
+\end{tabular}
+""")
+
+rr = []
+for lab, src in [
+        ("Primary: composite, top quintile", ("bt", P_)),
+        ("Rank buffer (hold until a name leaves the top 30\\%)", ("bt", "M2_buffer")),
+        ("Fama-MacBeth forecast in place of the composite", ("bt", "M3")),
+        ("Top decile", ("bt", "M2_decile")),
+        ("Top tercile", ("bt", "M2_tercile")),
+        ("Momentum over 6 months", ("bt", "M2_mom_lookback_6")),
+        ("Momentum without the skipped month", ("bt", "M2_mom_skip_0")),
+        ("Costs doubled", ("bt", "M2_cost_x2")),
+        ("200 most traded stocks", ("sv", "top 200")),
+        ("1,000 most traded stocks", ("sv", "top 1000")),
+        ("Distress exits at 0\\%", ("sv", "distress +0%")),
+        ("Distress exits at $-$100\\%", ("sv", "distress -100%"))]:
+    if src[0] == "bt":
+        f_, h_ = row("Pit", "Full", src[1]), row("Pit", "Hold", src[1])
+    else:
+        f_, h_ = sens[src[1]]["full"], sens[src[1]]["holdout"]
+    rr.append(rf"{lab} & {cell(f_['cagr'])} & {cell(f_['sharpe'], 2, False, False)} & "
+              rf"{with_t(f_['activeReturn'], f_['activeT'])} & {with_t(h_['activeReturn'], h_['activeT'])} \\")
+write("robustness.tex", r"""
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+ & \multicolumn{3}{c}{Full sample} & Holdout \\
+\cmidrule(lr){2-4}\cmidrule(l){5-5}
+Variant & CAGR & Sharpe & Over EW ($t$) & Over EW ($t$) \\
+\midrule
+""" + "\n".join(rr) + r"""
+\bottomrule
+\end{tabular}
+""")
+
+
+# ---------------------------------------------------------------- figures
+def month_index(m: pd.DataFrame) -> pd.DatetimeIndex:
+    return pd.PeriodIndex(m.index, freq="M").to_timestamp(how="end")
+
+
+def shade_holdout(ax, end) -> None:
+    ax.axvspan(pd.Timestamp("2019-01-01"), end, color="#f0f0f0", lw=0, zorder=0)
+    ax.text(pd.Timestamp("2019-02-15"), 0.98, "holdout", transform=ax.get_xaxis_transform(),
+            fontsize=7, color="#666666", va="top")
+
+
+def end_label(ax, x, y, text, color, dy=0.0) -> None:
+    ax.annotate(text, (x, y), xytext=(4, dy), textcoords="offset points", fontsize=7,
+                color=color, va="center", ha="left")
+
+
+def log_axis(ax, ticks) -> None:
+    ax.set_yscale("log")
+    ax.set_yticks(ticks)
+    ax.set_yticklabels([f"{t:g}" for t in ticks])
+    ax.minorticks_off()
+
+
+mp = RUN["Pit"]["m"]
+ms = RUN["Surv"]["m"]
+idx = month_index(mp)
+
+# Signal selection: the frozen choice, and what the same rule says on NSE data.
+order = sorted(SC.CANDIDATES, key=lambda k: DEV["signals"][k]["icT"])
+fig, axes = plt.subplots(1, 2, figsize=(WIDTH, 2.75), sharey=True, gridspec_kw={"wspace": 0.08})
+for ax_, src, ttl in [(axes[0], DEV, "Panel A. Today's Nifty 500 (the frozen selection)"),
+                      (axes[1], DEVN, "Panel B. Every NSE stock (reported only)")]:
+    tv = [src["signals"][k]["icT"] for k in order]
+    sel = [src["signals"][k]["selected"] for k in order]
+    cols = [(BLUE if t_ > 0 else ORANGE) if s_ else "#d4d4d4" for t_, s_ in zip(tv, sel)]
+    ax_.barh(range(len(order)), tv, color=cols, height=0.62)
+    for x_ in (-SC.IC_T_THRESHOLD, SC.IC_T_THRESHOLD):
+        ax_.axvline(x_, color=INK, lw=0.6, ls=(0, (3, 2)))
+    ax_.axvline(0, color=INK, lw=0.6)
+    for i, t_ in enumerate(tv):
+        ax_.text(t_ + (0.12 if t_ >= 0 else -0.12), i, f"{t_:+.2f}".replace("-", "−"),
+                 va="center", ha="left" if t_ >= 0 else "right", fontsize=6.5, color="#333333")
+    ax_.set_xlim(-5.4, 5.4)
+    ax_.set_xticks([-4, -2, 0, 2, 4])
+    ax_.set_xlabel("Newey-West $t$ of the mean monthly rank IC")
+    ax_.grid(axis="y", visible=False)
+    panel(ax_, ttl)
+axes[0].set_yticks(range(len(order)), [LABEL[k] for k in order])
+fig.savefig(FIG / "strategy_signals.pdf")
+plt.close(fig)
+
+# Growth of one rupee and drawdowns, survivorship-free run.
+fig, (a, b) = plt.subplots(2, 1, figsize=(WIDTH, 4.5), sharex=True,
+                           gridspec_kw={"height_ratios": [1.7, 1], "hspace": 0.26})
+series = [("Strategy", P_, BLUE, 1.5, "-"), ("Equal-weight universe", "EW", INK, 1.0, "-"),
+          ("Nifty500 Momentum 50", "NIFTY500_MOM50", ORANGE, 1.0, (0, (1, 1.2))),
+          ("Nifty 500", "NIFTY500", GREY, 1.0, (0, (4, 2)))]
+shade_holdout(a, idx[-1])
+ends = []
+for lab, col, color, lw, ls in series:
+    nav = (1 + mp[col]).cumprod()
+    a.plot(idx, nav, color=color, lw=lw, ls=ls, label=lab)
+    ends.append((nav.iloc[-1], f"{nav.iloc[-1]:.1f}x", color))
+ends.sort()
+for i, (y_, txt, color) in enumerate(ends):
+    end_label(a, idx[-1], y_, txt, color, dy=(i - 1.5) * 2.5)
+log_axis(a, [1, 2, 5, 10, 20, 40])
+a.set_ylabel("Value of INR 1, net of costs")
+a.legend(loc="upper left", ncol=2, handlelength=2.2, columnspacing=1.2)
+panel(a, "Panel A. Growth of one rupee invested in March 2009 (log scale)")
+shade_holdout(b, idx[-1])
+for lab, col, color, lw, ls in series[:2]:
+    nav = (1 + mp[col]).cumprod()
+    b.plot(idx, 100 * (nav / nav.cummax() - 1), color=color, lw=lw, ls=ls)
+b.set_ylabel("Drawdown (%)")
+b.set_ylim(-62, 3)
+b.xaxis.set_major_locator(mdates.YearLocator(2))
+b.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+panel(b, "Panel B. Drawdown from the previous peak, strategy and equal-weight universe")
+fig.savefig(FIG / "strategy_growth.pdf")
+plt.close(fig)
+
+# Survivorship: the benchmarks against NSE's own index, and the three universes.
+fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 2.85),
+                           gridspec_kw={"width_ratios": [1.35, 1], "wspace": 0.3})
+for lab, nav, color, ls in [
+        ("EW, today's Nifty 500", (1 + ms["EW"]).cumprod(), ORANGE, "-"),
+        ("EW, every stock trading then", (1 + mp["EW"]).cumprod(), INK, "-"),
+        ("Nifty500 Equal Weight index", (1 + mp["NIFTY500_EW"]).cumprod(), GREY, (0, (4, 2)))]:
+    a.plot(idx, nav, color=color, lw=1.1, ls=ls, label=lab)
+    end_label(a, idx[-1], nav.iloc[-1], f"{nav.iloc[-1]:.0f}x", color)
+log_axis(a, [1, 2, 5, 10, 20, 40])
+a.set_ylabel("Value of INR 1, net of costs")
+a.legend(loc="upper left", handlelength=2.0)
+a.xaxis.set_major_locator(mdates.YearLocator(4))
+a.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+panel(a, "Panel A. Equal-weight benchmarks against NSE's index")
+labs = ["Today's Nifty 500\n(Yahoo)", "Today's Nifty 500\n(NSE)", "Every stock\ntrading then (NSE)"]
+keys = ["survivor", "pit-survivors", "pit"]
+y_ = np.arange(3)[::-1]
+s_c = [100 * SV["runs"][k]["full"]["cagr"] for k in keys]
+e_c = [100 * SV["runs"][k]["full"]["ewCagr"] for k in keys]
+b.barh(y_ + 0.19, s_c, height=0.36, color=BLUE, label="Strategy")
+b.barh(y_ - 0.19, e_c, height=0.36, color="#bdbdbd", label="Equal-weight universe")
+for i, (yi, s1, e1) in enumerate(zip(y_, s_c, e_c)):
+    b.text(s1 + 0.6, yi + 0.19, f"{s1:.1f}" + ("  strategy" if i == 0 else ""), va="center",
+           fontsize=6.8, color=BLUE if i == 0 else INK)
+    b.text(e1 + 0.6, yi - 0.19, f"{e1:.1f}" + ("  equal weight" if i == 0 else ""), va="center",
+           fontsize=6.8, color="#555555" if i == 0 else INK)
+    b.text(51, yi, f"+{s1 - e1:.1f}", va="center", ha="right", fontsize=7.5, color=BLUE)
+b.text(51, 2.55, "difference", ha="right", va="bottom", fontsize=6.8, color="#555555")
+b.set_yticks(y_, labs, fontsize=7)
+b.set_xlim(0, 51.5)
+b.set_xticks([0, 10, 20, 30])
+b.set_ylim(-0.6, 2.9)
+b.set_xlabel("CAGR, March 2009 to June 2026 (%)")
+b.grid(axis="y", visible=False)
+panel(b, "Panel B. One strategy, three universes")
+fig.savefig(FIG / "survivorship.pdf")
+plt.close(fig)
+
+# Quintile spread and random portfolios.
+fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 2.45), gridspec_kw={"wspace": 0.3})
+q = [100 * x for x in rb["quintiles"]["full"]]
+a.bar(range(1, 6), q, color=[GREY] * 4 + [BLUE], width=0.62)
+for i, v in enumerate(q, 1):
+    a.text(i, v + 0.04, f"{v:.2f}", ha="center", va="bottom", fontsize=7)
+a.set_xticks(range(1, 6), ["Q1\nlowest", "Q2", "Q3", "Q4", "Q5\nhighest"])
+a.set_ylim(0, max(q) * 1.2)
+a.set_ylabel("Mean next-month return (%)")
+a.grid(axis="x", visible=False)
+panel(a, "Panel A. Return by quintile of the score")
+sh = np.array(rb["random"]["full"]["sharpes"])
+b.hist(sh, bins=np.arange(sh.min() - 0.02, sh.max() + 0.05, 0.025), color="#bdbdbd", edgecolor="white", lw=0.3)
+sg = rb["random"]["full"]["strategyGrossSharpe"]
+b.axvline(sg, color=BLUE, lw=1.4)
+b.text(sg - 0.015, b.get_ylim()[1] * 0.93, f"strategy\n{sg:.2f}", color=BLUE, fontsize=7, ha="right", va="top")
+b.set_xlim(sh.min() - 0.05, sg + 0.06)
+b.set_xlabel("Sharpe ratio before costs, 2009 to 2026")
+b.set_ylabel("Random portfolios")
+b.grid(axis="x", visible=False)
+panel(b, f"Panel B. Against {SC.N_RANDOM:,} random portfolios")
+fig.savefig(FIG / "strategy_skill.pdf")
+plt.close(fig)
+
+# Where the edge comes from and where it fails.
+fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 2.6),
+                           gridspec_kw={"width_ratios": [1, 1.25], "wspace": 0.3})
+groups = [("Most liquid third", rb["byTercile"]["0"]["full"]), ("Middle third", rb["byTercile"]["1"]["full"]),
+          ("Least liquid third", rb["byTercile"]["2"]["full"]),
+          ("200 most traded", sens["top 200"]["full"]), ("500 most traded", SV["runs"]["pit"]["full"]),
+          ("1,000 most traded", sens["top 1000"]["full"])]
+yy = np.array([6.0, 5.0, 4.0, 2.4, 1.4, 0.4])
+vals = [100 * g["activeReturn"] for _, g in groups]
+ts = [g["activeT"] for _, g in groups]
+a.barh(yy, vals, height=0.62, color=[BLUE if v > 0 else ORANGE for v in vals])
+for yi, v, t_ in zip(yy, vals, ts):
+    a.text(v + 0.25, yi, f"{v:+.1f} ($t$ {t_:.2f})".replace("-", "−"), va="center", fontsize=6.6)
+a.axvline(0, color=INK, lw=0.6)
+a.set_yticks(yy, [g for g, _ in groups], fontsize=7)
+a.text(0.15, 6.62, "Within liquidity terciles", fontsize=6.8, style="italic", color="#555555")
+a.text(0.15, 3.02, "By size of universe", fontsize=6.8, style="italic", color="#555555")
+a.set_xlim(-1, 12.5)
+a.set_ylim(-0.3, 7.0)
+a.set_xlabel("Return over the matching EW, a year (%)")
+a.grid(axis="y", visible=False)
+panel(a, "Panel A. Where the edge is")
+yr = sorted(rb["byYear"])
+diff = [100 * (rb["byYear"][y]["primary"] - rb["byYear"][y]["EW"]) for y in yr]
+floor = -32
+b.bar(range(len(yr)), [max(d, floor) for d in diff],
+      color=[BLUE if d > 0 else ORANGE for d in diff], width=0.7)
+b.axhline(0, color=INK, lw=0.6)
+b.set_xticks(range(0, len(yr), 2), ["’" + y[2:] for y in yr[::2]], fontsize=7)
+b.set_ylim(floor - 2, 32)
+b.annotate(f"{diff[0]:.0f}, March to\nDecember 2009".replace("-", "−"), (0, floor),
+           xytext=(14, 6), textcoords="offset points", fontsize=6.5, va="bottom",
+           arrowprops=dict(arrowstyle="-", lw=0.5, color=INK))
+b.set_ylabel("Strategy minus EW (pp)")
+b.grid(axis="x", visible=False)
+panel(b, "Panel B. Calendar-year return over EW")
+fig.savefig(FIG / "strategy_weak.pdf")
+plt.close(fig)
+
+
 # ----------------------------------------------------------------------
 lines = ["% Generated by paper/make_assets.py. Do not edit by hand."]
 lines += [f"\\newcommand{{\\{k}}}{{{v}}}" for k, v in MACROS.items()]
