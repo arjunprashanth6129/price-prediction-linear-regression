@@ -41,10 +41,12 @@ import metrics as M  # noqa: E402
 import models  # noqa: E402
 import signals as S  # noqa: E402
 
+# The development signs are those of the frozen selection, whatever the source.
 DEV_JSON = ROOT / "data" / "strategy" / "signals-dev.json"
-JSON_OUT = ROOT / "data" / "strategy" / "backtest.json"
-REPORT = ROOT / "results" / "strategy" / "backtest.md"
-MONTHLY_OUT = ROOT / "results" / "strategy" / "monthly_returns.csv"
+RESULTS, DATA, _ = data.outputs()
+JSON_OUT = DATA / "backtest.json"
+REPORT = RESULTS / "backtest.md"
+MONTHLY_OUT = RESULTS / "monthly_returns.csv"
 
 P = C.PRIMARY
 PERIODS = {
@@ -57,7 +59,8 @@ PERIODS = {
 def build(panel: data.Panel, mom=(252, 21)):
     dates = S.signal_dates(panel.adj.index)
     raw = S.raw_signals(panel.adj, panel.traded_value, dates, mom=mom)
-    elig, terc = S.eligibility(panel.adj, panel.traded, panel.traded_value, dates)
+    elig, terc = S.eligibility(panel.adj, panel.traded, panel.traded_value, dates,
+                               **panel.universe)
     z = {k: S.standardise(v, elig) for k, v in raw.items()}
     fwd = S.forward_returns(panel.adj, dates).where(elig)
     return dates, z, elig, terc, fwd
@@ -184,6 +187,7 @@ def main() -> int:
                                for n, d in daily.items()})
     monthly_df.index = monthly_df.index.strftime("%Y-%m")
     MONTHLY_OUT.parent.mkdir(parents=True, exist_ok=True)
+    JSON_OUT.parent.mkdir(parents=True, exist_ok=True)
     monthly_df.round(6).to_csv(MONTHLY_OUT, index_label="month")
 
     show = [P, "M3", f"{P}_buffer", "EW", "NIFTY50", "NIFTY500", f"{P}_LS", f"{P}_LS_vol"]

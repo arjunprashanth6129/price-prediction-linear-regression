@@ -1,0 +1,24 @@
+{
+  "compiledAt": "2026-10-21T13:19:37+00:00",
+  "window": [
+    "2005-01-01",
+    "2026-07-01"
+  ],
+  "series": [
+    "EQ",
+    "BE",
+    "BZ",
+    "BT"
+  ],
+  "keepTop": 1000,
+  "sessions": 5304,
+  "fundsExcluded": 350,
+  "renamesInferred": 23,
+  "firstSession": "2005-01-03",
+  "lastSession": "2026-06-30",
+  "symbolsTraded": 3397,
+  "symbolsKept": 2581,
+  "corporateActions": 33239,
+  "corporateActionFiles": 4071,
+  "fetchedAt": "2026-10-21T12:51:41+00:00"
+}

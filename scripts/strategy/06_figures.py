@@ -29,14 +29,20 @@ fs.use_style()
 import matplotlib.pyplot as plt  # noqa: E402
 import matplotlib.ticker as mtick  # noqa: E402
 
-DATA = ROOT / "data" / "strategy"
+import data  # noqa: E402
+
+_, DATA, PREFIX = data.outputs()
 OUT = ROOT / "docs" / "figures"
 BT = json.loads((DATA / "backtest.json").read_text())
 RB = json.loads((DATA / "robustness.json").read_text())
 DEV = json.loads((DATA / "signals-dev.json").read_text())
 P = BT["primary"]
 LABEL = {P: "Strategy (composite, top quintile)", "EW": "Equal-weight universe",
-         "NIFTY500": "Nifty 500 (price index)"}
+         "NIFTY500": data.INDEX_LABELS["NIFTY500"]}
+EQUITY_NOTE = ("equal-weight universe shares the strategy's survivorship bias; the index does not."
+               if data.SOURCE == "survivor" else
+               "universe is rebuilt each month from every NSE stock trading then, including "
+               "those that later failed.")
 HOLDOUT_SHADE = "#efeee9"
 
 
@@ -71,9 +77,9 @@ def equity() -> None:
     ax.set_ylabel("Growth of one rupee, net of costs (log scale)")
     fs.title(ax, "The strategy against its benchmarks",
              "Monthly rebalance, one-session execution lag, Indian delivery costs. The "
-             "equal-weight universe shares the strategy's survivorship bias; the index does not.")
+             + EQUITY_NOTE)
     fs.legend(ax, loc="upper left")
-    fs.save(fig, OUT / "strategy-equity.png")
+    fs.save(fig, OUT / f"{PREFIX}equity.png")
 
 
 def drawdowns() -> None:
@@ -88,7 +94,7 @@ def drawdowns() -> None:
     ax.set_ylabel("Drawdown from previous peak")
     fs.title(ax, "Drawdowns", "Month-end values, net of costs.")
     fs.legend(ax, loc="lower left")
-    fs.save(fig, OUT / "strategy-drawdowns.png")
+    fs.save(fig, OUT / f"{PREFIX}drawdowns.png")
 
 
 def quintiles() -> None:
@@ -113,7 +119,7 @@ def quintiles() -> None:
     fig.text(0.01, 0.9, "Equal weight within each quintile, before costs.",
              color=INK_MUTED, fontsize=9.5)
     fig.tight_layout(rect=(0, 0, 1, 0.89))
-    fs.save(fig, OUT / "strategy-quintiles.png")
+    fs.save(fig, OUT / f"{PREFIX}quintiles.png")
 
 
 def ic_series() -> None:
@@ -131,7 +137,7 @@ def ic_series() -> None:
              "Spearman correlation across eligible stocks between the score and the next "
              "month's return.")
     fs.legend(ax, loc="lower left")
-    fs.save(fig, OUT / "strategy-ic.png")
+    fs.save(fig, OUT / f"{PREFIX}ic.png")
 
 
 def selection() -> None:
@@ -157,7 +163,7 @@ def selection() -> None:
     fs.title(ax, "Signal selection on the development period",
              f"Signals beyond |t| = {C.IC_T_THRESHOLD:g} (dashed) were selected, coloured by "
              "sign; grey bars were not. Signal dates Jan 2006 to Oct 2018.")
-    fs.save(fig, OUT / "strategy-signal-selection.png")
+    fs.save(fig, OUT / f"{PREFIX}signal-selection.png")
 
 
 def costs() -> None:
@@ -181,7 +187,7 @@ def costs() -> None:
     a, b = BT["periods"][period]
     fs.title(ax, "How much cost the result can absorb", f"{a} to {b}.")
     fs.legend(ax, loc="upper right")
-    fs.save(fig, OUT / "strategy-costs.png")
+    fs.save(fig, OUT / f"{PREFIX}costs.png")
 
 
 def random_portfolios() -> None:
@@ -205,7 +211,7 @@ def random_portfolios() -> None:
     fig.text(0.01, 0.885, "Same size, drawn from the same eligible stocks each month.",
              color=INK_MUTED, fontsize=9.5)
     fig.tight_layout(rect=(0, 0, 1, 0.87))
-    fs.save(fig, OUT / "strategy-random-portfolios.png")
+    fs.save(fig, OUT / f"{PREFIX}random-portfolios.png")
 
 
 def by_year() -> None:
@@ -225,7 +231,7 @@ def by_year() -> None:
              f"* {years[0]} starts in {pd.Period(C.EVAL_START, 'M').strftime('%B')}"
              f"{'; 2026 ends in June' if years[-1] == '2026' else ''}.")
     fs.legend(ax, loc="upper right")
-    fs.save(fig, OUT / "strategy-by-year.png")
+    fs.save(fig, OUT / f"{PREFIX}by-year.png")
 
 
 def main() -> int:

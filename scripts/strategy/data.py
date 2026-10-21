@@ -39,8 +39,26 @@ Cleaning rules, applied in this order
 Only the split-and-dividend-adjusted close is repaired. Traded value is the
 split-adjusted close times split-adjusted volume, a rupee amount that splits
 and bonuses leave unchanged, so it needs no repair.
+
+Data sources
+------------
+The environment variable STRATEGY_SOURCE picks the panel every stage uses:
+
+    survivor        (default) Yahoo prices for today's Nifty 500, cleaned as
+                    above. Every stock in it survived to 2026.
+    pit             NSE's own daily files for every equity that was among the
+                    1,000 most traded at some month-end, including the ones
+                    that later failed, merged or delisted (nse.py). The
+                    universe is rebuilt at each month-end from what was
+                    trading then.
+    pit-survivors   the pit panel restricted to today's Nifty 500 names. Its
+                    difference from `survivor` is the change of data source;
+                    its difference from `pit` is the survivorship bias.
+
+Each source writes to its own results, data and figure paths (outputs()).
 """
 import hashlib
+import os
 import pickle
 import sys
 
@@ -51,12 +69,31 @@ import numpy as np
 import pandas as pd
 
 HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 import config as C  # noqa: E402
 
 RAW = HERE / "raw"
 CACHE = HERE / "cache"
 ACTIONS = HERE / "corporate_actions.csv"
+
+SOURCES = ("survivor", "pit", "pit-survivors")
+SOURCE = os.environ.get("STRATEGY_SOURCE", "survivor")
+if SOURCE not in SOURCES:
+    raise ValueError(f"STRATEGY_SOURCE must be one of {SOURCES}, not {SOURCE!r}")
+INDEX_LABELS = {"NIFTY50": "Nifty 50 (price index)", "NIFTY500": "Nifty 500 (price index)"}
+if SOURCE != "survivor":
+    INDEX_LABELS = {"NIFTY50": "Nifty 50 (total return)", "NIFTY500": "Nifty 500 (total return)",
+                    "NIFTY500_EW": "Nifty500 Equal Weight (total return)",
+                    "NIFTY500_MOM50": "Nifty500 Momentum 50 (total return)"}
+
+
+def outputs(source: str = SOURCE) -> tuple[Path, Path, str]:
+    """(results directory, data directory, figure file prefix) for a source."""
+    if source == "survivor":
+        return ROOT / "results" / "strategy", ROOT / "data" / "strategy", "strategy-"
+    return (ROOT / "results" / "strategy" / source, ROOT / "data" / "strategy" / source,
+            f"strategy-{source}-")
 
 SPARSE_FRAC = 0.5
 MAX_GAP = 60
@@ -78,6 +115,7 @@ class Panel:
     traded: pd.DataFrame         # True when the stock traded that session
     industry: pd.Series          # NSE industry label per stock
     report: dict = field(default_factory=dict)
+    universe: dict = field(default_factory=dict)   # extra eligibility rules, see signals.eligibility
 
     @property
     def returns(self) -> pd.DataFrame:
@@ -197,38 +235,64 @@ def _clean(adj, close, volume, members) -> Panel:
                  report=report)
 
 
-def _fingerprint() -> str:
-    h = hashlib.sha256()
-    for p in sorted(RAW.glob("*")) + [ACTIONS, Path(__file__)]:
+def _fingerprint(source: str, distress) -> str:
+    h = hashlib.sha256(f"{source}|{distress}".encode())
+    files = [p for p in sorted(RAW.glob("*")) if p.is_file()] + [ACTIONS, Path(__file__)]
+    if source != "survivor":
+        files += sorted((RAW / "nse").glob("*")) + [HERE / "nse.py", HERE / "config.py"]
+    for p in files:
         h.update(p.name.encode())
         h.update(p.read_bytes())
     return h.hexdigest()[:16]
 
 
-def load_panel(full: bool = False) -> Panel:
+def _build_pit(distress) -> Panel:
+    import nse
+    built = nse.build(distress, reference=load_panel(full=True, source="survivor").adj)
+    return Panel(adj=built["adj"], traded_value=built["traded_value"], traded=built["traded"],
+                 industry=pd.Series(np.nan, index=built["adj"].columns, dtype=object),
+                 report=built["report"],
+                 universe={"top_n": C.PIT_TOP_N, "recent": C.PIT_RECENT})
+
+
+def load_panel(full: bool = False, source: str = SOURCE, distress: float | None = None) -> Panel:
     """The cleaned panel, truncated at DEV_END until the holdout is unlocked.
 
     `full=True` returns every session regardless of the lock. Only the
-    data-quality report uses it; it computes no returns or signals.
+    data-quality reports use it; they compute no returns or signals.
+    `distress` overrides the pre-registered exit return of the pit panels,
+    for the bounds reported alongside the result.
     """
     CACHE.mkdir(exist_ok=True)
-    cache = CACHE / f"panel-{_fingerprint()}.pkl"
+    base = "survivor" if source == "survivor" else "pit"
+    cache = CACHE / f"panel-{base}-{_fingerprint(base, distress)}.pkl"
     if cache.exists():
         panel = pickle.loads(cache.read_bytes())
     else:
-        members = pd.read_csv(RAW / "nifty500_list.csv")
-        panel = _clean(_read("adj_close.csv.gz"), _read("close.csv.gz"),
-                       _read("volume.csv.gz"), members)
-        for old in CACHE.glob("panel-*.pkl"):
-            old.unlink()
+        if base == "survivor":
+            members = pd.read_csv(RAW / "nifty500_list.csv")
+            panel = _clean(_read("adj_close.csv.gz"), _read("close.csv.gz"),
+                           _read("volume.csv.gz"), members)
+        else:
+            panel = _build_pit(distress)
+        for old in CACHE.glob(f"panel-{base}-*.pkl"):
+            if distress is None or old.name == cache.name:
+                old.unlink(missing_ok=True)
         cache.write_bytes(pickle.dumps(panel))
+
+    if source == "pit-survivors":
+        members = set(pd.read_csv(RAW / "nifty500_list.csv")["Symbol"].str.strip())
+        keep = [c for c in panel.adj.columns if c.split("~")[0] in members]
+        panel = Panel(adj=panel.adj[keep], traded_value=panel.traded_value[keep],
+                      traded=panel.traded[keep], industry=panel.industry[keep],
+                      report=panel.report, universe=panel.universe)
 
     if full or C.HOLDOUT_UNLOCKED:
         return panel
     end = pd.Timestamp(C.DEV_END)
     return Panel(adj=panel.adj.loc[:end], traded_value=panel.traded_value.loc[:end],
                  traded=panel.traded.loc[:end], industry=panel.industry,
-                 report=panel.report)
+                 report=panel.report, universe=panel.universe)
 
 
 def load_iima() -> pd.DataFrame:
@@ -241,8 +305,13 @@ def load_iima() -> pd.DataFrame:
     return df
 
 
-def load_indices() -> pd.DataFrame:
-    df = _read("indices.csv.gz")
+def load_indices(source: str = SOURCE) -> pd.DataFrame:
+    """Benchmark index levels: Yahoo's price indices for the survivor source,
+    NSE Indices' total return indices for the pit sources."""
+    if source == "survivor":
+        df = _read("indices.csv.gz")
+    else:
+        df = pd.read_csv(RAW / "nse" / "index_tri.csv", index_col="Date", parse_dates=True)
     if not C.HOLDOUT_UNLOCKED:
         df = df.loc[: pd.Timestamp(C.DEV_END)]
     return df

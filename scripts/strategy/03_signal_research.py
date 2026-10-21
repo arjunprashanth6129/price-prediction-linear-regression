@@ -17,7 +17,12 @@ the Newey-West t-statistic of its mean one-month IC is at least 2 in absolute
 value, with the sign of that mean. The holdout lock keeps every price after
 December 2018 out of this stage.
 
+On the survivorship-free sources the holdout has long been unlocked, so the
+panel is cut at December 2018 here instead, and the selection is reported
+only: the signals in config.SELECTED stay the ones every model uses.
+
     python3 scripts/strategy/03_signal_research.py
+    STRATEGY_SOURCE=pit python3 scripts/strategy/03_signal_research.py
 """
 import json
 import sys
@@ -35,8 +40,9 @@ import data  # noqa: E402
 import metrics as M  # noqa: E402
 import signals as S  # noqa: E402
 
-REPORT = ROOT / "results" / "strategy" / "signal_research.md"
-JSON_OUT = ROOT / "data" / "strategy" / "signals-dev.json"
+RESULTS, DATA, _ = data.outputs()
+REPORT = RESULTS / "signal_research.md"
+JSON_OUT = DATA / "signals-dev.json"
 
 
 def rank_ic(score: pd.DataFrame, fwd: pd.DataFrame) -> pd.Series:
@@ -65,11 +71,16 @@ def top_turnover(score: pd.DataFrame) -> float:
 
 
 def main() -> int:
-    assert not C.HOLDOUT_UNLOCKED, "signal research runs on the development period only"
+    if data.SOURCE == "survivor":
+        assert not C.HOLDOUT_UNLOCKED, "signal research runs on the development period only"
     panel = data.load_panel()
+    end = pd.Timestamp(C.DEV_END)
+    panel = data.Panel(adj=panel.adj.loc[:end], traded_value=panel.traded_value.loc[:end],
+                       traded=panel.traded.loc[:end], industry=panel.industry,
+                       universe=panel.universe)
     dates = S.signal_dates(panel.adj.index)
     raw = S.raw_signals(panel.adj, panel.traded_value, dates)
-    elig, _ = S.eligibility(panel.adj, panel.traded, panel.traded_value, dates)
+    elig, _ = S.eligibility(panel.adj, panel.traded, panel.traded_value, dates, **panel.universe)
     z = {k: S.standardise(v, elig) for k, v in raw.items()}
     fwd = {h: S.forward_returns(panel.adj, dates, months=h).where(elig)
            for h in C.IC_HORIZONS}

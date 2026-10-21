@@ -46,8 +46,9 @@ _spec = importlib.util.spec_from_file_location("bt", HERE / "04_backtest.py")
 bt = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(bt)
 
-JSON_OUT = ROOT / "data" / "strategy" / "robustness.json"
-REPORT = ROOT / "results" / "strategy" / "robustness.md"
+RESULTS, DATA, _ = data.outputs()
+JSON_OUT = DATA / "robustness.json"
+REPORT = RESULTS / "robustness.md"
 P = C.PRIMARY
 COST_MULTS = (0.0, 0.5, 1.0, 1.5, 2.0, 3.0)
 
@@ -214,6 +215,8 @@ def main() -> int:
                & (qr.index <= pd.Period(y, "M").end_time)]
         out["quintiles"][k] = [float(v) for v in s.mean()]
 
+    DATA.mkdir(parents=True, exist_ok=True)
+    RESULTS.mkdir(parents=True, exist_ok=True)
     JSON_OUT.write_text(json.dumps(out, indent=1) + "\n")
 
     # ---- report ----
@@ -263,7 +266,8 @@ def main() -> int:
     L += ["## Momentum construction check", "",
           f"Gross `MOM_12_1` quintile spread against IIMA WML: correlation {w['corr']:.3f} over "
           f"{w['months']} months; mean {w['oursMonthly']:+.2%} a month against {w['wmlMonthly']:+.2%}.",
-          "", "## By calendar year", "", "| Year | Primary | EW | Nifty 500 (price) |",
+          "", "## By calendar year", "",
+          f"| Year | Primary | EW | Nifty 500 ({'price' if data.SOURCE == 'survivor' else 'total return'}) |",
           "|---|---:|---:|---:|"]
     for y, v in out["byYear"].items():
         L.append(f"| {y} | {v['primary']:+.1%} | {v['EW']:+.1%} | {v['NIFTY500']:+.1%} |")

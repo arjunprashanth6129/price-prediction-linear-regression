@@ -63,13 +63,21 @@ def raw_signals(adj: pd.DataFrame, traded_value: pd.DataFrame,
 
 
 def eligibility(adj: pd.DataFrame, traded: pd.DataFrame,
-                traded_value: pd.DataFrame, dates: pd.DatetimeIndex):
+                traded_value: pd.DataFrame, dates: pd.DatetimeIndex,
+                top_n: int | None = None, recent: int | None = None):
     """Point-in-time universe and liquidity tercile at each signal date.
 
     Returns (eligible, tercile): eligible is boolean; tercile is 0 for the
     most liquid third of the eligible stocks, 2 for the least, and is also
     assigned to ineligible stocks using the eligible stocks' breakpoints, so a
     position being sold always has a spread cost.
+
+    The survivorship-free panels add two rules (Panel.universe): `top_n`
+    keeps only the most traded stocks by the same median traded value, before
+    the least liquid fifth is dropped, so the universe is the size of the
+    Nifty 500 at every date; `recent` requires a trade in the last `recent`
+    sessions, so a stock that has stopped trading is not bought at its last
+    price.
     """
     history = adj.notna().cumsum().reindex(dates)
     active = traded.rolling(C.TRADED_WINDOW, min_periods=1).mean().reindex(dates)
@@ -77,6 +85,10 @@ def eligibility(adj: pd.DataFrame, traded: pd.DataFrame,
     priced = adj.ffill().reindex(dates).notna()
 
     base = (history >= C.MIN_HISTORY) & (active >= C.MIN_TRADED_FRAC) & priced
+    if recent:
+        base &= traded.rolling(recent, min_periods=1).max().reindex(dates).fillna(0).astype(bool)
+    if top_n:
+        base &= liq.where(base).rank(axis=1, ascending=False, method="first") <= top_n
     cut = liq.where(base).quantile(C.LIQ_DROP_FRAC, axis=1)
     eligible = base & liq.ge(cut, axis=0)
 

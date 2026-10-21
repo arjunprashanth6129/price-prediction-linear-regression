@@ -34,6 +34,35 @@ Deviations from the approved plan are recorded here rather than made silently:
     had a mean rank IC of +0.046 (t = 2.18). The switch was made on
     development data alone, before the holdout was unlocked, and M3 is still
     reported. The sensitivity runs apply to whichever model is primary.
+
+Survivorship-free replication
+-----------------------------
+The first study's universe was today's Nifty 500, so every stock in it
+survived to 2026. The replication reruns the strategy above, unchanged, on
+NSE's own daily records of every equity that traded, including the companies
+that later merged, failed or delisted (STRATEGY_SOURCE=pit; nse.py). Only the
+data and the way the universe is drawn change:
+
+  - at each month-end the universe is the PIT_TOP_N most traded stocks by
+    six-month median traded value that pass the history and trading filters
+    above; the least liquid fifth is then dropped as before;
+  - a stock must have traded in one of the last PIT_RECENT sessions;
+  - a stock that stops trading earns PIT_EXIT_RETURNS on the session after
+    its last trade, by how it left (NSE's delisted list, then the corporate
+    action records, then the stock's own record: moved to a trade-for-trade
+    series or halved in its last year means distress); the distress return
+    is also reported at each value in PIT_EXIT_BOUNDS;
+  - universes of each size in PIT_TOP_N_SENSITIVITY are reported.
+
+How prices are adjusted for bonuses, splits, rights, dividends and
+demergers is set out in nse.py. Every data rule was fixed by checking the
+data alone (against Yahoo, against NSE's Nifty500 Equal Weight index, and
+against NSE's own corporate action records), and the checks are in
+results/strategy/pit/data_quality.md. All of it was committed before any
+strategy return on NSE data was computed. The holdout had already been seen
+in the first study, so the replication is a test of the same strategy on
+corrected data, not a new out-of-sample test. The signal selection is rerun
+on the new development data and reported, but SELECTED is not changed.
 """
 
 # ----------------------------------------------------------------------
@@ -131,6 +160,18 @@ SENSITIVITY = {
     "tercile": {"q": 3},
     "cost_x2": {"cost_mult": 2.0},
 }
+
+# ----------------------------------------------------------------------
+# Survivorship-free replication: the pit data source (nse.py). Everything
+# above is unchanged for it; these settings only say how the universe is
+# rebuilt from NSE's records and what a holder gets when a stock stops
+# trading.
+# ----------------------------------------------------------------------
+PIT_TOP_N = 500                   # most traded stocks at each month-end
+PIT_RECENT = 5                    # sessions: must have traded in at least one
+PIT_EXIT_RETURNS = {"merger": 0.0, "voluntary": 0.0, "distress": -0.30}
+PIT_EXIT_BOUNDS = (0.0, -1.0)     # alternative distress returns, reported
+PIT_TOP_N_SENSITIVITY = (200, 1000)
 
 # ----------------------------------------------------------------------
 # Inference

@@ -1,0 +1,12 @@
+# Bonuses and splits missing from NSE's corporate action files, used only for
+# the survivorship-free panel (nse.py). Found by listing every unexplained
+# one-day fall of more than 40% in a stock then among the 1,000 most traded,
+# from 2010 (results/strategy/pit/data_quality.md), and checking each against
+# the company's exchange filing. ratio is new shares per old share.
+symbol,ex_date,ratio,kind,source
+360ONE,2023-03-02,4,sub-division from Rs 2 to Re 1 and a 1:1 bonus,company filing; record and ex-date 2 Mar 2023
+KAMOPAINTS,2023-08-01,2,1:1 bonus,company filing; record and ex-date 1 Aug 2023
+SBGLP,2024-04-18,10,sub-division from Rs 10 to Re 1,company filing to BSE of 29 Mar 2024; record and ex-date 18 Apr 2024
+KAMOPAINTS,2024-06-14,5,sub-division from Rs 5 to Re 1,company filing of 14 May 2024; record and ex-date 14 Jun 2024
+MOTISONS,2024-11-08,10,sub-division from Rs 10 to Re 1,company filing; record date 9 Nov 2024 (a Saturday); ex-date 8 Nov 2024
+SHRIRAMFIN,2025-01-10,5,sub-division from Rs 10 to Rs 2,company filing of 23 Dec 2024; record and ex-date 10 Jan 2025
