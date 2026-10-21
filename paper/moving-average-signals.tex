@@ -11,28 +11,23 @@
   paper are at \weburl{https://github.com/arjunprashanth6129/}{price-prediction-linear-regression}.
   An interactive summary of the results is at
   \weburl{https://arjun-quant-projects.vercel.app/}{linear-regression}.}}
-\date{October 2026}
-\keywords{technical analysis; moving averages; return predictability; out-of-sample
-  evaluation; directional accuracy; market efficiency; India}
-\jel{C53, C58, G14, G17}
 
 \begin{document}
 \maketitle
 \thispagestyle{plain}
 
 \begin{abstract}
-I test whether four technical features built from past prices, a 5-day and a
+In this sudy, I test whether four technical features built from past prices, a 5-day, a
 20-day moving average, the one-day return and the ratio of the two averages,
 predict the next-day return of \NStocks{} stocks listed on India's National Stock
-Exchange. A separate least squares model is estimated for each stock on daily
-data from June 2019 to January 2025 and evaluated on the following seventeen months,
-which play no part in estimation. Out of sample, the mean $R^2$ is \RsqMean{} and
+Exchange. A least squares model is estimated for each stock based on 
+data from June 2019 to January 2025 and evaluated on the following seventeen months . 
+Out of sample, the mean $R^2$ (coefficient of determination) is \RsqMean{} and
 mean directional accuracy is \AccMean. No stock's accuracy is significantly above
 50\%, and Pesaran-Timmermann tests, which allow for the base rate of up days,
-find no stock with significant directional ability once the false discovery rate
-is controlled. The model's apparent edge over an always-up benchmark is smaller
-than the edge an uninformative forecast would have earned in the same window. The
-results are consistent with weak-form efficiency at the daily horizon.
+find no stock with significant directional ability. The model's apparent edge over an always-up benchmark 
+is smaller than the edge an uninformative forecast would have earned in the same window. The
+results are consistent with weak-form of the efficient market hypothesis at the daily horizon.
 \end{abstract}
 
 % ======================================================================
@@ -40,7 +35,7 @@ results are consistent with weak-form efficiency at the daily horizon.
 
 Technical analysis rests on the premise that the recent path of a price says
 something about its next move, and moving-average rules are its most common form.
-In the best-known version, a short moving average that rises above a long one, a
+In the best known version, a short moving average that rises above a long one, a
 \emph{golden cross}, is read as a signal to buy, and the reverse crossing, a
 \emph{death cross}, as a signal to sell. Figure~\ref{fig:cross} shows both in
 Britannia Industries' share price in 2019: the 5-day average rose above the
@@ -52,19 +47,20 @@ them.
 \centering
 \includegraphics[width=0.66\textwidth]{figures/cross.pdf}
 \caption{A golden cross and a death cross in Britannia Industries, August to
-November 2019. The golden cross is the day the 5-day moving average of the close
+November 2019. The golden cross is the day where the 5-day moving average of the close
 rises above the 20-day average; the death cross is the day it falls back below.
 The ratio of the two averages, one of the four features in this study, is above
 one between the two crossings and below one outside them.}
 \label{fig:cross}
 \end{figure}
 
+
 The academic evidence on them is mixed and has weakened over time.
 \citet{lo2000} put the visual patterns of technical analysis on a statistical
 footing and find that several carry incremental information about returns.
 \citet{brock1992} found that moving-average and trading-range rules applied to the
 Dow Jones Industrial Average from 1897 to 1986 produced returns that standard null
-models of prices could not explain. \citet{sullivan1999} re-examined the same
+models of prices could not explain; \citet{sullivan1999} re-examined the same
 universe of rules with a bootstrap that corrects for data snooping and found that
 the best rule's performance did not carry over into the following decade. In their
 survey of 95 modern studies, \citet{park2007} report that most find profits until
