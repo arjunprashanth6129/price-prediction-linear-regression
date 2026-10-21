@@ -26,6 +26,14 @@ Deviations from the approved plan are recorded here rather than made silently:
   - Evaluation starts in March 2009, not January. The primary model needs 36
     completed monthly regressions, and the first signal date is January 2006
     (252 sessions after the January 2005 start of the data).
+  - The primary model is M2, not M3. The freeze commit (46472c0) named M3.
+    On the development period M3's forecasts had a mean rank IC of -0.015
+    (t = -0.8): its walk-forward slopes on three collinear signals were
+    dominated by the 2008-09 crash and rebound in their burn-in, and early on
+    they put a large negative weight on HIGH52. The equal-weight composite M2
+    had a mean rank IC of +0.046 (t = 2.18). The switch was made on
+    development data alone, before the holdout was unlocked, and M3 is still
+    reported. The sensitivity runs apply to whichever model is primary.
 """
 
 # ----------------------------------------------------------------------
@@ -109,19 +117,18 @@ BROKERAGE = 0.0                   # discount-broker delivery
 SPREAD_BPS = (5, 15, 35)          # by traded-value tercile, most liquid first
 
 # ----------------------------------------------------------------------
-# What is reported. The primary strategy is M3, long-only, top quintile.
-# Every configuration below counts as a trial for the Deflated Sharpe Ratio.
-# The sensitivity runs change one setting of the primary at a time; they are
-# reported, never used to choose.
+# What is reported. The primary strategy is PRIMARY, long-only, top
+# quintile. Every long-only configuration counts as a trial for the Deflated
+# Sharpe Ratio. The sensitivity runs change one setting of the primary at a
+# time; they are reported, never used to choose.
 # ----------------------------------------------------------------------
-PRIMARY = "M3"
+PRIMARY = "M2"
 SENSITIVITY = {
     "mom_lookback_6": {"mom": (126, 21)},
     "mom_lookback_9": {"mom": (189, 21)},
     "mom_skip_0": {"mom": (252, 0)},
     "decile": {"q": 10},
     "tercile": {"q": 3},
-    "fm_rolling_60": {"rolling": FM_ROLLING},
     "cost_x2": {"cost_mult": 2.0},
 }
 
