@@ -47,7 +47,7 @@ DEV_END = "2018-12-31"            # last day of the development period
 HOLDOUT_START = "2019-01"
 EVAL_END = "2026-06"
 
-HOLDOUT_UNLOCKED = False
+HOLDOUT_UNLOCKED = True
 
 # ----------------------------------------------------------------------
 # Universe: point-in-time eligibility at each month-end signal date
