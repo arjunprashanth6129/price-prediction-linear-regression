@@ -1,0 +1,16 @@
+{
+  "fetchedAt": "2026-10-21T08:19:23+00:00",
+  "window": [
+    "2005-01-01",
+    "2026-07-01"
+  ],
+  "universe": 501,
+  "fetched": 499,
+  "noData": [
+    "BAGMANE",
+    "DUMMYHEG"
+  ],
+  "renames": {},
+  "iimaRelease": "2025-12",
+  "yfinance": "1.7.0"
+}

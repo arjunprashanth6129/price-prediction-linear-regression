@@ -1,0 +1,9 @@
+# Demergers whose ex-date move Yahoo leaves in the adjusted close. Each ex-date
+# return is set to zero by data.py (rule 4c). Moves beyond 0.5 in log terms are
+# caught by rule 4a and need no entry here.
+ticker,date,kind,source
+GRASIM,2010-05-26,demerger of the cement business into Samruddhi Cement,NSE Indices press release of 20 May 2010 (ex-date 26 May 2010)
+ADANIENT,2015-06-03,demerger of Adani Transmission and other businesses,Business Standard 3 Jun 2015 (record date 4 Jun 2015)
+MFSL,2016-01-27,three-way demerger of Max India,PTI 20 Jan 2016 (ex-demerger from 27 Jan 2016)
+STLTECH,2025-04-24,demerger of the services business into STL Networks,Business Standard 23 Apr 2025 (record and ex-date 24 Apr 2025)
+TMPV,2025-10-14,demerger of the commercial vehicles business of Tata Motors,scripts/ml/01_fetch_data.py
