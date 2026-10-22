@@ -5,7 +5,7 @@ import { IconArrowRight, IconGitHub, IconPaper } from "./components/Icons";
 import { SITE, PROJECTS } from "@/lib/project";
 import { getMlSummary } from "@/lib/ml";
 import { getStrategy, pct as frac } from "@/lib/strategy";
-import { getBacktest, getCvarHeadline, getScenarios } from "@/lib/cvar";
+import { getTailRisk, pct as tpct } from "@/lib/tailrisk";
 import { getPairsMeta, getPairsSummary } from "@/lib/pairs";
 
 export const metadata = {
@@ -25,9 +25,8 @@ export default function Home() {
   const st = getStrategy();
   const h = st.headline.pit.full;
   const surv = st.headline.survivor.full;
-  const bt = getBacktest();
-  const cv = getCvarHeadline();
-  const sc = getScenarios();
+  const tr = getTailRisk();
+  const gfc = tr.crises.find((c) => c.key === "2008")!;
   const pm = getPairsMeta();
   const ps = getPairsSummary();
 
@@ -46,13 +45,13 @@ export default function Home() {
       ],
     },
     "/cvar": {
-      question: "Can a portfolio be built to lose less on its worst days?",
-      big: pct(cv.shallowestDrawdown.value),
-      bigLabel: `worst drawdown of the minimum-CVaR portfolio, against ${pct(bt.metrics_net.equal_weight["max_drawdown_%"])} for equal weight`,
+      question: "Can a portfolio be held to a tail-loss budget?",
+      big: tpct(tr.headline.holdout.BUDGET_OPT.realisedES, 2),
+      bigLabel: "realised tail loss in the holdout, against a budget of 1.5%, using a forecast tested out of sample",
       stats: [
-        { v: `${cv.gfc > 0 ? "+" : ""}${pct(cv.gfc)}`, k: "return in a replay of the 2008 crisis" },
-        { v: `${bt.meta.n_rebalances}`, k: "quarterly rebalances, out of sample" },
-        { v: sc.meta.n_scenarios.toLocaleString("en-IN"), k: "simulated scenarios" },
+        { v: `${tpct(gfc.BUDGET_OPT, 0)} vs ${tpct(gfc.STATIC_60_40, 0)}`, k: "the budget portfolio against 60/40 in the 2008 crash" },
+        { v: "Half", k: "the clustering of forecast misses, nine markets back to 1928" },
+        { v: `${tr.replication.us.metrics.all.BUDGET_OPT.sharpe.toFixed(2)} vs ${tr.replication.us.metrics.all.STATIC_60_40.sharpe.toFixed(2)}`, k: "Sharpe ratio against 60/40 over 64 years: no edge" },
       ],
     },
     "/pairs-trading": {
@@ -78,7 +77,7 @@ export default function Home() {
     },
     {
       head: "Controlling risk worked.",
-      body: "Minimum CVaR cut the worst drawdown; optimising on forecast returns did not.",
+      body: "A tested tail-loss forecast held a portfolio to its budget in two markets, without beating 60/40.",
     },
   ];
 

@@ -8,7 +8,7 @@ export const SITE = {
   name: "Alpha & Error",
   tagline: "Out-of-sample tests of price signals, portfolio risk and pairs trading in Indian and global markets",
   description:
-    "Quantitative finance research by Arjun Prashanth: whether price signals beat the Indian market once costs and survivorship bias are accounted for, how minimum-CVaR portfolios compare with other allocation rules, and whether cointegrated pairs of Indian bank stocks keep converging.",
+    "Quantitative finance research by Arjun Prashanth: whether price signals beat the Indian market once costs and survivorship bias are accounted for, whether a portfolio can be held to a tail-loss budget, and whether cointegrated pairs of Indian bank stocks keep converging.",
   live: "https://arjun-quant-projects.vercel.app",
   author: "Arjun",
   github: "https://github.com/arjunprashanth6129",
@@ -41,10 +41,10 @@ export const PROJECTS: ProjectMeta[] = [
   },
   {
     href: "/cvar",
-    name: "CVaR portfolio optimiser",
-    navName: "CVaR portfolio optimiser",
+    name: "CVaR and tail-risk budgets",
+    navName: "CVaR and tail-risk budgets",
     blurb:
-      "Five portfolio construction rules, including minimum CVaR, on twelve assets measured in rupees, evaluated in sample, out of sample and in historical crises.",
+      "Five portfolio rules on twelve assets, then expected-shortfall forecasts tested out of sample and a rupee portfolio run to a tail-loss budget, audited and replicated on a century of data it had not seen.",
     repo: "https://github.com/arjunprashanth6129/cvar-portfolio-optimizer",
     paper: "/papers/min-cvar-portfolios.pdf",
   },
