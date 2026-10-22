@@ -6,9 +6,9 @@
 
 export const SITE = {
   name: "Alpha & Error",
-  tagline: "Out-of-sample tests of price signals, portfolio risk and pairs trading in Indian and global markets",
+  tagline: "Out-of-sample tests of price signals and portfolio risk in Indian and global markets",
   description:
-    "Quantitative finance research by Arjun Prashanth: whether price signals beat the Indian market once costs and survivorship bias are accounted for, whether a portfolio can be held to a tail-loss budget, and whether cointegrated pairs of Indian bank stocks keep converging.",
+    "Quantitative finance research by Arjun Prashanth: whether price signals beat the Indian market once costs and survivorship bias are accounted for, and whether a portfolio can be held to a tail-loss budget.",
   live: "https://arjun-quant-projects.vercel.app",
   author: "Arjun",
   github: "https://github.com/arjunprashanth6129",
@@ -47,15 +47,6 @@ export const PROJECTS: ProjectMeta[] = [
       "Five portfolio rules on twelve assets, then expected-shortfall forecasts tested out of sample and a rupee portfolio run to a tail-loss budget, audited and replicated on a century of data it had not seen.",
     repo: "https://github.com/arjunprashanth6129/cvar-portfolio-optimizer",
     paper: "/papers/min-cvar-portfolios.pdf",
-  },
-  {
-    href: "/pairs-trading",
-    name: "Pairs-trading backtester",
-    navName: "Pairs-trading backtester",
-    blurb:
-      "A walk-forward evaluation of cointegration-based pairs trading in eleven Indian bank stocks, with parameters fixed on rolling formation periods and costs charged on every leg.",
-    repo: "https://github.com/arjunprashanth6129/pairs-trading-backtester",
-    paper: "/papers/pairs-trading-indian-banks.pdf",
   },
 ];
 

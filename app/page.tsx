@@ -6,7 +6,6 @@ import { SITE, PROJECTS } from "@/lib/project";
 import { getMlSummary } from "@/lib/ml";
 import { getStrategy, pct as frac } from "@/lib/strategy";
 import { getTailRisk, pct as tpct } from "@/lib/tailrisk";
-import { getPairsMeta, getPairsSummary } from "@/lib/pairs";
 
 export const metadata = {
   title: SITE.name,
@@ -27,8 +26,6 @@ export default function Home() {
   const surv = st.headline.survivor.full;
   const tr = getTailRisk();
   const gfc = tr.crises.find((c) => c.key === "2008")!;
-  const pm = getPairsMeta();
-  const ps = getPairsSummary();
 
   const pct = (v: number, d = 1) => `${v.toFixed(d)}%`;
   const bias = ((surv.cagr - h.cagr) + (surv.ewCagr - h.ewCagr)) / 2;
@@ -54,22 +51,12 @@ export default function Home() {
         { v: `${tr.replication.us.metrics.all.BUDGET_OPT.sharpe.toFixed(2)} vs ${tr.replication.us.metrics.all.STATIC_60_40.sharpe.toFixed(2)}`, k: "Sharpe ratio against 60/40 over 64 years: no edge" },
       ],
     },
-    "/pairs-trading": {
-      question: "Do bank stocks that moved together keep doing so?",
-      big: pct(ps.gross["ann_return_%"]),
-      bigLabel: "a year before costs, which cannot be told apart from zero",
-      stats: [
-        { v: `${pm.candidate_pairs}`, k: "candidate pairs tested" },
-        { v: `${pm.n_windows}`, k: "walk-forward formation windows" },
-        { v: ps.trades.n_trades.toLocaleString("en-IN"), k: "round trips traded" },
-      ],
-    },
   };
 
   const lessons = [
     {
       head: "Forecasting single prices failed.",
-      body: "The daily regression was a coin toss, and the pairs trade earned nothing.",
+      body: "The daily regression of each stock's next-day return was a coin toss.",
     },
     {
       head: "Ranking stocks worked.",
@@ -93,7 +80,7 @@ export default function Home() {
               {SITE.name}
             </h1>
             <p className="mt-4 text-[19px] leading-[1.55] text-ink">
-              Three ideas from quantitative finance, each tested on data it had never
+              Two ideas from quantitative finance, each tested on data it had never
               seen.
             </p>
             <ul className="mt-6 flex flex-wrap gap-2 text-[12.5px] font-medium text-ink-muted">
@@ -184,7 +171,7 @@ export default function Home() {
         <Reveal delay={80}>
           <section className="mt-14">
             <h2 className="text-[20px] font-semibold tracking-tight text-ink">
-              What the three found
+              What the two found
             </h2>
             <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
               {lessons.map((l) => (
