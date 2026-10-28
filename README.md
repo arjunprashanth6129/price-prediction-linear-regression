@@ -1,10 +1,9 @@
 # Price signals on NSE stocks
 
-Do past prices predict Indian stock returns? This repository asks the question
-twice. First as a next-day forecast for 98 NSE stocks, which fails. Then as a
-monthly ranking of stocks traded net of Indian costs, which works. It then
+Do past prices predict Indian stock returns? First as a next-day forecast for 98 NSE stocks, which fails. 
+Then as a monthly ranking of stocks traded net of Indian costs, which works. It then
 rebuilds the universe from NSE's own records, including every company that
-later failed, and shows how much of the result was survivorship bias.
+later failed, to show how much of the result was survivorship bias and ensure the bias is removed for an accurate model. 
 
 **Paper (PDF):** [Do Price Signals Predict Indian Stock Returns?](https://arjun-quant-projects.vercel.app/papers/moving-average-signals.pdf)
 &nbsp;·&nbsp; **Interactive version:** https://arjun-quant-projects.vercel.app/linear-regression
