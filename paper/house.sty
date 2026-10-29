@@ -21,11 +21,14 @@
 \RequirePackage{graphicx}
 % Keep every float inside the section that refers to it, and let a page carry
 % more figures before LaTeX defers them, so figures stay next to their text.
-\RequirePackage[section]{placeins}
+% Keep floats inside their section, but let them share the page on which the
+% next section starts, so a section never ends with a half-empty page.
+\RequirePackage[section,above,below]{placeins}
 \renewcommand{\topfraction}{0.9}
 \renewcommand{\bottomfraction}{0.8}
 \renewcommand{\textfraction}{0.07}
-\renewcommand{\floatpagefraction}{0.75}
+\renewcommand{\floatpagefraction}{0.8}
+\renewcommand{\dbltopfraction}{0.9}
 \setcounter{topnumber}{3}
 \setcounter{bottomnumber}{2}
 \setcounter{totalnumber}{5}
@@ -53,6 +56,13 @@
 \titlespacing*{\section}{0pt}{2.2ex plus .8ex minus .3ex}{1.0ex}
 \titlespacing*{\subsection}{0pt}{1.8ex plus .6ex minus .3ex}{0.6ex}
 \titlespacing*{\subsubsection}{\parindent}{1.2ex plus .4ex}{0.5em}
+% Never leave a heading stranded at the foot of a page: a section or
+% subsection heading needs room for itself and a few lines of its text.
+\RequirePackage{needspace}
+\RequirePackage{etoolbox}
+\preto\section{\Needspace{7\baselineskip}}
+\preto\subsection{\Needspace{5\baselineskip}}
+\preto\paragraph{\Needspace{4\baselineskip}}
 
 % ---------------------------------------------------------------- captions
 \RequirePackage[labelfont=bf,labelsep=period,font=small,skip=5pt,
@@ -80,7 +90,7 @@
 
 % ---------------------------------------------------------------- citations, links
 \RequirePackage[authoryear,round]{natbib}
-\setlength{\bibsep}{3pt plus 1pt}
+\setlength{\bibsep}{1.2pt plus 0.6pt}
 \renewcommand{\bibfont}{\small}
 \RequirePackage{xurl}
 \RequirePackage{hyperref}

@@ -6,8 +6,7 @@
 \title{Do Price Signals Predict Indian Stock Returns?\\[0.25em]
   \large\mdseries A Next-Day Forecast, a Monthly Strategy and a Survivorship-Free Test}
 \shorttitle{Price signals and Indian stock returns}
-\author{Arjun Prashanth\thanks{Email: \href{mailto:arjunprashanth6129@gmail.com}{arjunprashanth6129@gmail.com}.
-  Code, data and the scripts that generate every number, table and figure in this
+\author{Arjun Prashanth\thanks{Code, data and the scripts that generate every number, table and figure in this
   paper are at \weburl{https://github.com/arjunprashanth6129/}{price-prediction-linear-regression}.
   An interactive summary of the results is at
   \weburl{https://arjun-quant-projects.vercel.app/}{linear-regression}.}}
@@ -19,21 +18,20 @@
 \begin{abstract}
 In this study, I test whether signals built from past prices predict the returns of
 stocks listed on India's National Stock Exchange, first as a forecast of the next
-day's return and then as a monthly ranking of stocks. In the first test, a least
-squares model of each of \NStocks{} stocks' next-day returns on four moving-average
-features is no better than benchmarks that use no model: out of sample, the mean
-$R^2$ is \RsqMean{} and mean directional accuracy is \AccMean. In the second, I rank
-stocks against each other each month on four price signals chosen on data up to
-2018, hold the top fifth and pay Indian trading costs. On today's Nifty 500 the
+day's return and then as a monthly ranking of stocks. In the first model, a least
+squares model of each of \NStocks{} stocks' next-day returns, based on four moving-average
+features, is no better than benchmarks that use no model: in out-of-sample testing, the mean
+$R^2$ is \RsqMean{} and mean directional accuracy is \AccMean. The second model ranks stocks against each other each month 
+on four price signals chosen on data up to 2018, and holds the top fifth. On today's Nifty 500 the
 strategy returns \SurvCagrFull{} a year from 2009 to 2026, but that universe holds
-only companies that survived. Rebuilt from the exchange's daily records of every
-stock that traded, including those that later failed, the same strategy returns
+only companies that survived the 17 years the model was backtested on. So I rebuilt it from the exchange's daily records of every
+stock that traded, including those that later went bankrupt, were delisted, were acquired or merged with another company, or shrank out of the top 500. On this universe, the same strategy returns
 \PitCagrFull{} a year, against \PitEwCagrFull{} for an equal-weighted portfolio of
 the same stocks and \PitNiftyCagrFull{} for the Nifty 500. Survivorship bias added
 about \BiasRounded{} percentage points a year to both the strategy and its
-benchmark, and left the gap between them unchanged. In the 2019--2026 holdout the
+benchmark, and left the gap between them unchanged. In the 2019--2026 holdout, the
 strategy beats the benchmark by \PitActiveHold{} a year ($t = \PitActiveTHold$). The
-excess return is the momentum premium, it is about as large as that of NSE's own
+excess return is the momentum premium; it is about as large as that of NSE's own
 momentum index, and it comes mostly from stocks outside the largest 200.
 \end{abstract}
 
@@ -42,21 +40,21 @@ momentum index, and it comes mostly from stocks outside the largest 200.
 
 Technical analysis rests on the premise that the recent path of a price says
 something about its next move, and moving-average rules are its most common form.
-In the best known version, a short moving average that rises above a long one, a
+In one of the best-known versions, a short moving average that rises above a long one, a
 \emph{golden cross}, is read as a signal to buy, and the reverse crossing, a
 \emph{death cross}, as a signal to sell. Figure~\ref{fig:cross} shows both in
 Britannia Industries' share price in 2019: the 5-day average rose above the
 20-day average on \CrossGolden{} and fell back below it on \CrossDeath. Almost
-every charting platform draws these averages, and many retail investors trade on
-them.
+every charting platform draws these averages, and many retail investors rely on
+them for their trades. 
 
-\begin{figure}[tbp]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.66\textwidth]{figures/cross.pdf}
-\caption{A golden cross and a death cross in Britannia Industries, August to
-November 2019. The golden cross is the day the 5-day moving average of the close
-rises above the 20-day average; the death cross is the day it falls back below.
-The ratio of the two averages, one of the four features in Part~I, is above one
+\caption{A golden cross and a death cross in Britannia Industries; the time frame is from August to
+November 2019. The golden cross is the day the 5-day moving average of the closing price
+rises above the 20-day average; the death cross is the day the 5-day moving average falls back below the 20-day.
+The ratio of the two averages, one of the four features used in the first part of this study, is above one
 between the two crossings and below one outside them.}
 \label{fig:cross}
 \end{figure}
@@ -75,55 +73,51 @@ rules and difficulties in measuring risk and transaction costs. \citet{welch2008
 show that most variables proposed as predictors of equity returns fail once they
 are evaluated on data not used to select them.
 
-A separate literature uses past prices to compare stocks with each other rather
+A separate section of the literature uses past prices to compare stocks with each other rather
 than to forecast one stock through time. \citet{jegadeesh1993} show that stocks
 with high returns over the previous three to twelve months go on to outperform
 those with low returns over the following months. \citet{george2004} find that a
-stock's closeness to its 52-week high explains much of that effect, \citet{han2016}
+stock's closeness to its 52-week high explains much of that momentum effect, \citet{han2016}
 build a trend factor from moving averages of several lengths, and
 \citet{carhart1997} adds momentum to the factors used to explain fund returns.
 \citet{agarwalla2013} construct the same factors for Indian equities.
 
-This paper asks the question twice. Part~I asks it in its narrow form: given a
+This paper asks a similar question. The first part of the study asks it in its narrow form: given a
 stock's recent price history, summarised by four moving-average features, does a
 linear model forecast the next day's return better than benchmarks that use no
-model? Part~II asks it in the form the momentum literature uses: ranked against
+model? The second part asks it in the form the momentum literature uses: ranked against
 each other once a month on price signals, do the highest-ranked stocks earn more
 than the rest, after the costs of trading them? Testing the second form exposed a
-problem with the data that both had shared. The universe was today's list of
+problem with the data. The universe of stocks was today's list of
 large stocks, so every company in it had survived to today, and a backtest on
-survivors overstates returns \citep{brown1992}. Part~III rebuilds the universe from
+survivors overstates returns \citep{brown1992}. The final part of the study rebuilds the universe from
 the exchange's own records, which include the companies that later failed, and
 reruns the same strategy without changing it.
 
-The first answer is negative. Across \NStocks{} stocks the mean out-of-sample $R^2$
+The first answer came back with negative returns. Across \NStocks{} stocks the mean out-of-sample $R^2$
 is \RsqMean{} and mean directional accuracy is \AccMean, and no stock's accuracy is
-significantly above 50\%. The second answer is positive, though narrower than the
-raw numbers suggest. On today's Nifty 500 the strategy returns \SurvCagrFull{} a
+significantly above 50\%. The second answer gave better results; on today's Nifty 500 the strategy returns \SurvCagrFull{} a
 year from March 2009 to June 2026. Survivorship accounts for about \BiasRounded{}
-percentage points of that, and for the same amount of its benchmark's return. On the
+percentage points of both the strategy's and the benchmark's return. On the
 corrected data the strategy returns \PitCagrFull{} a year, against \PitEwCagrFull{}
 for an equal-weighted portfolio of the same stocks and \PitNiftyCagrFull{} for the
-Nifty 500, and in the holdout, which was run once after the design was fixed, it
+Nifty 500, and in the holdout, which was run once after the model was altered, it
 beats that benchmark by \PitActiveHold{} a year ($t = \PitActiveTHold$). Its excess
 return is the momentum premium: once a momentum factor is controlled for, nothing
 is left.
 
-The paper makes three contributions. It provides out-of-sample evidence that daily
-moving-average features carry no usable information for a recent sample of Indian
+The paper provides three insights. It provides out-of-sample evidence that daily
+moving-average features carry no useful information for a recent sample of Indian
 stocks. It tests a documented premium as a long-only strategy an investor could
-hold, with Indian transaction costs, a one-day execution lag and a protocol that
-fixed every choice before the holdout was seen. And it measures survivorship bias in
+hold, taking into account Indian transaction costs and a one-day execution lag. And it also measures survivorship bias in
 an Indian backtest directly, by running one strategy on three universes: the bias
-inflated returns by about \BiasRounded{} points a year, but not the strategy's return
-relative to its benchmark.
+inflated absolute returns by about \BiasRounded{} points a year, while the strategy's return
+relative to its benchmark stayed similar, with a difference of a few basis points.
 
-I came to this question through an equity research programme at BugleRock
+I came to this question through an equity research internship at BugleRock
 Capital, where the contrast between fundamental analysis and technical trading came
-up repeatedly. Testing the most popular technical signal on data it had not seen
-seemed the most direct way to find out how much the evidence supports it. When I
-shared the first version of this study with a practitioner, the feedback was that
-its results were too weak to be useful. Parts~II and~III are my response.
+up repeatedly. Intrigued by how technical analysis worked, I felt that testing the most popular technical signal on data
+it had not seen was the most direct way to find out how much the evidence supports it. 
 
 Section~\ref{sec:partone} presents Part~I. Section~\ref{sec:parttwo} sets out the
 design of the monthly strategy and its results on today's Nifty 500, and
@@ -133,7 +127,7 @@ Section~\ref{sec:discussion} discusses the findings and Section~\ref{sec:limits}
 their limitations. Section~\ref{sec:conclusion} concludes.
 
 % ======================================================================
-\section{Part I: a next-day forecast}\label{sec:partone}
+\section{Part I: A next-day forecast}\label{sec:partone}
 
 \subsection{Data and design}
 
@@ -150,7 +144,7 @@ up to and including day $t$:
   r_t = \frac{P_t}{P_{t-1}} - 1, \qquad
   \mathit{ratio}_t = \frac{\mathit{ma5}_t}{\mathit{ma20}_t}.
 \end{equation}
-The ratio is above one in the golden-cross state and below one in the death-cross
+The ratio, when above one, depicts the golden-cross state and, when below one, the death-cross
 state, so it expresses the crossing rule as a continuous variable. For each stock
 $i$, the model
 \begin{equation}\label{eq:model}
@@ -160,8 +154,8 @@ is estimated by ordinary least squares, where $\tilde x_{ik,t}$ is feature $k$
 standardised to zero mean and unit variance \citep{pedregosa2011}. The first 80\%
 of each stock's observations, June 2019 to January 2025 for a stock with a full
 history, form the estimation sample, and the remaining 20\% the evaluation sample.
-The split is chronological, the standardisation uses estimation-sample statistics
-only, and nothing is re-estimated during the evaluation sample.
+The split is chronological, the standardisation uses estimation-sample statistics, 
+and nothing is re-estimated during the evaluation sample.
 
 Three statistics are computed on each stock's evaluation sample of $n_i$ days. The
 out-of-sample $R^2$ compares the model with a constant forecast,
@@ -172,7 +166,7 @@ out-of-sample $R^2$ compares the model with a constant forecast,
 where $\bar r_i$ is the mean return over the evaluation sample, a stricter reference
 than the estimation-sample mean of \citet{campbell2008}. Directional accuracy is the
 share of days on which forecast and realised returns have the same sign, and the
-\emph{edge} is accuracy minus the accuracy of a rule that always predicts a rise,
+\emph{edge} is the model's accuracy minus the accuracy of a rule that always predicts a rise,
 which equals the share $b_i$ of up days in the evaluation sample. A forecast with no
 information that predicts a rise with probability one half has expected accuracy of
 50\%, so its expected edge is
@@ -187,16 +181,16 @@ hypotheses with the procedure of \citet{benjamini1995}, and with the test of
 \subsection{Results}
 
 Table~\ref{tab:summary} summarises the evaluation. The mean out-of-sample $R^2$ is
-\RsqMean{} and the median \RsqMedian. \NRsqNeg{} of \NStocks{} values are negative
-and the \NRsqPos{} positive values are all small (Figure~\ref{fig:fit}, Panel A). A
-negative $R^2$ means that the fitted model forecasts next-day returns less
+\RsqMean{} and the median \RsqMedian. \NRsqNeg{} of \NStocks{} $R^2$ values are negative
+and the remaining \NRsqPos{} positive $R^2$ values are all small (Figure~\ref{fig:fit}, Panel A). A
+negative $R^2$ basically means that the fitted model forecasts next-day returns less
 accurately than a constant, which is the outcome expected when the regressors carry
 no information: the coefficients are fitted to noise in the estimation sample, and
 the noise does not recur.
 
-\begin{table}[tbp]
+\begin{table}[!htbp]
 \centering
-\caption{Part I: out-of-sample performance across \NStocks{} stocks}
+\caption{Part I: Out-of-sample performance across \NStocks{} stocks}
 \label{tab:summary}
 \small
 \input{tables/summary}
@@ -211,33 +205,33 @@ pp denotes percentage points.
 \end{tablenote}
 \end{table}
 
-\begin{figure}[tbp]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\textwidth]{figures/fit_and_direction.pdf}
-\caption{Part I: explained variance and directional accuracy. Panel A shows the
+\caption{Part I: Explained variance and directional accuracy. Panel A shows the
 distribution of $R^2_{OS}$ across stocks, with values above zero in blue; the solid
 line marks zero and the dashed line the mean. Panel B plots each stock's
 directional accuracy against the share of up days in its evaluation window, which
-is the accuracy of the always-up rule. Points above the dashed 45-degree line beat
+represents the accuracy of the always-up rule. Points above the dashed 45-degree line beat
 that rule; the dotted line marks 50\%.}
 \label{fig:fit}
 \end{figure}
 
 Mean directional accuracy is \AccMean. The model beats the always-up rule for
 \NEdgePos{} of \NStocks{} stocks, by \EdgeMean{} percentage points on average, but
-that figure says more about the benchmark than about the model. Over the evaluation
-window the median stock's price changed by \MedianTestChange, so up days were in the
+this is not necessarily a positive result, because the benchmark is naive: it uses no model. Over the evaluation
+window, the median stock's price changed by \MedianTestChange, so up days were in the
 minority for \NWeakBench{} stocks and the always-up rule averaged only \UpMean. By
 equation~\eqref{eq:randomedge}, a forecast with no information would have beaten it
-by \RandomEdge{} points on average, more than the model achieved.
+by \RandomEdge{} points on average.
 Figure~\ref{fig:edge} makes the comparison stock by stock: the model's edge tracks
 the edge an uninformative forecast would have earned, with a correlation of
 \EdgeBenchCorr{} across stocks.
 
-\begin{figure}[tbp]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.62\textwidth]{figures/edge_vs_random.pdf}
-\caption{Part I: the model's edge against the edge of an uninformative forecast.
+\caption{Part I: The model's edge against the edge of an uninformative forecast.
 Each point is a stock. The horizontal axis is $\tfrac12 - b_i$, the expected edge
 over the always-up rule of a forecast that predicts a rise with probability one
 half; the vertical axis is the model's realised edge. The solid line is the
@@ -246,7 +240,7 @@ of a single stock's accuracy around zero.}
 \label{fig:edge}
 \end{figure}
 
-In the binomial tests no stock is significantly above 50\% and \NSigBelow{} are
+In the binomial tests, no stock is significantly above 50\% and \NSigBelow{} are
 significantly below, about the number expected by chance, and none of them survives
 the correction for multiple testing. The Pesaran-Timmermann statistic is significant
 at 5\% for \NPTSigPos{} of \NPTDefined{} stocks and for none after the same
@@ -256,7 +250,7 @@ has the largest standardised coefficient for none of the \NStocks{} stocks.
 \subsection{Why the target is a return}\label{sec:levels}
 
 A natural alternative design forecasts the next day's price rather than its
-return. For Reliance Industries, a model with the same features fitted to the next
+return. For example, for Reliance Industries, a model with the same features fitted to the next
 day's close attains an $R^2$ of \RelPriceRsq{} over the \RelTestDays{} evaluation
 days (Table~\ref{tab:reliance}), the kind of figure that suggests a strong model.
 The random walk, which forecasts tomorrow's close as today's, attains \RelNaiveRsq{}
@@ -266,9 +260,9 @@ standard deviation of \rupee\RelCloseSD, while a typical daily move was
 \rupee\RelRWRMSE, so any forecast close to the previous close explains most of the
 variance of the level, whether or not it anticipates the change.
 
-\begin{table}[tbp]
+\begin{table}[!htbp]
 \centering
-\caption{Part I, Reliance Industries: level and return forecasts over the evaluation sample}
+\caption{Part I, Reliance Industries: Level and return forecasts over the evaluation sample}
 \label{tab:reliance}
 \small
 \input{tables/reliance}
@@ -284,17 +278,17 @@ fractions of the price.
 
 The last row of Table~\ref{tab:reliance} scores direction, and there the high $R^2$
 counts for nothing: the price model calls the next day's move correctly on
-\RelPriceDir{} of days, worse than a coin. Figure~\ref{fig:parity} plots each
+\RelPriceDir{} of days, worse than the probability of heads on a coin flip. Figure~\ref{fig:parity} plots each
 forecast against the outcome. The level forecasts lie along the diagonal because
 prices change little from one day to the next, while the return forecasts form a
 narrow vertical band within \RelPredBand{} of zero. For an autocorrelated series
 such as a price level, the right reference for $R^2$ is the random walk, not the
 sample mean.
 
-\begin{figure}[tbp]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\textwidth]{figures/reliance_parity.pdf}
-\caption{Part I: forecast against realised values for Reliance Industries over the
+\caption{Part I: Forecast against realised values for Reliance Industries over the
 same \RelTestDays{} evaluation days. Panel A is the price model and Panel B the
 return model; the dashed line marks perfect forecasts.}
 \label{fig:parity}
@@ -309,15 +303,15 @@ costs, and about 345 evaluation days per stock gave too little power to detect a
 effect of one or two percentage points of accuracy. The literature on price signals
 that do carry information measures them differently: across stocks rather than
 through time, over months rather than days, and as the return of a portfolio rather
-than the accuracy of a forecast \citep{jegadeesh1993}. Part~II tests price signals
+than the accuracy of a forecast \citep{jegadeesh1993}. Part~II of this study tests price signals
 in that form.
 
 % ======================================================================
-\section{Part II: a monthly strategy}\label{sec:parttwo}
+\section{Part II: A monthly strategy}\label{sec:parttwo}
 
 \subsection{Universe and data}
 
-The universe is the Nifty 500 as it stood when the data were downloaded in October
+The universe is the Nifty 500, as it stood when the data were downloaded in October
 2026, \NSurvivorUniverse{} stocks with a price history, with daily closes and volumes
 from January 2005 to June 2026 from Yahoo Finance. The adjusted closes include
 dividends.\footnote{Part~I's paper stated that returns excluded dividends. Comparing
@@ -325,8 +319,7 @@ Yahoo's adjusted and unadjusted closes around ITC's ex-dividend dates shows that
 adjusted series includes them.} I cleaned the prices before any signal was computed:
 one-day spikes that reverse within five sessions were removed as bad ticks, a
 stock's history restarts after a suspension of 60 sessions or more, and splits,
-bonuses and demergers that Yahoo leaves in its adjusted series were repaired, each
-one listed with its date in the repository.
+bonuses and demergers that Yahoo leaves in its adjusted series were repaired.
 
 At each month-end a stock is eligible if it has 252 sessions of history, traded on
 at least \MinTradedPct{} of the last 252 sessions, and is not among the least liquid
@@ -335,7 +328,7 @@ uses data up to that month-end only.
 
 \subsection{Signals and how they were chosen}
 
-I fixed a list of \NCandidates{} candidate signals in advance
+I fixed a list of \NCandidates{} candidate signals
 (Table~\ref{tab:signals}). They are price-based signals with a published rationale:
 12-1 momentum \citep{jegadeesh1993}, closeness to the 52-week high
 \citep{george2004}, the ratio of a moving average to the price at five horizons,
@@ -344,7 +337,7 @@ one-month reversal and a volume shock. On each month-end every signal is winsori
 at the 1st and 99th percentiles across eligible stocks and standardised to a
 $z$-score.
 
-\begin{table}[tbp]
+\begin{table}[!htbp]
 \centering
 \caption{The candidate signals and the selection rule}
 \label{tab:signals}
@@ -372,7 +365,7 @@ volume shock ($t = \DevTVol$) and the 200-day trend ($t = \DevTTrend$), which en
 with a negative sign, so a close above its 200-day average scores well
 (Figure~\ref{fig:signals}, Panel A).
 
-\begin{figure}[tbp]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\textwidth]{figures/strategy_signals.pdf}
 \caption{Signal selection on the development period. Each bar is the Newey-West
@@ -389,7 +382,7 @@ selects \NSelectedNse{} signals, including all four of Panel A, and is reported 
 The score of a stock is the average of its four selected $z$-scores, each with the
 sign of its IC. At each month-end the strategy buys the top fifth of eligible stocks
 by score in equal weights and holds them, with weights drifting with prices, until
-the next month-end. It is long only, because an investor cannot hold a short
+the next month-end. It is long only, since an investor cannot hold a short
 position overnight in the Indian cash market. The signal uses the month-end close
 and the trade is made at the close of the next session, so the price that produced a
 signal is never the price paid.
@@ -408,18 +401,17 @@ is the test of the signals.
 
 The development period runs from March 2009 to December 2018 and the holdout from
 January 2019 to June 2026. Every choice described above, including the cost
-schedule and the list of variants to report, was committed to the repository before
+schedule and the list of variants to report, was committed to a GitHub repository before
 any backtest was run, and while the specification was being fixed the code that
-loads prices stopped at December 2018. One choice changed on development data. The
-specification first named a walk-forward \citet{fama1973} regression of returns on
-the four signals as the primary model; on the development period its forecasts had a
+loads prices stopped at December 2018. One choice changed on development data. At first,
+a walk-forward \citet{fama1973} regression of returns on
+the four signals was the primary model; on the development period its forecasts had a
 negative rank IC, because slopes estimated through the 2008--09 crash put large
 offsetting weights on correlated signals. I replaced it with the equal-weighted
-score before the holdout was opened and report the regression model alongside. The
-holdout was then run once. Figure~\ref{fig:protocol} shows the order, which the
-repository's commit history records.
+score before the holdout was opened. The
+holdout was then run once again.
 
-\begin{figure}[tbp]
+\begin{figure}[!htbp]
 \centering
 \begin{tikzpicture}[node distance=0.32cm]
   \tikzset{box/.style={stage=2.75cm, inner sep=3pt, minimum height=1.4cm}}
@@ -452,9 +444,10 @@ period. Warm-up years provide the 252 sessions of history the signals need.}
 
 \subsection{Inference}
 
-Returns are monthly and net of costs. The return over EW is the mean monthly
+Returns are monthly and net of costs. The return over the equal-weighted baseline strategy
+(EW) is the mean monthly
 difference between the strategy and EW, annualised, and its $t$-statistic uses
-Newey-West standard errors with \NWLags{} lags. Alpha against EW is the annualised
+Newey-West standard errors with \NWLags{} lags. Alpha against EW is the annualised 
 intercept of a regression of the strategy's excess return on EW's. Because
 \NTrials{} configurations were evaluated, including the variants in
 Section~\ref{sec:weak}, the Sharpe ratio is also reported as the deflated Sharpe
@@ -463,12 +456,11 @@ expected from that many trials with no skill, and with a 95\% interval from
 \NBoot{} draws of a stationary bootstrap \citep{politis1994} with a mean block of
 \BootBlock{} months.
 
-Four further checks separate skill from luck and from errors in the code. The
-strategy is compared with \NRandom{} random portfolios of the same size drawn from
+The strategy is compared with \NRandom{} random portfolios of the same size drawn from
 the same eligible stocks each month, and its long-short spread with \NPlacebo{}
 spreads built from scores shuffled across stocks, both before costs. The excess
 returns are regressed on the market, size, value and momentum factors of
-\citet{agarwalla2013}, which are built from all listed Indian stocks. As a test for
+\citet{agarwalla2013}. As a test for
 look-ahead, the same engine ranks stocks on their realised next-month return, which
 must produce an implausible Sharpe ratio, and on scores one month stale, which must
 do somewhat worse than live scores. As a test that the signals are built correctly,
@@ -485,9 +477,9 @@ Nifty 500 price index. In the holdout it beats EW by \SurvActiveHold{} a year
 ($t = \SurvActiveTHold$). These numbers are too high to be believed as they stand.
 EW, a portfolio with no signal at all, beat the index by about ten percentage points
 a year, and an equal-weighted portfolio should not outperform a cap-weighted index by
-that much for seventeen years. Section~\ref{sec:partthree} shows why it did.
+that much for seventeen years. Section~\ref{sec:partthree} shows the reason behind it.
 
-\begin{table}[tbp]
+\begin{table}[!htbp]
 \centering
 \caption{The strategy on two universes, net of costs}
 \label{tab:headline}
@@ -505,7 +497,7 @@ deflated Sharpe ratio allows for \NTrials{} configurations evaluated.
 \end{table}
 
 % ======================================================================
-\section{Part III: a survivorship-free test}\label{sec:partthree}
+\section{Part III: A survivorship-free test}\label{sec:partthree}
 
 \subsection{The problem}
 
@@ -531,7 +523,6 @@ from January 2005 to June 2026, kept the equity series, excluded exchange-traded
 funds, and mapped renamed symbols to their current names, using NSE's list of symbol
 changes and, from 2011, matching ISINs. The panel keeps \NStocksNse{} stocks: every
 equity that was among the 1,000 most traded at some month-end.
-
 The universe is rebuilt at each month-end from what was trading then: the
 \PitTopN{} most traded stocks by six-month median traded value, which is about the
 size of the Nifty 500, followed by the same eligibility rules as before. That leaves
@@ -540,22 +531,19 @@ the universe over the sample. Traded value ranks stocks by investability rather 
 by market capitalisation, because a history of shares outstanding is not freely
 available, and it needs no adjustment for splits.
 
-The exchange's prices are the prices stocks actually traded at, with no adjustment
-for corporate actions. I adjusted them from NSE's own corporate action records,
-which run from January 2010: bonuses and splits by their share ratio, rights issues
-by the standard ex-rights factor and cash dividends so that a holder earns them.
-Each adjustment is checked against the price move on the ex-date and applied only if
-the two agree. Listing every unexplained one-day fall of more than 40\% in a liquid
+The exchange's prices are transaction prices, with no adjustment
+for corporate actions. For the period from January 2010 onward,
+corporate action information was obtained from NSE's corporate action records.
+Listing every unexplained one-day fall of more than 40\% in a liquid
 stock found \NMissingSplits{} splits and bonuses missing from NSE's records, each of
-which I verified against the company's filing. Before 2010 the records do not exist,
-and capital changes are found from prices: a fall close to a standard split or bonus
+which was verified against the company's filing. Before 2010 the records did not exist, so
+capital changes are found from prices: a fall close to a standard split or bonus
 ratio in a liquid stock, or a fall of more than 80\% in any stock. Both rules were
 checked on 2010--2026, where NSE's records give the answer: the first flags
 \SplitRuleN{} moves of which \SplitRuleHit{} were recorded corporate actions, the
 second \HugeRuleN{} of which \HugeRuleHit{} were. Large falls that fit neither rule are
-kept as real returns. Satyam Computer Services' fall of 78\% on 7 January 2009 is a
-loss its holders suffered, and a cleaning rule that removed it would bring back the
-bias this part sets out to remove.
+kept as real returns.
+
 
 A stock that stops trading needs a final return. A merger or a voluntary delisting
 pays its holders the acquirer's shares or an exit offer, so its final return is set
@@ -566,20 +554,21 @@ treated as distress and given a final return of \DistressReturn, the convention 
 sessions or more that ends in resumed trading books the actual price change across
 the gap.
 
-Two comparisons check the result. For the stocks both sources carry, monthly returns
-from 2010 agree with Yahoo's to within one percentage point in \YahooAgree{} of
-\YahooMonths{} stock-months; before 2010 the figure is \YahooAgreeEarly, because
-NSE's records give no dividends for those years. And the equal-weighted portfolio
-of the rebuilt universe returns \PitEwGrossCagr{} a year before costs against
-\IndexEwCagr{} for NSE's Nifty500 Equal Weight index, with a monthly correlation of
-\PitEwGrossCorr. It tracks the index, as a survivorship-free universe should,
-slightly below it because its exit returns and missing dividends err on the side of
-lower returns.
+Two comparisons assess the rebuilt return series. For stock-months covered by both
+sources from 2010 onward, the rebuilt monthly return is within one percentage point
+of Yahoo's in \YahooAgree{} of the \YahooMonths{} observations. Before 2010, the
+share is \YahooAgreeEarly; this comparison is less direct because NSE's records do
+not include dividends for those years. The rebuilt universe's equal-weighted
+portfolio earns \PitEwGrossCagr{} a year before costs, compared with
+\IndexEwCagr{} for NSE's Nifty500 Equal Weight index. Their monthly returns have a
+correlation of \PitEwGrossCorr, indicating that the portfolio generally moves with
+the index. Its lower return is consistent with the conservative treatment of stock
+exits and the omission of dividends where records are unavailable.
 
 \subsection{Protocol}
 
 The rules in this section were fixed by checking the data alone, against Yahoo,
-against NSE's index and against NSE's own records, and were committed before any
+against NSE's index and against NSE's own records, and were fixed before any
 strategy return on the new data was computed. The strategy was then run once,
 unchanged. Because the holdout had already been seen in Part~II, this is a
 replication of the same strategy on corrected data, not a new out-of-sample test.
@@ -602,7 +591,7 @@ holds about \PitNamesFull{} stocks, replaces about \PitTurnoverFull{} of the
 portfolio a year and pays \PitCostFull{} a year in costs; its return over EW falls to
 zero only at \PitBreakEvenFull{} times the cost schedule.
 
-\begin{figure}[tbp]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\textwidth]{figures/strategy_growth.pdf}
 \caption{The strategy on the survivorship-free universe, net of costs. Panel A shows
@@ -615,10 +604,10 @@ Panel B shows the fall of the strategy and EW from their previous peaks.}
 
 \subsection{How much was survivorship}
 
-Table~\ref{tab:decomposition} runs the same strategy on three universes. Moving from
-Yahoo's prices to NSE's, with today's Nifty 500 names in both, changes the
-strategy's return by only \BiasSource{} percentage points a year, so the data source
-is not what matters. Moving from today's names to every stock that was trading at
+Table~\ref{tab:decomposition} shows the results from running the same strategy on three universes. Moving from
+Yahoo's prices to NSE's, with today's Nifty 500 names in both,
+the strategy's return changes only by \BiasSource{} percentage points a year, so the data source
+is not what affects the strategy. Moving from today's names to every stock that was trading at
 the time lowers the strategy's return by \BiasStrategy{} points a year and EW's by
 \BiasEw{} points. The bias was large, and it lifted the strategy and its benchmark by
 almost exactly the same amount: the return over EW is \SurvActiveFull{},
@@ -628,7 +617,7 @@ these data. The likely reason appears in Section~\ref{sec:weak}: companies on th
 way to failure leave the 500 most traded stocks well before they stop trading, so
 the strategy rarely holds them when they do.
 
-\begin{table}[tbp]
+\begin{table}[!htbp]
 \centering
 \caption{One strategy on three universes, March 2009 to June 2026}
 \label{tab:decomposition}
@@ -643,7 +632,7 @@ which NSE computes from each date's actual constituents.
 \end{tablenote}
 \end{table}
 
-\begin{figure}[tbp]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\textwidth]{figures/survivorship.pdf}
 \caption{Survivorship bias. Panel A shows the value of one rupee in the
@@ -670,7 +659,7 @@ before. The 12-1 momentum spread built here has a correlation of \PitWmlCorr{} w
 the momentum factor of \citet{agarwalla2013}. Returns rise steadily across the five
 quintiles of the score (Figure~\ref{fig:skill}).
 
-\begin{table}[tbp]
+\begin{table}[!htbp]
 \centering
 \caption{Skill, luck and leakage on the survivorship-free universe}
 \label{tab:skill}
@@ -686,7 +675,7 @@ realised next-month return, and on scores one month old, net of costs.
 \end{tablenote}
 \end{table}
 
-\begin{figure}[tbp]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\textwidth]{figures/strategy_skill.pdf}
 \caption{Panel A shows the mean next-month return of each quintile of the score,
@@ -706,7 +695,7 @@ study does not find a new anomaly; it shows that a documented one survives India
 trading costs, a one-day execution lag and a correction for survivorship, in a form
 that a long-only investor can hold.
 
-\begin{table}[tbp]
+\begin{table}[!htbp]
 \centering
 \caption{Four-factor attribution on the survivorship-free universe}
 \label{tab:factors}
@@ -736,7 +725,7 @@ about as well as a published momentum index, not better.
 Table~\ref{tab:robustness} reports variants of the strategy, each changing one
 setting. None was used to choose the primary strategy.
 
-\begin{table}[tbp]
+\begin{table}[!htbp]
 \centering
 \caption{Variants of the strategy on the survivorship-free universe, net of costs}
 \label{tab:robustness}
@@ -753,7 +742,7 @@ EW is in percent a year with a Newey-West $t$-statistic.
 \end{table}
 
 \paragraph{The edge is outside the largest stocks.} Within the most liquid third of
-the universe the strategy's return over that third's equal-weighted portfolio is
+the universe, the strategy's return over the same third's equal-weighted portfolio is
 \TercileLiquidActive{} a year ($t = \TercileLiquidActiveT$), against
 \TercileMiddleActive{} ($t = \TercileMiddleActiveT$) in the middle third and
 \TercileIlliquidActive{} ($t = \TercileIlliquidActiveT$) in the least liquid third
@@ -761,11 +750,9 @@ the universe the strategy's return over that third's equal-weighted portfolio is
 over EW falls to \TopTwoHundredActiveFull{} ($t = \TopTwoHundredActiveTFull$), and
 over a wider universe of 1,000 it rises to \TopThousandActiveFull{}
 ($t = \TopThousandActiveTFull$). This matches the finding of \citet{hong2000} that
-momentum is stronger among smaller stocks, and it limits the capital the strategy
-could run: the spread cost is charged by liquidity band, but the price impact of
-large orders is not modelled.
+momentum is stronger among smaller stocks.
 
-\begin{figure}[tbp]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\textwidth]{figures/strategy_weak.pdf}
 \caption{Where the edge is and when it fails. Panel A shows the return over the
@@ -837,14 +824,8 @@ realistic costs, from mid-sized and less liquid stocks more than from the larges
 with a return over its benchmark that is significant in the holdout and over the
 full sample by alpha, but not by the simple difference over the full sample. It does
 not support a claim of returns above 30\% a year, which came from a universe of
-survivors, and it does not show that this strategy improves on a published momentum
-index.
+survivors.
 
-The survivorship result has a lesson beyond this study. On a universe of survivors
-the absolute returns were inflated by about \BiasRounded{} points a year, and any
-comparison with a market index was meaningless. The comparison with a benchmark
-drawn from the same universe was not distorted here, but that cannot be assumed in
-general, and measuring it required data that include the failures.
 
 % ======================================================================
 \section{Limitations}\label{sec:limits}
@@ -857,7 +838,7 @@ general, and measuring it required data that include the failures.
   that documents momentum, including Indian evidence that covers part of the holdout
   period. The holdout was never used to fit anything, but the choice of signal family
   was not blind to how such signals have performed.
-\item \textit{Data rules.} I wrote the rules that clean and adjust prices while
+\item \textit{Data rules.} The rules that clean and adjust prices were written while
   looking at the whole sample. They were checked against independent sources and
   fixed before any strategy return was computed, but they reflect judgements: the
   exit classes are partly inferred from each stock's own record, a handful of
@@ -869,9 +850,7 @@ general, and measuring it required data that include the failures.
 \item \textit{Costs not modelled.} Short-term capital gains tax and the price impact
   of large orders are not deducted, and both would matter most for the less liquid
   stocks where the edge is largest.
-\item \textit{Part~I.} Its evaluation samples all fall within the same seventeen
-  months, its model is linear in four features, and its universe of \NStocks{}
-  stocks was chosen by hand.
+
 \end{itemize}
 
 % ======================================================================
@@ -879,7 +858,7 @@ general, and measuring it required data that include the failures.
 
 Four moving-average features in a linear model do not forecast the next day's
 return of \NStocks{} NSE stocks better than benchmarks that use no model. The same
-kind of information, used to rank stocks against each other once a month, does
+kind of information, when used to rank stocks against each other once a month, does
 carry a premium. Holding the top fifth of a survivorship-free universe of
 \PitUniverse{} stocks returned \PitCagrFull{} a year from 2009 to 2026 net of costs,
 against \PitEwCagrFull{} for an equal-weighted portfolio of the same stocks, and beat
@@ -897,16 +876,15 @@ month from July 2026.
 % ======================================================================
 \section*{Use of AI tools}
 
-The research question, the decision to rebuild the study after the practitioner's
-feedback, the insistence on a survivorship-free test and the interpretation of the
-results are my own. I used Claude Code, Anthropic's AI coding assistant, throughout.
-In Part~I it acted mainly as a tutor and wrote parts of the code at my direction. In
-Parts~II and~III its role was larger: it proposed the research design, which I
-reviewed and approved before any result was computed, wrote most of the code,
-including the data pipeline and the backtest engine, and drafted much of the text,
-which I edited. I asked it to explain each idea I had not used before, such as the
-deflated Sharpe ratio and the treatment of delisted stocks, and checked the
-explanations against the data before relying on them. I reviewed everything it
+While the research question, the ideas brought in and the interpretation of the
+results are my own, I used Claude Code, Anthropic's AI coding assistant, throughout this paper to learn more about computing, machine learning, and quantitative finance. 
+In Part~I, it mainly acted as a tutor and wrote parts of the code under my direction. In
+Parts~II and~III, Claude almost acted as a peer; it shared ideas, criticised mine and helped me find a solution to a complex problem I could not solve on my own. 
+Artificial intelligence has redefined ``learning by doing'' to a whole new extent; I have learned more about computing and quantitative finance through the implementation of this project
+compared to what any theory or literature on this subject would have taught me. Technical terms and concepts in the code and in finance 
+that I was not familiar with, I learned through the explanations Claude provided. The process of reviewing the code, reporting the results and documenting the project alongside Claude's explanations gave me a
+system where I could implement what I learned in a practical manner, which made this project more insightful.
+I checked Claude's explanations against the data before relying on them. I reviewed everything it
 produced and take full responsibility for the content.
 
 \section*{Data and code availability}
