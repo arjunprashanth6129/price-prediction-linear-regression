@@ -898,16 +898,14 @@ DEFN = {"MOM_12_1": r"$P_{t-21}/P_{t-252} - 1$", "HIGH52": r"$P_t / \max_{252} P
         "REV_1M": r"$-(P_t/P_{t-21} - 1)$", "VOLSHOCK": r"$\log(\overline{V}_{20}/\overline{V}_{252})$"}
 body = []
 for k in SC.CANDIDATES:
-    v, w = DEV["signals"][k], DEVN["signals"][k]
+    v = DEV["signals"][k]
     sel = (r"yes, $" + ("+" if v["sign"] > 0 else "-") + "$") if v["selected"] else "no"
     body.append(rf"{LABEL[k]} & {DEFN[k]} & {cell(v['meanIC'], 3, True, False)} & "
-                rf"{cell(v['icT'], 2, True, False)} & {sel} & {cell(w['icT'], 2, True, False)} \\")
+                rf"{cell(v['icT'], 2, True, False)} & {sel} \\")
 write("signals.tex", r"""
-\begin{tabular}{@{}llrrlr@{}}
+\begin{tabular}{@{}llrrl@{}}
 \toprule
- & & \multicolumn{3}{c}{Today's Nifty 500 (Yahoo)} & NSE, all stocks \\
-\cmidrule(lr){3-5}\cmidrule(l){6-6}
-Signal & Definition & Mean IC & $t$ & Selected & $t$ \\
+Signal & Definition & Mean IC & $t$ & Selected \\
 \midrule
 """ + "\n".join(body) + r"""
 \bottomrule
@@ -938,20 +936,17 @@ def headline_panel(run: str, index_label: str) -> str:
     return "\n".join(out)
 
 
-write("headline.tex", r"""
+HEAD = r"""
 \begin{tabular}{@{}lrrr@{}}
 \toprule
  & Development & Holdout & Full \\
  & 2009--2018 & 2019--2026 & 2009--2026 \\
 \midrule
-\multicolumn{4}{@{}l}{\textit{Panel A. Today's Nifty 500 names, Yahoo prices}} \\
-""" + headline_panel("Surv", "Nifty 500 price index") + r"""
-\addlinespace
-\multicolumn{4}{@{}l}{\textit{Panel B. Every NSE stock trading at the time (survivorship-free)}} \\
-""" + headline_panel("Pit", "Nifty 500 total return") + r"""
-\bottomrule
-\end{tabular}
-""")
+"""
+write("headline.tex", HEAD + headline_panel("Surv", "Nifty 500 price index").replace(r"\quad ", "")
+      + "\n\\bottomrule\n\\end{tabular}\n")
+write("headline_pit.tex", HEAD + headline_panel("Pit", "Nifty 500 total return").replace(r"\quad ", "")
+      + "\n\\bottomrule\n\\end{tabular}\n")
 
 dec_rows = []
 for k, lab in [("survivor", "Today's Nifty 500, Yahoo prices"),
@@ -1074,11 +1069,10 @@ mp = RUN["Pit"]["m"]
 ms = RUN["Surv"]["m"]
 idx = month_index(mp)
 
-# Signal selection: the frozen choice, and what the same rule says on NSE data.
+# Signal selection: the frozen choice (Part II), and the same rule on NSE data (Section 5).
 order = sorted(SC.CANDIDATES, key=lambda k: DEV["signals"][k]["icT"])
-fig, axes = plt.subplots(1, 2, figsize=(WIDTH, 2.75), sharey=True, gridspec_kw={"wspace": 0.08})
-for ax_, src, ttl in [(axes[0], DEV, "Panel A. Today's Nifty 500 (the frozen selection)"),
-                      (axes[1], DEVN, "Panel B. Every NSE stock (reported only)")]:
+for src, name, mark in [(DEV, "strategy_signals.pdf", False), (DEVN, "signals_nse.pdf", True)]:
+    fig, ax_ = plt.subplots(figsize=(WIDTH * 0.62, 2.75))
     tv = [src["signals"][k]["icT"] for k in order]
     sel = [src["signals"][k]["selected"] for k in order]
     cols = [(BLUE if t_ > 0 else ORANGE) if s_ else "#d4d4d4" for t_, s_ in zip(tv, sel)]
@@ -1087,16 +1081,16 @@ for ax_, src, ttl in [(axes[0], DEV, "Panel A. Today's Nifty 500 (the frozen sel
         ax_.axvline(x_, color=INK, lw=0.6, ls=(0, (3, 2)))
     ax_.axvline(0, color=INK, lw=0.6)
     for i, t_ in enumerate(tv):
-        ax_.text(t_ + (0.12 if t_ >= 0 else -0.12), i, f"{t_:+.2f}".replace("-", "−"),
+        ax_.text(t_ + (0.12 if t_ >= 0 else -0.12), i, f"{t_:+.2f}".replace("-", "\u2212"),
                  va="center", ha="left" if t_ >= 0 else "right", fontsize=6.5, color="#333333")
     ax_.set_xlim(-5.4, 5.4)
     ax_.set_xticks([-4, -2, 0, 2, 4])
     ax_.set_xlabel("Newey-West $t$ of the mean monthly rank IC")
     ax_.grid(axis="y", visible=False)
-    panel(ax_, ttl)
-axes[0].set_yticks(range(len(order)), [LABEL[k] for k in order])
-fig.savefig(FIG / "strategy_signals.pdf")
-plt.close(fig)
+    labels = [LABEL[k] + (" *" if mark and DEV["signals"][k]["selected"] else "") for k in order]
+    ax_.set_yticks(range(len(order)), labels)
+    fig.savefig(FIG / name)
+    plt.close(fig)
 
 # Growth of one rupee and drawdowns, survivorship-free run.
 fig, (a, b) = plt.subplots(2, 1, figsize=(WIDTH, 4.5), sharex=True,
@@ -1129,9 +1123,8 @@ panel(b, "Panel B. Drawdown from the previous peak, strategy and equal-weight un
 fig.savefig(FIG / "strategy_growth.pdf")
 plt.close(fig)
 
-# Survivorship: the benchmarks against NSE's own index, and the three universes.
-fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 2.85),
-                           gridspec_kw={"width_ratios": [1.35, 1], "wspace": 0.3})
+# Survivorship: today's Nifty 500 against NSE's own equal-weight index (Section 4.1).
+fig, a = plt.subplots(figsize=(WIDTH * 0.66, 2.75))
 for lab, nav, color, ls in [
         ("EW, today's Nifty 500", (1 + ms["EW"]).cumprod(), ORANGE, "-"),
         ("EW, every stock trading then", (1 + mp["EW"]).cumprod(), INK, "-"),
@@ -1143,28 +1136,6 @@ a.set_ylabel("Value of INR 1, net of costs")
 a.legend(loc="upper left", handlelength=2.0)
 a.xaxis.set_major_locator(mdates.YearLocator(4))
 a.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
-panel(a, "Panel A. Equal-weight benchmarks against NSE's index")
-labs = ["Today's Nifty 500\n(Yahoo)", "Today's Nifty 500\n(NSE)", "Every stock\ntrading then (NSE)"]
-keys = ["survivor", "pit-survivors", "pit"]
-y_ = np.arange(3)[::-1]
-s_c = [100 * SV["runs"][k]["full"]["cagr"] for k in keys]
-e_c = [100 * SV["runs"][k]["full"]["ewCagr"] for k in keys]
-b.barh(y_ + 0.19, s_c, height=0.36, color=BLUE, label="Strategy")
-b.barh(y_ - 0.19, e_c, height=0.36, color="#bdbdbd", label="Equal-weight universe")
-for i, (yi, s1, e1) in enumerate(zip(y_, s_c, e_c)):
-    b.text(s1 + 0.6, yi + 0.19, f"{s1:.1f}" + ("  strategy" if i == 0 else ""), va="center",
-           fontsize=6.8, color=BLUE if i == 0 else INK)
-    b.text(e1 + 0.6, yi - 0.19, f"{e1:.1f}" + ("  equal weight" if i == 0 else ""), va="center",
-           fontsize=6.8, color="#555555" if i == 0 else INK)
-    b.text(51, yi, f"+{s1 - e1:.1f}", va="center", ha="right", fontsize=7.5, color=BLUE)
-b.text(51, 2.55, "difference", ha="right", va="bottom", fontsize=6.8, color="#555555")
-b.set_yticks(y_, labs, fontsize=7)
-b.set_xlim(0, 51.5)
-b.set_xticks([0, 10, 20, 30])
-b.set_ylim(-0.6, 2.9)
-b.set_xlabel("CAGR, March 2009 to June 2026 (%)")
-b.grid(axis="y", visible=False)
-panel(b, "Panel B. One strategy, three universes")
 fig.savefig(FIG / "survivorship.pdf")
 plt.close(fig)
 
