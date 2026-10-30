@@ -26,7 +26,7 @@ Deviations from the approved plan are recorded here rather than made silently:
   - Evaluation starts in March 2009, not January. The primary model needs 36
     completed monthly regressions, and the first signal date is January 2006
     (252 sessions after the January 2005 start of the data).
-  - The primary model is M2, not M3. The freeze commit (46472c0) named M3.
+  - The primary model is M2, not M3. The freeze commit (c0d80f6) named M3.
     On the development period M3's forecasts had a mean rank IC of -0.015
     (t = -0.8): its walk-forward slopes on three collinear signals were
     dominated by the 2008-09 crash and rebound in their burn-in, and early on

@@ -17,7 +17,7 @@ the figures are `docs/figures/strategy-*.png`.
 | Primary strategy | `M2`: the average of the four signals' z-scores; hold the top quintile, equal weight, long only; rebalance monthly, trading at the close one session after the signal |
 | Costs | STT 0.1% each side, stamp duty 0.015% on buys, exchange and SEBI charges with GST, and a 5 / 15 / 35 bp spread by liquidity tercile |
 | Benchmark | equal weight across every eligible stock (EW), which shares the universe's survivorship bias; the Nifty 50 and Nifty 500 price indices for context |
-| Protocol | development Mar 2009 to Dec 2018; holdout Jan 2019 to Jun 2026, run once. The git log records the order: specification frozen (`46472c0`), primary chosen on development data (`3b4a728`), holdout unlocked (`b6ad107`) |
+| Protocol | development Mar 2009 to Dec 2018; holdout Jan 2019 to Jun 2026, run once. The git log records the order: specification frozen (`c0d80f6`), primary chosen on development data (`597cea2`), holdout unlocked (`853b7ac`) |
 
 One design decision changed during development, and it is recorded in
 `config.py`. The frozen specification named the Fama-MacBeth model `M3` as

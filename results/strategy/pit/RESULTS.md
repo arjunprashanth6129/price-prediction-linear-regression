@@ -5,7 +5,7 @@ Nifty 500, so every stock in it survived to 2026. This memo reports the same
 frozen strategy rerun on NSE's own daily records of every equity that traded
 from 2005, including the companies that later merged, failed or delisted. The
 data rules, the universe rule and the exit returns were committed in
-`8a29d77` before any strategy return on this data was computed, and the run
+`806d2d0` before any strategy return on this data was computed, and the run
 was made once. The holdout had already been seen in the first study, so this
 is a replication on corrected data, not a new out-of-sample test.
 

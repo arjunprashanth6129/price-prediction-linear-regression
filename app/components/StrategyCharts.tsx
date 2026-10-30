@@ -437,8 +437,8 @@ export function SignalBars({
       height={340}
       caption={
         <>
-          Each bar is the Newey-West t-statistic of the signal&apos;s average monthly rank
-          correlation with the next month&apos;s return. The rule, fixed in advance, kept
+          Each bar is the t-statistic, adjusted for autocorrelation, of the signal&apos;s
+          average monthly rank correlation with the next month&apos;s return. The rule, fixed in advance, kept
           any signal beyond ±2 (the dashed lines), so four were chosen. The 200-day trend
           enters with its sign reversed: a price above its 200-day average scores well.
         </>

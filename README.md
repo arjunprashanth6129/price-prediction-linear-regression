@@ -77,15 +77,15 @@ compare stocks with each other, at a monthly horizon, as a portfolio with costs.
 
 - **Frozen before it was run.** Candidate signals, the selection rule, the
   portfolio, the cost schedule and every reported variant were committed before
-  the first backtest (`46472c0`), with the price loader cut at December 2018.
+  the first backtest (`c0d80f6`), with the price loader cut at December 2018.
 - **Holdout run once.** The primary model was changed once, on development data,
-  with the reason recorded in `config.py` (`3b4a728`). Only then was the
-  2019–2026 holdout unlocked (`b6ad107`) and run (`13ca9b7`).
+  with the reason recorded in `config.py` (`597cea2`). Only then was the
+  2019–2026 holdout unlocked (`853b7ac`) and run (`647db2b`).
 - **Data rules frozen before the rerun.** Every rule for the NSE data, including
   corporate actions, delisting returns and the universe, was validated against
   Yahoo, NSE's index and NSE's records, and committed before any strategy return
-  on that data (`8a29d77`). The strategy was then rerun once, unchanged
-  (`5300093`).
+  on that data (`806d2d0`). The strategy was then rerun once, unchanged
+  (`0c47bda`).
 - **Checks for luck and leakage.** 1,000 random portfolios, 500 placebo spreads,
   a deflated Sharpe ratio for the 20 variants tried, a stationary bootstrap, and
   a leak test that ranks on the future return on purpose (Sharpe 5.2) and on

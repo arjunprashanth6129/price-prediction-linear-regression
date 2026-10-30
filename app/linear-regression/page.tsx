@@ -366,7 +366,7 @@ export default function StrategyStudy() {
           summary="Research that does find information in past prices uses it differently. It compares stocks with each other, over months rather than days, and judges the result as a portfolio."
         >
           <p>
-            That is how Jegadeesh and Titman found momentum in 1993, and it is how I
+            That is the setting in which momentum was first found, and it is how I
             redesigned the study. At each month-end the strategy scores every eligible
             stock, buys the top fifth in equal weights and holds them until the next
             month-end. It is long only, because an investor in India cannot hold a short
@@ -588,9 +588,9 @@ export default function StrategyStudy() {
           summary="The strategy's lead over its benchmark is the momentum premium. Once a momentum factor is accounted for, almost nothing is left."
         >
           <p>
-            Regressing the strategy&apos;s return over its benchmark on the market, size,
-            value and momentum factors built for Indian stocks by Agarwalla, Jacob and
-            Varma gives a momentum loading of {st.factors.activeWml.toFixed(2)}{" "}and an alpha
+            Regressing the strategy&apos;s return over its benchmark on the standard
+            market, size, value and momentum factors for Indian stocks gives a momentum
+            loading of {st.factors.activeWml.toFixed(2)}{" "}and an alpha
             of {pct(st.factors.activeAlpha, 1)}{" "}a year, with a t-statistic of{" "}
             {st.factors.activeAlphaT.toFixed(2)}. NSE&apos;s own Nifty500 Momentum 50
             index puts the result in proportion. Over the same period it returned{" "}
