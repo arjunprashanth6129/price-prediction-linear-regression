@@ -247,16 +247,16 @@ export function AccuracyScatter({
   return (
     <>
       <Frame
-        title="Model vs naive baseline - one dot per stock"
+        title="Directional accuracy of the model against the always-up rule, one dot per stock"
         height={340}
         caption={
           <>
-            <span className="text-accent">{above} stocks above baseline</span>
-            {" · "}
-            <span className="text-[#b45309]">{below} stocks below baseline</span>.
-            Points below the diagonal are stocks for which the always-up rule was
-            more accurate than the model. Select a point for that stock&apos;s
-            full results.
+            The model beat the always-up rule for{" "}
+            <strong className="font-semibold text-ink">{above} stocks</strong>{" "}
+            (blue) and lost to it for {below}{" "}(amber). The dots sit between about 40%
+            and 56%, scattered around the 50% a coin toss would score, and the rule
+            they beat scored below 50% for most stocks. Select a dot for that
+            stock&apos;s results.
           </>
         }
       >
@@ -269,7 +269,7 @@ export function AccuracyScatter({
               ticks={[35, 40, 45, 50, 55, 60, 65, 70]}
               {...axisProps}
               label={{
-                value: "Naive baseline accuracy (%)",
+                value: "Always-up rule: share of up days (%)",
                 position: "insideBottom",
                 offset: -16,
                 fill: AXIS,
@@ -301,8 +301,20 @@ export function AccuracyScatter({
               stroke={REF}
               strokeDasharray="5 5"
               label={{
-                value: "model = naive baseline",
+                value: "model = always-up rule",
                 position: "insideTopLeft",
+                fill: AXIS,
+                fontSize: 10,
+              }}
+            />
+            {/* y = 50: what a forecast with no information scores. */}
+            <ReferenceLine
+              y={50}
+              stroke={AXIS}
+              strokeDasharray="2 3"
+              label={{
+                value: "coin toss, 50%",
+                position: "insideBottomRight",
                 fill: AXIS,
                 fontSize: 10,
               }}
@@ -325,7 +337,7 @@ export function AccuracyScatter({
                         </span>
                       </div>
                       <div className="text-ink-muted">
-                        Naive:{" "}
+                        Always up:{" "}
                         <span className="tnum text-ink">
                           {d.naive.toFixed(1)}%
                         </span>
@@ -415,7 +427,7 @@ function StockModal({
 
         <div className="mt-4">
           <Row label="Model directional accuracy" value={`${p.model.toFixed(1)}%`} />
-          <Row label="Naive baseline" value={`${p.naive.toFixed(1)}%`} />
+          <Row label="Always-up rule" value={`${p.naive.toFixed(1)}%`} />
           <Row
             label="Edge"
             value={

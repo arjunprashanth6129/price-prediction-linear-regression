@@ -38,9 +38,11 @@ export interface StrategySite {
   headline: { pit: Record<Period, Headline>; survivor: Record<Period, Headline> };
   growth: {
     months: string[];
-    pit: { strategy: number[]; ew: number[]; nifty500: number[]; mom50: number[] };
+    pit: { strategy: number[]; ew: number[]; nifty500: number[]; mom50: number[]; nifty500ew: number[] };
     survivor: { strategy: number[]; ew: number[] };
   };
+  /** Fall from the previous month-end peak, strategy and EW, survivorship-free. */
+  drawdown: { strategy: number[]; ew: number[] };
   survivorship: {
     key: string;
     label: string;
@@ -59,7 +61,13 @@ export interface StrategySite {
   byYear: { year: string; strategy: number; ew: number }[];
   costs: { mult: number; active: number }[];
   quintiles: number[];
-  data: { stocksEver: number; perMonth: number; yahooWithin1pct: number; exitsInUniverse: number };
+  data: {
+    stocksEver: number;
+    perMonth: number;
+    yahooWithin1pct: number;
+    exitsInUniverse: number;
+    exits: { exits: number; inEW: number; inEWDistress: number; inStrategy: number; inStrategyDistress: number };
+  };
 }
 
 export function getStrategy(): StrategySite {

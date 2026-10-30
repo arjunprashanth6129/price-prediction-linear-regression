@@ -68,6 +68,15 @@ def growth(monthly: pd.DataFrame, cols: dict) -> dict:
     return {k: [r(v, 3) for v in (1 + monthly[c]).cumprod()] for k, c in cols.items()}
 
 
+def drawdown(monthly: pd.DataFrame, cols: dict) -> dict:
+    """Fall from the previous month-end peak, as in the paper's growth figure, Panel B."""
+    out = {}
+    for k, c in cols.items():
+        g = (1 + monthly[c]).cumprod()
+        out[k] = [r(v, 4) for v in g / g.cummax() - 1]
+    return out
+
+
 def main() -> int:
     pit, surv = load("pit"), load("survivor")
     sv = json.loads((ROOT / "data" / "strategy" / "survivorship.json").read_text())
@@ -80,7 +89,7 @@ def main() -> int:
     assert months == list(surv["monthly"].index)
 
     sharpes = np.array(rb["random"]["full"]["sharpes"])
-    edges = np.arange(np.floor(sharpes.min() * 20) / 20, sharpes.max() + 0.05, 0.05)
+    edges = np.round(np.arange(np.floor(sharpes.min() * 100) / 100, sharpes.max() + 0.01, 0.01), 2)
     counts, _ = np.histogram(sharpes, bins=edges)
 
     labels = {"survivor": "Today's Nifty 500, Yahoo", "pit-survivors": "Today's Nifty 500, NSE",
@@ -91,9 +100,10 @@ def main() -> int:
         "growth": {
             "months": months,
             "pit": growth(pit["monthly"], {"strategy": P, "ew": "EW", "nifty500": "NIFTY500",
-                                           "mom50": "NIFTY500_MOM50"}),
+                                           "mom50": "NIFTY500_MOM50", "nifty500ew": "NIFTY500_EW"}),
             "survivor": growth(surv["monthly"], {"strategy": P, "ew": "EW"}),
         },
+        "drawdown": drawdown(pit["monthly"], {"strategy": P, "ew": "EW"}),
         "survivorship": [
             {"key": k, "label": labels[k], "cagr": r(v["full"]["cagr"]),
              "ewCagr": r(v["full"]["ewCagr"]), "activeReturn": r(v["full"]["activeReturn"]),
@@ -134,7 +144,7 @@ def main() -> int:
         "quintiles": [r(x, 5) for x in rb["quintiles"]["full"]],
         "data": {"stocksEver": dq["coverage"]["everEligible"], "perMonth": 400,
                  "yahooWithin1pct": r(dq["againstYahoo"]["2010-2026"]["within1pct"], 3),
-                 "exitsInUniverse": dq["exits"]["everEligible"]},
+                 "exitsInUniverse": dq["exits"]["everEligible"], "exits": sv["exitCensus"]},
     }
     OUT.write_text(json.dumps(site, separators=(",", ":")) + "\n")
     print(f"{OUT.relative_to(ROOT)}: {OUT.stat().st_size:,} bytes")
