@@ -1,9 +1,9 @@
 # Price signals on NSE stocks
 
-Do past prices predict Indian stock returns? First as a next-day forecast for 98 NSE stocks, which fails. 
+Do past prices predict Indian stock returns? First tested, as a next-day forecast for 98 NSE stocks, which fails. 
 Then as a monthly ranking of stocks traded net of Indian costs, which works. It then
 rebuilds the universe from NSE's own records, including every company that
-later failed, to show how much of the result was survivorship bias and ensure the bias is removed for an accurate model. 
+later failed, to factor in survivorship bias 
 
 **Paper (PDF):** [Do Price Signals Predict Indian Stock Returns?](https://arjun-quant-projects.vercel.app/papers/moving-average-signals.pdf)
 &nbsp;·&nbsp; **Interactive version:** https://arjun-quant-projects.vercel.app/linear-regression
@@ -32,10 +32,10 @@ trading at the time.
 
 ![Growth of one rupee: the strategy against its benchmarks](https://arjun-quant-projects.vercel.app/figures/strategy-pit-equity.png)
 
-**What it is.** The excess return is the momentum premium: on the Indian
+**What it is.** The excess return is momentum premium: on the Indian
 four-factor model of Agarwalla, Jacob and Varma, the strategy's return over its
 benchmark has a momentum loading of 0.52 and an alpha of +0.2% a year (t = 0.09).
-It captures the premium about as well as NSE's own momentum index, not better,
+It captures the premium just about as well as NSE's own momentum index, not better,
 and mostly outside the 200 largest stocks.
 
 ## Survivorship bias, measured
@@ -53,7 +53,7 @@ data source from the bias:
 ![The same strategy on three universes](https://arjun-quant-projects.vercel.app/figures/strategy-pit-survivorship.png)
 
 Survivorship added about eight points a year to both the strategy and its
-benchmark, and left the gap between them alone. The equal-weight portfolio of the
+benchmark, and left the gap between them untouched. The equal-weight portfolio of the
 corrected universe tracks NSE's Nifty500 Equal Weight index, which NSE computes
 on each date's actual constituents (monthly correlation 0.995).
 
